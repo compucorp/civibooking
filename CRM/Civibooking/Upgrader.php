@@ -12,6 +12,7 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
    * Example: Run an external SQL script when the module is installed
    */
   public function install() {
+
     $result = civicrm_api('OptionGroup', 'create', array(
       'version' => 3,
       'name' => 'resource_type',
@@ -21,11 +22,11 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
     ));
 
     if ($result['is_error']) {
-     CRM_Core_Session:setStatus(ts('Failed to create resource type'));
+     CRM_Core_Session::setStatus(ts('Failed to create resource type'));
     }else{
       $opgId = $result['id']; //fixed to get the array index
-
       $result = civicrm_api('OptionValue', 'create', array(
+        'version' => 3,
         'option_group_id' => $opgId,
         'label' => 'Test option group',
         'value' => 'test option group',
@@ -36,11 +37,14 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
         'is_active' => '1'
       ));
 
-      if ($result['is_error']) {
-        CRM_Core_Session:setStatus(ts('Failed to create option xxx'));
-      }
+      dprint_r($result);
 
+      if ($result['is_error']) {
+        CRM_Core_Session::setStatus(ts('Failed to create option xxx'));
+      }
     }
+
+    exit;
 
     $result = civicrm_api('OptionGroup', 'create', array(
       'version' => 3,
@@ -51,7 +55,7 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
     ));
 
     if ($result['is_error']) {
-       CRM_Core_Session:setStatus(ts('Failed to create resource location'));
+       CRM_Core_Session::setStatus(ts('Failed to create resource location'));
     }else{
 
     }
@@ -65,7 +69,7 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
     ));
 
     if ($result['is_error']) {
-       CRM_Core_Session:setStatus(ts('Failed to create size unit'));
+       CRM_Core_Session::setStatus(ts('Failed to create size unit'));
     }else{
 
     }
@@ -79,10 +83,12 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
     ));
 
     if ($result['is_error']) {
-       CRM_Core_Session:setStatus(ts('Failed to create resource criteria'));
+       CRM_Core_Session::setStatus(ts('Failed to create resource criteria'));
     }else{
 
     }
+
+    exit;
 
 
    
@@ -103,10 +109,11 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
       $delResult = civicrm_api('ReportTemplate', 'delete', array(
         'version' => 3,
         'id' => $getResult['id'],
-    ));;
+      ));
+    }
     
     if ($delResult['is_error']) {
-      CRM_Core_Session:setStatus(ts('Failed to delete resource type'));
+      CRM_Core_Session::setStatus(ts('Failed to delete resource type'));
     }else{
       //TODO:: remove option value for resource type
     }
@@ -120,10 +127,11 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
       $delResult = civicrm_api('OptionGroup', 'delete', array(
         'version' => 3,
         'id' => $getResult['id'],
-    ));;
+      ));
+    }
     
     if ($delResult['is_error']) {
-      CRM_Core_Session:setStatus(ts('Failed to resource location'));
+      CRM_Core_Session::setStatus(ts('Failed to resource location'));
     }else{
       //TODO:: remove option value for resource location
     }
@@ -137,10 +145,11 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
       $delResult = civicrm_api('OptionGroup', 'delete', array(
         'version' => 3,
         'id' => $getResult['id'],
-    ));
+      ));
+    }
     
     if ($delResult['is_error']) {
-      CRM_Core_Session:setStatus(ts('Failed to size unit'));
+      CRM_Core_Session::setStatus(ts('Failed to size unit'));
     }else{
       //TODO :: remove custom field for size unit
     }
@@ -154,10 +163,11 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
       $delResult = civicrm_api('OptionGroup', 'delete', array(
         'version' => 3,
         'id' => $getResult['id'],
-    ));;
+      ));
+    }
     
     if ($delResult['is_error']) {
-      CRM_Core_Session:setStatus(ts('Failed to resource criteria'));
+      CRM_Core_Session::setStatus(ts('Failed to resource criteria'));
     }else{
       //TODO :: remove resource criteria
     }
