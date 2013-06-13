@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/booking/add</path>
+    <page_callback>CRM_Civibooking_Form_Booking</page_callback>
+    <title>Booking</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>
