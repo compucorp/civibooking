@@ -12,27 +12,14 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
    * Example: Run an external SQL script when the module is installed
    */
   public function install() {
-    //$this->executeSqlFile('sql/myinstall.sql');
+    $this->executeSqlFile('sql/civibooking.sql');
   }
 
   /**
    * Example: Run an external SQL script when the module is uninstalled
    */
-  public function uninstall() {
-    /*
-    $getResult = civicrm_api('OptionGroup', 'getsingle', array(
-      'version' => 3,
-      'name' => 'resource_type',
-    ));
-    
-    if ($getResult['id']) {
-      $delResult = civicrm_api('ReportTemplate', 'delete', array(
-        'version' => 3,
-        'id' => $getResult['id'],
-      ));
-    }
-    */
-   //$this->executeSqlFile('sql/myuninstall.sql');
+  public function uninstall() { 
+   $this->executeSqlFile('sql/civibooking.uninstall.sql');
   }
 
   /**
