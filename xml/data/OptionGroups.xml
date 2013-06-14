@@ -2,6 +2,13 @@
 <CustomData>
  <OptionGroups>
     <OptionGroup>
+      <name>booking_status</name>
+      <title>Booking status</title>
+      <description></description>
+      <is_reserved>1</is_reserved>
+      <is_active>1</is_active>
+    </OptionGroup>
+    <OptionGroup>
       <name>resource_type</name>
       <title>Resource type</title>
       <description></description>
@@ -29,18 +36,59 @@
     </OptionGroup>
   </OptionGroups>
   <OptionValues>
-      <OptionValue>
-        <label>Test group 1</label>
-        <value>23</value>
-        <name>Assign Case Role</name>
+    <!-- Booking status option value  --> 
+     <OptionValue>
+        <label>Provisional</label>
+        <value>provisional</value>
+        <name>provisional</name>
         <filter>0</filter>
-        <is_default>0</is_default>
+        <is_default>1</is_default>
         <weight>23</weight>
         <description></description>
         <is_optgroup>0</is_optgroup>
         <is_reserved>0</is_reserved>
         <is_active>1</is_active>
-        <option_group_name>resource_type</option_group_name>
+        <option_group_name>booking_status</option_group_name>
       </OptionValue>
+      <OptionValue>
+        <label>Booked</label>
+        <value>booked</value>
+        <name>booked</name>
+        <filter>0</filter>
+        <is_default>0</is_default>
+        <weight>24</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>0</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>booking_status</option_group_name>
+      </OptionValue>
+      <OptionValue>
+        <label>Cancelled</label>
+        <value>cancelled</value>
+        <name>cancelled</name>
+        <filter>0</filter>
+        <is_default>0</is_default>
+        <weight>25</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>0</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>booking_status</option_group_name>
+      </OptionValue>
+      <OptionValue>
+        <label>Complete</label>
+        <value>complete</value>
+        <name>complete</name>
+        <filter>0</filter>
+        <is_default>0</is_default>
+        <weight>26</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>0</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>booking_status</option_group_name>
+      </OptionValue>
+    <!-- End booking status option value -->
    </OptionValues>
 </CustomData>
