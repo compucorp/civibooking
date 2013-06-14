@@ -20,8 +20,7 @@ function civibooking_civicrm_tabs(&$tabs, $cid) {
     if ($count > 0) {
       $tab['url'] = CRM_Utils_System::url('civicrm/booking/tab', "reset=1&cid={$cid}&snippet=1", false, null, false);
     }
-    $tabs[] = $a;
-  }
+    $tabs[] = $tab;
 }
 
 /**
