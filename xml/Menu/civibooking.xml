@@ -18,4 +18,22 @@
     <title>Dashboard</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/booking/resource</path>
+    <page_callback>CRM_Civibooking_Page_Resource</page_callback>
+    <title>Resource</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/booking/search</path>
+    <page_callback>CRM_Civibooking_Form_Search</page_callback>
+    <title>Search</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/booking/diary</path>
+    <page_callback>CRM_Civibooking_Page_Diary</page_callback>
+    <title>Diary</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
