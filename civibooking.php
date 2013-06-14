@@ -17,9 +17,9 @@ function civibooking_civicrm_tabs(&$tabs, $cid) {
       'title' => 'Booking',
       'weight' => '998',
     );
-    if ($count > 0) {
-      $tab['url'] = CRM_Utils_System::url('civicrm/booking/tab', "reset=1&cid={$cid}&snippet=1", false, null, false);
-    }
+    //if ($count > 0) {
+    $tab['url'] = CRM_Utils_System::url('civicrm/booking/tab', "reset=1&cid={$cid}&snippet=1", false, null, false);
+    //}
     $tabs[] = $tab;
 }
 
@@ -189,22 +189,100 @@ function civibooking_civicrm_navigationMenu( &$params ) {
       $sizeUnitGid = $result['id'];
    }
 
-   //  Get the maximum key of $params
+ 
+    //  Get the maximum key of $params
    $maxKey = (max(array_keys($params)));
 
-   $bookingKey = $maxKey + 1;
-   $dashboardKey = $bookingKey + 1;
-   $newbookingKey = $bookingKey + 2;
-   $findbookingKey = $bookingKey + 3;
-   $manageResourcesKey = $bookingKey + 4;
-   $diaryViewKey = $bookingKey + 5;
-   $bookingStatusKey = $bookingKey + 6;
-   $resourceTypeKey = $bookingKey + 7;
-   $resourceLocationKey = $bookingKey + 8;
-   $resourceCriteriaKey = $bookingKey + 9;
-   $sizeunitKey = $bookingKey + 10;
-   $administratorKey = $bookingKey + 11;
+  $bookingKey = $maxKey + 1;
+  $dashboardKey = $bookingKey + 1;
+  $newbookingKey = $bookingKey + 2;
+  $findbookingKey = $bookingKey + 3;
+  $manageResourcesKey = $bookingKey + 4;
+  $diaryViewKey = $bookingKey + 5;
+  $bookingStatusKey = $bookingKey + 6;
+  $resourceTypeKey = $bookingKey + 7;
+  $resourceLocationKey = $bookingKey + 8;
+  $resourceCriteriaKey = $bookingKey + 9;
+  $sizeunitKey = $bookingKey + 10;
 
+  // get the id of Administer Menu
+  $administerMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Administer', 'id', 'name');
+  // skip adding menu if there is no administer menu
+  if ($administerMenuId) {
+    // get the maximum key under adminster menu
+    $maxAdminMenuKey = max( array_keys($params[$administerMenuId]['child']));
+    $params[$administerMenuId]['child'][$maxKey+1] =  array(
+        'attributes' => array(
+          'label' => 'CiviBooking',
+          'name' => 'admin_civibooking',
+          'url' => '#',
+          'permission' => null,
+          'operator' => null,
+          'separator' => 1,
+          'parentID' => $maxAdminMenuKey + 1,
+          'navID' => $manageResourcesKey ,
+          'active' => 1
+        ),
+        'child' =>  array( 
+          $bookingStatusKey => array(
+            'attributes' => array(
+              'label' => 'Booking status',
+              'name' => 'booking_status',
+              'url' => 'civicrm/admin/optionValue?gid=' . $bookingStatusGid .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' =>  $maxAdminMenuKey + 1,
+              'navID' => $bookingStatusKey ,
+              'active' => 1
+            ),
+           'child' => null
+          ),
+          $resourceTypeKey => array(
+            'attributes' => array(
+              'label' => 'Resource type',
+              'name' => 'resource_type',
+              'url' => 'civicrm/admin/optionValue?gid=' . $resourceTypeGid .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $maxAdminMenuKey + 1,
+              'navID' => $resourceTypeKey ,
+              'active' => 1
+              ),
+            'child' => null
+          ),
+          $resourceCriteriaKey => array(
+            'attributes' => array(
+              'label' => 'Resource criteria',
+              'name' => 'resource_criteria',
+              'url' => 'civicrm/admin/optionValue?gid=' . $resourceCriteriaGId .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $maxAdminMenuKey + 1,
+              'navID' => $resourceCriteriaKey ,
+              'active' => 1
+            ),
+            'child' => null
+          ),
+          $sizeunitKey => array(
+            'attributes' => array(
+              'label' => 'Size Unit',
+              'name' => 'size_unit',
+              'url' =>'civicrm/admin/optionValue?gid=' . $sizeUnitGid .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $maxAdminMenuKey + 1,
+              'navID' => $sizeunitKey ,
+              'active' => 1
+            ),
+            'child' => null
+          ),
+        ),
+      );
+   }
 
    $params[$bookingKey] = array(
     'attributes' => array(
@@ -223,7 +301,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => 'Dashboard',
           'name' => 'booking_dashboard',
-          'url' => '#',
+          'url' => 'civicrm/booking/dashboard',
           'permission' => null,
           'operator' => null,
           'separator' => 1,
@@ -237,7 +315,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => 'New booking',
           'name' => 'new_booking',
-          'url' => '#',
+          'url' => 'civicrm/booking/add',
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -251,7 +329,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => 'Find booking',
           'name' => 'find_booking',
-          'url' => '#',
+          'url' => 'civicrm/booking/search',
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -265,7 +343,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => 'Manage resources',
           'name' => 'manage_resources',
-          'url' => '#',
+          'url' => 'civicrm/booking/resource',
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -279,7 +357,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => 'Diary view',
           'name' => 'diary_view',
-          'url' => '#',
+          'url' => 'civicrm/booking/diary',
           'permission' => null,
           'operator' => null,
           'separator' => 1,
@@ -289,77 +367,6 @@ function civibooking_civicrm_navigationMenu( &$params ) {
           ),
         'child' => null
       ),
-      $administratorKey => array(
-        'attributes' => array(
-          'label' => 'Administartor CiviBooking',
-          'name' => 'administrator_civibooking',
-          'url' => '#',
-          'permission' => null,
-          'operator' => null,
-          'separator' => 1,
-          'parentID' => $bookingKey,
-          'navID' => $manageResourcesKey ,
-          'active' => 1
-        ),
-        'child' =>  array( 
-          $bookingStatusKey => array(
-            'attributes' => array(
-              'label' => 'Booking status',
-              'name' => 'booking_status',
-              'url' => 'civicrm/admin/optionValue?gid=' . $bookingStatusGid .'&reset=1',
-              'permission' => null,
-              'operator' => null,
-              'separator' => 0,
-              'parentID' => $administratorKey,
-              'navID' => $bookingStatusKey ,
-              'active' => 1
-            ),
-           'child' => null
-          ),
-          $resourceTypeKey => array(
-            'attributes' => array(
-              'label' => 'Resource type',
-              'name' => 'resource_type',
-              'url' => 'civicrm/admin/optionValue?gid=' . $resourceTypeGid .'&reset=1',
-              'permission' => null,
-              'operator' => null,
-              'separator' => 0,
-              'parentID' => $administratorKey,
-              'navID' => $resourceTypeKey ,
-              'active' => 1
-              ),
-            'child' => null
-          ),
-          $resourceCriteriaKey => array(
-            'attributes' => array(
-              'label' => 'Resource criteria',
-              'name' => 'resource_criteria',
-              'url' => 'civicrm/admin/optionValue?gid=' . $resourceCriteriaGId .'&reset=1',
-              'permission' => null,
-              'operator' => null,
-              'separator' => 0,
-              'parentID' => $administratorKey,
-              'navID' => $resourceCriteriaKey ,
-              'active' => 1
-            ),
-            'child' => null
-          ),
-          $sizeunitKey => array(
-            'attributes' => array(
-              'label' => 'Size Unit',
-              'name' => 'size_unit',
-              'url' =>'civicrm/admin/optionValue?gid=' . $sizeUnitGid .'&reset=1',
-              'permission' => null,
-              'operator' => null,
-              'separator' => 0,
-              'parentID' => $administratorKey,
-              'navID' => $sizeunitKey ,
-              'active' => 1
-            ),
-            'child' => null
-          ),
-        ),
-      )
     )
   );
 }
