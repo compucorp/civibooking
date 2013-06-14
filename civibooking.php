@@ -26,9 +26,9 @@ function civibooking_civicrm_install() {
   $import = new CRM_Utils_Migrate_Import( );
 
   $extRoot = dirname( __FILE__ ) . DIRECTORY_SEPARATOR;
-  dprint_r($extRoot);
-  $op = $extRoot  . 'xml/data/OptionGroups.xml';
-  
+
+  $op = $extRoot  . 'xml' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'OptionGroups.xml';
+
   $import->run( $op );
 
   return _civibooking_civix_civicrm_install();
@@ -38,6 +38,11 @@ function civibooking_civicrm_install() {
  * Implementation of hook_civicrm_uninstall
  */
 function civibooking_civicrm_uninstall() {
+  _civibooking_delete_option_group('booking_status');
+  _civibooking_delete_option_group('resource_type');
+  _civibooking_delete_option_group('resource_location');
+  _civibooking_delete_option_group('resource_criteria');
+  _civibooking_delete_option_group('size_unit');  
   return _civibooking_civix_civicrm_uninstall();
 }
 
@@ -79,4 +84,246 @@ function civibooking_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  */
 function civibooking_civicrm_managed(&$entities) {
   return _civibooking_civix_civicrm_managed($entities);
+}
+
+
+/**
+* Delete  option group 
+*
+* @param $name integer, option group name
+*
+*/
+function _civibooking_delete_option_group($name){
+  $getResult = civicrm_api('OptionGroup', 'getsingle', array(
+      'version' => 3,
+      'name' => $name,
+  ));
+  if($getResult['id']){
+    $ovResult = civicrm_api('OptionValue', 'get', array(
+            'version' => 3,
+            'option_group_id' =>  $getResult['id'],
+          ));
+      if($ovResult['values']){
+        foreach ($ovResult['values'] as $ov) {
+          $delResult = civicrm_api('OptionValue', 'delete', array(
+           'version' => 3,
+           'id' => $ov['id'],
+          ));
+        }
+       }
+    CRM_Core_DAO::executeQuery('DELETE FROM civicrm_option_group WHERE id = ' . $getResult['id']);
+  } 
+}
+
+/**
+ * Add navigation for CiviBooking under "Administer" menu
+ *
+ * @param $params associated array of navigation menus
+ */
+function civibooking_civicrm_navigationMenu( &$params ) {
+
+   $result = civicrm_api('OptionGroup', 'getsingle', array(
+    'version' => 3,
+    'sequential' => 1,
+    'name' => 'booking_status')
+   );
+   if($result['id']){
+      $bookingStatusGid = $result['id'];
+   }
+
+   $result = civicrm_api('OptionGroup', 'getsingle', array(
+    'version' => 3,
+    'sequential' => 1,
+    'name' => 'resource_type')
+   );
+   if($result['id']){
+      $resourceTypeGid = $result['id'];
+   }
+
+   $result = civicrm_api('OptionGroup', 'getsingle', array(
+    'version' => 3,
+    'sequential' => 1,
+    'name' => 'resource_location')
+   );
+   if($result['id']){
+      $resourceLocationGId = $result['id'];
+   }
+
+   $result = civicrm_api('OptionGroup', 'getsingle', array(
+    'version' => 3,
+    'sequential' => 1,
+    'name' => 'resource_criteria')
+   );
+   
+   if($result['id']){
+      $resourceCriteriaGId = $result['id'];
+   }
+
+   $result = civicrm_api('OptionGroup', 'getsingle', array(
+    'version' => 3,
+    'sequential' => 1,
+    'name' => 'size_unit')
+   );
+   if($result['id']){
+      $sizeUnitGid = $result['id'];
+   }
+
+   //  Get the maximum key of $params
+   $maxKey = (max(array_keys($params)));
+
+   $bookingKey = $maxKey + 1;
+   $dashboardKey = $bookingKey + 1;
+   $newbookingKey = $bookingKey + 2;
+   $findbookingKey = $bookingKey + 3;
+   $manageResourcesKey = $bookingKey + 4;
+   $diaryViewKey = $bookingKey + 5;
+   $bookingStatusKey = $bookingKey + 6;
+   $resourceTypeKey = $bookingKey + 7;
+   $resourceLocationKey = $bookingKey + 8;
+   $resourceCriteriaKey = $bookingKey + 9;
+   $sizeunitKey = $bookingKey + 10;
+
+
+   $params[$bookingKey] = array(
+    'attributes' => array(
+      'label' => 'Booking',
+      'name' => 'booking',
+      'url' => null,
+      'permission' => null,
+      'operator' => null,
+      'separator' => null,
+      'parentID' => null,
+      'navID' => $bookingKey,
+      'active' => 1
+    ),
+    'child' => array(
+      $dashboardKey => array(
+        'attributes' => array(
+          'label' => 'Dashboard',
+          'name' => 'booking_dashboard',
+          'url' => '#',
+          'permission' => null,
+          'operator' => null,
+          'separator' => 1,
+          'parentID' => $bookingKey,
+          'navID' => $dashboardKey,
+          'active' => 1
+        ),
+        'child' => null
+      ),
+      $newbookingKey => array(
+        'attributes' => array(
+          'label' => 'New booking',
+          'name' => 'new_booking',
+          'url' => '#',
+          'permission' => null,
+          'operator' => null,
+          'separator' => 0,
+          'parentID' => $bookingKey,
+          'navID' => $newbookingKey ,
+          'active' => 1
+        ),
+      'child' => null
+      ),
+      $findbookingKey => array(
+        'attributes' => array(
+          'label' => 'Find booking',
+          'name' => 'find_booking',
+          'url' => '#',
+          'permission' => null,
+          'operator' => null,
+          'separator' => 0,
+          'parentID' => $bookingKey,
+          'navID' => $findbookingKey,
+          'active' => 1
+        ),
+       'child' => null
+      ),
+      $manageResourcesKey => array(
+        'attributes' => array(
+          'label' => 'Manange resources',
+          'name' => 'manage_resources',
+          'url' => '#',
+          'permission' => null,
+          'operator' => null,
+          'separator' => 1,
+          'parentID' => $bookingKey,
+          'navID' => $manageResourcesKey ,
+          'active' => 1
+        ),
+        'child' =>  array( 
+          $bookingStatusKey => array(
+            'attributes' => array(
+              'label' => 'Booking status',
+              'name' => 'booking_status',
+              'url' => 'civicrm/admin/optionValue?gid=' . $bookingStatusGid .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $manageResourcesKey,
+              'navID' => $bookingStatusKey ,
+              'active' => 1
+            ),
+           'child' => null
+          ),
+          $resourceTypeKey => array(
+            'attributes' => array(
+              'label' => 'Resource type',
+              'name' => 'resource_type',
+              'url' => 'civicrm/admin/optionValue?gid=' . $resourceTypeGid .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $manageResourcesKey,
+              'navID' => $resourceTypeKey ,
+              'active' => 1
+              ),
+            'child' => null
+          ),
+          $resourceCriteriaKey => array(
+            'attributes' => array(
+              'label' => 'Resource criteria',
+              'name' => 'resource_criteria',
+              'url' => 'civicrm/admin/optionValue?gid=' . $resourceCriteriaGId .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $manageResourcesKey,
+              'navID' => $resourceCriteriaKey ,
+              'active' => 1
+            ),
+            'child' => null
+          ),
+          $sizeunitKey => array(
+            'attributes' => array(
+              'label' => 'Size Unit',
+              'name' => 'size_unit',
+              'url' =>'civicrm/admin/optionValue?gid=' . $sizeUnitGid .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $manageResourcesKey,
+              'navID' => $sizeunitKey ,
+              'active' => 1
+            ),
+            'child' => null
+          )
+        )
+      ),
+      $diaryViewKey => array(
+        'attributes' => array(
+          'label' => 'Diary view',
+          'name' => 'diary_view',
+          'url' => '#',
+          'permission' => null,
+          'operator' => null,
+          'separator' => 0,
+          'parentID' => $bookingKey,
+          'navID' => $diaryViewKey ,
+          'active' => 1
+          ),
+        'child' => null
+       ),
+      )
+    );
 }
