@@ -12,86 +12,6 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
    * Example: Run an external SQL script when the module is installed
    */
   public function install() {
-
-    $result = civicrm_api('OptionGroup', 'create', array(
-      'version' => 3,
-      'name' => 'resource_type',
-      'title' => 'Resource type',
-      'is_reserved' => '1',
-      'is_active' => '1'
-    ));
-
-    if ($result['is_error']) {
-     CRM_Core_Session::setStatus(ts('Failed to create resource type'));
-    }else{
-      $opgId = $result['id']; //fixed to get the array index
-      $result = civicrm_api('OptionValue', 'create', array(
-        'version' => 3,
-        'option_group_id' => $opgId,
-        'label' => 'Test option group',
-        'value' => 'test option group',
-        'filter' => '0',
-        'weight' => '1',
-        'is_optgroup' => '0',
-        'is_reserved' => '0',
-        'is_active' => '1'
-      ));
-
-      dprint_r($result);
-
-      if ($result['is_error']) {
-        CRM_Core_Session::setStatus(ts('Failed to create option xxx'));
-      }
-    }
-
-    exit;
-
-    $result = civicrm_api('OptionGroup', 'create', array(
-      'version' => 3,
-      'name' => 'resource_location',
-      'title' => 'Resource Location',
-      'is_reserved' => '1',
-      'is_active' => '1'
-    ));
-
-    if ($result['is_error']) {
-       CRM_Core_Session::setStatus(ts('Failed to create resource location'));
-    }else{
-
-    }
-
-    $result = civicrm_api('OptionGroup', 'create', array(
-      'version' => 3,
-      'name' => 'size_unit',
-      'title' => 'Size Unit',
-      'is_reserved' => '1',
-      'is_active' => '1'
-    ));
-
-    if ($result['is_error']) {
-       CRM_Core_Session::setStatus(ts('Failed to create size unit'));
-    }else{
-
-    }
-
-    $result = civicrm_api('OptionGroup', 'create', array(
-      'version' => 3,
-      'name' => 'resource_criteria',
-      'title' => 'Resource criteria',
-      'is_reserved' => '1',
-      'is_active' => '1'
-    ));
-
-    if ($result['is_error']) {
-       CRM_Core_Session::setStatus(ts('Failed to create resource criteria'));
-    }else{
-
-    }
-
-    exit;
-
-
-   
     //$this->executeSqlFile('sql/myinstall.sql');
   }
 
@@ -99,7 +19,7 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
    * Example: Run an external SQL script when the module is uninstalled
    */
   public function uninstall() {
-    
+    /*
     $getResult = civicrm_api('OptionGroup', 'getsingle', array(
       'version' => 3,
       'name' => 'resource_type',
@@ -111,74 +31,17 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
         'id' => $getResult['id'],
       ));
     }
-    
-    if ($delResult['is_error']) {
-      CRM_Core_Session::setStatus(ts('Failed to delete resource type'));
-    }else{
-      //TODO:: remove option value for resource type
-    }
-
-    $getResult = civicrm_api('OptionGroup', 'getsingle', array(
-      'version' => 3,
-      'name' => 'resource_location',
-    ));
-    
-    if ($getResult['id']) {
-      $delResult = civicrm_api('OptionGroup', 'delete', array(
-        'version' => 3,
-        'id' => $getResult['id'],
-      ));
-    }
-    
-    if ($delResult['is_error']) {
-      CRM_Core_Session::setStatus(ts('Failed to resource location'));
-    }else{
-      //TODO:: remove option value for resource location
-    }
-
-    $getResult = civicrm_api('OptionGroup', 'getsingle', array(
-      'version' => 3,
-      'name' => 'size_=unit',
-    ));
-    
-    if ($getResult['id']) {
-      $delResult = civicrm_api('OptionGroup', 'delete', array(
-        'version' => 3,
-        'id' => $getResult['id'],
-      ));
-    }
-    
-    if ($delResult['is_error']) {
-      CRM_Core_Session::setStatus(ts('Failed to size unit'));
-    }else{
-      //TODO :: remove custom field for size unit
-    }
-    
-    $getResult = civicrm_api('OptionGroup', 'getsingle', array(
-      'version' => 3,
-      'name' => 'resource_criteria',
-    ));
-    
-    if ($getResult['id']) {
-      $delResult = civicrm_api('OptionGroup', 'delete', array(
-        'version' => 3,
-        'id' => $getResult['id'],
-      ));
-    }
-    
-    if ($delResult['is_error']) {
-      CRM_Core_Session::setStatus(ts('Failed to resource criteria'));
-    }else{
-      //TODO :: remove resource criteria
-    }
+    */
    //$this->executeSqlFile('sql/myuninstall.sql');
   }
 
   /**
    * Example: Run a simple query when a module is enabled
    *
+
   public function enable() {
-    CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 1 WHERE bar = "whiz"');
+   
+    //CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 1 WHERE bar = "whiz"');
   }
 
   /**

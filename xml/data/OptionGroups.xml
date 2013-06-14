@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CustomData>
+ <OptionGroups>
+    <OptionGroup>
+      <name>resource_type</name>
+      <title>Resource type</title>
+      <description></description>
+      <is_reserved>1</is_reserved>
+      <is_active>1</is_active>
+    </OptionGroup>
+    <OptionGroup>
+      <name>resource_location</name>
+      <title>Resource type</title>
+      <description></description>
+      <is_reserved>1</is_reserved>
+      <is_active>1</is_active>
+    </OptionGroup>
+    <OptionGroup>
+      <name>resource_criteria</name>
+      <title>Resource type</title>
+      <is_reserved>1</is_reserved>
+      <is_active>1</is_active>
+    </OptionGroup>
+    <OptionGroup>
+      <name>size_unit</name>
+      <title>Size Unit</title>
+      <is_reserved>1</is_reserved>
+      <is_active>1</is_active>
+    </OptionGroup>
+  </OptionGroups>
+  <OptionValues>
+      <OptionValue>
+        <label>Test group 1</label>
+        <value>23</value>
+        <name>Assign Case Role</name>
+        <filter>0</filter>
+        <is_default>0</is_default>
+        <weight>23</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>0</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>resource_type</option_group_name>
+      </OptionValue>
+   </OptionValues>
+</CustomData>

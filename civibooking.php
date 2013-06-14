@@ -22,6 +22,15 @@ function civibooking_civicrm_xmlMenu(&$files) {
  * Implementation of hook_civicrm_install
  */
 function civibooking_civicrm_install() {
+	require_once 'CRM/Utils/Migrate/Import.php';
+  $import = new CRM_Utils_Migrate_Import( );
+
+  $extRoot = dirname( __FILE__ ) . DIRECTORY_SEPARATOR;
+  dprint_r($extRoot);
+  $op = $extRoot  . 'xml/data/OptionGroups.xml';
+  
+  $import->run( $op );
+
   return _civibooking_civix_civicrm_install();
 }
 
@@ -36,6 +45,9 @@ function civibooking_civicrm_uninstall() {
  * Implementation of hook_civicrm_enable
  */
 function civibooking_civicrm_enable() {
+	// rebuild the menu so our path is picked up
+  require_once 'CRM/Core/Invoke.php';
+  CRM_Core_Invoke::rebuildMenuAndCaches( );
   return _civibooking_civix_civicrm_enable();
 }
 
