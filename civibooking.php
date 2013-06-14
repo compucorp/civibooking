@@ -2,6 +2,7 @@
 
 require_once 'civibooking.civix.php';
 
+
 /**
  * Implementation of hook_civicrm_config
  */
@@ -182,6 +183,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
    $resourceLocationKey = $bookingKey + 8;
    $resourceCriteriaKey = $bookingKey + 9;
    $sizeunitKey = $bookingKey + 10;
+   $administratorKey = $bookingKey + 11;
 
 
    $params[$bookingKey] = array(
@@ -241,8 +243,36 @@ function civibooking_civicrm_navigationMenu( &$params ) {
       ),
       $manageResourcesKey => array(
         'attributes' => array(
-          'label' => 'Manange resources',
+          'label' => 'Manage resources',
           'name' => 'manage_resources',
+          'url' => '#',
+          'permission' => null,
+          'operator' => null,
+          'separator' => 0,
+          'parentID' => $bookingKey,
+          'navID' => $findbookingKey,
+          'active' => 1
+        ),
+       'child' => null
+      ),
+      $diaryViewKey => array(
+        'attributes' => array(
+          'label' => 'Diary view',
+          'name' => 'diary_view',
+          'url' => '#',
+          'permission' => null,
+          'operator' => null,
+          'separator' => 1,
+          'parentID' => $bookingKey,
+          'navID' => $diaryViewKey ,
+          'active' => 1
+          ),
+        'child' => null
+      ),
+      $administratorKey => array(
+        'attributes' => array(
+          'label' => 'Administartor CiviBooking',
+          'name' => 'administrator_civibooking',
           'url' => '#',
           'permission' => null,
           'operator' => null,
@@ -260,7 +290,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
               'permission' => null,
               'operator' => null,
               'separator' => 0,
-              'parentID' => $manageResourcesKey,
+              'parentID' => $administratorKey,
               'navID' => $bookingStatusKey ,
               'active' => 1
             ),
@@ -274,7 +304,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
               'permission' => null,
               'operator' => null,
               'separator' => 0,
-              'parentID' => $manageResourcesKey,
+              'parentID' => $administratorKey,
               'navID' => $resourceTypeKey ,
               'active' => 1
               ),
@@ -288,7 +318,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
               'permission' => null,
               'operator' => null,
               'separator' => 0,
-              'parentID' => $manageResourcesKey,
+              'parentID' => $administratorKey,
               'navID' => $resourceCriteriaKey ,
               'active' => 1
             ),
@@ -302,28 +332,14 @@ function civibooking_civicrm_navigationMenu( &$params ) {
               'permission' => null,
               'operator' => null,
               'separator' => 0,
-              'parentID' => $manageResourcesKey,
+              'parentID' => $administratorKey,
               'navID' => $sizeunitKey ,
               'active' => 1
             ),
             'child' => null
-          )
-        )
-      ),
-      $diaryViewKey => array(
-        'attributes' => array(
-          'label' => 'Diary view',
-          'name' => 'diary_view',
-          'url' => '#',
-          'permission' => null,
-          'operator' => null,
-          'separator' => 0,
-          'parentID' => $bookingKey,
-          'navID' => $diaryViewKey ,
-          'active' => 1
           ),
-        'child' => null
-       ),
+        ),
       )
-    );
+    )
+  );
 }
