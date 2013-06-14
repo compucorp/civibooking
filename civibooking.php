@@ -18,7 +18,7 @@ function civibooking_civicrm_tabs(&$tabs, $cid) {
       'weight' => '998',
     );
     if ($count > 0) {
-      $tab['url'] = CRM_Utils_System::url('civicrm/civibooking/tab', "reset=1&cid={$cid}&snippet=1", false, null, false);
+      $tab['url'] = CRM_Utils_System::url('civicrm/booking/tab', "reset=1&cid={$cid}&snippet=1", false, null, false);
     }
     $tabs[] = $a;
   }
