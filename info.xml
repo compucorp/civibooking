@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <extension key="uk.co.compucorp.civicrm.civibooking" type="module">
   <file>civibooking</file>
-  <name>FIXME</name>
-  <description>FIXME</description>
-  <license>FIXME</license>
+  <name>CiviBooking</name>
+  <description>a CMS independent extension to allow organisations to manage a group of resources (i.e. rooms) offering these to constituents for a fee.</description>
+  <license>the GNU Affero General Public License 3 (GNU AGPL 3) and the CiviCRM Licensing Exception.</license>
   <maintainer>
-    <author>FIXME</author>
-    <email>FIXME@example.com</email>
+    <author>Erawat Chamanont</author>
+    <email>erawat@compucorp.co.uk</email>
   </maintainer>
   <releaseDate>2013-06-13</releaseDate>
   <version>1.0</version>
   <develStage>alpha</develStage>
   <compatibility>
-    <ver>4.2</ver>
+    <ver>4.3</ver>
   </compatibility>
   <comments>This is a new, undeveloped module</comments>
   <civix>
