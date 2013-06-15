@@ -42,19 +42,6 @@
     </OptionGroup>
   </OptionGroups>
   <OptionValues>
-    <OptionValue>
-        <label>Booking</label>
-        <value>booking</value>
-        <name>booking</name>
-        <filter>0</filter>
-        <is_default>1</is_default>
-        <weight>23</weight>
-        <description></description>
-        <is_optgroup>0</is_optgroup>
-        <is_reserved>1</is_reserved>
-        <is_active>1</is_active>
-        <option_group_id>2</option_group_id>
-      </OptionValue>
     <!-- Booking status option value  --> 
      <OptionValue>
         <label>Provisional</label>
