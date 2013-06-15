@@ -30,12 +30,31 @@
     </OptionGroup>
     <OptionGroup>
       <name>size_unit</name>
-      <title>Size Unit</title>
+      <title>Resourch configuration size unit</title>
+      <is_reserved>1</is_reserved>
+      <is_active>1</is_active>
+    </OptionGroup>
+    <OptionGroup>
+      <name>cancellation_charges</name>
+      <title>Cancellation charges</title>
       <is_reserved>1</is_reserved>
       <is_active>1</is_active>
     </OptionGroup>
   </OptionGroups>
   <OptionValues>
+    <OptionValue>
+        <label>Booking</label>
+        <value>booking</value>
+        <name>booking</name>
+        <filter>0</filter>
+        <is_default>1</is_default>
+        <weight>23</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>1</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>activity_type</option_group_name>
+      </OptionValue>
     <!-- Booking status option value  --> 
      <OptionValue>
         <label>Provisional</label>
@@ -90,5 +109,128 @@
         <option_group_name>booking_status</option_group_name>
       </OptionValue>
     <!-- End booking status option value -->
+    <!-- Resourch type option value  --> 
+     <OptionValue>
+        <label>Room</label>
+        <value>r</value>
+        <name>room</name>
+        <filter>0</filter>
+        <is_default>1</is_default>
+        <weight>23</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>1</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>resource_type</option_group_name>
+      </OptionValue>
+      <OptionValue>
+        <label>Projector</label>
+        <value>p</value>
+        <name>projector</name>
+        <filter>0</filter>
+        <is_default>0</is_default>
+        <weight>24</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>1</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>resource_type</option_group_name>
+      </OptionValue>
+      <OptionValue>
+        <label>Tea/coffee</label>
+        <value>tc</value>
+        <name>tea_coffee</name>
+        <filter>0</filter>
+        <is_default>0</is_default>
+        <weight>25</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>1</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>resource_type</option_group_name>
+      </OptionValue>
+    <!-- End Resource type option value -->
+    <!-- Size unit option value  --> 
+     <OptionValue>
+        <label>People</label>
+        <value>p</value>
+        <name>people</name>
+        <filter>0</filter>
+        <is_default>1</is_default>
+        <weight>23</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>1</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>size_unit</option_group_name>
+      </OptionValue>
+      <OptionValue>
+        <label>Tables</label>
+        <value>t</value>
+        <name>tables</name>
+        <filter>0</filter>
+        <is_default>0</is_default>
+        <weight>24</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>1</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>size_unit</option_group_name>
+      </OptionValue>
+      <OptionValue>
+        <label>Width</label>
+        <value>w</value>
+        <name>width</name>
+        <filter>0</filter>
+        <is_default>0</is_default>
+        <weight>25</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>1</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>size_unit</option_group_name>
+      </OptionValue>
+    <!-- End Szie unit option value -->
+    <!-- Cancellation charges option value  --> 
+     <OptionValue>
+        <label> &lt; 1 day</label>
+        <value>100</value>
+        <name>less_than_one_day</name>
+        <filter>0</filter>
+        <is_default>1</is_default>
+        <weight>23</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>1</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>cancellation_charges</option_group_name>
+      </OptionValue>
+      <OptionValue>
+        <label>1 - 5 days prior</label>
+        <value>80</value>
+        <name>one_to_five_days_prior</name>
+        <filter>0</filter>
+        <is_default>0</is_default>
+        <weight>24</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>1</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>cancellation_charges</option_group_name>
+      </OptionValue>
+      <OptionValue>
+        <label>6 - 10 days prior</label>
+        <value>60</value>
+        <name>six_to_seven_days_prior</name>
+        <filter>0</filter>
+        <is_default>0</is_default>
+        <weight>25</weight>
+        <description></description>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>1</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>cancellation_charges</option_group_name>
+      </OptionValue>
+    <!-- End cancellation charges option value -->
    </OptionValues>
 </CustomData>
