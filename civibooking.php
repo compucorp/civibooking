@@ -63,6 +63,7 @@ function civibooking_civicrm_uninstall() {
   _civibooking_delete_option_group('resource_type');
   _civibooking_delete_option_group('resource_location');
   _civibooking_delete_option_group('resource_criteria');
+  _civibooking_delete_option_group('cancellation_charges');
   _civibooking_delete_option_group('size_unit');  
   $ov = civicrm_api('OptionValue', 'getsingle', array(
       'version' => 3,
