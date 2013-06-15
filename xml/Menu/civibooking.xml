@@ -3,7 +3,7 @@
   <item>
     <path>civicrm/booking/add</path>
     <page_callback>CRM_Civibooking_Form_Booking</page_callback>
-    <title>Booking</title>
+    <title>Add booking</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
@@ -15,25 +15,31 @@
   <item>
     <path>civicrm/booking/dashboard</path>
     <page_callback>CRM_Civibooking_Page_Dashboard</page_callback>
-    <title>Dashboard</title>
+    <title>Booking Dashboard</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/resource</path>
     <page_callback>CRM_Civibooking_Page_Resource</page_callback>
-    <title>Resource</title>
+    <title>Manange resources</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/search</path>
     <page_callback>CRM_Civibooking_Form_Search</page_callback>
-    <title>Search</title>
+    <title>Find booking</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/diary</path>
     <page_callback>CRM_Civibooking_Page_Diary</page_callback>
     <title>Diary</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/admin/setting/preferences/booking</path>
+    <page_callback>CRM_Admin_Form_Preferences_Booking</page_callback>
+    <title>CiviBooking Component Settings</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>
