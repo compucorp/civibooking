@@ -64,6 +64,16 @@ function civibooking_civicrm_uninstall() {
   _civibooking_delete_option_group('resource_location');
   _civibooking_delete_option_group('resource_criteria');
   _civibooking_delete_option_group('size_unit');  
+  $ov = civicrm_api('OptionValue', 'getsingle', array(
+      'version' => 3,
+      'name' => 'booking',
+  ));
+  if($ov['id']){
+    $delResult = civicrm_api('OptionValue', 'delete', array(
+      'version' => 3,
+      'id' => $ov['id'],
+    ));
+  }
   return _civibooking_civix_civicrm_uninstall();
 }
 
@@ -204,6 +214,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
   $resourceLocationKey = $bookingKey + 8;
   $resourceCriteriaKey = $bookingKey + 9;
   $sizeunitKey = $bookingKey + 10;
+  $componentSettingKey = $bookingKey + 11;
 
   // get the id of Administer Menu
   $administerMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Administer', 'id', 'name');
@@ -276,6 +287,20 @@ function civibooking_civicrm_navigationMenu( &$params ) {
               'separator' => 0,
               'parentID' => $maxAdminMenuKey + 1,
               'navID' => $sizeunitKey ,
+              'active' => 1
+            ),
+            'child' => null
+          ),
+          $componentSettingKey => array(
+            'attributes' => array(
+              'label' => 'CiviBooking Component Settings',
+              'name' => 'booking_component_settings',
+              'url' =>'civicrm/admin/setting/preferences/booking?reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $maxAdminMenuKey + 1,
+              'navID' => $componentSettingKey ,
               'active' => 1
             ),
             'child' => null
