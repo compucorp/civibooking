@@ -25,17 +25,37 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
   /**
    * Example: Run a simple query when a module is enabled
    *
-
+*/
   public function enable() {
    
-    //CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 1 WHERE bar = "whiz"');
+    //disable activity type booking
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_values SET is_active = 1 WHERE civicrm_option_value = 2 AND name = "booking"');
+
+    //disable all option groups related to civibooking
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "booking_status"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "resource_type"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "resource_criteria"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "resource_location"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "cancellation_charges"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "size_unit"');
   }
 
   /**
    * Example: Run a simple query when a module is disabled
    *
+  */
   public function disable() {
-    CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 0 WHERE bar = "whiz"');
+    //disable activity type booking
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_values SET is_active = 0 WHERE civicrm_option_value = 2 AND name = "booking"');
+
+    //disable all option groups related to civibooking
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "booking_status"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "resource_type"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "resource_criteria"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "resource_location"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "cancellation_charges"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "size_unit"');
+
   }
 
   /**
