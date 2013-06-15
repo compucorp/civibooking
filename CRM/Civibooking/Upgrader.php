@@ -12,6 +12,18 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
    * Example: Run an external SQL script when the module is installed
    */
   public function install() {
+    $params = array(
+      'version' => 3,
+      'sequential' => 1,
+      'label' =>  'Booking',
+      'name' => 'booking',
+      'weight' => 1,
+      'is_active' => 0,
+      'is_reserved' => 1
+    );
+    $result = civicrm_api('ActivityType', 'create', $params);
+    //dprint_r($result);
+    //exit;
     $this->executeSqlFile('sql/civibooking.sql');
   }
 
@@ -29,7 +41,7 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
   public function enable() {
    
     //disable activity type booking
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_values SET is_active = 1 WHERE civicrm_option_value = 2 AND name = "booking"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_value SET is_active = 1 WHERE option_group_id = 2 AND name = "booking"');
 
     //disable all option groups related to civibooking
     CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "booking_status"');
@@ -46,7 +58,7 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
   */
   public function disable() {
     //disable activity type booking
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_values SET is_active = 0 WHERE civicrm_option_value = 2 AND name = "booking"');
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_value SET is_active = 0 WHERE option_group_id = 2 AND name = "booking"');
 
     //disable all option groups related to civibooking
     CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "booking_status"');
