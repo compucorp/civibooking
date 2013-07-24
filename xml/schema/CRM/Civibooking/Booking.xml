@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/CiviBooking</base>
+  <class>Booking</class>
+  <name>civicrm_booking</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment></comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>primary_contact_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Contact ID</comment>
+  </field>
+  <foreignKey>
+    <name>primary_contact_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>secondary_contact_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Contact ID</comment>
+  </field>
+  <foreignKey>
+    <name>secondary_contact_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>po_number</name>
+    <type>varchar</type>
+    <length>255</length>
+    <comment></comment>
+    <title>Po Number</title>
+    <export>true</export>
+    <uniqueName>booking_po_number</uniqueName>
+  </field>
+
+  <field>
+    <name>status_id</name>
+    <type>int unsigned</type>
+  </field>
+
+  <field>
+    <name>title</name>
+    <type>varchar</type>
+    <length>50</length>
+    <comment></comment>
+    <title>Booking Title</title>
+    <export>true</export>
+    <uniqueName>booking_title</uniqueName>
+  </field>
+
+  <field>
+    <name>description</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>discount_amount</name>
+    <type>decimal</type>
+  </field>
+
+  <field>
+    <name>notes</name>
+    <type>text</type>
+  </field>
+
+  <field>
+    <name>participants_estimate</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>participants_actual</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+   <field>
+    <name>payment_status</name>
+    <type>int unsigned</type>
+  </field>
+
+   <field>
+    <name>is_deleted</name>
+    <type>boolean</type>
+    <default>0</default>
+  </field>
+
+  <field>
+    <name>created_by</name>
+    <type>int unsigned</type>
+  </field>
+
+   <field>
+    <name>updated_by</name>
+    <type>int unsigned</type>
+  </field>
+
+  <field>
+    <name>updated_date</name>
+    <type>date</type>
+  </field>
+
+
+</table>
