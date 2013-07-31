@@ -2,8 +2,7 @@
 <menu>
   <item>
     <path>civicrm/booking/add</path>
-    <page_callback>CRM_Civibooking_Form_Booking</page_callback>
-    <title>Add booking</title>
+    <page_callback>CRM_Civibooking_Controller_Booking</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
@@ -34,6 +33,11 @@
     <path>civicrm/booking/diary</path>
     <page_callback>CRM_Civibooking_Page_Diary</page_callback>
     <title>Diary</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/booking/resource/search</path>
+    <page_callback>CRM_Civibooking_Page_AJAX</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>

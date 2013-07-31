@@ -9,45 +9,36 @@ require_once 'CRM/Core/Form.php';
  */
 class CRM_Civibooking_Form_Booking extends CRM_Core_Form {
   function buildQuickForm() {
-    $this->add(
-      'select', // field type
-      'favorite_color', // field name
-      'Favorite Color', // field label
-      $this->getColorOptions(), // list of options
-      true // is required
-    );
+    parent::buildQuickForm();
 
-    $this->addButtons(array(
+    $buttons = array(
+      array('type' => 'back',
+        'name' => ts('<< Previous'),
+      ),
       array(
-        'type' => 'submit',
-        'name' => ts('Submit'),
+        'type' => 'next',
+        'name' => ts('Next >>'),
+        'spacing' => '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;',
         'isDefault' => TRUE,
       ),
-    ));
+      array(
+        'type' => 'submit',
+        'name' => ts('Save & Continue Later'),
+      ),
+      
+    );
 
-    parent::buildQuickForm();
+    $this->addButtons($buttons);
+
   }
 
   function postProcess() {
     $values = $this->exportValues();
-    $options = $this->getColorOptions();
-    CRM_Core_Session::setStatus(ts('You picked color "%1"', array(
-      1 => $options[$values['favorite_color']]
-    )));
+
+    dprint_r($this);
+  
     parent::postProcess();
   }
 
-  function getColorOptions() {
-    $options = array(
-      '' => ts('- select -'),
-      '#f00' => ts('Red'),
-      '#0f0' => ts('Green'),
-      '#00f' => ts('Blue'),
-      '#f0f' => ts('Purple'),
-    );
-    foreach (array('1','2','3','4','5','6','7','8','9','a','b','c','d','e') as $f) {
-      $options["#{$f}{$f}{$f}"] = ts('Grey (%1)', array(1 => $f));
-    }
-    return $options;
-  }
+  
 }
