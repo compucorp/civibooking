@@ -45,7 +45,7 @@ class CRM_Civibooking_Page_AJAX {
   static function searchResourch() {
     $recordID  = CRM_Utils_Type::escape($_POST['resourceID'], 'Integer');
     $recordBAO = CRM_Utils_Type::escape($_POST['resourceType'], 'String');
-    $op        = CRM_Utils_Type::escape($_POST['op'], 'String');
+    
     $show      = NULL;
 
     echo json_encode('ajax');
