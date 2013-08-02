@@ -17,6 +17,12 @@ class CRM_Civibooking_BAO_ResourceTest extends CiviUnitTestCase {
     parent::tearDown();
   }
 
+  function testRetriveResource(){
+    $params = array();
+    $resources = CRM_Civibooking_BAO_Resource::retrive($params);
+    $this->assertNotNull($resources);
+  }
+
   /**
    * Test that 1^2 == 1
    */
