@@ -13,6 +13,8 @@ CRM.App.module('Controller', function(Controller, App, Backbone, Marionette, $, 
       var layout = new App.Layout();
       App.mainRegion.show(layout);
       layout.searchForm.show(new App.SearchForm.View());
+      layout.searchResult.show(new App.SearchResult.View());
+
     },
     
   };

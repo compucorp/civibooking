@@ -7,7 +7,6 @@
       </div><!-- /.crm-accordion-body -->
  		</div><!-- /.crm-accordion-wrapper -->
   </div><!-- /.crm-form-block -->
-  
   <div id="search-result"></div> 
  
   </script>
