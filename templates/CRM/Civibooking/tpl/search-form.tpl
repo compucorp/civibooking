@@ -8,6 +8,7 @@
     </div>
     <div class="clear"></div>
   </div>
+
   <div class="crm-section">
     <div class="label">
       <label for="contact_type">Resource type</label>
@@ -15,14 +16,14 @@
     <div class="content">
      <select name="resource_type" id="resource_type" class="form-select">
         <option value="">- select resource type -</option>
-        {foreach from=$resourceTypes item=type}
-        {$type}
-          <option value="{$type.value}">{$type}</option>  
+        {foreach from=$resourceTypes  key=k  item=type}
+        <option value="{$k}">{$type}</option>  
         {/foreach}
      </select>
     </div>
      <div class="clear"></div>
   </div>
+
   <div class="crm-section">
     <div class="label"></div>
     <div class="content">
@@ -31,5 +32,4 @@
     </div>
     <div class="clear"></div>
   </div>
-  
 </script>
