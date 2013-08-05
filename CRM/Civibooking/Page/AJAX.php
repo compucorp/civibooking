@@ -42,13 +42,16 @@ class CRM_Civibooking_Page_AJAX {
    * Function to search resouce when adding resource to booking
    * 
    */
-  static function searchResourch() {
-    $recordID  = CRM_Utils_Type::escape($_POST['resourceID'], 'Integer');
-    $recordBAO = CRM_Utils_Type::escape($_POST['resourceType'], 'String');
-    
-    $show      = NULL;
+  static function searchResource() {
+    $resourceID  = CRM_Utils_Type::escape($_POST['resourceID'], 'Integer');
+    $resourceType = CRM_Utils_Type::escape($_POST['resourceType'], 'String');
 
-    echo json_encode('ajax');
+    $params = array("resource_id" => $resourceID,
+                    "resource_type" => $resourceType);    
+
+    $resources = CRM_Civibooking_BAO_Resource::search($params);
+
+    echo json_encode($resources);
     CRM_Utils_System::civiExit();
   }
 
