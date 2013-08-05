@@ -1,0 +1,228 @@
+table.reservations {
+	border-collapse: collapse;
+	width: 100%;
+	font-size: 8pt;
+	table-layout: fixed;
+    border: solid #36648B 1px;
+}
+
+table.reservations td {
+	border: solid #36648B 1px;
+	height: 30px;
+}
+
+td.resourcename {
+	padding: 1px 3px;
+	background-color: #EDEDED;
+	color: #999999;
+}
+
+td.resourcename a {
+	color: #0772A1;
+	text-decoration: none;
+}
+
+td.resourcename a:hover {
+	color: #3BA3D0;
+}
+
+td.resdate {
+	width: 150px;
+	padding: 0 3px;
+	background-color: #36648B;
+	color: #F0F0F0;
+}
+
+tr.today td.resdate {
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #5199d1
+}
+
+tr.today td.reslabel {
+	font-weight: bold;
+	background-color: #cfcfcf
+}
+
+.slot {
+    min-width: 1px;
+    max-width: 1px;
+    overflow: hidden;
+}
+
+td.reslabel {
+	padding-left: 2px;
+	background-color: #EDEDED;
+	color: #333333;
+}
+
+tr.today td.reslabel {
+	color: #000000;
+}
+
+td.unreservable, div.unreservable {
+	background-color: #CF9D9B;
+	color: #fff;
+}
+
+td.reservable, div.reservable {
+	background-color: #FFF;
+	color: #333;
+}
+
+td.reserved, div.reserved {
+	background-color: #408AD2;
+	color: #E0E0E0;
+}
+
+td.reserved {
+    padding-left: 1px;
+}
+
+td.reserved.hilite {
+	background-color: #59A8EF;
+}
+
+td.reserved.mine, div.reserved.mine {
+	background-color: #6F9BAE;
+}
+
+td.reserved.mine.hilite {
+	background-color: #63AFD0;
+	color: #ffffff;
+}
+
+td.reserved.participating, div.reserved.participating {
+	background-color: #875cae;
+}
+
+td.reserved.participating.hilite {
+	background-color: #a979d1;
+}
+
+td.reserved.pending, div.reserved.pending {
+	background-color: #ffb540;
+	color: #ffffff;
+}
+
+td.reserved.pending.hilite {
+	background-color: #ffc973;
+}
+
+td.reservable.hilite, #reservations .ui-selecting {
+	background-color: #23BF35;
+}
+
+td.hilite {
+	cursor: pointer;
+}
+
+td.reservable.clicked, #reservations .ui-selected {
+	background-color: #259433;
+}
+
+td.reserved.clicked {
+	background-color: #1979CF;
+}
+
+td.pasttime, div.pasttime {
+	background-color: #BDBDBD;
+}
+
+td.restricted, div.restricted {
+	background: url("../img/stripe.bg.red.png");
+    color: black;
+}
+
+select.schedule_list {
+	font-size: 8pt;
+}
+
+.schedule_drop {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+}
+
+.schedule_drop ul {
+	display: block;
+	list-style: none;
+	position: absolute;
+	padding: 0;
+	margin-left: -16px;
+	border: solid 1px #666;
+	background-color: white;
+    z-index: 1000;
+    min-width: 125px;
+}
+
+.schedule_drop ul li {
+	font-size: 10pt;
+	padding: 4px;
+	text-align: left;
+}
+.schedule_drop ul li:hover {
+    background-color: #ededed;
+}
+
+.schedule_drop ul li:hover a
+{
+    color: #000;
+}
+
+.schedule_drop a {
+    display: block;
+    min-width: 125px;
+	text-decoration: none;
+}
+
+.schedule_drop ul li a {
+	color: #666;
+    padding-right: 15px;
+}
+
+.schedule_title {
+	text-align: center;
+	padding: 10px 0;
+}
+
+.schedule_title span {
+	font-size: 18pt;
+}
+
+.schedule_dates {
+	text-align: center;
+	font-size: 14pt;
+	padding-bottom: 10px;
+}
+
+.ui-datepicker {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.res_popup_details .summary {
+	font-style: italic;
+}
+
+.res_popup_details .user {
+	font-weight: bold;
+}
+
+.res_popup_details .dates {
+}
+
+td.resourcename.hilite {
+	background-color: #fbffc2;
+}
+
+div.legend {
+    line-height: 25px;
+    width: 100px;
+    border: solid #555 2px;
+    text-align: center;
+    display: inline-block;
+    *display: inline;
+    margin: 0px 2px;
+}

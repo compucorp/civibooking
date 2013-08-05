@@ -54,7 +54,7 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
    * @access public
    */
   public function buildQuickForm() {
-      // add checkboxes for contact type
+      // add checkboxes for resource type
     $resources = array();
 
     $this->add('select', 'resources', ts('Resource(s)'), $resources, FALSE,
@@ -109,10 +109,12 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
       ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
+      ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'css/schedule.css', 140, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/app.js', 150, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/views/search-form.js', 160, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/layout.js', 161, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/controller.js', 162, 'html-header');
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/views/search-result.js', 161, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/layout.js', 162, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/controller.js', 163, 'html-header');
 
    
 
