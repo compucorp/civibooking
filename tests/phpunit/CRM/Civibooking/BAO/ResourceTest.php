@@ -9,7 +9,7 @@ class CRM_Civibooking_BAO_ResourceTest extends CiviUnitTestCase {
   function setUp() {
     // If your test manipulates any SQL tables, then you should truncate
     // them to ensure a consisting starting point for all tests
-    // $this->quickCleanup(array('example_table_name'));
+    $this->quickCleanup(array('civicrm_booking_resource'));
     parent::setUp();
   }
 
@@ -17,23 +17,28 @@ class CRM_Civibooking_BAO_ResourceTest extends CiviUnitTestCase {
     parent::tearDown();
   }
 
-  function testRetriveResource(){
-    $params = array();
-    $resources = CRM_Civibooking_BAO_Resource::retrive($params);
+  
+  function testCreate(){
+    $params = array("label" => "conference room1",
+                    "description" => "description",
+                    "weight" => 1,
+                    "resource_type" => "tc",
+                    "resource_location" => "location1",
+                    "is_unlimited" => 1,
+                    "is_active" => 1,
+                    "is_deleted" => 0) ;
+    $dao = CRM_Civibooking_BAO_Resource::create($params);
+    $this->assertNotEmpty($dao->toArray());
+  }
+
+  function testSearch(){
+    $testObjects = CRM_Core_DAO::createTestObject('CRM_Civibooking_DAO_Resource')->toArray();
+    $params = array("resource_id" => $testObjects['id'],
+                    "resource_type" => $testObjects['resource_type']);
+    $resources = CRM_Civibooking_BAO_Resource::search($params);
     $this->assertNotNull($resources);
+    $this->assertNotEmpty($resources);
+    $this->assertEquals(1, sizeof($resources));
   }
 
-  /**
-   * Test that 1^2 == 1
-   */
-  function testSquareOfOne() {
-    $this->assertEquals(1, 1*1);
-  }
-
-  /**
-   * Test that 8^2 == 64
-   */
-  function testSquareOfEight() {
-    $this->assertEquals(64, 8*8);
-  }
 }
