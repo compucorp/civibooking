@@ -46,6 +46,29 @@
     <default>1</default>
   </field>
 
+  <field>
+    <name>resource_type</name>
+    <type>varchar</type>
+    <default>1</default>
+    <length>512</length>
+    <comment></comment>
+    <title>Resource type</title>
+    <export>true</export>
+    <uniqueName>booking_resource_type</uniqueName>
+  </field>
+
+
+    <field>
+    <name>resource_location</name>
+    <type>varchar</type>
+    <default>1</default>
+    <length>512</length>
+    <comment></comment>
+    <title>Resource location</title>
+    <export>true</export>
+    <uniqueName>booking_resource_location</uniqueName>
+  </field>
+
    <field>
     <name>is_unlimited</name>
     <type>boolean</type>
