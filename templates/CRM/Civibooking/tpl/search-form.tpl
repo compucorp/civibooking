@@ -27,7 +27,7 @@
   <div class="crm-section">
     <div class="label"></div>
     <div class="content">
-       <input class="form-submit default" name="" value="Search" type="submit" id="search_form">
+       <input class="form-submit search default" name="" value="Search" type="submit" id="search_form">
     </span>
     </div>
     <div class="clear"></div>
