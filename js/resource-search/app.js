@@ -1,11 +1,12 @@
-CRM.App = new Backbone.Marionette.Application();
+CRM.ResourceSearch = new Backbone.Marionette.Application();
 
-CRM.App.addRegions({
-  mainRegion: "#search-layout",
+CRM.ResourceSearch.addRegions({
+  searchForm: "#search-form",
+  searchResult: "#search-result"
 });
 
-CRM.App.on("initialize:after", function(){
-  Backbone.history.start();
-
+CRM.ResourceSearch.on("initialize:after", function(){
+  if( ! Backbone.History.started) Backbone.history.start();
 });
+
 
