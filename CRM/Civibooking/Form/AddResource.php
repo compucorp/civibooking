@@ -103,21 +103,22 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
     $loaded = TRUE;
 
     CRM_Core_Resources::singleton()
+      ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'css/bootstrap-modal.css', 90, 'page-header')
+      ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'css/schedule.css', 91, 'page-header')
       ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
-      ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'css/schedule.css', 140, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/bootstrap-modal.js', 131, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/app.js', 150, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/layout.js', 151, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/modal.js', 145, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/router.js', 152, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/view.js', 160, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/model.js', 164, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/collection.js', 165, 'html-header');
 
-   
 
     $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.civibooking') . '/templates/';
     $region = CRM_Core_Region::instance('page-header');
