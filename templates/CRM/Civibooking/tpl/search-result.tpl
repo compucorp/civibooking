@@ -24,7 +24,10 @@
 				 <% _.each(slots, function (slot){ %>
 				 	<td colspan=<%=slot.period_span%> ref="" class="reservable clickres slot ui-selectee" ></td>
 				 <% }); %>
-				 <td colspan=1 class="ui-selectee" ><a href="">Add to basket</a></td>
+				 <td colspan=1 class="ui-selectee" >
+				    <button type="button" class="add-to-basket btn btn-default">Add to basket</button>
+				 </td>
+
 	{/literal}
 </script>
 
