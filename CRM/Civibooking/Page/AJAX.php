@@ -43,15 +43,68 @@ class CRM_Civibooking_Page_AJAX {
    * 
    */
   static function searchResource() {
-    $resourceID  = CRM_Utils_Type::escape($_POST['resourceID'], 'Integer');
-    $resourceType = CRM_Utils_Type::escape($_POST['resourceType'], 'String');
+    //dprint_r($_GET);
+    //$resourceID  = CRM_Utils_Type::escape($_GET['resource_id'], 'Integer');
+    $resourceType = CRM_Utils_Type::escape($_GET['type'], 'String');
 
-    $params = array("resource_id" => $resourceID,
-                    "resource_type" => $resourceType);    
+    $params = array('resource_id' => $resourceID,
+                    'resource_type' => $resourceType);  
 
+    $startDate = strtotime('today');
+    $endDate =  strtotime('+1 week');
+
+    //$timeRange = CRM_Booking_Utils_DateTime::createTimeRange('8:00', '22:30', '5 mins');
+    $timeDisplayRange = CRM_Civibooking_Utils::createTimeRange('8:00', '17:00', '60 mins'); //for screen to display
+    $totalPeriod = count($timeDisplayRange) + 1;
+    //dprint_r($totalPeriod);
+    $timeOptions = array();
+      //$count = count($timeDisplayRange);
+    foreach ($timeDisplayRange as $key => $time) { 
+      $timeOptions[$time]['time'] = date('G:i', $time); 
+      $timeOptions[$time]['width'] = (95/870)*30;
+
+    }
+
+    $searchResult = array();
     $resources = CRM_Civibooking_BAO_Resource::search($params);
+    //check if the result is found.
+    if(!empty($resources)){
+      $periodInterval = new DateInterval( 'P1D' ); // 1-day, though can be more sophisticated rule
+      $period = new DatePeriod( new DateTime(date('Y-m-d', $startDate)), $periodInterval, new DateTime(date('Y-m-d',$endDate )));
+      foreach($period as $date){
+          //FIXME - Use localisation for the date format
+        $dayTable  =  array('date' => $date->format("d/m/Y"),
+                            'date_timestamp' => strtotime($date->format('Y-m-d')),
+                            'time_options' => $timeOptions
+                           );
+        $resourceRows = array();
+        foreach ($resources as $key => $resource) {
+            
+          //TODO Get slot 
+          $slots = array(array('period_span' => $totalPeriod - 1,
+                               'class' => ''
+                               ));
 
-    echo json_encode($resources);
+          $resourceRow = array('id' => CRM_Utils_Array::value('id',$resource),
+                              'label' => CRM_Utils_Array::value('label',$resource),
+                              'description' => CRM_Utils_Array::value('description',$resource),
+                              'resource_type' => CRM_Utils_Array::value('resource_type',$resource),
+                              'resource_location' => CRM_Utils_Array::value('resource_location',$resource),
+                              'is_unlimited' => CRM_Utils_Array::value('is_unlimited', $resource),
+                              'slots' => $slots); 
+
+          array_push($resourceRows, $resourceRow);
+          
+        }
+        $dayTable['resources'] = $resourceRows;
+        $searchResult[] = array('result' => $dayTable);
+      }
+    }else{
+
+    }
+        
+      
+    echo json_encode($searchResult);
     CRM_Utils_System::civiExit();
   }
 
