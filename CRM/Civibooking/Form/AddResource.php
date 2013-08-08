@@ -111,10 +111,11 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
       ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
       ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'css/schedule.css', 140, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/app.js', 150, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/views/search-form.js', 160, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/views/search-result.js', 161, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/layout.js', 162, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/controller.js', 163, 'html-header');
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/layout.js', 151, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/router.js', 152, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/view.js', 160, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/model.js', 164, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/collection.js', 165, 'html-header');
 
    
 
