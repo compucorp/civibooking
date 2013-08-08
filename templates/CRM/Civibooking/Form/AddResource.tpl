@@ -26,8 +26,20 @@
 {* Search form and results for resources *}
 <div id="brs-container" class="brs-container">
   <div id="search-layout">
-   
+    <div class="crm-form-block crm-resorce-search-form-block">
+      <div class="crm-accordion-wrapper crm-custom_search_form-accordion {if $rows}collapsed{/if}">
+        <div class="crm-accordion-header crm-master-accordion-header">{ts}Check resource avaliability{/ts}</div><!-- /.crm-accordion-header -->
+        <div id="search-form" class="crm-accordion-body">
+          
+        </div><!-- /.crm-accordion-body -->
+      </div><!-- /.crm-accordion-wrapper -->
+    </div><!-- /.crm-form-block -->
+    <div id="search-result">
+
+    </div> 
+
  </div>
+
   <div class="crm-container crm-form-block">
      <div class="crm-section selected-resources-section" style="display:none;">
           <div class="label">
@@ -48,7 +60,7 @@
 cj(function() {
    cj().crmAccordions();
    //start backbone.js
-   CRM.App.start();
+   CRM.ResourceSearch.start();
 });
 </script>
 {/literal}
