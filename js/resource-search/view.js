@@ -21,6 +21,18 @@ CRM.ResourceSearch.module('View', function(View, ResourceSearch, Backbone, Mario
 
   });
 
+  View.AddToBasket = Backbone.Marionette.ItemView.extend({
+    template: "#add-to-basket-form-template",
+    className: "modal-dialog",
+    events: {
+      "click #addToBasket": "addToBasket",
+    },
+    addToBasket: function(){
+
+    }
+
+  });
+
   
   View.ResourceRow = Backbone.Marionette.ItemView.extend({
     template: "#search-result-row-template",
@@ -28,7 +40,13 @@ CRM.ResourceSearch.module('View', function(View, ResourceSearch, Backbone, Mario
     className: "slots",
     initialize: function(){},
     events: {
+      'click .add-to-basket': 'loadForm'
     },
+    loadForm: function(){
+     var view = new View.AddToBasket();
+     ResourceSearch.modal.show(view);
+  
+    }
    
   });
 
