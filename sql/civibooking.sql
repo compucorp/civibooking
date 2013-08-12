@@ -1,7 +1,8 @@
 DROP TABLE IF EXISTS `civicrm_booking_config`;
 DROP TABLE IF EXISTS `civicrm_booking_resource_criteria`;
 DROP TABLE IF EXISTS `civicrm_booking_slot`;
-DROP TABLE IF EXISTS `civicrm_booking_resource_config`;
+DROP TABLE IF EXISTS `civicrm_booking_resource_config_option`;
+DROP TABLE IF EXISTS `civicrm_booking_resource_config_set`;
 DROP TABLE IF EXISTS `civicrm_booking_resource`;
 DROP TABLE IF EXISTS `civicrm_booking_cancellation`;
 DROP TABLE IF EXISTS `civicrm_booking_payment`;
@@ -75,8 +76,9 @@ CREATE TABLE `civicrm_booking_resource` (
      `weight` int unsigned NOT NULL ,
      `resource_type` varchar(512) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Type of resource, link to option group',
      `resource_location` varchar(512) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Type of location, link to option group',
+     `configuration_option_set_id` varchar(512) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Type of configuration option set',
      `is_unlimited` tinyint,
-     `is_active` tinyint,
+     `is_enabled` tinyint,
      `is_deleted` tinyint,
     PRIMARY KEY ( `id` )
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -86,21 +88,40 @@ CREATE TABLE `civicrm_booking_resource` (
 -- *
 -- * 
 -- *
--- * A civicrm booking resource config.
+-- * A civicrm booking resource config option.
 -- *
 -- *******************************************************/
-CREATE TABLE `civicrm_booking_resource_config` (
+CREATE TABLE `civicrm_booking_resource_config_set` (
      `id` int unsigned NOT NULL AUTO_INCREMENT,
-     `resource_id` int unsigned NOT NULL ,
+     `label` varchar(255) NOT NULL ,
+     `value` varchar(255) ,
+     `weight` int unsigned NOT NULL,
+     `is_enabled` tinyint,
+     `is_deleted` tinyint,
+    PRIMARY KEY ( `id` ),
+     CONSTRAINT FK_civibooking_resource_config_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+-- /*******************************************************
+-- *
+-- * 
+-- *
+-- * A civicrm booking resource config option.
+-- *
+-- *******************************************************/
+CREATE TABLE `civicrm_booking_resource_config_option` (
+     `id` int unsigned NOT NULL AUTO_INCREMENT,
+     `set_id` int unsigned NOT NULL,
      `label` varchar(255) NOT NULL ,
      `value` varchar(255) ,
      `price` decimal(20,2) NOT NULL,
-     `max_size` int unsigned NOT NULL ,
+     `max_size` varchar(255) NOT NULL ,
      `unit_id` int unsigned NOT NULL,
      `weight` int unsigned NOT NULL,
-     `is_active` tinyint ,
+     `is_enabled` tinyint ,
     PRIMARY KEY ( `id` ),
-     CONSTRAINT FK_civibooking_resource_config_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE
+     CONSTRAINT FK_civibooking_resource_config_set_id FOREIGN KEY (`set_id`) REFERENCES `civicrm_booking_resource_config_set`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- /*******************************************************
@@ -113,19 +134,20 @@ CREATE TABLE `civicrm_booking_resource_config` (
 CREATE TABLE `civicrm_booking_slot` (
      `id` int unsigned NOT NULL AUTO_INCREMENT,
      `booking_id` int unsigned  NOT NULL   ,
-     -- `resource_id` varchar(255) NOT NULL  ,
-     `resource_config_id` int unsigned  NOT NULL  ,
+     `configuration_option_id` int unsigned  NOT NULL  COMMENT 'Link to resource configuration option',
+     `resource_id` int unsigned  NOT NULL  COMMENT 'Link to resource',,
      `start` datetime NOT NULL,
      `end` datetime NOT NULL,
-     `price` decimal(20,2) NOT NULL,
+     `quantity` int NOT NULL,
      `notes` text ,
      `parent_id` int unsigned,
+     `is_cancalled` tinyint,
      `is_deleted` tinyint,
     PRIMARY KEY ( `id` ),
      CONSTRAINT FK_civibooking_slot_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,
-     CONSTRAINT FK_civibooking_slot_rcid_id FOREIGN KEY (`resource_config_id`) REFERENCES `civicrm_booking_resource_config`(`id`) ON DELETE CASCADE
+     CONSTRAINT FK_civibooking_slot_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE
+     CONSTRAINT FK_civibooking_slot_resource_config_option_id FOREIGN KEY (`configuration_option_id`) REFERENCES `civicrm_booking_resource_config_option`(`id`) ON DELETE CASCADE,
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
 
 
 -- /*******************************************************
@@ -154,8 +176,8 @@ CREATE TABLE `civicrm_booking_payment` (
 CREATE TABLE `civicrm_booking_cancellation` (
      `id` int unsigned NOT NULL AUTO_INCREMENT ,
      `booking_id` int unsigned  NOT NULL ,
-     `cancallation_date` datetime  NOT NULL,
-     `additional_charges` decimal(20,2) NOT NULL,
+     `cancellation_date` datetime  NOT NULL,
+     `additional_charge` decimal(20,2) NOT NULL,
      `comment` text ,
     PRIMARY KEY ( `id` ),
      CONSTRAINT FK_civibooking_cancellation_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE
