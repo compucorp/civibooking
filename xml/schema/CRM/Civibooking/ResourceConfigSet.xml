@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/CiviBooking</base>
+  <class>ResourceConfigSet</class>
+  <name>civicrm_booking_resource_config_set</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <title>ID</title>
+    <required>true</required>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+
+  <field>
+    <name>label</name>
+    <type>varchar</type>
+    <length>255</length>
+    <comment></comment>
+    <title>Label</title>
+    <export>true</export>
+    <uniqueName>booking_resource_config_option_label</uniqueName>
+  </field>
+
+  <field>
+    <name>value</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>weight</name>
+    <type>int unsigned</type>
+   </field>
+
+   <field>
+    <name>is_enabled</name>
+    <type>boolean</type>
+   </field>
+
+    <field>
+    <name>is_deleted</name>
+    <type>boolean</type>
+   </field>
+  
+
+</table>

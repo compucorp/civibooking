@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/CiviBooking</base>
+  <class>ResourceConfigOption</class>
+  <name>civicrm_booking_resource_config_option</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <title>ID</title>
+    <required>true</required>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+   <field>
+    <name>set_id</name>
+    <type>int unsigned</type>
+    <title>SET ID</title>
+    <required>true</required>
+    <comment>Foreign key to the resource set for this option.</comment>
+    <add>2.0</add>
+   </field>
+   <foreignKey>
+    <name>set_id</name>
+    <table>civicrm_booking_resource_config_set</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>label</name>
+    <type>varchar</type>
+    <length>255</length>
+    <comment></comment>
+    <title>Label</title>
+    <export>true</export>
+    <uniqueName>booking_resource_config_option_label</uniqueName>
+  </field>
+
+  <field>
+    <name>value</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+   <field>
+    <name>price</name>
+    <type>decimal</type>
+  </field>
+
+	<field>
+    <name>max_size</name>
+    <type>varchar</type>
+    <length>100</length>
+  </field>
+
+
+   <field>
+    <name>united_id</name>
+    <type>int unsigned</type>
+   </field>
+
+    <field>
+    <name>weight</name>
+    <type>int unsigned</type>
+   </field>
+
+
+   <field>
+    <name>is_enabled</name>
+    <type>boolean</type>
+    <default>0</default>
+   </field>
+  
+
+</table>
