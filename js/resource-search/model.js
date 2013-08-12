@@ -1,9 +1,9 @@
 CRM.ResourceSearch.module('Model', function(Model, ResourceSearch, Backbone, Marionette, $, _){
-  
-  Model.Resource = Backbone.Model.extend({
+
+  Model.Basket = Backbone.Model.extend({
     
     defaults: {
-      resources: null,
+      id: null,
     },
 
     validate: function(attrs, options) {
@@ -12,10 +12,18 @@ CRM.ResourceSearch.module('Model', function(Model, ResourceSearch, Backbone, Mar
         return errors;
       }
     }
+  
+  });
+  
+  Model.ResourceTable = Backbone.Model.extend({
+    /*
+    defaults: {
+      result: null,
+    },*/
   });
 
-  Model.ResourceResult = Backbone.Model.extend({
-    
+  Model.ResourceRow = Backbone.Model.extend({
+    /*
     defaults: {
       id: null,
       description: null,
@@ -23,15 +31,10 @@ CRM.ResourceSearch.module('Model', function(Model, ResourceSearch, Backbone, Mar
       label: null,
       resource_location: null,
       resource_type: null,
+      date: null,
       slots: null,
-    },
+    },*/
 
-    validate: function(attrs, options) {
-      var errors = {}
-      if( ! _.isEmpty(errors)){
-        return errors;
-      }
-    }
   });
   
 

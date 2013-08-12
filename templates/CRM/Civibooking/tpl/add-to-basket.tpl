@@ -74,7 +74,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal">Close</button>
-          <button type="button" class="btn">Add to basket</button>
+          <button id="addToBasket" type="button" class="btn">Add to basket</button>
         </div>
       </div><!-- /.modal-content -->
 

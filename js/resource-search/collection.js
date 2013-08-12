@@ -31,7 +31,7 @@ CRM.ResourceSearch.module('Collection', function(Collection, ResourceSearch, Bac
         success: function (response) {
           var searchResults = [];   
           _.each(JSON.parse(response), function(item){
-            searchResults[searchResults.length] = new ResourceSearch.Model.ResourceResult({
+            searchResults[searchResults.length] = new ResourceSearch.Model.ResourceTable({
               result: item.result
             });
           });
@@ -41,8 +41,8 @@ CRM.ResourceSearch.module('Collection', function(Collection, ResourceSearch, Bac
     }
   });
   
-  Collection.ResourceList = Backbone.Collection.extend({
-    model: ResourceSearch.Model.Resource,  
+  Collection.ResourceTableList = Backbone.Collection.extend({
+    model: ResourceSearch.Model.ResourceResult,  
   });
   
 });

@@ -15,8 +15,8 @@ CRM.ResourceSearch.module('AppRouting', function(AppRouting, ResourceSearch, Bac
       var resourceCollection = new CRM.ResourceSearch.Collection.ResourceResultList(); 
       var resourceCollectionView = new CRM.ResourceSearch.View.ResourceCollection({ collection: resourceCollection});
       var searchForm = new CRM.ResourceSearch.View.SearchForm();
-      CRM.ResourceSearch.searchForm.attachView(searchForm); //attach the existing view
-      CRM.ResourceSearch.searchResult.show(resourceCollectionView);
+      ResourceSearch.searchForm.attachView(searchForm); //attach the existing view
+      ResourceSearch.searchResult.show(resourceCollectionView);
       ResourceSearch.vent.trigger("search:query", queryString);
     }
   };
@@ -26,7 +26,7 @@ CRM.ResourceSearch.module('AppRouting', function(AppRouting, ResourceSearch, Bac
       controller: controller
     });
     //Initializer layout  
-    CRM.ResourceSearch.searchForm.show(new CRM.ResourceSearch.View.SearchForm());
+    ResourceSearch.searchForm.show(new ResourceSearch.View.SearchForm());
 
   });
 });
