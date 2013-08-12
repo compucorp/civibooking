@@ -51,15 +51,15 @@ class CRM_Civibooking_BAO_Resource extends CRM_Civibooking_DAO_Resource {
     			 civicrm_booking_resource.description,
     			 civicrm_booking_resource.weight,
     			 civicrm_option_resource_type.value as resource_type,
-    			 civicrm_option_resource_location.value as resource_location,
+    			 civicrm_booking_resource.resource_location as resource_location,
     			 civicrm_booking_resource.is_unlimited
      FROM  civicrm_booking_resource 
 		 LEFT JOIN  civicrm_option_value as civicrm_option_resource_type ON civicrm_option_resource_type.option_group_id = $typeGroupId
-		 																																 AND civicrm_option_resource_type.value = civicrm_booking_resource.resource_type
-		 LEFT JOIN  civicrm_option_value as civicrm_option_resource_location ON civicrm_option_resource_location.option_group_id = $locationGroupId 
-		 																																 AND civicrm_option_resource_location.value = civicrm_booking_resource.resource_location
+		 																																 AND civicrm_option_resource_type.value = civicrm_booking_resource.resource_type ";
+		 //LEFT JOIN  civicrm_option_value as civicrm_option_resource_location ON civicrm_option_resource_location.option_group_id = $locationGroupId 
+		 //																																 AND civicrm_option_resource_location.value = civicrm_booking_resource.resource_location
 
-     $whereClause";
+     $query .= "$whereClause";
 
 
     $resources = array();
