@@ -8,6 +8,18 @@ require_once 'CRM/Core/Form.php';
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_Civibooking_Form_Booking extends CRM_Core_Form {
+
+  function preProcess(){
+    //dprint_r($this->_name);
+    $val = $this->controller->exportValues('AddResource');
+  // dprint_r($val);
+  // $values = $this->controller->exportValues($this->_name);
+  //  dprint_r($this);
+  //  exit;
+    dprint_r(json_decode($val['resources']));
+    //exit;
+  }
+
   function buildQuickForm() {
     parent::buildQuickForm();
 
@@ -15,15 +27,15 @@ class CRM_Civibooking_Form_Booking extends CRM_Core_Form {
       array('type' => 'back',
         'name' => ts('<< Previous'),
       ),
-      array(
+      /*array(
         'type' => 'next',
         'name' => ts('Next >>'),
         'spacing' => '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;',
         'isDefault' => TRUE,
-      ),
+      ),*/
       array(
         'type' => 'submit',
-        'name' => ts('Save & Continue Later'),
+        'name' => ts('Save'),
       ),
       
     );
@@ -36,6 +48,8 @@ class CRM_Civibooking_Form_Booking extends CRM_Core_Form {
     $values = $this->exportValues();
 
     dprint_r($this);
+    dprint_r('clicking back');
+    exit;
   
     parent::postProcess();
   }
