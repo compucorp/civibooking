@@ -23,8 +23,31 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
    */
   public function preProcess() {
 
+    $config = CRM_Core_Config::singleton();
+    $currencySymbols = "";
+    if(!empty($config->currencySymbols)){
+      $currencySymbols = $config->currencySymbols;
+    }else{
+      $currencySymbols = $config->defaultCurrencySymbol;
+    }
+    //dprint_r($config);
+
+
     $values = CRM_Core_OptionGroup::valuesByID(97);
-    $this->assign('resourceTypes', $values);
+    //dprint_r($values);
+    $resources = array();
+    foreach ($values as $key => $value) {
+     
+      $result = CRM_Civibooking_BAO_Resource::search(array('resource_type' => $key));
+      $resources[$key . $value]['label'] = $value;
+      $resources[$key . $value]['child'] = $result;
+
+    }
+
+    $this->assign('resources', $resources);;
+    $this->assign('currencySymbols', $currencySymbols);;
+
+
 
     self::registerScripts();
   
@@ -54,19 +77,15 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
    * @access public
    */
   public function buildQuickForm() {
-      // add checkboxes for resource type
-    $resources = array();
-
-    $this->add('select', 'resources', ts('Resource(s)'), $resources, FALSE,
-              array(
-                'id' => 'resources', 
-                'multiple' => 'multiple',)
-    );
+    $this->add('textarea', 
+              'resources',
+               ts('Resource(s)'),
+               FALSE);
 
     $buttons = array(
       array(
         'type' => 'next',
-        'name' => ts('Update basket >>'),
+        'name' => ts('Next >>'),
         'spacing' => '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;',
         'isDefault' => TRUE,
       ),    
@@ -76,8 +95,19 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
 
   }
 
+
+
   public function postProcess() {
-    $params = $ids = array();
+    dprint_r($this->_action); 
+
+    //$params = $ids = array();
+ 
+
+    $params = $this->exportValues();
+   // dprint_r($params);
+    $resources = explode(PHP_EOL, $params['resources']);
+    //dprint_r($resources);
+    //exit;
 
     $session = CRM_Core_Session::singleton();
     $params['created_id'] = $session->get('userID');
@@ -103,21 +133,36 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
     $loaded = TRUE;
 
     CRM_Core_Resources::singleton()
-      ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'css/bootstrap-modal.css', 90, 'page-header')
+     // ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'css/bootstrap-modal.css', 90, 'page-header')
       ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'css/schedule.css', 91, 'page-header')
-      ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE)
+      ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.css', 92, 'page-header')
+      ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'css/civibooking.css', 92, 'page-header')
+
+      
+      /* ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE) */
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
-      ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
+
+      /*->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
-      ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
+      ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE) */
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.js', 132, 'html-header')
+      //->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_mvc.js', 133, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_timeline.js', 134, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_treetimeline.js', 135, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_minical.js', 136, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_readonly.js', 137, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_collision.js', 138, 'html-header');
+
+
+      /*
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/bootstrap-modal.js', 131, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/app.js', 150, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/modal.js', 145, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/router.js', 152, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/view.js', 160, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/model.js', 164, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/collection.js', 165, 'html-header');
+      ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/resource-search/collection.js', 165, 'html-header'); */
 
 
     $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.civibooking') . '/templates/';
