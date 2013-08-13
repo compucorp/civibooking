@@ -36,8 +36,13 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/booking/resource/search</path>
+    <path>civicrm/booking/ajax/resourcesearch</path>
     <page_callback>CRM_Civibooking_Page_AJAX::searchResource</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/booking/ajax/slots</path>
+    <page_callback>CRM_Civibooking_Page_AJAX::getSlots</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>

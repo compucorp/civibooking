@@ -38,6 +38,41 @@
  */
 class CRM_Civibooking_Page_AJAX {
 
+
+
+  static function getSlots(){
+
+    $timeshift = CRM_Utils_Type::escape($_GET['timeshift'], 'String');
+    $from = CRM_Utils_Type::escape($_GET['from'], 'String');
+    $to = CRM_Utils_Type::escape($_GET['to'], 'String');
+
+
+
+    $slots = array("data" => array(
+                                    array("id" => 1,
+                                          "start_date" =>  "2013-08-13 09:00:00",
+                                          "end_date" =>"2013-08-13 12:00:00" , 
+                                          "text" => "Task A-12458", 
+                                          "resource_id" => 2,
+                                          "color" => "rgb(255,0,0)",
+                                          "readonly" => true),
+                                    
+                                    array("id" => 2,
+                                          "start_date" =>  "2013-08-13 09:00:00",
+                                          "end_date" =>"2013-08-13 12:00:00" , 
+                                          "text" => "Task A-12458", 
+                                          "resource_id" => 1,
+                                          "color" => "rgb(255,0,0)",
+                                          "readonly" => true),
+                                    
+                                  )
+                );
+         
+    echo json_encode($slots);
+    CRM_Utils_System::civiExit();
+
+  }
+
   /**
    * Function to search resouce when adding resource to booking
    * 
