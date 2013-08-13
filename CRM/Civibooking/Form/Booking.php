@@ -10,14 +10,8 @@ require_once 'CRM/Core/Form.php';
 class CRM_Civibooking_Form_Booking extends CRM_Core_Form {
 
   function preProcess(){
-    //dprint_r($this->_name);
     $val = $this->controller->exportValues('AddResource');
-  // dprint_r($val);
-  // $values = $this->controller->exportValues($this->_name);
-  //  dprint_r($this);
-  //  exit;
     dprint_r(json_decode($val['resources']));
-    //exit;
   }
 
   function buildQuickForm() {
