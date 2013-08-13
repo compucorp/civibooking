@@ -1,0 +1,70 @@
+<!doctype html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Displaying several weeks in Week view</title>
+</head>
+	<script src="../../codebase/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxscheduler.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+	
+<style type="text/css" media="screen">
+	html, body{
+		margin:0px;
+		padding:0px;
+		height:100%;
+		overflow:hidden;
+	}	
+	.dhx_scale_holder_now.weekday, .dhx_scale_holder.weekday{
+		background-image:url(./imgs/week_bg.png);
+	}
+</style>
+
+<script type="text/javascript" charset="utf-8">
+	function init() {
+		
+		scheduler.config.xml_date="%Y-%m-%d %H:%i";
+		scheduler.locale.labels.workweek_tab = "2 x Week";
+		scheduler.config.first_hour = 8;
+
+		scheduler.attachEvent("onTemplatesReady",function(){
+			//normal 2 x Week configuration
+			scheduler.date.workweek_start = scheduler.date.week_start;
+	 		scheduler.date.get_workweek_end=function(date){ 
+	            return scheduler.date.add(date,14,"day"); 
+	    	};
+	    	scheduler.date.add_workweek=function(date,inc){ 
+	            return scheduler.date.add(date,inc*14,"day");
+	    	};
+	    	scheduler.templates.workweek_date = scheduler.templates.week_date;
+	    	scheduler.templates.workweek_scale_date = scheduler.date.date_to_str("%D, %d");
+	    });
+
+    	//hide weekends
+		scheduler.ignore_workweek = function(date){
+			if (date.getDay() == 0 || date.getDay() == 6)
+				return true;
+		};
+
+		scheduler.init('scheduler_here',new Date(2010,0,10),"workweek");
+		scheduler.load("./data/events.xml");
+	}
+</script>
+
+<body onload="init();">
+	<div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100%;'>
+		<div class="dhx_cal_navline">
+			<div class="dhx_cal_prev_button">&nbsp;</div>
+			<div class="dhx_cal_next_button">&nbsp;</div>
+			<div class="dhx_cal_today_button"></div>
+			<div class="dhx_cal_date"></div>
+			<div class="dhx_cal_tab" name="workweek_tab" style="right:204px;"></div>
+			<div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+			<div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+			<div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+		</div>
+		<div class="dhx_cal_header">
+		</div>
+		<div class="dhx_cal_data">
+		</div>		
+	</div>
+</body>

@@ -1,0 +1,34 @@
+<!doctype html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>JQuery integration</title>
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+
+	<script src="../../codebase/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxscheduler.css" type="text/css" media="screen" title="no title"
+	      charset="utf-8">
+	
+	<style type="text/css" media="screen">
+		html, body {
+			margin: 0px;
+			padding: 0px;
+			height: 100%;
+			overflow: hidden;
+		}
+	</style>
+
+	<script type="text/javascript" charset="utf-8">
+		$(function(){
+			$(".myscheduler").dhx_scheduler({
+				xml_date:"%Y-%m-%d %H:%i",
+				date:new Date(2009,4,25),
+				mode:"month"
+			});
+			
+			scheduler.load("data/events.xml");
+		});
+	</script>
+</head>
+<body>
+<div class="myscheduler" style='width:100%; height:100%;'></div>
+</body>

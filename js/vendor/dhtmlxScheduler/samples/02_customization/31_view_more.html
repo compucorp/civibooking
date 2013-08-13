@@ -1,0 +1,71 @@
+<!doctype html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>'View more' link in the Month view</title>
+</head>
+<script src="../../codebase/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="../../codebase/dhtmlxscheduler.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+
+<style type="text/css" media="screen">
+	html, body{
+		margin:0px;
+		padding:0px;
+		height:100%;
+		overflow:hidden;
+	}
+</style>
+
+<script type="text/javascript" charset="utf-8">
+	function init() {
+		scheduler.config.multi_day = true;
+
+		scheduler.config.max_month_events = 5;
+
+		scheduler.config.xml_date="%Y-%m-%d %H:%i";
+		scheduler.init('scheduler_here', new Date(2009,5,30),"month");
+		scheduler.parse([
+			{"id":1363592258564,"text":"Task A-12458","start_date":"2009-06-30 09:00","end_date":"2009-06-30 12:00"},
+			{"id":1363592258565,"text":"Task A-89411","start_date":"2009-06-30 10:00","end_date":"2009-06-30 16:00"},
+			{"id":1363592258566,"text":"Task A-64168","start_date":"2009-06-30 10:00","end_date":"2009-06-30 14:00"},
+			{"id":1363592258567,"text":"Task A-46598","start_date":"2009-06-30 16:00","end_date":"2009-06-30 17:00"},
+			{"id":1363592258568,"text":"Task B-48865","start_date":"2009-06-30 12:00","end_date":"2009-06-30 20:00"},
+			{"id":1363592258569,"text":"Task B-44864","start_date":"2009-06-30 14:00","end_date":"2009-06-30 16:00"},
+			{"id":1363592258570,"text":"Task B-46558","start_date":"2009-06-30 16:30","end_date":"2009-06-30 18:00"},
+			{"id":1363592258571,"text":"Task B-45564","start_date":"2009-06-30 18:30","end_date":"2009-06-30 20:00"},
+			{"id":1363592258572,"text":"Task C-32421","start_date":"2009-06-30 08:00","end_date":"2009-06-30 12:00"},
+			{"id":1363592258573,"text":"Task C-14244","start_date":"2009-06-30 14:30","end_date":"2009-06-30 16:45"},
+			{"id":1363592258574,"text":"Task D-52688","start_date":"2009-06-30 09:20","end_date":"2009-06-30 12:20"},
+			{"id":1363592258575,"text":"Task D-46588","start_date":"2009-06-30 11:40","end_date":"2009-06-30 16:30"},
+			{"id":1363592258576,"text":"Task D-12458","start_date":"2009-06-30 12:00","end_date":"2009-06-30 18:00"},
+			{"id":1363592258577,"text":"New event","start_date":"2009-06-03 00:00","end_date":"2009-07-03 00:05"},
+			{"id":1363592258581,"text":"New event","start_date":"2009-06-04 00:00","end_date":"2009-07-04 00:05"},
+			{"id":1363592258582,"text":"New event","start_date":"2009-06-05 00:00","end_date":"2009-07-05 00:05"},
+			{"id":1363592258583,"text":"New event","start_date":"2009-06-06 00:00","end_date":"2009-07-06 00:05"},
+			{"id":1363592258584,"text":"New event","start_date":"2009-06-07 00:00","end_date":"2009-07-07 00:05"},
+			{"id":1363592258585,"text":"New event","start_date":"2009-06-08 00:00","end_date":"2009-07-08 00:05"},
+			{"id":1363592258586,"text":"New event","start_date":"2009-06-09 00:00","end_date":"2009-07-09 00:05"},
+			{"id":1363592258587,"text":"New event","start_date":"2009-06-10 00:00","end_date":"2009-07-10 00:05"},
+			{"id":1363592258588,"text":"New event","start_date":"2009-06-18 00:00","end_date":"2009-06-18 00:05"},
+			{"id":1363592258589,"text":"New event","start_date":"2009-06-18 00:00","end_date":"2009-06-18 00:05"}],
+		'json');
+	}
+</script>
+
+<body onload="init();">
+<div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100%;'>
+	<div class="dhx_cal_navline">
+		<div class="dhx_cal_prev_button">&nbsp;</div>
+		<div class="dhx_cal_next_button">&nbsp;</div>
+		<div class="dhx_cal_today_button"></div>
+		<div class="dhx_cal_date"></div>
+		<div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+		<div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+		<div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+	</div>
+	<div class="dhx_cal_header">
+	</div>
+	<div class="dhx_cal_data">
+	</div>
+</div>
+</body>

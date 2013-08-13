@@ -1,0 +1,127 @@
+<!doctype html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Backbone integration</title>
+	<!-- Backbone's files -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="../common/backbone/underscore.js"></script>
+	<script type="text/javascript" src="../common/backbone/backbone.js"></script>
+
+	<!-- Scheduler's files -->
+	<script src="../../codebase/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../codebase/ext/dhtmlxscheduler_mvc.js?!" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxscheduler.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	
+	<style type="text/css" media="screen">
+		html, body {
+			margin: 0px;
+			padding: 0px;
+			height: 100%;
+			overflow: hidden;
+		}
+		#details{
+			padding:5px;
+		}
+		#details input,   #details textarea{
+			width:250px;
+			padding:5px;
+			
+		}
+		#details label{
+			display:block;
+		}
+		#details textarea{
+			height:50px;
+			padding:10px;
+		}
+	</style>
+
+	<!-- Backbone's template -->
+	<script type="text/template" id="details_template">
+	  <label>Event details</label>
+	  <div style='float:left; width:300px'>
+	  	<textarea type="text" id="name_input"><%= obj.text %></textarea>
+	  </div>
+	  <div style='float:left; width:300px'>
+	  	<input type="button" id="save_button" value="Save" />
+	  	<input type="button" id="delete_button" value="Delete" />
+	  	<input type="button" id="add_button" value="Make a copy" />
+	  </div>
+	  <div style='clear:both; border-bottom:1px solid silver;'>&nbsp;</div>
+	</script>
+
+	<script type="text/javascript" charset="utf-8">
+		$(function(){
+
+			MyEvent   = Backbone.Model.extend({});
+			EventList = Backbone.Collection.extend({
+				model:MyEvent,
+				url:"./data/backbone.json",
+				changeName:function(){
+					this.get($$("listA").getSelectedId()).set("name", "NextGen Borg");
+				}
+			});
+			events = new EventList();
+
+			DetailsView = Backbone.View.extend({
+				events:{
+					"click #save_button" : "save",
+					"click #add_button"  : "copy",
+					"click #delete_button" : "remove"
+				},
+				initialize: function(){
+					this.template = _.template( $("#details_template").html() );
+		            this.render();
+		        },
+		        render:function(){
+		        	if (this.model)
+						this.$el.html( this.template( this.model.toJSON() ) );
+					else 
+						this.$el.html("Click on any event");
+			    },
+			    show:function(model){
+			    	this.model = model;
+			    	this.render();
+			    	$("#name_input").focus();
+			    },
+			    save:function(){
+			    	this.model.set({ text: $("#name_input").val() })
+			    },
+			    copy:function(){
+			    	var data = this.model.toJSON();
+			    	data.id = (new Date()).valueOf();
+			    	
+			    	events.add( new MyEvent(data) );
+			    },
+			    remove:function(){
+			    	events.remove(this.model);
+			    	this.show();
+			    }
+		    });
+
+		    details_view = new DetailsView({ el: $("#details") });
+			
+
+
+
+			scheduler.config.xml_date = "%Y-%m-%d %h:%i";
+			scheduler.xy.margin_top = 150;
+			$(".myscheduler").dhx_scheduler({
+				date:new Date(2009,5,25),
+				mode:"month"
+			});
+			scheduler.attachEvent("onClick", function(id){
+				details_view.show( events.get(id) );
+			});
+
+
+			scheduler.backbone(events);
+			events.fetch();
+
+		});
+	</script>
+</head>
+<body>
+	<div id='details' style='height:150px;'></div>
+	<div class="myscheduler" style='width:100%; height:100%;'></div>
+</body>

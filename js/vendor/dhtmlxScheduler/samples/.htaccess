@@ -1,0 +1,10 @@
+Options +FollowSymLinks
+Options +Indexes
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)index\.html$ ../_dev/samples.php?script=$1 [QSA]
+
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*)$ ../_dev/samples.php?script=$1 [QSA]
