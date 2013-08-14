@@ -122,7 +122,7 @@ CREATE TABLE `civicrm_booking_resource` (
 
      `id` int unsigned NOT NULL AUTO_INCREMENT  ,
      `set_id` int unsigned    COMMENT 'FK to resource configuration option set',
-     `label` varchar(255)   DEFAULT 1 ,
+     `label` varchar(255)  ,
      `description` varchar(255)    ,
      `weight` int NOT NULL   ,
      `resource_type` varchar(512) NOT NULL   COMMENT 'Type of resource=, link to option group',
