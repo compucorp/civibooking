@@ -30,24 +30,18 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
     }else{
       $currencySymbols = $config->defaultCurrencySymbol;
     }
-    //dprint_r($config);
-
-
+    //TODO - GET Option group from name
     $values = CRM_Core_OptionGroup::valuesByID(97);
-    //dprint_r($values);
     $resources = array();
     foreach ($values as $key => $value) {
-     
       $result = CRM_Civibooking_BAO_Resource::search(array('resource_type' => $key));
-      $resources[$key . $value]['label'] = $value;
-      $resources[$key . $value]['child'] = $result;
-
+      $rTypekey = trim(strtolower($key . '_' . $value));
+      $resources[$rTypekey]['label'] = $value;
+      $resources[$rTypekey]['child'] = $result;
     }
 
     $this->assign('resources', $resources);;
-    $this->assign('currencySymbols', $currencySymbols);;
-
-
+    $this->assign('currencySymbols', $currencySymbols);
 
     self::registerScripts();
   
