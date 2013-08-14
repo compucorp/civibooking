@@ -24,7 +24,6 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 */
-
 /**
  *
  * @package CRM
@@ -41,7 +40,7 @@ class CRM_Civibooking_Controller_Booking extends CRM_Core_Controller {
 
     parent::__construct($title, $modal, NULL, FALSE, TRUE);
 
-    $this->_stateMachine = new CRM_CiviBooking_StateMachine_Booking($this, $action);
+    $this->_stateMachine = new CRM_Civibooking_StateMachine_Booking($this, $action);
 
     // create and instantiate the pages
     $this->addPages($this->_stateMachine, $action);
