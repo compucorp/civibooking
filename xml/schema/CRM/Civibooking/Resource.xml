@@ -19,13 +19,25 @@
   </primaryKey>
 
   <field>
+    <name>set_id</name>
+    <type>int unsigned</type>
+    <comment>FK to resource configuration option set</comment>
+  </field>
+  <foreignKey>
+    <name>set_id</name>
+    <table>civicrm_booking_resource_config_set</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
     <name>label</name>
     <type>varchar</type>
     <default>1</default>
     <length>255</length>
     <comment></comment>
     <title>Label</title>
-    <export>true</export>
+    <!-- <export>true</export>-->
     <uniqueName>booking_resource_label</uniqueName>
   </field>
 
@@ -35,7 +47,7 @@
     <length>255</length>
     <comment></comment>
     <title>Label</title>
-    <export>true</export>
+    <!-- <export>true</export> -->
     <uniqueName>booking_resource_description</uniqueName>
   </field>
 
@@ -43,17 +55,18 @@
     <name>weight</name>
     <type>int</type>
     <required>true</required>
-    <default>1</default>
+    <!-- <default>1</default> -->
   </field>
 
   <field>
     <name>resource_type</name>
     <type>varchar</type>
-    <default>1</default>
+    <!-- <default>1</default> -->
     <length>512</length>
-    <comment></comment>
+    <required>true</required>
+    <comment>Type of resource=, link to option group</comment>
     <title>Resource type</title>
-    <export>true</export>
+    <!-- <export>true</export> -->
     <uniqueName>booking_resource_type</uniqueName>
   </field>
 
@@ -61,11 +74,12 @@
   <field>
     <name>resource_location</name>
     <type>varchar</type>
-    <default>1</default>
+    <!-- <default>1</default>-->
     <length>512</length>
-    <comment></comment>
+    <required>true</required>
+    <comment>Type of resource location, link to option group</comment>
     <title>Resource location</title>
-    <export>true</export>
+    <!-- <export>true</export> -->
     <uniqueName>booking_resource_location</uniqueName>
   </field>
 

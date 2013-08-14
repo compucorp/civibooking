@@ -21,10 +21,10 @@
    <field>
     <name>set_id</name>
     <type>int unsigned</type>
-    <title>SET ID</title>
+    <title>Set ID</title>
     <required>true</required>
     <comment>Foreign key to the resource set for this option.</comment>
-    <add>2.0</add>
+    <!-- <add>2.0</add> -->
    </field>
    <foreignKey>
     <name>set_id</name>
@@ -39,43 +39,55 @@
     <length>255</length>
     <comment></comment>
     <title>Label</title>
-    <export>true</export>
+    <!-- <export>true</export>-->
+    <required>true</required>
     <uniqueName>booking_resource_config_option_label</uniqueName>
   </field>
-
+  <!--
   <field>
     <name>value</name>
     <type>varchar</type>
     <length>255</length>
   </field>
-
+  -->
    <field>
     <name>price</name>
     <type>decimal</type>
+    <required>true</required>
   </field>
 
 	<field>
     <name>max_size</name>
     <type>varchar</type>
-    <length>100</length>
+    <length>255</length>
   </field>
 
+ <field>
+    <name>unit_id</name>
+    <type>varchar</type>
+    <!-- <default>1</default>-->
+    <length>512</length>
+    <required>true</required>
+    <comment>Type of units, link to option group</comment>
+    <title>Unit id</title>
+    <required>true</required>
+    <!-- <export>true</export>
+    <uniqueName>booking_units</uniqueName>
+     -->
+  </field>
 
    <field>
-    <name>united_id</name>
-    <type>int unsigned</type>
-   </field>
-
-    <field>
     <name>weight</name>
     <type>int unsigned</type>
-   </field>
+    <required>true</required>
+  </field>
 
 
    <field>
     <name>is_enabled</name>
     <type>boolean</type>
-    <default>0</default>
+    <required>true</required>
+    <default>1</default>
    </field>
   
 

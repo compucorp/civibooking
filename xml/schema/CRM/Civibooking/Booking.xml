@@ -48,22 +48,25 @@
     <length>255</length>
     <comment></comment>
     <title>Po Number</title>
-    <export>true</export>
+    <required>true</required>
+    <!--<export>true</export>-->
     <uniqueName>booking_po_number</uniqueName>
   </field>
 
   <field>
     <name>status_id</name>
     <type>int unsigned</type>
+    <required>true</required>
   </field>
 
   <field>
     <name>title</name>
     <type>varchar</type>
     <length>50</length>
+    <required>true</required>
     <comment></comment>
     <title>Booking Title</title>
-    <export>true</export>
+    <!-- <export>true</export>-->
     <uniqueName>booking_title</uniqueName>
   </field>
 
@@ -108,17 +111,28 @@
 
   <field>
     <name>created_by</name>
-    <type>int unsigned</type>
+    <type>datetime</type>
+    <required>true</required>
+
   </field>
+
+  <field>
+    <name>created_date</name>
+    <type>int unsigned</type>
+    <required>true</required>
+  </field>
+
 
    <field>
     <name>updated_by</name>
     <type>int unsigned</type>
+    <required>true</required>
   </field>
 
   <field>
     <name>updated_date</name>
-    <type>date</type>
+    <type>datetime</type>
+    <required>true</required>
   </field>
 
 

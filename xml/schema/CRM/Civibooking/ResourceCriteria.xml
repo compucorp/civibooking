@@ -24,7 +24,6 @@
     <title>Resource ID</title>
     <required>true</required>
     <comment>Foreign key to the resoure for this resource criteria.</comment>
-    <add>2.0</add>
    </field>
    <foreignKey>
     <name>resource_id</name>
@@ -33,13 +32,12 @@
     <onDelete>CASCADE</onDelete>
   </foreignKey>
 
-   <field>
+  <field>
     <name>criteria_id</name>
-    <title>Criteria ID</title>
-    <import>true</import>
-    <type>int unsigned</type>
+    <type>varchar</type>
+    <length>512</length>
+    <comment>Foreign key to the resource criteria option group.</comment>
     <required>true</required>
-   </field>
- 
+  </field>
 
 </table>

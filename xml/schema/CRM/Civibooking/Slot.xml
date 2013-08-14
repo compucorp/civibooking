@@ -31,12 +31,12 @@
   </foreignKey>
 
   <field>
-    <name>configuration_option_id</name>
+    <name>config_id</name>
     <type>int unsigned</type>
     <comment>FK to resource configuration option ID</comment>
   </field>
   <foreignKey>
-    <name>configuration_option_id</name>
+    <name>config_id</name>
     <table>civicrm_booking_resource_config_option</table>
     <key>id</key>
     <onDelete>CASCADE</onDelete>
@@ -44,17 +44,20 @@
 
   <field>
     <name>start</name>
-    <type>date</type>
+    <type>datetime</type>
+    <required>true</required>
   </field>
 
   <field>
     <name>end</name>
-    <type>date</type>
+    <type>datetime</type>
+    <required>true</required>
   </field>
 
   <field>
     <name>quantity</name>
     <type>int</type>
+    <required>true</required>
   </field>
 
   <field>
@@ -70,16 +73,16 @@
   <field>
     <name>is_cancelled</name>
     <type>boolean</type>
+    <required>true</required>
     <default>0</default>
   </field>
 
    <field>
     <name>is_deleted</name>
     <type>boolean</type>
+    <required>true</required>
     <default>0</default>
   </field>
-
-  
 
 
 </table>
