@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/CiviBooking</base>
+  <class>BookingConfig</class>
+  <name>civicrm_booking_config</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment></comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>false</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>financial_type_default</name>
+    <type>int unsigned</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>day_start_at</name>
+    <type>time</type>
+    <required>true</required>
+  </field>
+
+
+  <field>
+    <name>log_confirmation_email</name>
+    <type>boolean</type>
+    <required>true</required>
+    <default>0</default>
+  </field>
+
+  <field>
+    <name>selected_email_address</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>cc_email_address</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>bcc_email_address</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>slot_avaliable_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+
+  <field>
+    <name>slot_unavaliable_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+
+
+</table>
