@@ -33,7 +33,6 @@
   <field>
     <name>label</name>
     <type>varchar</type>
-    <default>1</default>
     <length>255</length>
     <comment></comment>
     <title>Label</title>
