@@ -23,7 +23,7 @@ class CRM_Civibooking_BAO_Resource extends CRM_Civibooking_DAO_Resource {
    * @static
    */
   static function create(&$params) {
-    $resourceDAO = new CRM_CiviBooking_DAO_Resource();
+    $resourceDAO = new CRM_Civibooking_DAO_Resource();
     $resourceDAO->copyValues($params);
     return $resourceDAO->save();
   }
