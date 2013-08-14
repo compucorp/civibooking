@@ -95,7 +95,7 @@ var subTotal = 0;
         var ev = scheduler.getEvent(eid);
         ev.readonly = true;
         var item = {
-          event_id: ev.id, 
+          id: ev.id, 
           resource_id: ev.resource_id,
           start_date: moment(data.start_date).format("YYYY-M-D HH:mm"),
           end_date: moment(data.end_date).format("YYYY-M-D HH:mm"),
@@ -118,6 +118,7 @@ var subTotal = 0;
       var resources = JSON.parse(cj.trim(cj("#resources").val()));
       _.each(resources, function (item, key){ 
         basket[key] = item;
+        item.readonly = true;
         slots.push(item);
         updateBasket(item);
       });
