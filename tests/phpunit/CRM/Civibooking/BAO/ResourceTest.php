@@ -17,7 +17,7 @@ class CRM_Civibooking_BAO_ResourceTest extends CiviUnitTestCase {
     parent::tearDown();
   }
 
-  
+
   function testCreate(){
     $params = array("label" => "conference room1",
                     "description" => "description",
@@ -31,6 +31,7 @@ class CRM_Civibooking_BAO_ResourceTest extends CiviUnitTestCase {
     $this->assertNotEmpty($dao->toArray());
   }
 
+  /*
   function testSearch(){
     $testObjects = CRM_Core_DAO::createTestObject('CRM_Civibooking_DAO_Resource')->toArray();
     $params = array("resource_id" => $testObjects['id'],
@@ -39,6 +40,6 @@ class CRM_Civibooking_BAO_ResourceTest extends CiviUnitTestCase {
     $this->assertNotNull($resources);
     $this->assertNotEmpty($resources);
     $this->assertEquals(1, sizeof($resources));
-  }
+  }*/
 
 }

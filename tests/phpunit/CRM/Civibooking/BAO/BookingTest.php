@@ -5,7 +5,7 @@ require_once 'CiviTest/CiviUnitTestCase.php';
 /**
  * FIXME
  */
-class CRM_Civibooking_BAO__BookingTest extends CiviUnitTestCase {
+class CRM_Civibooking_BAO_BookingTest extends CiviUnitTestCase {
   function setUp() {
     // If your test manipulates any SQL tables, then you should truncate
     // them to ensure a consisting starting point for all tests
@@ -17,17 +17,9 @@ class CRM_Civibooking_BAO__BookingTest extends CiviUnitTestCase {
     parent::tearDown();
   }
 
-  /**
-   * Test that 1^2 == 1
-   */
-  function testSquareOfOne() {
-    $this->assertEquals(1, 1*1);
-  }
-
-  /**
-   * Test that 8^2 == 64
-   */
-  function testSquareOfEight() {
-    $this->assertEquals(64, 8*8);
+  function testCreate(){
+    $params = array() ;
+    $dao = CRM_Civibooking_BAO_Booking::create($params);
+    $this->assertNotEmpty($dao->toArray());
   }
 }

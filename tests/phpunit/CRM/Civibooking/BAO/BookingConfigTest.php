@@ -17,17 +17,16 @@ class CRM_Civibooking_BAO_BookingConfigTest extends CiviUnitTestCase {
     parent::tearDown();
   }
 
-  /**
-   * Test that 1^2 == 1
-   */
-  function testSquareOfOne() {
-    $this->assertEquals(1, 1*1);
-  }
-
-  /**
-   * Test that 8^2 == 64
-   */
-  function testSquareOfEight() {
-    $this->assertEquals(64, 8*8);
+  function testCreate(){
+    $params = array("label" => "conference room1",
+                    "description" => "description",
+                    "weight" => 1,
+                    "resource_type" => "tc",
+                    "resource_location" => "location1",
+                    "is_unlimited" => 1,
+                    "is_active" => 1,
+                    "is_deleted" => 0) ;
+    $dao = CRM_Civibooking_BAO_Resource::create($params);
+    $this->assertNotEmpty($dao->toArray());
   }
 }
