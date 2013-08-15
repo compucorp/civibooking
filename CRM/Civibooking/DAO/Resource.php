@@ -194,7 +194,6 @@ class CRM_CiviBooking_DAO_Resource extends CRM_Core_DAO
           'title' => ts('Label') ,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
-          'default' => '',
         ) ,
         'booking_resource_description' => array(
           'name' => 'description',
