@@ -16,22 +16,21 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
       'version' => 3,
       'sequential' => 1,
       'label' =>  'Booking',
-      'name' => 'booking',
+      'name' => 'civibooking_acivity_booking',
       'weight' => 1,
       'is_active' => 0,
       'is_reserved' => 1
     );
     $result = civicrm_api('ActivityType', 'create', $params);
-    //dprint_r($result);
-    //exit;
-    $this->executeSqlFile('sql/civibooking.sql');
+    //$this->executeSqlFile('sql/civibooking.sql');
+    $this->executeSqlFile('sql/civibooking_sample.sql');
   }
 
   /**
    * Example: Run an external SQL script when the module is uninstalled
    */
-  public function uninstall() { 
-   $this->executeSqlFile('sql/civibooking.uninstall.sql');
+  public function uninstall() {
+   //$this->executeSqlFile('sql/civibooking.uninstall.sql');
   }
 
   /**
@@ -39,17 +38,7 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
    *
 */
   public function enable() {
-   
-    //disable activity type booking
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_value SET is_active = 1 WHERE option_group_id = 2 AND name = "booking"');
-
-    //disable all option groups related to civibooking
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "booking_status"');
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "resource_type"');
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "resource_criteria"');
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "resource_location"');
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "cancellation_charges"');
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 1 WHERE name = "size_unit"');
+   $this->executeSqlFile('sql/civibooking_enable.sql');
   }
 
   /**
@@ -57,17 +46,7 @@ class CRM_Civibooking_Upgrader extends CRM_Civibooking_Upgrader_Base {
    *
   */
   public function disable() {
-    //disable activity type booking
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_value SET is_active = 0 WHERE option_group_id = 2 AND name = "booking"');
-
-    //disable all option groups related to civibooking
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "booking_status"');
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "resource_type"');
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "resource_criteria"');
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "resource_location"');
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "cancellation_charges"');
-    CRM_Core_DAO::executeQuery('UPDATE civicrm_option_group SET is_active = 0 WHERE name = "size_unit"');
-
+   $this->executeSqlFile('sql/civibooking_disable.sql');
   }
 
   /**
