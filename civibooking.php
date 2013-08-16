@@ -59,12 +59,13 @@ function civibooking_civicrm_install() {
  * Implementation of hook_civicrm_uninstall
  */
 function civibooking_civicrm_uninstall() {
+  /*
   _civibooking_delete_option_group('booking_status');
   _civibooking_delete_option_group('resource_type');
   _civibooking_delete_option_group('resource_location');
   _civibooking_delete_option_group('resource_criteria');
   _civibooking_delete_option_group('cancellation_charges');
-  _civibooking_delete_option_group('size_unit');  
+  _civibooking_delete_option_group('size_unit');
   $ov = civicrm_api('OptionValue', 'getsingle', array(
       'version' => 3,
       'name' => 'booking',
@@ -74,7 +75,7 @@ function civibooking_civicrm_uninstall() {
       'version' => 3,
       'id' => $ov['id'],
     ));
-  }
+  }*/
   return _civibooking_civix_civicrm_uninstall();
 }
 
@@ -120,34 +121,6 @@ function civibooking_civicrm_managed(&$entities) {
 
 
 /**
-* Delete  option group 
-*
-* @param $name integer, option group name
-*
-*/
-function _civibooking_delete_option_group($name){
-  $getResult = civicrm_api('OptionGroup', 'getsingle', array(
-      'version' => 3,
-      'name' => $name,
-  ));
-  if($getResult['id']){
-    $ovResult = civicrm_api('OptionValue', 'get', array(
-            'version' => 3,
-            'option_group_id' =>  $getResult['id'],
-          ));
-      if($ovResult['values']){
-        foreach ($ovResult['values'] as $ov) {
-          $delResult = civicrm_api('OptionValue', 'delete', array(
-           'version' => 3,
-           'id' => $ov['id'],
-          ));
-        }
-       }
-    CRM_Core_DAO::executeQuery('DELETE FROM civicrm_option_group WHERE id = ' . $getResult['id']);
-  } 
-}
-
-/**
  * Add navigation for CiviBooking under "Administer" menu
  *
  * @param $params associated array of navigation menus
@@ -186,7 +159,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
     'sequential' => 1,
     'name' => 'resource_criteria')
    );
-   
+
    if($result['id']){
       $resourceCriteriaGId = $result['id'];
    }
@@ -200,7 +173,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
       $sizeUnitGid = $result['id'];
    }
 
- 
+
     //  Get the maximum key of $params
    $maxKey = (max(array_keys($params)));
 
@@ -235,7 +208,7 @@ function civibooking_civicrm_navigationMenu( &$params ) {
           'navID' => $manageResourcesKey ,
           'active' => 1
         ),
-        'child' =>  array( 
+        'child' =>  array(
           $bookingStatusKey => array(
             'attributes' => array(
               'label' => 'Booking status',
