@@ -37,12 +37,12 @@ CREATE TABLE `civicrm_booking` (
      `created_by` datetime NOT NULL   ,
      `created_date` int unsigned NOT NULL   ,
      `updated_by` int unsigned NOT NULL   ,
-     `updated_date` datetime NOT NULL    
+     `updated_date` datetime NOT NULL
 ,
     PRIMARY KEY ( `id` )
- 
- 
-,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE  
+
+
+,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -61,12 +61,12 @@ CREATE TABLE `civicrm_booking_config` (
      `cc_email_address` varchar(255)    ,
      `bcc_email_address` varchar(255)    ,
      `slot_avaliable_colour` varchar(10)    ,
-     `slot_unavaliable_colour` varchar(10)     
+     `slot_unavaliable_colour` varchar(10)
 ,
     PRIMARY KEY ( `id` )
- 
- 
- 
+
+
+
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -81,12 +81,12 @@ CREATE TABLE `civicrm_booking_cancellation` (
      `booking_id` int unsigned    COMMENT 'FK to Booking',
      `cancellation_date` datetime NOT NULL   ,
      `additional_charge` decimal(20,2) NOT NULL   ,
-     `comment` text     
+     `comment` text
 ,
     PRIMARY KEY ( `id` )
- 
- 
-,          CONSTRAINT FK_civicrm_booking_cancellation_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE  
+
+
+,          CONSTRAINT FK_civicrm_booking_cancellation_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -101,12 +101,12 @@ CREATE TABLE `civicrm_booking_resource_config_set` (
      `title` varchar(255) NOT NULL   ,
      `weight` int unsigned NOT NULL   ,
      `is_enabled` tinyint NOT NULL  DEFAULT 1 ,
-     `is_deleted` tinyint NOT NULL  DEFAULT 0  
+     `is_deleted` tinyint NOT NULL  DEFAULT 0
 ,
     PRIMARY KEY ( `id` )
- 
- 
- 
+
+
+
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 
@@ -129,12 +129,12 @@ CREATE TABLE `civicrm_booking_resource` (
      `resource_location` varchar(512) NOT NULL   COMMENT 'Type of resource location, link to option group',
      `is_unlimited` tinyint   DEFAULT 0 ,
      `is_enabled` tinyint   DEFAULT 1 ,
-     `is_deleted` tinyint   DEFAULT 0  
+     `is_deleted` tinyint   DEFAULT 0
 ,
     PRIMARY KEY ( `id` )
- 
- 
-,          CONSTRAINT FK_civicrm_booking_resource_set_id FOREIGN KEY (`set_id`) REFERENCES `civicrm_booking_resource_config_set`(`id`) ON DELETE CASCADE  
+
+
+,          CONSTRAINT FK_civicrm_booking_resource_set_id FOREIGN KEY (`set_id`) REFERENCES `civicrm_booking_resource_config_set`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -152,12 +152,12 @@ CREATE TABLE `civicrm_booking_resource_config_option` (
      `max_size` varchar(255)    ,
      `unit_id` varchar(512) NOT NULL   COMMENT 'Type of units, link to option group',
      `weight` int unsigned NOT NULL   ,
-     `is_enabled` tinyint NOT NULL  DEFAULT 1  
+     `is_enabled` tinyint NOT NULL  DEFAULT 1
 ,
     PRIMARY KEY ( `id` )
- 
- 
-,          CONSTRAINT FK_civicrm_booking_resource_config_option_set_id FOREIGN KEY (`set_id`) REFERENCES `civicrm_booking_resource_config_set`(`id`) ON DELETE CASCADE  
+
+
+,          CONSTRAINT FK_civicrm_booking_resource_config_option_set_id FOREIGN KEY (`set_id`) REFERENCES `civicrm_booking_resource_config_set`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -170,12 +170,12 @@ CREATE TABLE `civicrm_booking_resource_criteria` (
 
      `id` int unsigned NOT NULL AUTO_INCREMENT  ,
      `resource_id` int unsigned NOT NULL   COMMENT 'Foreign key to the resoure for this resource criteria.',
-     `criteria_id` varchar(512) NOT NULL   COMMENT 'Foreign key to the resource criteria option group.' 
+     `criteria_id` varchar(512) NOT NULL   COMMENT 'Foreign key to the resource criteria option group.'
 ,
     PRIMARY KEY ( `id` )
- 
- 
-,          CONSTRAINT FK_civicrm_booking_resource_criteria_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE  
+
+
+,          CONSTRAINT FK_civicrm_booking_resource_criteria_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -195,12 +195,12 @@ CREATE TABLE `civicrm_booking_slot` (
      `note` text    ,
      `parent_id` int unsigned    ,
      `is_cancelled` tinyint NOT NULL  DEFAULT 0 ,
-     `is_deleted` tinyint NOT NULL  DEFAULT 0  
+     `is_deleted` tinyint NOT NULL  DEFAULT 0
 ,
     PRIMARY KEY ( `id` )
- 
- 
-,          CONSTRAINT FK_civicrm_booking_slot_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_slot_config_id FOREIGN KEY (`config_id`) REFERENCES `civicrm_booking_resource_config_option`(`id`) ON DELETE CASCADE  
+
+
+,          CONSTRAINT FK_civicrm_booking_slot_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_slot_config_id FOREIGN KEY (`config_id`) REFERENCES `civicrm_booking_resource_config_option`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -213,10 +213,10 @@ CREATE TABLE `civicrm_booking_payment` (
 
      `id` int unsigned NOT NULL AUTO_INCREMENT  ,
      `booking_id` int unsigned NOT NULL   COMMENT 'Foreign key to the booking id for this payment.',
-     `contribution_id` int unsigned NOT NULL   COMMENT 'Foreign key to the contribution for this payment.' 
+     `contribution_id` int unsigned NOT NULL   COMMENT 'Foreign key to the contribution for this payment.'
 ,
     PRIMARY KEY ( `id` )
- 
- 
-,          CONSTRAINT FK_civicrm_booking_payment_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_payment_contribution_id FOREIGN KEY (`contribution_id`) REFERENCES `civicrm_contribution`(`id`) ON DELETE CASCADE  
+
+
+,          CONSTRAINT FK_civicrm_booking_payment_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_payment_contribution_id FOREIGN KEY (`contribution_id`) REFERENCES `civicrm_contribution`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
