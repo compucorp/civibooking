@@ -30,13 +30,12 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
     }else{
       $currencySymbols = $config->defaultCurrencySymbol;
     }
-    //TODO - GET Option group from name
-    $values = CRM_Core_OptionGroup::valuesByID(97);
-    $resources = array();
-    foreach ($values as $key => $value) {
-      $result = CRM_Civibooking_BAO_Resource::search(array('resource_type' => $key));
-      $rTypekey = trim(strtolower($key . '_' . $value));
-      $resources[$rTypekey]['label'] = $value;
+
+    $resourceTypes = CRM_Civibooking_BAO_Resource::getResourceTypes(false);
+    foreach ($resourceTypes as $key => $type) {
+      $result = CRM_Civibooking_BAO_Resource::getResourcesByType($key);
+      $rTypekey = trim(strtolower($key . '_' . $type['label']));
+      $resources[$rTypekey]['label'] = $type['label'];
       $resources[$rTypekey]['child'] = $result;
     }
 
@@ -44,8 +43,8 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
     $this->assign('currencySymbols', $currencySymbols);
 
     self::registerScripts();
-  
-    
+
+
   }
 
   /**
@@ -57,10 +56,10 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
    * @return None
    */
   function setDefaultValues() {
-   
+
     $defaults = array();
 
-  
+
     return $defaults;
   }
 
@@ -71,7 +70,7 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
    * @access public
    */
   public function buildQuickForm() {
-    $this->add('textarea', 
+    $this->add('textarea',
               'resources',
                ts('Resource(s)'),
                FALSE);
@@ -82,7 +81,7 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
         'name' => ts('Next >>'),
         'spacing' => '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;',
         'isDefault' => TRUE,
-      ),    
+      ),
     );
 
     $this->addButtons($buttons);
@@ -92,10 +91,10 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
 
 
   public function postProcess() {
-    dprint_r($this->_action); 
+    dprint_r($this->_action);
 
     //$params = $ids = array();
- 
+
 
     $params = $this->exportValues();
    // dprint_r($params);
@@ -132,7 +131,7 @@ class CRM_Civibooking_Form_AddResource extends CRM_Core_Form {
       ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.css', 92, 'page-header')
       ->addStyleFile('uk.co.compucorp.civicrm.civibooking', 'css/civibooking.css', 92, 'page-header')
 
-      
+
       /* ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE) */
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.civibooking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
