@@ -7,7 +7,7 @@ require_once 'CiviTest/CiviUnitTestCase.php';
  */
 class api_v3_ResourceConfigSetTest extends CiviUnitTestCase {
 
-  //protected $entity = 'ResourceConfigSet';
+  protected $entity = 'ResourceConfigSet';
   //protected $params;
 
   function setUp() {
@@ -19,15 +19,33 @@ class api_v3_ResourceConfigSetTest extends CiviUnitTestCase {
     parent::setUp();
   }
 
+
   function tearDown() {
     parent::tearDown();
   }
+
+   /**
+   * test create function
+   */
+  public function testCreate() {
+    $params = array("title" =>  "title_1",
+                    "weight"=> 1,
+                    "is_enabled"=> 1,
+                    "is_deleted"=> 0
+                    );
+    $result = $this->callAPIAndDocument('ResourceConfigSet', 'create', $params, __FUNCTION__, __FILE__);
+    $this->assertEquals(1, $result['count']);
+    $this->assertGreaterThan(0, $result['id']);
+
+  }
+
+
 
   public function testGet(){
     $testObject = CRM_Core_DAO::createTestObject('CRM_Civibooking_DAO_ResourceConfigSet')->toArray();
     $configSet = $this->callAPISuccess('ResourceConfigSet', 'Create', $testObject);
     $result = $this->callAPISuccess('ResourceConfigSet', 'Get', array(
-      'id' => $testObject['id'],
+      'id' => $configSet['id'],
       'sequential' => 1,
       )
     );
