@@ -17,9 +17,4 @@ class CRM_Civibooking_BAO_CancellationTest extends CiviUnitTestCase {
     parent::tearDown();
   }
 
-  function testCreate(){
-    $params = array() ;
-    $dao = CRM_Civibooking_BAO_Cancellation::create($params);
-    $this->assertNotEmpty($dao->toArray());
-  }
 }

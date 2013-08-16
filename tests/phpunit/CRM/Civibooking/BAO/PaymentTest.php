@@ -17,9 +17,4 @@ class CRM_Civibooking_BAO_PaymentTest extends CiviUnitTestCase {
     parent::tearDown();
   }
 
-  function testCreate(){
-    $params = array() ;
-    $dao = CRM_Civibooking_BAO_Payment::create($params);
-    $this->assertNotEmpty($dao->toArray());
-  }
 }

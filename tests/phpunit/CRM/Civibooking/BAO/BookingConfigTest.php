@@ -17,16 +17,4 @@ class CRM_Civibooking_BAO_BookingConfigTest extends CiviUnitTestCase {
     parent::tearDown();
   }
 
-  function testCreate(){
-    $params = array("label" => "conference room1",
-                    "description" => "description",
-                    "weight" => 1,
-                    "resource_type" => "tc",
-                    "resource_location" => "location1",
-                    "is_unlimited" => 1,
-                    "is_active" => 1,
-                    "is_deleted" => 0) ;
-    $dao = CRM_Civibooking_BAO_Resource::create($params);
-    $this->assertNotEmpty($dao->toArray());
-  }
 }

@@ -17,9 +17,5 @@ class CRM_Civibooking_BAO_ResourceConfigOptionTest extends CiviUnitTestCase {
     parent::tearDown();
   }
 
-  function testCreate(){
-    $params = array() ;
-    $dao = CRM_Civibooking_BAO_Resource::create($params);
-    $this->assertNotEmpty($dao->toArray());
-  }
+
 }
