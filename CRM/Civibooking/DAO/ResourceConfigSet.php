@@ -158,7 +158,7 @@ class CRM_CiviBooking_DAO_ResourceConfigSet extends CRM_Core_DAO
           'name' => 'is_enabled',
           'type' => CRM_Utils_Type::T_BOOLEAN,
           'required' => true,
-          'default' => '',
+          'default' => 1,
         ) ,
         'is_deleted' => array(
           'name' => 'is_deleted',
