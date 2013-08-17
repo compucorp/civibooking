@@ -13,7 +13,7 @@ function _civicrm_api3_booking_resource_create_spec(&$spec) {
 }
 
 /**
- * Resource.Create API
+ * BookingResource.Create API
  *
  * @param array $params
  * @return array API result descriptor
@@ -29,7 +29,7 @@ function civicrm_api3_booking_resource_create($params) {
 
 
 /**
- * Resource.Get API
+ * BookingResource.Get API
  *
  * @param array $params
  * @return array API result descriptor
