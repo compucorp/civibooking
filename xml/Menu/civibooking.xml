@@ -2,53 +2,53 @@
 <menu>
   <item>
     <path>civicrm/booking/add</path>
-    <page_callback>CRM_Civibooking_Controller_Booking</page_callback>
+    <page_callback>CRM_Booking_Controller_Booking</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/tab</path>
-    <page_callback>CRM_Civibooking_Page_Tab</page_callback>
+    <page_callback>CRM_Booking_Page_Tab</page_callback>
     <title>Tab</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/dashboard</path>
-    <page_callback>CRM_Civibooking_Page_Dashboard</page_callback>
+    <page_callback>CRM_Booking_Page_Dashboard</page_callback>
     <title>Booking Dashboard</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/resource</path>
-    <page_callback>CRM_Civibooking_Page_Resource</page_callback>
+    <page_callback>CRM_Booking_Page_Resource</page_callback>
     <title>Manange resources</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/search</path>
-    <page_callback>CRM_Civibooking_Form_Search</page_callback>
+    <page_callback>CRM_Booking_Form_Search</page_callback>
     <title>Find booking</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/diary</path>
-    <page_callback>CRM_Civibooking_Page_Diary</page_callback>
+    <page_callback>CRM_Booking_Page_Diary</page_callback>
     <title>Diary</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/ajax/resourcesearch</path>
-    <page_callback>CRM_Civibooking_Page_AJAX::searchResource</page_callback>
+    <page_callback>CRM_Booking_Page_AJAX::searchResource</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/ajax/slots</path>
-    <page_callback>CRM_Civibooking_Page_AJAX::getSlots</page_callback>
+    <page_callback>CRM_Booking_Page_AJAX::getSlots</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/admin/setting/preferences/booking</path>
     <page_callback>CRM_Admin_Form_Preferences_Booking</page_callback>
-    <title>CiviBooking Component Settings</title>
+    <title>Booking Component Settings</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>

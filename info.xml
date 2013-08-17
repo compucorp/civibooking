@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <extension key="uk.co.compucorp.civicrm.civibooking" type="module">
-  <file>civibooking</file>
+  <file>booking</file>
   <name>CiviBooking</name>
   <description>A CMS independent extension to allow organisations to manage a group of resources (i.e. rooms) offering these to constituents for a fee.</description>
   <license>the GNU Affero General Public License 3 (GNU AGPL 3) and the CiviCRM Licensing Exception.</license>
@@ -16,6 +16,6 @@
   </compatibility>
   <comments>This is a new, undeveloped module</comments>
   <civix>
-    <namespace>CRM/Civibooking</namespace>
+    <namespace>CRM/Booking</namespace>
   </civix>
 </extension>
