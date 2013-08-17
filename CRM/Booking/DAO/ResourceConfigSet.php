@@ -140,7 +140,7 @@ class CRM_Booking_DAO_ResourceConfigSet extends CRM_Core_DAO
           'title' => ts('ID') ,
           'required' => true,
         ) ,
-        'booking_resource_config_option_set_label' => array(
+        'title' => array(
           'name' => 'title',
           'type' => CRM_Utils_Type::T_STRING,
           'title' => ts('Title') ,
@@ -179,7 +179,7 @@ class CRM_Booking_DAO_ResourceConfigSet extends CRM_Core_DAO
     if (!(self::$_fieldKeys)) {
       self::$_fieldKeys = array(
         'id' => 'id',
-        'title' => 'booking_resource_config_option_set_label',
+        'title' => 'title',
         'weight' => 'weight',
         'is_enabled' => 'is_enabled',
         'is_deleted' => 'is_deleted',

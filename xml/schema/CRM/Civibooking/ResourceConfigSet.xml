@@ -27,7 +27,6 @@
     <title>Title</title>
     <required>true</required>
     <!-- <export>true</export> -->
-    <uniqueName>booking_resource_config_option_set_label</uniqueName>
   </field>
   <!--
   <field>

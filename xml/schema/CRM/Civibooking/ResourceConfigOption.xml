@@ -41,7 +41,6 @@
     <title>Label</title>
     <!-- <export>true</export>-->
     <required>true</required>
-    <uniqueName>booking_resource_config_option_label</uniqueName>
   </field>
   <!--
   <field>
@@ -62,18 +61,15 @@
     <length>255</length>
   </field>
 
- <field>
+  <field>
     <name>unit_id</name>
-    <type>varchar</type>
-    <!-- <default>1</default>-->
-    <length>512</length>
-    <required>true</required>
-    <comment>Type of units, link to option group</comment>
-    <title>Unit id</title>
-    <required>true</required>
-    <!-- <export>true</export>
-    <uniqueName>booking_units</uniqueName>
-     -->
+    <title>Unit ID</title>
+    <type>int unsigned</type>
+    <comment>The unit associated with this config option. Implicit FK to option_value row in booking_size_unit option_group.</comment>
+    <add>4.4</add>
+    <pseudoconstant>
+      <optionGroupName>booking_size_unit</optionGroupName>
+    </pseudoconstant>
   </field>
 
    <field>

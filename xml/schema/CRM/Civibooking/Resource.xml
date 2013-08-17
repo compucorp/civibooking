@@ -58,28 +58,25 @@
   </field>
 
   <field>
-    <name>resource_type</name>
-    <type>varchar</type>
-    <!-- <default>1</default> -->
-    <length>512</length>
-    <required>true</required>
-    <comment>Type of resource=, link to option group</comment>
-    <title>Resource type</title>
-    <!-- <export>true</export> -->
-    <uniqueName>booking_resource_type</uniqueName>
+    <name>type_id</name>
+    <title>Type ID</title>
+    <type>int unsigned</type>
+    <comment>The type associated with this resource. Implicit FK to option_value row in booking_resource_type option_group.</comment>
+    <add>4.4</add>
+    <pseudoconstant>
+      <optionGroupName>booking_resource_type</optionGroupName>
+    </pseudoconstant>
   </field>
 
-
   <field>
-    <name>resource_location</name>
-    <type>varchar</type>
-    <!-- <default>1</default>-->
-    <length>512</length>
-    <required>true</required>
-    <comment>Type of resource location, link to option group</comment>
-    <title>Resource location</title>
-    <!-- <export>true</export> -->
-    <uniqueName>booking_resource_location</uniqueName>
+    <name>location_id</name>
+    <title>Location ID</title>
+    <type>int unsigned</type>
+    <comment>The location associated with this resource. Implicit FK to option_value row in booking_resource_location option_group.</comment>
+    <add>4.4</add>
+    <pseudoconstant>
+      <optionGroupName>booking_resource_location</optionGroupName>
+    </pseudoconstant>
   </field>
 
    <field>

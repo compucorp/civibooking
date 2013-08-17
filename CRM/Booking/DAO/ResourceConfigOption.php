@@ -115,9 +115,9 @@ class CRM_Booking_DAO_ResourceConfigOption extends CRM_Core_DAO
    */
   public $max_size;
   /**
-   * Type of units, link to option group
+   * The unit associated with this config option. Implicit FK to option_value row in booking_size_unit option_group.
    *
-   * @var string
+   * @var int unsigned
    */
   public $unit_id;
   /**
@@ -180,7 +180,7 @@ class CRM_Booking_DAO_ResourceConfigOption extends CRM_Core_DAO
           'required' => true,
           'FKClassName' => 'CRM_Booking_DAO_ResourceConfigSet',
         ) ,
-        'booking_resource_config_option_label' => array(
+        'label' => array(
           'name' => 'label',
           'type' => CRM_Utils_Type::T_STRING,
           'title' => ts('Label') ,
@@ -203,11 +203,11 @@ class CRM_Booking_DAO_ResourceConfigOption extends CRM_Core_DAO
         ) ,
         'unit_id' => array(
           'name' => 'unit_id',
-          'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Unit id') ,
-          'required' => true,
-          'maxlength' => 512,
-          'size' => CRM_Utils_Type::HUGE,
+          'type' => CRM_Utils_Type::T_INT,
+          'title' => ts('Unit ID') ,
+          'pseudoconstant' => array(
+            'optionGroupName' => 'booking_size_unit',
+          )
         ) ,
         'weight' => array(
           'name' => 'weight',
@@ -237,7 +237,7 @@ class CRM_Booking_DAO_ResourceConfigOption extends CRM_Core_DAO
       self::$_fieldKeys = array(
         'id' => 'id',
         'set_id' => 'set_id',
-        'label' => 'booking_resource_config_option_label',
+        'label' => 'label',
         'price' => 'price',
         'max_size' => 'max_size',
         'unit_id' => 'unit_id',
