@@ -5,7 +5,7 @@ require_once 'CiviTest/CiviUnitTestCase.php';
 /**
  * FIXME
  */
-class api_v3_ResourceTest extends CiviUnitTestCase {
+class api_v3_BookingResourceTest extends CiviUnitTestCase {
   function setUp() {
     // If your test manipulates any SQL tables, then you should truncate
     // them to ensure a consisting starting point for all tests
@@ -71,8 +71,8 @@ class api_v3_ResourceTest extends CiviUnitTestCase {
     );
 
 
-    $resource =  $this->callAPISuccess('Resource', 'Create', $params);
-    $result = $this->callAPISuccess('Resource', 'Get', array(
+    $resource =  $this->callAPISuccess('BookingResource', 'Create', $params);
+    $result = $this->callAPISuccess('BookingResource', 'Get', array(
       'id' => $resource['id'],
       'sequential' => 1,
       'api.resource_config_set.get' => array(

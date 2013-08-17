@@ -5,7 +5,7 @@ require_once 'CiviTest/CiviUnitTestCase.php';
 /**
  * FIXME
  */
-class api_v3_ResourceConfigSetTest extends CiviUnitTestCase {
+class api_v3_BookingResourceConfigSetTest extends CiviUnitTestCase {
 
   protected $entity = 'ResourceConfigSet';
   //protected $params;
