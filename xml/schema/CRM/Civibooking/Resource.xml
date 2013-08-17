@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 
 <table>
-  <base>CRM/CiviBooking</base>
+  <base>CRM/Booking</base>
   <class>Resource</class>
   <name>civicrm_booking_resource</name>
   <comment></comment>
@@ -85,19 +85,19 @@
    <field>
     <name>is_unlimited</name>
     <type>boolean</type>
-    <default>0</default>
+    <required>true</required>
+
    </field>
 
    <field>
     <name>is_enabled</name>
     <type>boolean</type>
-    <default>1</default>
+    <required>true</required>
    </field>
 
    <field>
     <name>is_deleted</name>
     <type>boolean</type>
-    <default>0</default>
    </field>
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 
 <table>
-  <base>CRM/CiviBooking</base>
+  <base>CRM/Booking</base>
   <class>BookingConfig</class>
   <name>civicrm_booking_config</name>
   <comment></comment>

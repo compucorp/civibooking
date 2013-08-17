@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 
 <table>
-  <base>CRM/CiviBooking</base>
+  <base>CRM/Booking</base>
   <class>ResourceConfigOption</class>
   <name>civicrm_booking_resource_config_option</name>
   <comment></comment>
@@ -87,8 +87,7 @@
     <name>is_enabled</name>
     <type>boolean</type>
     <required>true</required>
-    <default>1</default>
    </field>
-  
+
 
 </table>

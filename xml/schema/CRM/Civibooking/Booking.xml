@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 
 <table>
-  <base>CRM/CiviBooking</base>
+  <base>CRM/Booking</base>
   <class>Booking</class>
   <name>civicrm_booking</name>
   <comment></comment>
@@ -106,7 +106,6 @@
    <field>
     <name>is_deleted</name>
     <type>boolean</type>
-    <default>0</default>
   </field>
 
   <field>

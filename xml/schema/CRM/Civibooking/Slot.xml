@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 
 <table>
-  <base>CRM/CiviBooking</base>
+  <base>CRM/Booking</base>
   <class>Slot</class>
   <name>civicrm_booking_slot</name>
   <comment></comment>
@@ -73,15 +73,11 @@
   <field>
     <name>is_cancelled</name>
     <type>boolean</type>
-    <required>true</required>
-    <default>0</default>
   </field>
 
    <field>
     <name>is_deleted</name>
     <type>boolean</type>
-    <required>true</required>
-    <default>0</default>
   </field>
 
 

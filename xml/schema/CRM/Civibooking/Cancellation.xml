@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 
 <table>
-  <base>CRM/CiviBooking</base>
+  <base>CRM/Booking</base>
   <class>Cancellation</class>
   <name>civicrm_booking_cancellation</name>
   <comment></comment>
@@ -45,7 +45,7 @@
     <title>Additional charge</title>
     <type>decimal</type>
     <required>true</required>
-    <!--<default>0</default> 
+    <!--<default>0</default>
     <import>true</import>
     <headerPattern>/non?.?deduct/i</headerPattern>
     <dataPattern>/^\d+(\.\d{2})?$/</dataPattern>
