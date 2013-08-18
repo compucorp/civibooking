@@ -87,7 +87,7 @@
    </field>
 
    <field>
-    <name>is_enabled</name>
+    <name>is_active</name>
     <type>boolean</type>
     <required>true</required>
    </field>
