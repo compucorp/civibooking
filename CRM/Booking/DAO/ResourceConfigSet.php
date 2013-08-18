@@ -107,7 +107,7 @@ class CRM_Booking_DAO_ResourceConfigSet extends CRM_Core_DAO
    *
    * @var boolean
    */
-  public $is_enabled;
+  public $is_active;
   /**
    *
    * @var boolean
@@ -154,8 +154,8 @@ class CRM_Booking_DAO_ResourceConfigSet extends CRM_Core_DAO
           'title' => ts('Weight') ,
           'required' => true,
         ) ,
-        'is_enabled' => array(
-          'name' => 'is_enabled',
+        'is_active' => array(
+          'name' => 'is_active',
           'type' => CRM_Utils_Type::T_BOOLEAN,
           'required' => true,
         ) ,
@@ -181,7 +181,7 @@ class CRM_Booking_DAO_ResourceConfigSet extends CRM_Core_DAO
         'id' => 'id',
         'title' => 'title',
         'weight' => 'weight',
-        'is_enabled' => 'is_enabled',
+        'is_active' => 'is_active',
         'is_deleted' => 'is_deleted',
       );
     }
