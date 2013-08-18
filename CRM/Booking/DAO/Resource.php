@@ -135,7 +135,7 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
    *
    * @var boolean
    */
-  public $is_enabled;
+  public $is_active;
   /**
    *
    * @var boolean
@@ -229,8 +229,8 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
           'type' => CRM_Utils_Type::T_BOOLEAN,
           'required' => true,
         ) ,
-        'is_enabled' => array(
-          'name' => 'is_enabled',
+        'is_active' => array(
+          'name' => 'is_active',
           'type' => CRM_Utils_Type::T_BOOLEAN,
           'required' => true,
         ) ,
@@ -261,7 +261,7 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'type_id' => 'type_id',
         'location_id' => 'location_id',
         'is_unlimited' => 'is_unlimited',
-        'is_enabled' => 'is_enabled',
+        'is_active' => 'is_active',
         'is_deleted' => 'is_deleted',
       );
     }
