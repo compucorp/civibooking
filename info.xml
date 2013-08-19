@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<extension key="civibooking" type="module">
+<extension key="uk.co.compucorp.civicrm.booking" type="module">
   <file>booking</file>
   <name>CiviBooking</name>
   <description>A CMS independent extension to allow organisations to manage a group of resources (i.e. rooms) offering these to constituents for a fee.</description>
