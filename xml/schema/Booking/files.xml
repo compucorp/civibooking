@@ -2,6 +2,7 @@
 
 <tables xmlns:xi="http://www.w3.org/2001/XInclude">
 <xi:include href="Booking.xml"                 parse="xml" />
+<xi:include href="Booking.xml"                 parse="xml" />
 <xi:include href="BookingConfig.xml"           parse="xml" />s
 <xi:include href="Resource.xml"         	   parse="xml" />
 <xi:include href="Cancellation.xml"            parse="xml" />

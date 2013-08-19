@@ -20,25 +20,42 @@
 
   <field>
     <name>primary_contact_id</name>
+    <uniqueName>booking_primary_contact_id</uniqueName>
+    <title>Contact ID</title>
     <type>int unsigned</type>
+    <required>true</required>
+    <import>true</import>
+    <headerPattern>/contact(.?id)?/i</headerPattern>
+    <dataPattern>/^\d+$/</dataPattern>
     <comment>FK to Contact ID</comment>
+    <add>4.4</add>
   </field>
   <foreignKey>
     <name>primary_contact_id</name>
     <table>civicrm_contact</table>
     <key>id</key>
+    <add>4.4</add>
     <onDelete>CASCADE</onDelete>
   </foreignKey>
 
+
   <field>
     <name>secondary_contact_id</name>
+    <uniqueName>booking_secondary_contact_id</uniqueName>
+    <title>Contact ID</title>
     <type>int unsigned</type>
+    <required>true</required>
+    <import>true</import>
+    <headerPattern>/contact(.?id)?/i</headerPattern>
+    <dataPattern>/^\d+$/</dataPattern>
     <comment>FK to Contact ID</comment>
+    <add>4.4</add>
   </field>
   <foreignKey>
     <name>secondary_contact_id</name>
     <table>civicrm_contact</table>
     <key>id</key>
+    <add>4.4</add>
     <onDelete>CASCADE</onDelete>
   </foreignKey>
 
