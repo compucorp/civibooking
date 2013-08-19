@@ -130,7 +130,7 @@ function booking_civicrm_navigationMenu( &$params ) {
    $result = civicrm_api('OptionGroup', 'getsingle', array(
     'version' => 3,
     'sequential' => 1,
-    'name' => 'booking_status')
+    'name' => 'booking_booking_status')
    );
    if($result['id']){
       $bookingStatusGid = $result['id'];
@@ -139,7 +139,7 @@ function booking_civicrm_navigationMenu( &$params ) {
    $result = civicrm_api('OptionGroup', 'getsingle', array(
     'version' => 3,
     'sequential' => 1,
-    'name' => 'resource_type')
+    'name' => 'booking_resource_type')
    );
    if($result['id']){
       $resourceTypeGid = $result['id'];
@@ -148,7 +148,7 @@ function booking_civicrm_navigationMenu( &$params ) {
    $result = civicrm_api('OptionGroup', 'getsingle', array(
     'version' => 3,
     'sequential' => 1,
-    'name' => 'resource_location')
+    'name' => 'booking_resource_location')
    );
    if($result['id']){
       $resourceLocationGId = $result['id'];
@@ -157,7 +157,7 @@ function booking_civicrm_navigationMenu( &$params ) {
    $result = civicrm_api('OptionGroup', 'getsingle', array(
     'version' => 3,
     'sequential' => 1,
-    'name' => 'resource_criteria')
+    'name' => 'booking_resource_criteria')
    );
 
    if($result['id']){
@@ -167,7 +167,7 @@ function booking_civicrm_navigationMenu( &$params ) {
    $result = civicrm_api('OptionGroup', 'getsingle', array(
     'version' => 3,
     'sequential' => 1,
-    'name' => 'size_unit')
+    'name' => 'booking_size_unit')
    );
    if($result['id']){
       $sizeUnitGid = $result['id'];
