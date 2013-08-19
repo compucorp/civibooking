@@ -98,11 +98,11 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
 
   /**
    * Sets the Resource's is_deleted flag in the database
-   */
+   *
   public function delete() {
     $this->is_deleted = 1;
     $this->save();
-  }
+  }*/
 
 
 }
