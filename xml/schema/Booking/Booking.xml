@@ -20,8 +20,8 @@
 
   <field>
     <name>primary_contact_id</name>
-    <uniqueName>booking_primary_contact_id</uniqueName>
-    <title>Contact ID</title>
+    <uniqueName>primary_contact_id</uniqueName>
+    <title>Primary Contact ID</title>
     <type>int unsigned</type>
     <required>true</required>
     <import>true</import>
@@ -41,8 +41,8 @@
 
   <field>
     <name>secondary_contact_id</name>
-    <uniqueName>booking_secondary_contact_id</uniqueName>
-    <title>Contact ID</title>
+    <uniqueName>secondary_contact_id</uniqueName>
+    <title>Secondary Contact ID</title>
     <type>int unsigned</type>
     <required>true</required>
     <import>true</import>
