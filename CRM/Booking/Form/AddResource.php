@@ -32,6 +32,7 @@ class CRM_Booking_Form_AddResource extends CRM_Core_Form {
     }
 
     $resourceTypes = CRM_Booking_BAO_Resource::getResourceTypes(false);
+    $resources = array();
     foreach ($resourceTypes as $key => $type) {
       $result = CRM_Booking_BAO_Resource::getResourcesByType($key);
       $rTypekey = trim(strtolower($key . '_' . $type['label']));
@@ -127,26 +128,26 @@ class CRM_Booking_Form_AddResource extends CRM_Core_Form {
 
     CRM_Core_Resources::singleton()
      // ->addStyleFile('uk.co.compucorp.civicrm.Booking', 'css/bootstrap-modal.css', 90, 'page-header')
-      ->addStyleFile('uk.co.compucorp.civicrm.Booking', 'css/schedule.css', 91, 'page-header')
-      ->addStyleFile('uk.co.compucorp.civicrm.Booking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.css', 92, 'page-header')
-      ->addStyleFile('uk.co.compucorp.civicrm.Booking', 'css/Booking.css', 92, 'page-header')
+      ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/schedule.css', 91, 'page-header')
+      ->addStyleFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.css', 92, 'page-header')
+      ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
 
 
       /* ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE) */
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
 
       /*->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE) */
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.js', 132, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.js', 132, 'html-header')
       //->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_mvc.js', 133, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_timeline.js', 134, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_treetimeline.js', 135, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_minical.js', 136, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_readonly.js', 137, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_collision.js', 138, 'html-header');
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_timeline.js', 134, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_treetimeline.js', 135, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_minical.js', 136, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_readonly.js', 137, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_collision.js', 138, 'html-header');
 
 
       /*
@@ -158,7 +159,7 @@ class CRM_Booking_Form_AddResource extends CRM_Core_Form {
       ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/resource-search/collection.js', 165, 'html-header'); */
 
 
-    $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.Booking') . '/templates/';
+    $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.booking') . '/templates/';
     $region = CRM_Core_Region::instance('page-header');
     foreach (glob($templateDir . 'CRM/Booking/tpl/*.tpl') as $file) {
       $fileName = substr($file, strlen($templateDir));

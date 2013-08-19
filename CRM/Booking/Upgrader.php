@@ -16,14 +16,14 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
       'version' => 3,
       'sequential' => 1,
       'label' =>  'Booking',
-      'name' => 'civibooking_acivity_booking',
+      'name' => 'booking_acivity_booking',
       'weight' => 1,
       'is_active' => 0,
       'is_reserved' => 1
     );
     $result = civicrm_api('ActivityType', 'create', $params);
     //$this->executeSqlFile('sql/civibooking.sql');
-    $this->executeSqlFile('sql/civibooking_sample.sql');
+    //$this->executeSqlFile('sql/civibooking_sample.sql');
   }
 
   /**

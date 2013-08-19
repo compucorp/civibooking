@@ -32,11 +32,11 @@
       <div class="crm-accordion-wrapper crm-custom_search_form-accordion {if $rows}collapsed{/if}">
         <div class="crm-accordion-header crm-master-accordion-header">{ts}Check resource avaliability{/ts}</div><!-- /.crm-accordion-header -->
         <div id="search-form" class="crm-accordion-body">
-          
+
         </div><!-- /.crm-accordion-body -->
       </div><!-- /.crm-accordion-wrapper -->
     </div><!-- /.crm-form-block -->
-   
+
   *}
 
  <div id="scheduler">
@@ -47,7 +47,7 @@
           <div class="dhx_cal_today_button"></div>
           <div class="dhx_cal_date"></div>
           {* <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
-          <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div> 
+          <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
           <div class="dhx_cal_tab" name="timeline_tab" style="right:204;"></div>
           <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div> *}
           <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="show_minical()">&nbsp;</div>
@@ -55,7 +55,7 @@
         <div class="dhx_cal_header">
         </div>
         <div class="dhx_cal_data">
-        </div>    
+        </div>
       </div>
      </div>
 
@@ -72,7 +72,7 @@
               <th></th>
            </tr>
           <tbody>
-         
+
           </tbody>
 
           <tfoot>
@@ -85,13 +85,13 @@
             </tr>
           </tfoot>
   </table>
-        
+
       </div>
 
   <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl"}</div>
   </div>
 </div>
-{crmScript ext=uk.co.compucorp.civicrm.civibooking file=js/booking-process/manage-resource.js}
+{crmScript ext=uk.co.compucorp.civicrm.booking file=js/booking-process/manage-resource.js}
 
 {literal}
 <script type="text/javascript">
@@ -111,12 +111,12 @@ cj(function() {
                 {literal}
              ]},
           {/literal}
-        {/foreach} 
+        {/foreach}
       {literal}
   ];
-  
+
   jQuery().bookingscheduler({
-    elements: elements, 
+    elements: elements,
     url: CRM.url('civicrm/booking/ajax/slots'),
     loadMode: 'day',
     date: new Date(),

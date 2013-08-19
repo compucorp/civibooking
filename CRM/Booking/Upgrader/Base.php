@@ -39,7 +39,7 @@ class CRM_Booking_Upgrader_Base {
     if (! self::$instance) {
       // FIXME auto-generate
       self::$instance = new CRM_Booking_Upgrader(
-        'uk.co.compucorp.civicrm.civibooking',
+        'uk.co.compucorp.civicrm.booking',
         realpath(__DIR__ .'/../../../')
       );
     }
