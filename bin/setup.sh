@@ -16,12 +16,11 @@ if [ ! -f "$CALLEDPATH/setup.conf" ]; then
 fi
 
 source "$CALLEDPATH/setup.conf"
-
 cp $CIVIROOT/xml/schema/Schema.xml $CIVIROOT/xml/schema/Schema.xml.backup
 
 cp $EXTROOT/xml/schema/Schema.xml $CIVIROOT/xml/schema/Schema.xml
 if [ ! -e "$CIVIROOT/xml/schema/Booking" ] ; then
-  ln -s $EXTROOT/xml/schema/Volunteer $CIVIROOT/xml/schema/Booking
+  ln -s $EXTROOT/xml/schema/Booking $CIVIROOT/xml/schema/Booking
 fi
 cd $CIVIROOT/xml
 php GenCode.php
