@@ -18,11 +18,11 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
            civicrm_booking_resource.label,
            civicrm_booking_resource.description,
            civicrm_booking_resource.weight,
-           civicrm_booking_resource.resource_type,
-           civicrm_booking_resource.resource_location,
+           civicrm_booking_resource.type_id,
+           civicrm_booking_resource.location_id,
            civicrm_booking_resource.is_unlimited
      FROM  civicrm_booking_resource
-     WHERE civicrm_booking_resource.resource_type = %1";
+     WHERE civicrm_booking_resource.type_id = %1";
 
     $resources = array();
     $dao = CRM_Core_DAO::executeQuery($query, $params);
@@ -33,11 +33,10 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
         'label' => $dao->label,
         'description' => $dao->description,
         'weight' => $dao->weight,
-        'resource_type' => $dao->resource_type,
-        'resource_location' => $dao->resource_location,
+        'type_id' => $dao->type_id,
+        'location_id' => $dao->location_id,
         'is_unlimited' => $dao->is_unlimited,
       );
-
     }
     return $resources;
   }
@@ -56,7 +55,10 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
       }
 
       $query = "
-          SELECT civicrm_option_value.label, civicrm_option_value.value, civicrm_option_value.option_group_id
+          SELECT civicrm_option_value.id,
+                 civicrm_option_value.label,
+                 civicrm_option_value.value,
+                 civicrm_option_value.option_group_id
           FROM civicrm_option_value
           INNER JOIN civicrm_booking_resource ON civicrm_option_value.option_group_id = $typeGroupId
           AND civicrm_booking_resource.type_id = civicrm_option_value.id";
@@ -66,7 +68,8 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
       $resourceTypes = array();
       $dao = CRM_Core_DAO::executeQuery($query);
       while ($dao->fetch()) {
-         $resourceTypes[$dao->value] = array(
+         $resourceTypes[$dao->id] = array(
+          'id' => $dao->id,
           'label' => $dao->label,
           'value' => $dao->value,
           'option_group_id' => $dao->option_group_id
