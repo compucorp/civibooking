@@ -36,6 +36,8 @@
     <length>255</length>
     <comment></comment>
     <title>Label</title>
+    <required>true</required>
+
     <!-- <export>true</export>-->
     <uniqueName>booking_resource_label</uniqueName>
   </field>
@@ -51,16 +53,10 @@
   </field>
 
   <field>
-    <name>weight</name>
-    <type>int</type>
-    <required>true</required>
-    <!-- <default>1</default> -->
-  </field>
-
-  <field>
     <name>type_id</name>
     <title>Type ID</title>
     <type>int unsigned</type>
+    <required>true</required>
     <comment>The type associated with this resource. Implicit FK to option_value row in booking_resource_type option_group.</comment>
     <add>4.4</add>
     <pseudoconstant>
@@ -71,12 +67,21 @@
   <field>
     <name>location_id</name>
     <title>Location ID</title>
+    <required>true</required>
     <type>int unsigned</type>
     <comment>The location associated with this resource. Implicit FK to option_value row in booking_resource_location option_group.</comment>
     <add>4.4</add>
     <pseudoconstant>
       <optionGroupName>booking_resource_location</optionGroupName>
     </pseudoconstant>
+  </field>
+
+
+  <field>
+    <name>weight</name>
+    <type>int</type>
+    <required>true</required>
+    <!-- <default>1</default> -->
   </field>
 
    <field>
