@@ -11,6 +11,23 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
   function preProcess(){
 
+    $config = CRM_Core_Config::singleton();
+    $currencySymbols = "";
+    if(!empty($config->currencySymbols)){
+      $currencySymbols = $config->currencySymbols;
+    }else{
+      $currencySymbols = $config->defaultCurrencySymbol;
+    }
+    $this->assign('currencySymbols', $currencySymbols);
+
+
+
+    $selectResourcePage = $this->controller->exportValues('SelectResource');
+    $selectedResources = json_decode($selectResourcePage['resources'], true);
+    $this->assign('resources', $selectedResources);
+
+    self::registerScripts();
+
   }
 
    /**
@@ -21,8 +38,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
    * @return None
    */
   function setDefaultValues() {
-    //$val = $this->controller->exportValues('CheckResource');
-    //dprint_r(json_decode($val['resources']));
+
   }
 
   function buildQuickForm() {
@@ -63,7 +79,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     $loaded = TRUE;
 
     CRM_Core_Resources::singleton()
-      //->addStyleFile('uk.co.compucorp.civicrm.Booking', 'css/bootstrap-modal.css', 90, 'page-header')
+     // ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/bootstrap-modal.css', 90, 'page-header')
       //->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/schedule.css', 91, 'page-header')
       //->addStyleFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.css', 92, 'page-header')
       //->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
@@ -80,12 +96,14 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
 
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/vendor/bootstrap-modal.js', 131, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/booking-process/add-sub-resource/app.js', 150, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/booking-process/add-sub-resource/router.js', 152, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/booking-process/add-sub-resource/view.js', 160, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/booking-process/add-sub-resource/model.js', 164, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/booking-process/add-sub-resource/collection.js', 165, 'html-header');
+      //->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/bootstrap-modal.js', 131, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/CRM/Booking/Form/AddSubResource.js', 132, 'html-header')
+
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/app.js', 150, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/router.js', 152, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/view.js', 160, 'html-header');
+    //  ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/booking/add-sub-resource/model.js', 164, 'html-header')
+    //  ->addScriptFile('uk.co.compucorp.civicrm.Booking', 'js/booking/add-sub-resource/collection.js', 165, 'html-header');
 
 
     $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.booking') . '/templates/';
