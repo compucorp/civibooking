@@ -92,7 +92,6 @@
   </div>
 </div>
 {crmScript ext=uk.co.compucorp.civicrm.booking file=js/CRM/Booking/Form/SelectResource.js}
-
 {literal}
 <script type="text/javascript">
 cj(function($) {
