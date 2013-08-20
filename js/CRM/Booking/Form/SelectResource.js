@@ -153,6 +153,7 @@ function show_minical(){
     if(subTotal == 0){
       cj('#basket-table').hide();
     }
+    CRM.alert(ts(''), ts('Resource removed from basket'), 'success');
   }
 
 cj(function($) {
