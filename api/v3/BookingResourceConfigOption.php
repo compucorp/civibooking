@@ -22,7 +22,7 @@ function _civicrm_api3_booking_resource_config_option_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_booking_resource_config_option_create($params) {
-  return _civicrm_api3_basic_create('CRM_Civibooking_BAO_ResourceConfigOption', $params);
+  return _civicrm_api3_basic_create('CRM_Booking_BAO_ResourceConfigOption', $params);
 
 }
 
@@ -36,7 +36,7 @@ function civicrm_api3_booking_resource_config_option_create($params) {
  * @throws API_Exception
  */
 function civicrm_api3_booking_resource_config_option_get($params) {
-  return _civicrm_api3_basic_get('CRM_Civibooking_BAO_ResourceConfigOption', $params);
+  return _civicrm_api3_basic_get('CRM_Booking_BAO_ResourceConfigOption', $params);
 }
 
 
