@@ -110,11 +110,6 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
    */
   public $description;
   /**
-   *
-   * @var int
-   */
-  public $weight;
-  /**
    * The type associated with this resource. Implicit FK to option_value row in booking_resource_type option_group.
    *
    * @var int unsigned
@@ -126,6 +121,11 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
    * @var int unsigned
    */
   public $location_id;
+  /**
+   *
+   * @var int
+   */
+  public $weight;
   /**
    *
    * @var boolean
@@ -192,6 +192,7 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
           'name' => 'label',
           'type' => CRM_Utils_Type::T_STRING,
           'title' => ts('Label') ,
+          'required' => true,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
@@ -202,16 +203,11 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
-        'weight' => array(
-          'name' => 'weight',
-          'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Weight') ,
-          'required' => true,
-        ) ,
         'type_id' => array(
           'name' => 'type_id',
           'type' => CRM_Utils_Type::T_INT,
           'title' => ts('Type ID') ,
+          'required' => true,
           'pseudoconstant' => array(
             'optionGroupName' => 'booking_resource_type',
           )
@@ -220,9 +216,16 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
           'name' => 'location_id',
           'type' => CRM_Utils_Type::T_INT,
           'title' => ts('Location ID') ,
+          'required' => true,
           'pseudoconstant' => array(
             'optionGroupName' => 'booking_resource_location',
           )
+        ) ,
+        'weight' => array(
+          'name' => 'weight',
+          'type' => CRM_Utils_Type::T_INT,
+          'title' => ts('Weight') ,
+          'required' => true,
         ) ,
         'is_unlimited' => array(
           'name' => 'is_unlimited',
@@ -257,9 +260,9 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'set_id' => 'set_id',
         'label' => 'booking_resource_label',
         'description' => 'booking_resource_description',
-        'weight' => 'weight',
         'type_id' => 'type_id',
         'location_id' => 'location_id',
+        'weight' => 'weight',
         'is_unlimited' => 'is_unlimited',
         'is_active' => 'is_active',
         'is_deleted' => 'is_deleted',
