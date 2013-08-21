@@ -1,11 +1,10 @@
 <script id="add-sub-resource-template" type="text/template">
   <div class="crm-section">
     <div class="label">
-      <label for="contact_type">Select resource</label>
+      <label for="resources">Select resource</label>
     </div>
     <div class="content">
-    <select name="resource_type" id="resource_type" class="form-select">
-      <option value="">- select resource  -</option>
+    <select name="resources" id="resourceSelect" class="form-select">
     </select>
     </div>
     <div class="clear"></div>
@@ -13,11 +12,11 @@
 
   <div class="crm-section">
     <div class="label">
-      <label for="contact_type">Configuration</label>
+      <label for="configurations">Configuration</label>
     </div>
     <div class="content">
-    <select name="resource_type" id="resource_type" class="form-select">
-      <option value="">- select configuration type -</option>
+    <select name="configurations" id="configSelect" class="form-select" disabled>
+      <option value="">- select configuration -</option>
     </select>
     </div>
     <div class="clear"></div>

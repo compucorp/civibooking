@@ -55,12 +55,12 @@
           </tr>
         {/foreach}
          <tr>
-            <td class="text-right" colspan="4"><span>Sub total: </span></td>
+            <td class="text-right" colspan="4"><span>{ts}Sub total{/ts}: </span></td>
             <td>{$currencySymbols} <span id="sub-total-summary">{$subtotal}</td>
             <td></td>
           </tr>
           <tr >
-            <td class="text-right"colspan="4"><span>{ts}Ad-hoc charges{ts}: </span></td>
+            <td class="text-right"colspan="4"><span>{ts}Ad-hoc charges{/ts}: </span></td>
             <td>{$currencySymbols} <span id="ad-hoc-charge-summary">0</td>
             <td></td>
           </tr>
