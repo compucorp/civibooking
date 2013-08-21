@@ -13,12 +13,11 @@ var ModalRegion = Backbone.Marionette.Region.extend({
 
   showModal: function(view){
     view.on("close", this.hideModal, this);
-    console.log(view.template);
     var title = '';
     if(view.template == '#add-sub-resource-template'){
-      var title = 'Add sub resource';
+      var title = ts('Add sub resource');
     }else if(view.template == '#edit-adhoc-charges-template'){
-      var title = 'Edit ad-hoc charges';
+      var title = ts('Edit ad-hoc charges');
     }
     //use CiviCRM diaglog
     cj('#crm-booking-dialog').dialog({
@@ -44,6 +43,11 @@ CRM.BookingApp.addRegions({
 
 CRM.BookingApp.on("initialize:after", function(){
   if( ! Backbone.History.started) Backbone.history.start();
+});
+
+CRM.BookingApp.addInitializer(function(){
+  var view = new CRM.BookingApp.AddSubResource.ResourceTableView();
+  CRM.BookingApp.main.show(view);
 });
 
 
