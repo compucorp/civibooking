@@ -114,7 +114,7 @@ cj(function($) {
       {literal}
   ];
 
-  cj().bookingscheduler({
+  $("#resource_scheduler").bookingscheduler({
     elements: elements,
     url: CRM.url('civicrm/booking/ajax/slots'),
     loadMode: 'day',
