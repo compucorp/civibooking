@@ -2,7 +2,7 @@ var basket = {};
 var subTotal = 0;
 var configurations = [];
 
-(function(cj) {
+(function($) {
     cj.fn.bookingscheduler = function(settings) {
 
       scheduler.locale.labels.timeline_tab = "Timeline";
@@ -21,7 +21,7 @@ var configurations = [];
       scheduler.config.xml_date="%Y-%m-%d %H:%i";
 
       scheduler.createTimelineView({
-      section_autoheight: false,
+        section_autoheight: false,
         name: "timeline",
         x_unit: "minute",
         x_date: "%H:%i",
@@ -35,6 +35,10 @@ var configurations = [];
         folder_dy:20,
         dy:60
       });
+
+    scheduler.init($(this)[0].id, settings.date ,"timeline");
+    scheduler.setLoadMode();
+    scheduler.load(settings.url, "json");
 
       scheduler.attachEvent("onBeforeLightbox", function(eid) {
         scheduler.resetLightbox();
@@ -107,9 +111,6 @@ var configurations = [];
         return true;
     });
 
-    scheduler.init('resource_scheduler', settings.date,"timeline");
-    scheduler.setLoadMode(settings.loadMode);
-    scheduler.load(settings.url, "json");
   };
 })(cj);
 
@@ -131,7 +132,6 @@ function show_minical(){
 
   function updateBasket(item){
     subTotal += item.price;
-    console.log(item);
     if(subTotal > 0){
       cj('#basket-table').show();
       var template = _.template(cj('#selected-resource-row-tpl').html());
