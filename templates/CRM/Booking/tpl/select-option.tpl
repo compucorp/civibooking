@@ -1,3 +1,13 @@
+<script id="select-config-option-template" type="text/template">
+  {literal}
+  <option value=""><%= first_option %></option>
+  <% _.each(options, function (option){ %>
+   <option data-price="<%= option.price %>" value="<%= option.id %>"><%= option.label %> - <%= option.price %></option>
+  <% }); %>
+  {/literal}
+</script>
+
+
 <script id="select-option-template" type="text/template">
   {literal}
   <option value=""><%= first_option %></option>
@@ -6,5 +16,3 @@
   <% }); %>
   {/literal}
 </script>
-
-
