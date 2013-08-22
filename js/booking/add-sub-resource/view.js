@@ -14,6 +14,19 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
 
   AddSubResource.ResourceTableView = Backbone.Marionette.ItemView.extend({
     template: '#resource-table-template',
+    initialize: function(){
+      if ($.trim($("#resources").val())) {
+        this.model.attributes = JSON.parse($.trim($("#resources").val()));
+      }
+    },
+    onRender: function(){
+      var self = this;
+      var template = _.template($('#sub-resource-row-template').html());
+      _.each(this.model.get('sub_resources'), function (item, key){
+        self.$el.find("#crm-booking-sub-resource-table-" + item.parent_ref_id).append(template(item));
+      });
+
+    },
     events: {
       'click .add-sub-resource': 'addSubResource',
       'click .edit-adhoc-charge': 'editAdhocCharge',
