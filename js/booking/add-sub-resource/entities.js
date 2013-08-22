@@ -1,9 +1,17 @@
 CRM.BookingApp.module('Entities', function(Entities, BookingApp, Backbone, Marionette, $, _){
 
-  Entities.SubResourceModel = Backbone.Model.extend({
+  Entities.SubResource = Backbone.Model.extend({
     defaults: {
-      'resource': null,
-      'configuration': null,
+      sub_resources: {},
+    },
+  });
+
+  Entities.AddSubResource = Backbone.Model.extend({
+    defaults: {
+      'parent_ref_id': null,
+      'ref_id': null,
+      'resource': {id : null, label :null},
+      'configuration': {id : null, label :null, price :0},
       'quantity': 0,
       'time_reuired': null,
       'note': null,

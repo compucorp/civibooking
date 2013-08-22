@@ -1,5 +1,5 @@
 <script id="resource-table-template" type="text/template">
-    <div id="resources">
+    <div id="resources-container">
       <table id="" class="display">
         <thead>
           <tr>
@@ -22,34 +22,24 @@
             <td class="crm-booking-resource-price ">{$currencySymbols}{$resource.price}</td>
             <td class="crm-booking-resource-total-price ">{$currencySymbols}{$resource.price}</td>
             <td >
-              <span><a href="#" class="add-sub-resource action-item action-item-first" title="Add sub resource">{ts}Add sub resource{/ts}</a></span></td>
+              <span><a href="#" data-ref="{$key}" class="add-sub-resource action-item action-item-first" title="Add sub resource">{ts}Add sub resource{/ts}</a></span></td>
           </tr>
           <tr class="hiddenElement even-row" id="crm-booking-sub-resource-row-{$key}">
           <td ></div>
           <td colspan=2 class="">
-              <table class="" border=1>
-        <thead>
-          <tr>
-            <th rowspan="1" colspan="1">{ts}Sub resource label{/ts}</th>
-            <th rowspan="1" colspan="1">{ts}Configuration{/ts}</th>
-            <th rowspan="1" colspan="1">{ts}Quality{/ts}</th>
-            <th rowspan="1" colspan="1">{ts}Price{/ts}</th>
-          </tr>
-        </thead>
+              <table class="" border=1 id="crm-booking-sub-resource-table-{$key}">
+              <thead>
+                <tr>
+                  <th rowspan="1" colspan="1">{ts}Sub resource label{/ts}</th>
+                  <th rowspan="1" colspan="1">{ts}Configuration{/ts}</th>
+                  <th rowspan="1" colspan="1">{ts}Quality{/ts}</th>
+                  <th rowspan="1" colspan="1">{ts}Price{/ts}</th>
+                  <th rowspan="1" colspan="1"></th>
+                </tr>
+              </thead>
                 <tbody>
-                  <tr>
-                    <td>Label 1</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>£600</td>
-                  </tr>
-                   <tr>
-                    <td>Label 2</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>£600</td>
-                  </tr>
-               </tbody>
+
+                </tbody>
              </table>
             </td>
           </tr>
@@ -76,4 +66,15 @@
       </tbody>
       </table>
   </div>
+</script>
+
+
+<script id="sub-resource-row-template" type="text/template">
+  <tr id="crm-booking-sub-resource-individual-row-<%= ref_id %>">
+    <td><%= resource.label %></td>
+    <td><%= configuration.label %></td>
+    <td><%= quantity %></td>
+    <td>{$currencySymbols} <%= price_estimate %></td>
+    <td><span><a href="#" data-ref="<%=ref_id %>" class="remove-sub-resource action-item action-item-first" >{ts}Remove{/ts}</a></span></td>
+  </tr>
 </script>

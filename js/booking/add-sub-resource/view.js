@@ -1,7 +1,7 @@
 CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Backbone, Marionette, $, _) {
 
-   CRM.BookingApp.vent.on("bind:datepicker", function (context){
-    //context.$el.find('.date').timepicker();
+   CRM.BookingApp.vent.on("update:resources", function (model){
+    $('#resources').val(JSON.stringify(model.toJSON()));
    });
 
   CRM.BookingApp.vent.on("render:options", function (options){
@@ -18,13 +18,15 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       'click .add-sub-resource': 'addSubResource',
       'click .edit-adhoc-charge': 'editAdhocCharge',
       'click .collapsed' : 'toggleHiddenElement',
+      'click .remove-sub-resource': 'removeSubResource',
     },
     addSubResource: function(e){
      var ref = $(e.currentTarget).data('ref');
-     var date = $(e.currentTarget).data('date');
+     //var date = $(e.currentTarget).data('date');
      CRM.api('BookingResource', 'get', {'sequential': 1, ' is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
       {success: function(data) {
-          var view = new AddSubResource.AddSubResourceModal({resources: data.values});
+          var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref});
+          var view = new AddSubResource.AddSubResourceModal({model: model, resources: data.values});
           CRM.BookingApp.modal.show(view);
         }
       }
@@ -37,6 +39,13 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     toggleHiddenElement: function(e){
       var row = $(e.currentTarget).data('ref');
       $('#crm-booking-sub-resource-row-' + row).toggle();
+    },
+    removeSubResource: function(e){
+      var ref = $(e.currentTarget).data('ref');
+      $('#crm-booking-sub-resource-individual-row-' + ref).remove();
+      delete this.model.attributes.sub_resources[ref];
+      CRM.BookingApp.vent.trigger('update:resources', this.model);
+
     }
   });
 
@@ -44,7 +53,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     template: "#add-sub-resource-template",
     initialize: function(options){
       this.resources = options.resources;
-      this.model = new CRM.BookingApp.Entities.SubResourceModel();
     },
     events: {
       'click #add-to-basket': 'addSubResource',
@@ -65,7 +73,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         first_option: '- ' + ts('select resource') + ' -'
       }
       CRM.BookingApp.vent.trigger("render:options", params);
-      CRM.BookingApp.vent.trigger("bind:datepicker", this);
 
     },
     updatePriceEstmate: function(e){
@@ -75,23 +82,23 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         if(configSelect.val() !== ''){
           configSelect.find(':selected').data('price');
           var price = configSelect.find(':selected').data('price');
-          this.model.set('configuration', configSelect.val());
-          this.model.set('configuration_price', price);
+          this.model.set('configuration', {id: configSelect.val(), label:  configSelect.find(':selected').text(), price: price});
           qualitySelector.prop('disabled', false);
         }else{
           qualitySelector.prop('disabled', true);
           qualitySelector.val('');
         }
       }
-      var priceEstimate = this.model.get('quantity') * this.model.get('configuration_price');
-      this.model.set('quantity', qualitySelector.val());
+      var configPrice = this.model.get('configuration').price
+      var quantity = qualitySelector.val();
+      var priceEstimate = quantity * configPrice;
+      this.model.set('quantity', quantity);
       this.model.set('price_estimate', priceEstimate);
       this.$el.find('#price-estimate').html(priceEstimate);
     },
     getConfigurations: function(e){
       selectedVal = $('#resourceSelect').val();
       if(selectedVal !== ""){
-        this.model.set('resource', selectedVal);
         var params = {
               id: selectedVal,
               sequential: 1,
@@ -106,10 +113,12 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         CRM.api('BookingResource', 'get', params,
           { context: self,
             success: function(data) {
+            console.log(data);
+            var resource =  data['values']['0'];
             var options = data['values']['0']['api.booking_resource_config_set.get']['values']['0']['api.booking_resource_config_option.get']['values'];
-
+            self.model.set('resource', {id: resource.id, label: resource.label});
             var params = {
-              context:this,
+              context:self,
               template: _.template($('#select-config-option-template').html()),
               list: options,
               element: "#configSelect",
@@ -131,8 +140,17 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       }
     },
     addSubResource: function(e){
-      console.log(this.model);
-     //CRM.BookingApp.modal.close(this);
+      var parentRefId = this.model.get('parent_ref_id');
+      var refId = CRM.BookingApp.Utils.getCurrentUnixTimstamp();
+      this.model.set('ref_id', refId);
+      var template = _.template($('#sub-resource-row-template').html());
+      $('#crm-booking-sub-resource-table-' + parentRefId).find('tbody').append(template(this.model.toJSON()));
+      $('#crm-booking-sub-resource-row-' + parentRefId).show();
+      var subResourceModel = CRM.BookingApp.main.currentView.model;
+      subResourceModel.attributes.sub_resources[refId] = this.model.toJSON();
+      CRM.BookingApp.vent.trigger('update:resources', subResourceModel);
+      //$('#resources').val(JSON.stringify(subResourceModel.toJSON()));
+      CRM.BookingApp.modal.close(this);
     }
 
 

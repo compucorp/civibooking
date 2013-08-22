@@ -7,7 +7,7 @@
 <div class="clear"></div>
 
 <div>
-
+<div class="">{$form.resources.html}</div>
 {include file="CRM/common/formButtons.tpl" location="bottom"}
 </div>
 {literal}

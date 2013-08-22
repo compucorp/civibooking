@@ -12,10 +12,10 @@
 
   <div class="crm-section">
     <div class="label">
-      <label for="configurations">Configuration</label>
+      <label for="configuration">Configuration</label>
     </div>
     <div class="content">
-    <select name="configurations" id="configSelect" class="form-select" disabled>
+    <select name="configuration" id="configSelect" class="form-select" disabled>
       <option value="">- select configuration -</option>
     </select>
     </div>
@@ -24,30 +24,30 @@
 
   <div class="crm-section">
     <div class="label">
-      <label for="resource_id">Quantity</label>
+      <label for="quantity">Quantity</label>
     </div>
     <div class="content">
-      <input name="resource_id" type="text" id="resource_id" class="form-text">
+      <input name="quantity" type="text" id="quantity" class="form-text" disabled>
     </div>
     <div class="clear"></div>
   </div>
 
   <div class="crm-section">
     <div class="label">
-      <label for="resource_id">Time required</label>
+      <label for="time_required">Time required</label>
     </div>
     <div class="content">
-      <input name="resource_id" type="text" id="resource_id" class="form-text">
+      <input name="time_required" type="text" id="time_required" class="date form-text">
     </div>
     <div class="clear"></div>
   </div>
 
   <div class="crm-section">
     <div class="label">
-      <label for="resource_id">Note</label>
+      <label for="note">Note</label>
     </div>
     <div class="content">
-      <textarea rows="4" cols="50">
+      <textarea name="note" rows="4" cols="50">
       </textarea>
   </div>
     <div class="clear"></div>
@@ -55,20 +55,20 @@
 
    <div class="crm-section">
     <div class="label">
-      <label for="resource_id">Price estimate</label>
+      Price estimate
     </div>
     <div class="content">
-
-  </div>
-    <div class="clear"></div>
-  </div>
-
-  <div class="crm-section">
-    <div class="label"></div>
-     <div class="content">
-      <input class="form-submit default" name="" value="Add to basket" type="submit" id="add-to-basket">
-      <input class="form-submit default" name="" value="Cancel" type="submit" id="cancel">
+      {$currencySymbols} <span id="price-estimate">0</span>
     </div>
     <div class="clear"></div>
   </div>
+
+  <div class="crm-submit-buttons" style="">
+    <span class="crm-button crm-button-type-next crm-button_qf_Edit_next">
+      <input class="validate form-submit default" name="" value="Add to basket" type="submit" id="add-to-basket">
+    </span>
+  </div>
 </script>
+
+
+
