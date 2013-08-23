@@ -1,8 +1,7 @@
 CRM.BookingApp = new Backbone.Marionette.Application();
 
-// see http://lostechies.com/derickbailey/2012/04/17/managing-a-modal-dialog-with-backbone-and-marionette/
 var ModalRegion = Backbone.Marionette.Region.extend({
-  el: "#crm-booking-dialog",
+  el: "#crm-booking-profile-form",
 
   constructor: function(){
     Backbone.Marionette.Region.prototype.constructor.apply(this, arguments);
@@ -11,10 +10,20 @@ var ModalRegion = Backbone.Marionette.Region.extend({
 
   },
 
+  showModal: function(view){
+   // view.on("close", this.hideModal, this);
+
+
+  },
+
+  hideModal: function(){
+    cj('#crm-booking-dialog').dialog().dialog( "destroy" );
+  }
 });
 
 CRM.BookingApp.addRegions({
-  main: "#booking-detail-container",
+  contactRegion: "#contact-container",
+  orgRegion: "#organisation-container",
   modal: ModalRegion
 
 });
@@ -24,8 +33,10 @@ CRM.BookingApp.on("initialize:after", function(){
 });
 
 CRM.BookingApp.addInitializer(function(){
-  var view = new CRM.BookingApp.BookingInfo.FormDetail({model: new Backbone.Model});
-  CRM.BookingApp.main.show(view);
+  var contactView = new CRM.BookingApp.BookingInfo.Contact();
+  CRM.BookingApp.contactRegion.show(contactView);
+  var orgView = new CRM.BookingApp.BookingInfo.Organisation();
+  CRM.BookingApp.orgRegion.show(orgView);
 });
 
 

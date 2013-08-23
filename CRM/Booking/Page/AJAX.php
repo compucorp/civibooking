@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.3                                                |
+ | CiviCRM version 4.4                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2013                                |
  +--------------------------------------------------------------------+
@@ -37,6 +37,64 @@
  * This class contains all the function that are called using AJAX
  */
 class CRM_Booking_Page_AJAX {
+
+  /**
+  * Custom getContactList AJAX  from CRM_Contact_Page_AJAX
+  *
+  */
+  static function getContactList() {
+
+
+    $params = array('version' => 3, 'check_permissions' => TRUE);
+
+    // String params
+    // FIXME: param keys don't match input keys, using this array to translate
+    $whitelist = array(
+      's' => 'name',
+      'fieldName' => 'field_name',
+      'tableName' => 'table_name',
+      'context' => 'context',
+      'rel' => 'rel'
+    );
+    foreach ($whitelist as $key => $param) {
+      if (!empty($_GET[$key])) {
+        $params[$param] = $_GET[$key];
+      }
+    }
+
+    //CRM-10687: Allow quicksearch by multiple fields
+    if (!empty($params['field_name'])) {
+      if ($params['field_name'] == 'phone_numeric') {
+        $params['name'] = preg_replace('/[^\d]/', '', $params['name']);
+      }
+      if (!$params['name']) {
+        CRM_Utils_System::civiExit();
+      }
+    }
+
+    // Numeric params
+    $whitelist = array(
+      'limit',
+      'org',
+      'employee_id',
+      'cid',
+      'id',
+      'cmsuser',
+    );
+    foreach ($whitelist as $key) {
+      if (!empty($_GET[$key]) && is_numeric($_GET[$key])) {
+        $params[$key] = $_GET[$key];
+      }
+    }
+
+    $result = civicrm_api('Contact', 'getquick', $params);
+    if (empty($result['is_error']) && !empty($result['values'])) {
+      foreach ($result['values'] as $key => $val) {
+        echo "{$val['id']}::{$val['data']}|{$val['id']}\n";
+      }
+    }
+    CRM_Utils_System::civiExit();
+  }
 
 
 
