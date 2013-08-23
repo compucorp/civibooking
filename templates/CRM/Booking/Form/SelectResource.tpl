@@ -23,22 +23,9 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
-
-
-{* Search form and results for resources *}
-<div id="brs-container" class="brs-container">
-  {*
-    <div class="crm-form-block crm-resorce-search-form-block">
-      <div class="crm-accordion-wrapper crm-custom_search_form-accordion {if $rows}collapsed{/if}">
-        <div class="crm-accordion-header crm-master-accordion-header">{ts}Check resource avaliability{/ts}</div><!-- /.crm-accordion-header -->
-        <div id="search-form" class="crm-accordion-body">
-
-        </div><!-- /.crm-accordion-body -->
-      </div><!-- /.crm-accordion-wrapper -->
-    </div><!-- /.crm-form-block -->
-
-  *}
-
+{* WizardHeader.tpl provides visual display of steps thru the wizard as well as title for current step *}
+{include file="CRM/common/WizardHeader.tpl"}
+<div id="brs-container">
  <div id="scheduler">
       <div id="resource_scheduler" class="dhx_cal_container" style='width:100%; height:500px;'>
         <div class="dhx_cal_navline">

@@ -9,10 +9,18 @@ require_once 'CRM/Core/Form.php';
  */
 class CRM_Booking_Form_BookingDetail extends CRM_Core_Form {
 
-  function preProcess(){
-    $val = $this->controller->exportValues('AddSubResource');
-   // dprint_r(json_decode($val['resources']));
+  /**
+   * Return a descriptive name for the page, used in wizard header
+   *
+   * @return string
+   * @access public
+   */
+  public function getTitle() {
+    return ts('Booking detail');
   }
+
+
+  function preProcess(){}
 
   function buildQuickForm() {
     parent::buildQuickForm();
@@ -24,12 +32,6 @@ class CRM_Booking_Form_BookingDetail extends CRM_Core_Form {
       array('type' => 'back',
         'name' => ts('<< Back'),
       ),
-      /*array(
-        'type' => 'next',
-        'name' => ts('Next >>'),
-        'spacing' => '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;',
-        'isDefault' => TRUE,
-      ),*/
       array(
         'type' => 'submit',
         'name' => ts('Complate and save'),

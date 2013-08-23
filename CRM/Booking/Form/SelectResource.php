@@ -116,7 +116,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    * @return string
    */
   public function getTitle() {
-    return ts('Add resources');
+    return ts('Select resources');
   }
 
   static function registerScripts() {
