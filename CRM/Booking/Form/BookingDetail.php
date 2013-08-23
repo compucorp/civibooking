@@ -17,9 +17,12 @@ class CRM_Booking_Form_BookingDetail extends CRM_Core_Form {
   function buildQuickForm() {
     parent::buildQuickForm();
 
+     //CRM_Contact_Form_NewContact::buildQuickForm($form);
+
+
     $buttons = array(
       array('type' => 'back',
-        'name' => ts('<< Previous'),
+        'name' => ts('<< Back'),
       ),
       /*array(
         'type' => 'next',
@@ -29,7 +32,7 @@ class CRM_Booking_Form_BookingDetail extends CRM_Core_Form {
       ),*/
       array(
         'type' => 'submit',
-        'name' => ts('Save'),
+        'name' => ts('Complate and save'),
       ),
 
     );
