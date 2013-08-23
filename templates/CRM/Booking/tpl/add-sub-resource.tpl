@@ -24,23 +24,23 @@
             <td >
               <span><a href="#" data-ref="{$key}" class="add-sub-resource action-item action-item-first" title="Add sub resource">{ts}Add sub resource{/ts}</a></span></td>
           </tr>
-          <tr class="hiddenElement even-row" id="crm-booking-sub-resource-row-{$key}">
-          <td ></div>
-          <td colspan=2 class="">
-              <table class="" border=1 id="crm-booking-sub-resource-table-{$key}">
-              <thead>
-                <tr>
-                  <th rowspan="1" colspan="1">{ts}Sub resource label{/ts}</th>
-                  <th rowspan="1" colspan="1">{ts}Configuration{/ts}</th>
-                  <th rowspan="1" colspan="1">{ts}Quality{/ts}</th>
-                  <th rowspan="1" colspan="1">{ts}Price{/ts}</th>
-                  <th rowspan="1" colspan="1"></th>
-                </tr>
-              </thead>
+          <tr class="hiddenElement" id="crm-booking-sub-resource-row-{$key}">
+            <td ></td>
+            <td colspan=2 >
+                <table cborder=1 id="crm-booking-sub-resource-table-{$key}">
+                <thead>
+                  <tr>
+                    <th rowspan="1" colspan="1">{ts}Sub resource label{/ts}</th>
+                    <th rowspan="1" colspan="1">{ts}Configuration{/ts}</th>
+                    <th rowspan="1" colspan="1">{ts}Quality{/ts}</th>
+                    <th rowspan="1" colspan="1">{ts}Price{/ts}</th>
+                    <th rowspan="1" colspan="1"></th>
+                  </tr>
+                </thead>
                 <tbody>
 
                 </tbody>
-             </table>
+               </table>
             </td>
           </tr>
         {/foreach}
