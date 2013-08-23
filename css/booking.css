@@ -5,3 +5,9 @@
 td.text-right{
   text-align: right;
 }
+
+.crm-container fieldset{
+  border-bottom: 1px solid #CFCEC3;
+  border-left: 1px solid #CFCEC3;
+  border-right: 1px solid #CFCEC3;
+}
