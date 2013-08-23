@@ -6,39 +6,39 @@
       <title>Booking status</title>
       <description></description>
       <is_reserved>1</is_reserved>
-      <is_active>0</is_active>
+      <is_active>1</is_active>
     </OptionGroup>
     <OptionGroup>
       <name>booking_resource_type</name>
       <title>Resource type</title>
       <description></description>
       <is_reserved>1</is_reserved>
-      <is_active>0</is_active>
+      <is_active>1</is_active>
     </OptionGroup>
     <OptionGroup>
       <name>booking_resource_location</name>
       <title>Resource location</title>
       <description></description>
       <is_reserved>1</is_reserved>
-      <is_active>0</is_active>
+      <is_active>1</is_active>
     </OptionGroup>
     <OptionGroup>
       <name>booking_resource_criteria</name>
       <title>Resource criteria</title>
       <is_reserved>1</is_reserved>
-      <is_active>0</is_active>
+      <is_active>1</is_active>
     </OptionGroup>
     <OptionGroup>
       <name>booking_size_unit</name>
       <title>Resourch configuration size unit</title>
       <is_reserved>1</is_reserved>
-      <is_active>0</is_active>
+      <is_active>1</is_active>
     </OptionGroup>
     <OptionGroup>
       <name>booking_cancellation_charges</name>
       <title>Cancellation charges</title>
       <is_reserved>1</is_reserved>
-      <is_active>0</is_active>
+      <is_active>1</is_active>
     </OptionGroup>
   </OptionGroups>
   <OptionValues>

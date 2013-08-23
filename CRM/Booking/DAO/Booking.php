@@ -111,6 +111,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
    */
   public $po_number;
   /**
+   * The status associated with this booking. Implicit FK to option_value row in booking status option_group.
    *
    * @var int unsigned
    */
@@ -253,7 +254,11 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'status_id' => array(
           'name' => 'status_id',
           'type' => CRM_Utils_Type::T_INT,
-          'required' => true,
+          'title' => ts('Status ID') ,
+          'default' => 'UL',
+          'pseudoconstant' => array(
+            'optionGroupName' => 'booking_booking_status',
+          )
         ) ,
         'booking_title' => array(
           'name' => 'title',
