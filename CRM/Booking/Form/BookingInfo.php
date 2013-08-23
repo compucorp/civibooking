@@ -44,17 +44,12 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
 
     $this->add('text', 'po_no', ts('Purchase order number'));
 
-
-    $bookingStatus= CRM_Booking_BAO_Resource::buildOptions('status_id', 'create');
+    $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
     $this->add('select', 'booking_status', ts('Booking status'),
-        $bookingStatus, FALSE,
-        array(
-          'id' => 'booking_status',
-          'title' => '- ' . ts('select') . ' -',
-        )
+      array('' => ts('- select -')) + $bookingStatus,
+      FALSE,
+      array()
     );
-
-
 
     $this->add('text', 'title', ts('title'));
     $this->addDateTime('event_start_date', ts('Date'), FALSE, array('formatType' => ''));
@@ -158,7 +153,26 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
 
     CRM_Core_Resources::singleton()
 
-      ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header');
+      ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
+      ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE)
+      ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
+      ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
+      ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
+      ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
+      ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
+
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/app.js', 150, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/entities.js', 160, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/view.js', 170, 'html-header');
+
+    $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.booking') . '/templates/';
+    $region = CRM_Core_Region::instance('page-header');
+    foreach (glob($templateDir . 'CRM/Booking/tpl/booking-info/*.tpl') as $file) {
+      $fileName = substr($file, strlen($templateDir));
+      $region->add(array(
+        'template' => $fileName,
+      ));
+    }
 
 
 
