@@ -60,7 +60,7 @@
      </div>
 
   <div id="basket-region"class="crm-container crm-form-block">
-      <div class="">{$form.resources.html}</div>
+      <div class="hide">{$form.resources.html}</div>
       <div class="crm-section" >
         <h4>Currently in basket</h4>
         <table id="basket-table" class="hide">
