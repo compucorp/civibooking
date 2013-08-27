@@ -37,7 +37,7 @@ function civicrm_api3_booking_resource_create($params) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_booking_resource_get($params) {
+function civicrm_api3_resource_get($params) {
   return _civicrm_api3_basic_get('CRM_Booking_BAO_Resource', $params);
 
   //return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
