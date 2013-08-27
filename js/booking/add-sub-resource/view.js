@@ -35,11 +35,11 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     },
     addSubResource: function(e){
      var ref = $(e.currentTarget).data('ref');
-     //var date = $(e.currentTarget).data('date');
-     CRM.api('BookingResource', 'get', {'sequential': 1, ' is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
+     CRM.api('Resource', 'get', {'sequential': 1, ' is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
       {success: function(data) {
           var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref});
           var view = new AddSubResource.AddSubResourceModal({model: model, resources: data.values});
+          view.title = ts('Add sub resources');
           CRM.BookingApp.modal.show(view);
         }
       }
@@ -47,7 +47,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     },
     editAdhocCharge: function(e){
       var view = new AddSubResource.EditAdhocChargesModal();
-     CRM.BookingApp.modal.show(view);
+      view.title = ts('Edit ad-hoc charges');
+      CRM.BookingApp.modal.show(view);
     },
     toggleHiddenElement: function(e){
       var row = $(e.currentTarget).data('ref');
@@ -118,12 +119,19 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
               'api.booking_resource_config_set.get': {
                 id: '$value.set_id',
                 'api.booking_resource_config_option.get': {
-                  set_id: '$value.id'
+                  set_id: '$value.id',
+                  'api.option_group.get':{
+                    name: 'booking_size_unit',
+                  },
+                  'api.option_value.get':{
+                    value: '$value.unit_id',
+                    option_group_id: '$value.api.option_group.get.id'
+                  }
                 }
               }
             };
         var self = this;
-        CRM.api('BookingResource', 'get', params,
+        CRM.api('Resource', 'get', params,
           { context: self,
             success: function(data) {
             console.log(data);
