@@ -9,6 +9,7 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
   }
 
   static function getResourcesByType($type) {
+    dprint_r($type);
 
     $typeGroupId = self::getResourceTypeGroupId();
     $params = array(1 => array( $type, 'String'));
@@ -61,15 +62,15 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
                  civicrm_option_value.option_group_id
           FROM civicrm_option_value
           INNER JOIN civicrm_booking_resource ON civicrm_option_value.option_group_id = $typeGroupId
-          AND civicrm_booking_resource.type_id = civicrm_option_value.id";
+          AND civicrm_booking_resource.type_id = civicrm_option_value.value";
 
        $query .= "$whereClause";
 
       $resourceTypes = array();
       $dao = CRM_Core_DAO::executeQuery($query);
       while ($dao->fetch()) {
-         $resourceTypes[$dao->id] = array(
-          'id' => $dao->id,
+         $resourceTypes[$dao->value] = array(
+          'id' => $dao->value,
           'label' => $dao->label,
           'value' => $dao->value,
           'option_group_id' => $dao->option_group_id
