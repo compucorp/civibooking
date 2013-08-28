@@ -1,8 +1,7 @@
 var basket = {};
 var subTotal = 0.00;
 
-cj(function($) {
-  function show_minical(){
+function show_minical(){
     if (scheduler.isCalendarVisible()){
         scheduler.destroyCalendar();
     }else{
@@ -18,6 +17,8 @@ cj(function($) {
     }
   }
 
+
+cj(function($) {
   scheduler.locale.labels.timeline_tab = "Timeline";
   scheduler.config.show_loading = true;
   scheduler.config.full_day = true;
@@ -32,13 +33,31 @@ cj(function($) {
 
   scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
-    console.log(ev);
+    if(ev.readonly){
+      $("#SelectResource :input").attr("disabled", true);
+      $("#price-estimate").html(ev.custom_price);
+      $("#note").val(ev.custom_note);
+      $("input[name='quantity']").val(ev.custom_quantity);
+      $("#add-resource-btn").hide();
+    }else{
+      $("#SelectResource :input").attr("disabled", false);
+      $("#price-estimate").html('');
+      $("#note").val('');
+      $("input[name='quantity']").val('');
+      $("#add-resource-btn").show();
+    }
     var initStartDate = moment(new Date(ev.start_date));
     var initEndDate = moment(new Date(ev.end_date));
     var startTime = [initStartDate.hours(), ":", initStartDate.minute() <10?'0' + initStartDate.minute() : initStartDate.minute()].join("");
     var endTime = [initEndDate.hours(), ":", initEndDate.minute() <10?'0' + initEndDate.minute() : initEndDate.minute()].join("");
-    $("#startTimeSelect").val(startTime);
-    $("#endTimeSelect").val(endTime);
+    $("#start-time-select").val(startTime);
+    $("#start-day-select").val(initStartDate.format("D"));
+    $("#start-month-select").val(initStartDate.months() + 1);
+    $("#start-year-select").val(initStartDate.years());
+    $("#end-time-select").val(endTime);
+    $("#end-day-select").val(initEndDate.format("D"));
+    $("#end-month-select").val(initEndDate.months() + 1);
+    $("#end-year-select").val(initEndDate.years());
     scheduler.startLightbox(id,null);
     scheduler.hideCover();
     $("#crm-booking-new-slot").dialog({
@@ -46,8 +65,6 @@ cj(function($) {
         modal: true,
         minWidth: 600,
         open: function() {
-          //$( "input[name=startDate]" ).datepicker( "option", "defaultDate", ev.start_date);
-          //$( "input[name=endDate]" ).datepicker( "option", "defaultDate",  ev.end_date);
           var params = {
               id: ev.resource_id,
               sequential: 1,
@@ -74,9 +91,12 @@ cj(function($) {
             var template = _.template(cj('#select-config-option-template').html());
             $('#configSelect').html(template({
               options: options,
-              first_option:  '- ' + ts('select configuration') + ' -'}));
+              first_option:  ["- ", ts('select configuration')," -"].join("")}));
               }
             });
+            if(ev.readonly){
+              $('#configSelect').val(ev.custom_config);
+            }
         },
         close: function() {
           scheduler.endLightbox(false, null);
@@ -88,30 +108,33 @@ cj(function($) {
   $('input[name="select-resource-save"]').click(function(e){
     e.preventDefault();
     var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
-    var startTime = $("#startTimeSelect").val();
-    var endTime = $("#endTimeSelect").val();
-    var startDate = $("#startDate").val();
-    var endDate = $("#endDate").val();
-    ev.text = $("#resource-label").val();
-    ev.start_date = new Date([startDate," ",startTime].join(""));
-    ev.end_date =  new Date([endDate," ",endTime].join(""));
+    var startTime = $("#start-time-select").val().split(":");
+    var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
+    var endTime = $("#end-time-select").val().split(":");
+    var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);
+    ev.text = [$("#resource-label").val(), " - ", ev.id].join("");
+    ev.start_date = startDate;
+    ev.end_date = endDate;
     ev.custom_price = $("#price-estimate").html();
+    ev.custom_quantity = $('#configSelect').val();
+    ev.custom_config = $('input[name="quantity"]').val();
+    ev.custom_note = $("note").val();
     ev.readonly = true;
+
     var item = {
       id: ev.id,
       resource_id: ev.resource_id,
       start_date: ev.start_date,
-      start_time: startTime,
       end_date: ev.end_date,
-      end_time: endTime,
-      label: ev.text,
+      label: $("#resource-label").val(),
       text: ev.text,
-      configuration_id: $('#configSelect').val(),
-      quantity: $('input[name="quantity"]').val(),
+      configuration_id: ev.custom_config ,
+      quantity: ev.custom_quantity,
       price: ev.custom_price,
-      note: $("note").val(),
+      note: ev.custom_note,
     };
     basket[ev.id] = item;
+    console.log(item);
     updateBasket(item);
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
@@ -128,10 +151,10 @@ cj(function($) {
     $('#subTotal').html(subTotal);
     $("#resources").val(JSON.stringify(basket));
     if(subTotal == 0){
-      $('#basket-table').hide();
+      $('#basket-region').hide();
     }
     scheduler.deleteEvent(eid);
-    //CRM.alert(ts(''), ts('Resource removed'), 'success');
+    CRM.alert(ts(''), ts('Resource removed'), 'success');
   });
 
   $('input[name="select-resource-cancel"]').click(function(e){
@@ -158,14 +181,15 @@ cj(function($) {
 
   function updateBasket(item){
     subTotal =  parseFloat(subTotal) + parseFloat(item.price);
+    console.log(subTotal);
     if(subTotal > 0){
       var template = _.template(cj('#selected-resource-row-tpl').html());
       $('#basket-table > tbody:last').append(template({data: item}));
       $("#resources").val(JSON.stringify(basket)); //ADD JSON object to basket
       $('#subTotal').html(subTotal);
-      $('#basket-table').show();
+      $('#basket-region').show();
     }else{
-      cj('#basket-table').hide();
+      $('#basket-region').hide();
     }
   }
 
@@ -183,8 +207,5 @@ cj(function($) {
     }
   }
   $(document).ready(loadEvents);
-  //$(".datepicker").datepicker({dateFormat: crmDateFormat});
-  //$("#startDate").datepicker({dateFormat: crmDateFormat});
-
 });
 
