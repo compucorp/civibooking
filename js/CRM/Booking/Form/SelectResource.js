@@ -1,120 +1,8 @@
 var basket = {};
-var subTotal = 0;
-var configurations = [];
+var subTotal = 0.00;
 
-(function($) {
-    cj.fn.bookingscheduler = function(settings) {
-
-      scheduler.locale.labels.timeline_tab = "Timeline";
-      scheduler.locale.labels.section_resource = "Resource";
-      scheduler.locale.labels.section_desc = "Description";
-      scheduler.locale.labels.section_configuration = "Configuration";
-      scheduler.locale.labels.section_quality = "Quality";
-      scheduler.locale.labels.section_note = "Note";
-      scheduler.locale.labels.section_price_estimated = "Estimated Price";
-
-      scheduler.config.show_loading = true;
-      scheduler.config.full_day = true;
-      scheduler.config.details_on_create=true;
-      scheduler.config.details_on_dblclick=false;
-      scheduler.config.collision_limit = 1; //allows creating 1 events per time slot
-      scheduler.config.xml_date="%Y-%m-%d %H:%i";
-
-      scheduler.createTimelineView({
-        section_autoheight: false,
-        name: "timeline",
-        x_unit: "minute",
-        x_date: "%H:%i",
-        x_step: 30,
-        x_size: 24,
-        x_start: 16,
-        x_length: 48,
-        y_unit: settings.elements,
-        y_property: "resource_id",
-        render: "tree",
-        folder_dy:20,
-        dy:60
-      });
-
-    scheduler.init($(this)[0].id, settings.date ,"timeline");
-    scheduler.setLoadMode();
-    scheduler.load(settings.url, "json");
-
-      scheduler.attachEvent("onBeforeLightbox", function(eid) {
-        scheduler.resetLightbox();
-        var ev = scheduler.getEvent(eid);
-        var rid = ev.resource_id;
-        var data = [];
-        params = {
-          entity: 'BookingResource',
-          action: 'get',
-          json: JSON.stringify({
-            id: rid,
-            sequential: 1,
-            'api.booking_resource_config_set.get': {
-              id: '$value.set_id',
-              'api.booking_resource_config_option.get': {
-                set_id: '$value.id'
-              }
-            }
-          }),
-        };
-        //HACKED, CRM.api does not support ajax option so set async was not possible
-        var ajaxURL = 'civicrm/ajax/rest';
-        cj.ajax({
-          url: ajaxURL.indexOf('http') === 0 ? ajaxURL : CRM.url(ajaxURL),
-          dataType: 'json',
-          data: params,
-          async: false,
-          type: 'GET',
-          success: function(result) {
-            data = result;
-          }
-        });
-        var resource = data['values']['0'];
-        var config = [];
-        var options = data['values']['0']['api.booking_resource_config_set.get']['values']['0']['api.booking_resource_config_option.get']['values'];
-        _.each(options, function (item, key){
-          var label = [item.label, " - ", item.price].join("");
-          config.push({key: item.id, label: label});
-          configurations.push({key: item.id, item: item});
-        });
-
-        scheduler.config.lightbox.sections=[
-          {name:"time", height:72, type:"time", map_to:"auto"},
-          {name:"resource", height:23, type:"template", default_value:resource.label, map_to:"resource_label"},
-          {namn:"desc", height:23, type:"template", default_value:resource.description, map_to:"resource_description"},
-          {name:"configuration", height:23, type:"select", options:config ,  map_to:"config_id" },
-          {name:"quality", height:23, type:"template",  default_value:1, type:"textarea",  map_to:"quality" },
-          {name:"note", height:70, map_to:"note", type:"textarea" ,},
-          {name:"price_estimated", height:23, type:"template", map_to:"price_estimated" },
-
-        ];
-        return true;
-    });
-
-    scheduler.attachEvent("onEventSave",function(eid,data){
-        var ev = scheduler.getEvent(eid);
-        console.log(ev);
-        ev.readonly = true;
-        var item = {
-          id: ev.id,
-          resource_id: ev.resource_id,
-          start_date: moment(data.start_date).format("YYYY-M-D HH:mm"),
-          end_date: moment(data.end_date).format("YYYY-M-D HH:mm"),
-          label: data.resource_label,
-          text: ev.text,
-          price: 100,
-        };
-        basket[ev.id] = item;
-        updateBasket(item);
-        return true;
-    });
-
-  };
-})(cj);
-
-function show_minical(){
+cj(function($) {
+  function show_minical(){
     if (scheduler.isCalendarVisible()){
         scheduler.destroyCalendar();
     }else{
@@ -130,33 +18,157 @@ function show_minical(){
     }
   }
 
+  scheduler.locale.labels.timeline_tab = "Timeline";
+  scheduler.config.show_loading = true;
+  scheduler.config.full_day = true;
+  scheduler.config.details_on_create=true;
+  scheduler.config.details_on_dblclick=false;
+  scheduler.config.collision_limit = 1; //allows creating 1 events per time slot
+  scheduler.config.xml_date="%Y-%m-%d %H:%i";
+
+  scheduler.init("resource_scheduler", new Date() ,"timeline");
+  scheduler.setLoadMode("day");
+  scheduler.load(CRM.url('civicrm/booking/ajax/slots'),"json");
+
+  scheduler.showLightbox = function(id) {
+    var ev = scheduler.getEvent(id);
+    console.log(ev);
+    var initStartDate = moment(new Date(ev.start_date));
+    var initEndDate = moment(new Date(ev.end_date));
+    var startTime = [initStartDate.hours(), ":", initStartDate.minute() <10?'0' + initStartDate.minute() : initStartDate.minute()].join("");
+    var endTime = [initEndDate.hours(), ":", initEndDate.minute() <10?'0' + initEndDate.minute() : initEndDate.minute()].join("");
+    $("#startTimeSelect").val(startTime);
+    $("#endTimeSelect").val(endTime);
+    scheduler.startLightbox(id,null);
+    scheduler.hideCover();
+    $("#crm-booking-new-slot").dialog({
+        title: ts('Add reource to basket'),
+        modal: true,
+        minWidth: 600,
+        open: function() {
+          //$( "input[name=startDate]" ).datepicker( "option", "defaultDate", ev.start_date);
+          //$( "input[name=endDate]" ).datepicker( "option", "defaultDate",  ev.end_date);
+          var params = {
+              id: ev.resource_id,
+              sequential: 1,
+              'api.resource_config_set.get': {
+                id: '$value.set_id',
+                'api.resource_config_option.get': {
+                  set_id: '$value.id',
+                  'api.option_group.get':{
+                    name: 'booking_size_unit',
+                  },
+                  'api.option_value.get':{
+                    value: '$value.unit_id',
+                    option_group_id: '$value.api.option_group.get.id'
+                  }
+                }
+              }
+            };
+        CRM.api('Resource', 'get', params,
+          {
+            success: function(data) {
+            var resource =  data['values']['0'];
+            $("#resource-label").val(resource.label);
+            var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
+            var template = _.template(cj('#select-config-option-template').html());
+            $('#configSelect').html(template({
+              options: options,
+              first_option:  '- ' + ts('select configuration') + ' -'}));
+              }
+            });
+        },
+        close: function() {
+          scheduler.endLightbox(false, null);
+          $(this).dialog('destroy');
+        },
+    });
+  };
+
+  $('input[name="select-resource-save"]').click(function(e){
+    e.preventDefault();
+    var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
+    var startTime = $("#startTimeSelect").val();
+    var endTime = $("#endTimeSelect").val();
+    var startDate = $("#startDate").val();
+    var endDate = $("#endDate").val();
+    ev.text = $("#resource-label").val();
+    ev.start_date = new Date([startDate," ",startTime].join(""));
+    ev.end_date =  new Date([endDate," ",endTime].join(""));
+    ev.custom_price = $("#price-estimate").html();
+    ev.readonly = true;
+    var item = {
+      id: ev.id,
+      resource_id: ev.resource_id,
+      start_date: ev.start_date,
+      start_time: startTime,
+      end_date: ev.end_date,
+      end_time: endTime,
+      label: ev.text,
+      text: ev.text,
+      configuration_id: $('#configSelect').val(),
+      quantity: $('input[name="quantity"]').val(),
+      price: ev.custom_price,
+      note: $("note").val(),
+    };
+    basket[ev.id] = item;
+    updateBasket(item);
+    scheduler.endLightbox(true,null);
+    $("#crm-booking-new-slot").dialog('close');
+
+  });
+
+ $(document).on("click", ".remove-from-basket-btn", function(e){
+    e.preventDefault();
+    var eid = $(this).data('eid');
+    var ev = scheduler.getEvent(eid);
+    subTotal -=  ev.custom_price;
+    delete basket[eid];
+    $('tr[data-eid=' + eid + ']').remove();
+    $('#subTotal').html(subTotal);
+    $("#resources").val(JSON.stringify(basket));
+    if(subTotal == 0){
+      $('#basket-table').hide();
+    }
+    scheduler.deleteEvent(eid);
+    //CRM.alert(ts(''), ts('Resource removed'), 'success');
+  });
+
+  $('input[name="select-resource-cancel"]').click(function(e){
+    e.preventDefault();
+    scheduler.endLightbox(false, null);
+    $("#crm-booking-new-slot").dialog('close');
+  });
+
+  $('input[name="quantity"]').bind('keypress keyup keydown', function(e) {
+    var price = $("#configSelect").find(':selected').data('price');
+    $('#price-estimate').html(price * $(this).val());
+  });
+
+  $('#configSelect').change(function(e) {
+    var val = $(this).val();
+    if(val == ""){
+      $('input[name="quantity"]').attr("disabled",true);
+      $('#price-estimate').html("");
+    }else{
+      $('input[name="quantity"]').attr("disabled",false);
+    }
+  });
+
+
   function updateBasket(item){
-    subTotal += item.price;
+    subTotal =  parseFloat(subTotal) + parseFloat(item.price);
     if(subTotal > 0){
-      cj('#basket-table').show();
       var template = _.template(cj('#selected-resource-row-tpl').html());
-      cj('#basket-table > tbody:last').append(template({data: item}));
-      cj("#resources").val(JSON.stringify(basket)); //ADD JSON object to basket
-      cj('#subTotal').html(subTotal);
+      $('#basket-table > tbody:last').append(template({data: item}));
+      $("#resources").val(JSON.stringify(basket)); //ADD JSON object to basket
+      $('#subTotal').html(subTotal);
+      $('#basket-table').show();
     }else{
       cj('#basket-table').hide();
     }
   }
 
-  function removeFromBasket(eventId){
-    scheduler.deleteEvent(eventId);
-    cj('tr[data-eid=' + eventId + ']').remove();
-    subTotal -= 100; //FIX ME, get event price
-    cj('#subTotal').html(subTotal);
-    delete basket[eventId];
-    cj("#resources").val(JSON.stringify(basket));
-    if(subTotal == 0){
-      cj('#basket-table').hide();
-    }
-    CRM.alert(ts(''), ts('Resource removed from basket'), 'success');
-  }
-
-cj(function($) {
   function loadEvents(){
     if ($.trim($("#resources").val())) {
         var slots = [];
@@ -171,5 +183,8 @@ cj(function($) {
     }
   }
   $(document).ready(loadEvents);
+  //$(".datepicker").datepicker({dateFormat: crmDateFormat});
+  //$("#startDate").datepicker({dateFormat: crmDateFormat});
+
 });
 
