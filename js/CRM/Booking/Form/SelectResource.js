@@ -124,8 +124,8 @@ cj(function($) {
     var item = {
       id: ev.id,
       resource_id: ev.resource_id,
-      start_date: ev.start_date,
-      end_date: ev.end_date,
+      start_date:  moment(ev.start_date).format("YYYY-M-D HH:mm"),
+      end_date: moment(ev.end_date).format("YYYY-M-D HH:mm"),
       label: $("#resource-label").val(),
       text: ev.text,
       configuration_id: ev.custom_config ,
