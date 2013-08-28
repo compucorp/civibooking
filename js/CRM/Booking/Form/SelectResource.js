@@ -41,7 +41,7 @@ cj(function($) {
       $("#add-resource-btn").hide();
     }else{
       $("#SelectResource :input").attr("disabled", false);
-      $("#price-estimate").html('');
+      $("#price-estimate").html('0');
       $("#note").val('');
       $("input[name='quantity']").val('');
       $("#add-resource-btn").show();
