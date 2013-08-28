@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BookingResourceConfigOption.Create API specification (optional)
+ * ResourceConfigOption.Create API specification (optional)
  * This is used for documentation and validation.
  *
  * @param array $spec description of fields supported by this API call
@@ -13,7 +13,7 @@ function _civicrm_api3_resource_config_option_create_spec(&$spec) {
 }
 
 /**
- * BookingResourceConfigOption.Create API
+ * ResourceConfigOption.Create API
  *
  * @param array $params
  * @return array API result descriptor
@@ -27,7 +27,7 @@ function civicrm_api3_resource_config_option_create($params) {
 }
 
 /**
- * BookingResourceConfigOptiont.Get API
+ * ResourceConfigOptiont.Get API
  *
  * @param array $params
  * @return array API result descriptor
