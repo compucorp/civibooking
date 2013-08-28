@@ -12,17 +12,10 @@ var ModalRegion = Backbone.Marionette.Region.extend({
   },
 
   showModal: function(view){
-    view.on("close", this.hideModal, this);
-    var title = '';
-    if(view.template == '#add-sub-resource-template'){
-      var title = ts('Add sub resource');
-    }else if(view.template == '#edit-adhoc-charges-template'){
-      var title = ts('Edit ad-hoc charges');
-    }
     //use CiviCRM diaglog
     cj('#crm-booking-dialog').dialog({
       modal: true,
-      title: title,
+      title: view.title,
       minWidth: '700',
       close: function() {
         cj( this ).dialog( "destroy" );
@@ -31,7 +24,7 @@ var ModalRegion = Backbone.Marionette.Region.extend({
   },
 
   hideModal: function(){
-    cj('#crm-booking-dialog').dialog().dialog( "destroy" );
+    cj('#crm-booking-dialog').dialog("close");
   }
 });
 
