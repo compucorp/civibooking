@@ -4,8 +4,8 @@
       <td><%= data.label %></td>
       <td><%= data.start_date %></td>
       <td><%= data.end_date %></td>
-      <td><%= data.price %></td>
-      <td><input type="button" value="Remove from basket" name="button" onclick="removeFromBasket(<%= data.id %>)"></td>
+      <td>{/literal}{$currencySymbols}{literal}<%= data.price %></td>
+      <td><input type="button" data-eid="<%= data.id %>" class="remove-from-basket-btn" value="Remove from basket" name="button" ></td>
       </tr>
     </script>
 {/literal}
