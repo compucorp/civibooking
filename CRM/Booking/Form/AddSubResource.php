@@ -97,11 +97,8 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
-
-
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
 
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/CRM/Booking/Form/AddSubResource.js', 132, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/app.js', 150, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/utils.js', 151, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/entities.js', 160, 'html-header')
@@ -116,6 +113,8 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
         'template' => $fileName,
       ));
     }
+    $region->add(array('template' => 'CRM/Booking/tpl/select-option.tpl' ));
+
   }
 
 
