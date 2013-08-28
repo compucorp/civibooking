@@ -34,10 +34,10 @@ cj(function($) {
   scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
     if(ev.readonly){
-      $("#SelectResource :input").attr("disabled", true);
-      $("#price-estimate").html(ev.custom_price);
-      $("#note").val(ev.custom_note);
-      $("input[name='quantity']").val(ev.custom_quantity);
+      $(".crm-booking-form-add-resource").attr("disabled", true);
+      $("#price-estimate").html(ev.price);
+      $("#note").val(ev.note);
+      $("input[name='quantity']").val(ev.quantity);
       $("#add-resource-btn").hide();
     }else{
       $("#SelectResource :input").attr("disabled", false);
@@ -82,21 +82,32 @@ cj(function($) {
                 }
               }
             };
-        CRM.api('Resource', 'get', params,
+         CRM.api('Resource', 'get', params,
           {
             success: function(data) {
             var resource =  data['values']['0'];
             $("#resource-label").val(resource.label);
             var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
+            var optionsTemp = [];
+            if(ev.readonly){
+              var configId = ev.configuration_id;
+               _.each(options, function (item, key){
+                if(item.id == configId){
+                  item.selected = "selected";
+                }else{
+                  item.selected = "";
+                }
+                optionsTemp.push(item);
+              });
+              options = optionsTemp;
+            }
             var template = _.template(cj('#select-config-option-template').html());
             $('#configSelect').html(template({
               options: options,
               first_option:  ["- ", ts('select configuration')," -"].join("")}));
               }
             });
-            if(ev.readonly){
-              $('#configSelect').val(ev.custom_config);
-            }
+
         },
         close: function() {
           scheduler.endLightbox(false, null);
@@ -115,12 +126,11 @@ cj(function($) {
     ev.text = [$("#resource-label").val(), " - ", ev.id].join("");
     ev.start_date = startDate;
     ev.end_date = endDate;
-    ev.custom_price = $("#price-estimate").html();
-    ev.custom_quantity = $('#configSelect').val();
-    ev.custom_config = $('input[name="quantity"]').val();
-    ev.custom_note = $("note").val();
+    ev.price = $("#price-estimate").html();
+    ev.quantity = $('input[name="quantity"]').val();
+    ev.configuration_id = $('#configSelect').val();
+    ev.note = $("note").val();
     ev.readonly = true;
-
     var item = {
       id: ev.id,
       resource_id: ev.resource_id,
@@ -128,13 +138,12 @@ cj(function($) {
       end_date: moment(ev.end_date).format("YYYY-M-D HH:mm"),
       label: $("#resource-label").val(),
       text: ev.text,
-      configuration_id: ev.custom_config ,
-      quantity: ev.custom_quantity,
-      price: ev.custom_price,
-      note: ev.custom_note,
+      configuration_id: ev.configuration_id ,
+      quantity: ev.quantity,
+      price: ev.price,
+      note: ev.note,
     };
     basket[ev.id] = item;
-    console.log(item);
     updateBasket(item);
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
@@ -181,7 +190,6 @@ cj(function($) {
 
   function updateBasket(item){
     subTotal =  parseFloat(subTotal) + parseFloat(item.price);
-    console.log(subTotal);
     if(subTotal > 0){
       var template = _.template(cj('#selected-resource-row-tpl').html());
       $('#basket-table > tbody:last').append(template({data: item}));
