@@ -116,9 +116,9 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         var params = {
               id: selectedVal,
               sequential: 1,
-              'api.booking_resource_config_set.get': {
+              'api.resource_config_set.get': {
                 id: '$value.set_id',
-                'api.booking_resource_config_option.get': {
+                'api.resource_config_option.get': {
                   set_id: '$value.id',
                   'api.option_group.get':{
                     name: 'booking_size_unit',
@@ -136,7 +136,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
             success: function(data) {
             console.log(data);
             var resource =  data['values']['0'];
-            var options = data['values']['0']['api.booking_resource_config_set.get']['values']['0']['api.booking_resource_config_option.get']['values'];
+            var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
             self.model.set('resource', {id: resource.id, label: resource.label});
             var params = {
               context:self,
