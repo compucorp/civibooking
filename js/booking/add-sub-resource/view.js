@@ -84,7 +84,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         template: tpl,
         list:this.resources,
         element: "#resourceSelect",
-        first_option: '- ' + ts('select resource') + ' -'
+        first_option: ['- ', ts('select resource'), ' -'].join("");
       }
       CRM.BookingApp.vent.trigger("render:options", params);
 
