@@ -64,7 +64,17 @@ class CRM_Booking_Utils {
       return $times;
   }
 
+  static function getYears(){
+    $yearRange = range(date("Y" ,strtotime("now - 4 years")), date("Y", strtotime("now + 4 years")));
+    $years = array();
+    foreach ($yearRange as  $year) {
+      $years[$year] = $year;
+    }
+    return $years;
+  }
 
-
+  static function getDays(){
+    return range(1, 31);
+  }
 
 }

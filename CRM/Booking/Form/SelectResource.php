@@ -22,6 +22,17 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    * @access public
    */
   public function preProcess() {
+    $dateformat = CRM_Utils_Date::getDateFormat();
+    $this->assign('dateformat', $dateformat);
+
+    $days = CRM_Booking_Utils::getDays();
+    $months = CRM_Utils_Date::getFullMonthNames();
+    $years = CRM_Booking_Utils::getYears();
+
+    $this->assign('days', $days);
+    $this->assign('months', $months);
+    $this->assign('years', $years);
+
 
     $config = CRM_Core_Config::singleton();
     $currencySymbols = "";
@@ -42,6 +53,16 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
     $this->assign('resources', $resources);;
     $this->assign('currencySymbols', $currencySymbols);
+
+    require_once 'CRM/Booking/Utils.php';
+    //FIXED ME, get start and end time from the configuration
+    $timeRange = CRM_Booking_Utils::createTimeRange('8:00', '22:30', '5 mins');
+    $timeOptions = array();
+    foreach ($timeRange as $key => $time) {
+      $timeOptions[$time]['time'] = date('G:i', $time);
+    }
+
+    $this->assign('timeOptions',$timeOptions);
 
     self::registerScripts();
 
@@ -130,19 +151,22 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/schedule.css', 91, 'page-header')
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.css', 92, 'page-header')
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
+
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
+
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.js', 132, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_timeline.js', 134, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_treetimeline.js', 135, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_minical.js', 136, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_readonly.js', 137, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_collision.js', 138, 'html-header');
-    //  ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/CRM/Booking/Form/SelectResource.js', 139, 'html-header');
 
     $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.booking') . '/templates/';
     $region = CRM_Core_Region::instance('page-header');
     $region->add(array('template' => 'CRM/Booking/tpl/select-resource/basket.tpl' ));
+    $region->add(array('template' => 'CRM/Booking/tpl/select-option.tpl' ));
+
   }
 
 }
