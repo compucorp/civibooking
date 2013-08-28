@@ -46,11 +46,11 @@
       </div>
      </div>
 
-  <div id="basket-region"class="crm-container crm-form-block">
-      <div class="hide">{$form.resources.html}</div>
+  <div id="basket-region"class="crm-container crm-form-block hiddenElement">
+      <div class="hiddenElement">{$form.resources.html}</div>
       <div class="crm-section" >
         <h4>Currently in basket</h4>
-        <table id="basket-table" class="hide">
+        <table id="basket-table" >
           <tr>
               <th>Resource</th>
               <th>From</th>
@@ -71,18 +71,125 @@
               <td >{$currencySymbols}<span id="subTotal"><span></td>
             </tr>
           </tfoot>
-  </table>
-
-      </div>
-
-  <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl"}</div>
+      </table>
+    </div>
+    <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl"}</div>
   </div>
 </div>
-{crmScript ext=uk.co.compucorp.civicrm.booking file=js/CRM/Booking/Form/SelectResource.js}
+<div id="crm-booking-new-slot" class="crm-container hiddenElement">
+  <input type="hidden" name="resource-label" id="resource-label" autofocus/>
+  <div class="crm-section">
+    <div class="label">
+      <label>{ts}Start date time{/ts}</label>
+    </div>
+    <div class="content">
+      <select id="start-day-select" name="start-day-select">
+        {foreach from=$days item=day}
+          <option value="{$day}">{$day}</option>
+        {/foreach}
+     </select>
+     <select id="start-month-select" name="start-month-select">
+        {foreach from=$months key=k item=month}
+          <option value="{$k}">{$month}</option>
+        {/foreach}
+     </select>
+     <select id="start-year-select" name="start-year-select">
+        {foreach from=$years item=year}
+          <option value="{$year}">{$year}</option>
+        {/foreach}
+     </select>
+      <select id="start-time-select" name="start-time-select">
+        {foreach from=$timeOptions key=k item=time}
+          <option value="{$time.time}">{$time.time}</option>
+        {/foreach}
+     </select>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="crm-section">
+    <div class="label">
+      <label>{ts}End date time{/ts}</label>
+    </div>
+    <div class="content">
+     <select id="end-day-select" name="end-day-select">
+        {foreach from=$days item=day}
+          <option value="{$day}">{$day}</option>
+        {/foreach}
+     </select>
+     <select id="end-month-select" name="end-month-select">
+        {foreach from=$months key=k item=month}
+          <option value="{$k}">{$month}</option>
+        {/foreach}
+     </select>
+     <select id="end-year-select" name="end-year-select">
+        {foreach from=$years item=year}
+          <option value="{$year}">{$year}</option>
+        {/foreach}
+     </select>
+     <select id="end-time-select" name="end-time-select" >
+        {foreach from=$timeOptions key=k item=time}
+          <option value="{$time.time}">{$time.time}</option>
+      {/foreach}
+      </select>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="crm-section">
+    <div class="label">
+      <label for="configuration">{ts}Configuration{/ts}</label>
+    </div>
+    <div class="content">
+    <select name="configuration" id="configSelect" class="form-select">
+    </select>
+    <span id="config-max-size"></span>
+    </div>
+    <div class="clear"></div>
+   </div>
+   <div class="crm-section">
+    <div class="label">
+      <label for="quantity">{ts}Quantity{/ts}</label>
+    </div>
+    <div class="content">
+      <input type="text" name="quantity" disabled/>
+    </div>
+    <div class="clear"></div>
+
+   </div>
+
+   <div class="crm-section">
+      <div class="label">
+        <label for="note">{ts}Note{/ts}</label>
+      </div>
+      <div class="content">
+        <textarea id="note"></textarea>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+   <div class="crm-section">
+      <div class="label">
+        <label >{ts}Price estimate{/ts}</label>
+      </div>
+      <div class="content">
+        <span id="price-estimate"></span>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div id="add-resource-btn" class="crm-submit-buttons" >
+    <span class="crm-button crm-button-type-next">
+      <input class="validate form-submit default" name="select-resource-save" value="{ts}Save{/ts}" type="submit"  >
+      <input class="validate form-submit default" name="select-resource-cancel" value="{ts}Cancel{/ts}" type="submit" >
+    </span>
+  </div>
+
+</div>
 {literal}
 <script type="text/javascript">
+var crmDateFormat = "{/literal} {$dateformat} {literal}";
 cj(function($) {
-
   var elements = [// original hierarhical array to display
       {/literal}
         {foreach from=$resources key=key item=resourceType}
@@ -101,14 +208,28 @@ cj(function($) {
       {literal}
   ];
 
-  $("#resource_scheduler").bookingscheduler({
-    elements: elements,
-    url: CRM.url('civicrm/booking/ajax/slots'),
-    loadMode: 'day',
-    date: new Date(),
+  scheduler.createTimelineView({
+    section_autoheight: false,
+    name: "timeline",
+    x_unit: "minute",
+    x_date: "%H:%i",
+    x_step: 30,
+    x_size: 24,
+    x_start: 16,
+    x_length: 48,
+    y_unit: elements,
+    y_property: "resource_id",
+    render: "tree",
+    folder_dy:20,
+    dy:60
   });
+
+
+
 
 });
 </script>
 {/literal}
+{crmScript ext=uk.co.compucorp.civicrm.booking file=js/CRM/Booking/Form/SelectResource.js}
+
 
