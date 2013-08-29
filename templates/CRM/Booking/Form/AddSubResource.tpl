@@ -38,7 +38,6 @@
 {$form.sub_total.label} {$form.sub_total.html}
 {$form.adhoc_charge.label} {$form.adhoc_charge.html}
 {$form.total_price.label} {$form.total_price.html}
-{$form.discount_amount.label}{$form.discount_amount.html}
 {$form.sub_resources.html}
 {include file="CRM/common/formButtons.tpl" location="bottom"}
 </div>
