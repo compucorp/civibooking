@@ -3,10 +3,11 @@ CRM.BookingApp.module('Entities', function(Entities, BookingApp, Backbone, Mario
   Entities.SubResource = Backbone.Model.extend({
     defaults: {
       sub_resources: {},
+      resources: {},
       sub_total: 0,
       adhoc_charges:0,
-      manual_adjustment:0,
-      total:0
+      discount_amount:0,
+      total_price:0
     },
   });
 

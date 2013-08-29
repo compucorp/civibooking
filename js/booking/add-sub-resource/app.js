@@ -41,6 +41,7 @@ CRM.BookingApp.on("initialize:after", function(){
 CRM.BookingApp.addInitializer(function(){
   var model =  new CRM.BookingApp.Entities.SubResource();
   var view = new CRM.BookingApp.AddSubResource.ResourceTableView({model: model});
+
   CRM.BookingApp.main.show(view);
 });
 

@@ -58,7 +58,7 @@
       Price estimate
     </div>
     <div class="content">
-      {$currencySymbols} <span id="price-estimate">0</span>
+      {$currencySymbols}<span id="price-estimate">0</span>
     </div>
     <div class="clear"></div>
   </div>

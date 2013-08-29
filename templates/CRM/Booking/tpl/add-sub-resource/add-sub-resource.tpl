@@ -19,8 +19,8 @@
             </td>
             <td class="crm-booking-resource-to ">{$resource.start_date} </td>
             <td class="crm-booking-resource-from ">{$resource.end_date}</td>
-            <td class="crm-booking-resource-price ">{$currencySymbols}{$resource.price}</td>
-            <td class="crm-booking-resource-total-price ">{$currencySymbols}{$resource.price}</td>
+            <td class="crm-booking-resource-price ">{$currencySymbols}<span data-ref="{$key}" id="resource-price-{$key}">{$resource.price}</span></td>
+            <td class="crm-booking-resource-total-price ">{$currencySymbols}<span data-ref="{$key}" id="resource-total-price-{$key}">{$resource.price}<span></td>
             <td >
               <span><a href="#" data-ref="{$key}" class="add-sub-resource action-item action-item-first" title="Add sub resource">{ts}Add sub resource{/ts}</a></span></td>
           </tr>
@@ -46,22 +46,22 @@
         {/foreach}
          <tr>
             <td class="text-right" colspan="4"><span>{ts}Sub total{/ts}: </span></td>
-            <td>{$currencySymbols} <span id="sub-total-summary">{$subtotal}</td>
+            <td>{$currencySymbols}<span id="sub-total-summary">{$subTotal}</span></td>
             <td></td>
           </tr>
           <tr >
             <td class="text-right"colspan="4"><span>{ts}Ad-hoc charges{/ts}: </span></td>
-            <td>{$currencySymbols} <span id="ad-hoc-charge-summary">0</td>
-            <td></td>
+            <td>{$currencySymbols}<span id="ad-hoc-charge-summary">0</span></td>
+            <td><span><a href="#" class="edit-adhoc-charge " title="{ts}Add ad-hoc charge{/ts}">{ts}Edit ad-hoc charges{/ts}</a></span></td>
           </tr>
           <tr >
-            <td class="text-right" colspan="4"><span>{ts}Manual adjustment{/ts}:</span></td>
-            <td>{$currencySymbols} <input type="text" name="manual-adjustment" size=10 value="0"/></td>
-            <td><span><a href="#" class="edit-adhoc-charge " title="Add ad-hoc charge">{ts}Edit ad-hoc charges{/ts}</a></span></td>
+            <td class="text-right" colspan="4"><span>{$form.discount_amount.label}:</span></td>
+            <td>{$currencySymbols}{$form.discount_amount.html}</td>
+            <td></td>
         </td>
           <tr>
             <td class="text-right" colspan="4"><span>{ts}Total price{/ts}:</span></td>
-            <td>{$currencySymbols} <span id="total-price-summary">{$totalPrice} </span></td>
+            <td>{$currencySymbols}<span id="total-price-summary">{$totalPrice} </span></td>
           <td></td>
       </tbody>
       </table>
@@ -74,7 +74,7 @@
     <td><%= resource.label %></td>
     <td><%= configuration.label %></td>
     <td><%= quantity %></td>
-    <td>{$currencySymbols} <%= price_estimate %></td>
-    <td><span><a href="#" data-ref="<%=ref_id %>" class="remove-sub-resource action-item action-item-first" >{ts}Remove{/ts}</a></span></td>
+    <td>{$currencySymbols}<%= price_estimate %></td>
+    <td><span><a href="#" data-ref="<%=ref_id %>" data-parent-ref="<%= parent_ref_id %>" data-price="<%= price_estimate %>"  class="remove-sub-resource action-item action-item-first" >{ts}Remove{/ts}</a></span></td>
   </tr>
 </script>
