@@ -61,7 +61,7 @@ cj(function($) {
     scheduler.startLightbox(id,null);
     scheduler.hideCover();
     $("#crm-booking-new-slot").dialog({
-        title: ts('Add reource to basket'),
+        title: ts('Add resource to basket'),
         modal: true,
         minWidth: 600,
         open: function() {
@@ -154,12 +154,12 @@ cj(function($) {
     e.preventDefault();
     var eid = $(this).data('eid');
     var ev = scheduler.getEvent(eid);
-    subTotal -=  ev.custom_price;
+    subTotal -=  ev.price;
     delete basket[eid];
     $('tr[data-eid=' + eid + ']').remove();
     $('#subTotal').html(subTotal);
     $("#resources").val(JSON.stringify(basket));
-    if(subTotal == 0){
+    if(subTotal == 0 || isNaN(subTotal)){
       $('#basket-region').hide();
     }
     scheduler.deleteEvent(eid);
