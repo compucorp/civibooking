@@ -9,6 +9,11 @@ require_once 'CRM/Core/Form.php';
  */
 class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
+    protected $_subTotal;
+    protected $_total;
+    protected $_discountAmount;
+
+
     /**
    * Return a descriptive name for the page, used in wizard header
    *
@@ -30,11 +35,17 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     }
     $this->assign('currencySymbols', $currencySymbols);
 
-
-
     $selectResourcePage = $this->controller->exportValues('SelectResource');
     $selectedResources = json_decode($selectResourcePage['resources'], true);
     $this->assign('resources', $selectedResources);
+
+    foreach ($selectedResources as $key => $resource) {
+      $this->_subTotal += $resource['price'];
+    }
+    $this->_total = $this->_subTotal;
+
+    $this->assign('subTotal', $this->_subTotal);
+    $this->assign('totalPrice', $this->_total);
 
     self::registerScripts();
 
@@ -48,15 +59,37 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
    * @return None
    */
   function setDefaultValues() {
+    $defaults = array( );
+    $defaults['sub_total'] = $this->_subTotal;
+    $defaults['adhoc_charge'] = 0;
+    $defaults['discount_amount']=0;
+    $defaults['total_price'] = $this->_total;
 
+    return $defaults;
   }
 
   function buildQuickForm() {
     parent::buildQuickForm();
 
+    $this->addElement('text',
+                      'sub_total',
+                      ts('Sub total'));
+
+    $this->addElement('text',
+                      'total_price',
+                      ts('Total'));
+
+    $this->addElement('text',
+                      'discount_amount',
+                      ts('Discount amount'));
+
+    $this->addElement('text',
+                      'adhoc_charge',
+                      ts('Ad-hoc charges'));
+
     $this->add('textarea',
-              'resources',
-               ts('Resource(s)'),
+              'sub_resources',
+               ts('Sub Resource(s)'),
                FALSE);
 
     $buttons = array(
