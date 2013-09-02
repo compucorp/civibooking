@@ -2,7 +2,7 @@
 <form>
   <div class="crm-section">
     <div class="label">
-      <label for="resource_select">Select resource</label>
+      <label for="resource_select">{ts}Select resource{/ts}</label>
     </div>
     <div class="content">
     <select name="resource_select" id="resource_select" class="form-select">
@@ -13,11 +13,11 @@
 
   <div class="crm-section">
     <div class="label">
-      <label for="configuration_select">Configuration</label>
+      <label for="configuration_select">{ts}Configuration{/ts}</label>
     </div>
     <div class="content">
     <select name="configuration_select" id="configuration_select" class="form-select" disabled>
-      <option value="">- select configuration -</option>
+      <option value="">- {ts}select configuration{/ts} -</option>
     </select>
     </div>
     <div class="clear"></div>
@@ -25,7 +25,7 @@
 
   <div class="crm-section">
     <div class="label">
-      <label for="quantity">Quantity</label>
+      <label for="quantity">{ts}Quantity{/ts}</label>
     </div>
     <div class="content">
       <input name="quantity" type="text" id="quantity" class="form-text" disabled>
@@ -35,17 +35,22 @@
 
   <div class="crm-section">
     <div class="label">
-      <label for="time_required">Time required</label>
+      <label for="time_required">{ts}Time required{/ts}</label>
     </div>
     <div class="content">
-      <input name="time_required" type="text" id="time_required" class="date form-text">
+      <select id="time_required" name="time_required" class="form-select">
+        <option value="">- {ts}select time{/ts} -</option>
+        {foreach from=$timeOptions key=k item=time}
+          <option value="{$time.time}">{$time.time}</option>
+        {/foreach}
+     </select>
     </div>
     <div class="clear"></div>
   </div>
 
   <div class="crm-section">
     <div class="label">
-      <label for="note">Note</label>
+      <label for="note">{ts}Note{/ts}</label>
     </div>
     <div class="content">
       <textarea name="note" rows="4" cols="50">
@@ -56,7 +61,7 @@
 
    <div class="crm-section">
     <div class="label">
-      Price estimate
+      {ts}Price estimate{/ts}
     </div>
     <div class="content">
       {$currencySymbols}<span id="price-estimate">0</span>
