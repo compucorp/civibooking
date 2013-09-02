@@ -22,17 +22,14 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    * @access public
    */
   public function preProcess() {
-    $dateformat = CRM_Utils_Date::getDateFormat();
-    $this->assign('dateformat', $dateformat);
 
-    $days = CRM_Booking_Utils::getDays();
+    $days = CRM_Booking_Utils_DateTime::getDays();
     $months = CRM_Utils_Date::getFullMonthNames();
-    $years = CRM_Booking_Utils::getYears();
+    $years = CRM_Booking_Utils_DateTime::getYears();
 
     $this->assign('days', $days);
     $this->assign('months', $months);
     $this->assign('years', $years);
-
 
     $config = CRM_Core_Config::singleton();
     $currencySymbols = "";
@@ -54,15 +51,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     $this->assign('resources', $resources);;
     $this->assign('currencySymbols', $currencySymbols);
 
-    require_once 'CRM/Booking/Utils.php';
-    //FIXED ME, get start and end time from the configuration
-    $timeRange = CRM_Booking_Utils::createTimeRange('8:00', '22:30', '5 mins');
-    $timeOptions = array();
-    foreach ($timeRange as $key => $time) {
-      $timeOptions[$time]['time'] = date('G:i', $time);
-    }
-
-    $this->assign('timeOptions',$timeOptions);
+    $this->assign('timeOptions', CRM_Booking_Utils_DateTime::getTimeRange());
 
     self::registerScripts();
 

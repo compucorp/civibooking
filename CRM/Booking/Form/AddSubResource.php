@@ -44,8 +44,11 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     }
     $this->_total = $this->_subTotal;
 
-    $this->assign('subTotal', $this->_subTotal);
-    $this->assign('totalPrice', $this->_total);
+    require_once 'CRM/Booking/Utils/DateTime.php';
+    $this->assign('timeOptions', CRM_Booking_Utils_DateTime::getTimeRange());
+
+    //$this->assign('sub_total', $this->_subTotal);
+    //$this->assign('total_price', $this->_total);
 
     self::registerScripts();
 
@@ -60,6 +63,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
    */
   function setDefaultValues() {
     $defaults = array( );
+    dprint_r($this->_subTotal);
     $defaults['sub_total'] = $this->_subTotal;
     $defaults['adhoc_charge'] = 0;
     $defaults['discount_amount']=0;
