@@ -34,7 +34,7 @@
  *
  */
 
-class CRM_Booking_Utils {
+class CRM_Booking_Utils_DateTime {
 
 
     /**
@@ -62,6 +62,17 @@ class CRM_Booking_Utils {
       }
       $times[] = $start_time;
       return $times;
+  }
+
+  static function getTimeRange(){
+    //FIXED ME, get start and end time from the configuration
+    $timeRange = self::createTimeRange('8:00', '22:30', '5 mins');
+    $timeOptions = array();
+    foreach ($timeRange as $key => $time) {
+      $timeOptions[$time]['time'] = date('G:i', $time);
+    }
+    return $timeOptions;
+
   }
 
   static function getYears(){
