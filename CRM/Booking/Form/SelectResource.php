@@ -113,7 +113,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
 
   public function postProcess() {
-    dprint_r($this->_action);
+    //dprint_r($this->_action);
 
     //$params = $ids = array();
 
@@ -164,7 +164,12 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
     $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.booking') . '/templates/';
     $region = CRM_Core_Region::instance('page-header');
-    $region->add(array('template' => 'CRM/Booking/tpl/select-resource/basket.tpl' ));
+    foreach (glob($templateDir . 'CRM/Booking/tpl/select-resource/*.tpl') as $file) {
+      $fileName = substr($file, strlen($templateDir));
+      $region->add(array(
+        'template' => $fileName,
+      ));
+    }
     $region->add(array('template' => 'CRM/Booking/tpl/select-option.tpl' ));
 
   }

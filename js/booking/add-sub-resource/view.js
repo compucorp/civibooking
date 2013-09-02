@@ -128,36 +128,64 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     }
   });
 
-  AddSubResource.AddSubResourceModal = Backbone.Marionette.ItemView.extend({
+  AddSubResource.AddSubResourceModal = BookingApp.Common.Views.BookingProcessModal.extend({
     template: "#add-sub-resource-template",
     initialize: function(options){
       this.resources = options.resources;
     },
     events: {
       'click #add-to-basket': 'addSubResource',
-      'change #resourceSelect': 'getConfigurations',
-      'change #configSelect': 'updatePriceEstmate',
+      'change #resource_select': 'getConfigurations',
+      'change #configuration_select': 'updatePriceEstmate',
       'keypress #quantity': 'updatePriceEstmate',
       'keyup #quantity': 'updatePriceEstmate',
       'keydown #quantity': 'updatePriceEstmate',
 
     },
     onRender: function(){
+      BookingApp.Common.Views.BookingProcessModal.prototype.onRender.apply(this, arguments);
+
      var tpl = _.template($('#select-option-template').html());
       var params = {
         context:this,
         template: tpl,
         list:this.resources,
-        element: "#resourceSelect",
+        element: "#resource_select",
         first_option: ['- ', ts('select resource'), ' -'].join("")
       }
       CRM.BookingApp.vent.trigger("render:options", params);
 
+
     },
+
+     /**
+     * Define form validation rules
+     *
+     * @param View view the view for which validation rules are created
+     * @param Object r the validation rules for the view
+     */
+    onValidateRulesCreate: function(view, r) {
+      _.extend(r.rules, {
+        resource_select: {
+          required: true
+        },
+        config_select: {
+          required: true
+        },
+        time_required: {
+          required: true
+        },
+        quantity: {
+          required: true,
+          number: true
+        },
+      });
+    },
+
     updatePriceEstmate: function(e){
       var qualitySelector = this.$el.find('#quantity');
       if(e.type == 'change'){
-        var configSelect = this.$el.find('#configSelect');
+        var configSelect = this.$el.find('#configuration_select');
         if(configSelect.val() !== ''){
           configSelect.find(':selected').data('price');
           var price = configSelect.find(':selected').data('price');
@@ -175,8 +203,9 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       this.model.set('price_estimate', priceEstimate);
       this.$el.find('#price-estimate').html(priceEstimate);
     },
+
     getConfigurations: function(e){
-      selectedVal = $('#resourceSelect').val();
+      selectedVal = $('#resource_select').val();
       if(selectedVal !== ""){
         var params = {
               id: selectedVal,
@@ -206,7 +235,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
               context:self,
               template: _.template($('#select-config-option-template').html()),
               list: options,
-              element: "#configSelect",
+              element: "#configuration_select",
               first_option: '- ' + ts('select configuration') + ' -'
             }
             CRM.BookingApp.vent.trigger("render:options", params);
@@ -218,13 +247,20 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
           context:this,
           template: _.template($('#select-config-option-template').html()),
           list: new Array(),
-          element: "#configSelect",
+          element: "#configuration_select",
           first_option: '- ' + ts('select configuration') + ' -'}
         CRM.BookingApp.vent.trigger("render:options", params);
-        this.$el.find('#configSelect').prop('disabled', true);
+        this.$el.find('#configuration_select').prop('disabled', true);
       }
     },
     addSubResource: function(e){
+      e.preventDefault();
+      if (!this.$('form').valid()) {
+        var errors = this.$('form').validate().errors();
+        this.onRenderError(errors);
+        return false;
+      }
+
       var parentRefId = this.model.get('parent_ref_id');
       var refId = CRM.BookingApp.Utils.getCurrentUnixTimstamp();
       this.model.set('ref_id', refId);
@@ -262,9 +298,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
   AddSubResource.EditAdhocChargesModal = Backbone.Marionette.ItemView.extend({
     template: "#edit-adhoc-charges-template",
     className: "modal-dialog",
-    events: {
-  },
-
+    events: {},
 
   });
 

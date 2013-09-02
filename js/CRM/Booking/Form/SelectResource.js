@@ -19,6 +19,7 @@ function show_minical(){
 
 
 cj(function($) {
+
   scheduler.locale.labels.timeline_tab = "Timeline";
   scheduler.config.show_loading = true;
   scheduler.config.full_day = true;
@@ -33,31 +34,7 @@ cj(function($) {
 
   scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
-    if(ev.readonly){
-      $(".crm-booking-form-add-resource").attr("disabled", true);
-      $("#price-estimate").html(ev.price);
-      $("#note").val(ev.note);
-      $("input[name='quantity']").val(ev.quantity);
-      $("#add-resource-btn").hide();
-    }else{
-      $("#SelectResource :input").attr("disabled", false);
-      $("#price-estimate").html('0');
-      $("#note").val('');
-      $("input[name='quantity']").val('');
-      $("#add-resource-btn").show();
-    }
-    var initStartDate = moment(new Date(ev.start_date));
-    var initEndDate = moment(new Date(ev.end_date));
-    var startTime = [initStartDate.hours(), ":", initStartDate.minute() <10?'0' + initStartDate.minute() : initStartDate.minute()].join("");
-    var endTime = [initEndDate.hours(), ":", initEndDate.minute() <10?'0' + initEndDate.minute() : initEndDate.minute()].join("");
-    $("#start-time-select").val(startTime);
-    $("#start-day-select").val(initStartDate.format("D"));
-    $("#start-month-select").val(initStartDate.months() + 1);
-    $("#start-year-select").val(initStartDate.years());
-    $("#end-time-select").val(endTime);
-    $("#end-day-select").val(initEndDate.format("D"));
-    $("#end-month-select").val(initEndDate.months() + 1);
-    $("#end-year-select").val(initEndDate.years());
+
     scheduler.startLightbox(id,null);
     scheduler.hideCover();
     $("#crm-booking-new-slot").dialog({
@@ -65,7 +42,49 @@ cj(function($) {
         modal: true,
         minWidth: 600,
         open: function() {
-          var params = {
+          //insert the template so tag <form /> will work for validation
+          var template = _.template(cj('#add-resource-template').html());
+          $('#crm-booking-new-slot').html(template());
+          //TODO: Implement validation and using CiviCRM validation style
+          $('#add-resource-form').validate({
+                rules: {
+                    configuration: {
+                      required: true
+                    },
+                    quantity: {
+                      required: true,
+                      number: true
+                    },
+                }
+          });
+
+          if(ev.readonly){
+            $(".crm-booking-form-add-resource").attr("disabled", true);
+            $("#price-estimate").html(ev.price);
+            $("#note").val(ev.note);
+            $("input[name='quantity']").val(ev.quantity);
+            $("#add-resource-btn").hide();
+          }else{
+            $("#SelectResource :input").attr("disabled", false);
+            $("#price-estimate").html('0');
+            $("#note").val('');
+            $("input[name='quantity']").val('');
+            $("#add-resource-btn").show();
+          }
+          var initStartDate = moment(new Date(ev.start_date));
+          var initEndDate = moment(new Date(ev.end_date));
+          var startTime = [initStartDate.hours(), ":", initStartDate.minute() <10?'0' + initStartDate.minute() : initStartDate.minute()].join("");
+          var endTime = [initEndDate.hours(), ":", initEndDate.minute() <10?'0' + initEndDate.minute() : initEndDate.minute()].join("");
+          $("#start-time-select").val(startTime);
+          $("#start-day-select").val(initStartDate.format("D"));
+          $("#start-month-select").val(initStartDate.months() + 1);
+          $("#start-year-select").val(initStartDate.years());
+          $("#end-time-select").val(endTime);
+          $("#end-day-select").val(initEndDate.format("D"));
+          $("#end-month-select").val(initEndDate.months() + 1);
+          $("#end-year-select").val(initEndDate.years());
+
+         CRM.api('Resource', 'get', {
               id: ev.resource_id,
               sequential: 1,
               'api.resource_config_set.get': {
@@ -81,8 +100,7 @@ cj(function($) {
                   }
                 }
               }
-            };
-         CRM.api('Resource', 'get', params,
+            },
           {
             success: function(data) {
             var resource =  data['values']['0'];
@@ -116,8 +134,12 @@ cj(function($) {
     });
   };
 
-  $('input[name="select-resource-save"]').click(function(e){
+
+ $(document).on("click", 'input[name="select-resource-save"]', function(e){
     e.preventDefault();
+    if (!$('#add-resource-form').valid()) {
+        return false;
+    }
     var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
     var startTime = $("#start-time-select").val().split(":");
     var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
@@ -147,7 +169,6 @@ cj(function($) {
     updateBasket(item);
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
-
   });
 
  $(document).on("click", ".remove-from-basket-btn", function(e){
@@ -166,22 +187,26 @@ cj(function($) {
     CRM.alert(ts(''), ts('Resource removed'), 'success');
   });
 
-  $('input[name="select-resource-cancel"]').click(function(e){
+
+ $(document).on('click', 'input[name="select-resource-cancel"]', function(e){
     e.preventDefault();
     scheduler.endLightbox(false, null);
     $("#crm-booking-new-slot").dialog('close');
   });
 
-  $('input[name="quantity"]').bind('keypress keyup keydown', function(e) {
+  $(document).on('keypress keyup keydown', 'input[name="quantity"]',  function(e) {
     var price = $("#configSelect").find(':selected').data('price');
-    $('#price-estimate').html(price * $(this).val());
+    var priceEstimate = price * $(this).val();
+    if(!isNaN(priceEstimate)){
+      $('#price-estimate').html(priceEstimate);
+    }
   });
 
   $('#configSelect').change(function(e) {
     var val = $(this).val();
     if(val == ""){
       $('input[name="quantity"]').attr("disabled",true);
-      $('#price-estimate').html("");
+      $('#price-estimate').html(0);
     }else{
       $('input[name="quantity"]').attr("disabled",false);
     }
