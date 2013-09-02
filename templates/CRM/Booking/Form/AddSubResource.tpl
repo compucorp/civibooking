@@ -34,7 +34,7 @@
 <div class="clear"></div>
 
 <div>
-<div class="">
+<div class="hiddenElement">
 {$form.sub_total.label} {$form.sub_total.html}
 {$form.adhoc_charge.label} {$form.adhoc_charge.html}
 {$form.total_price.label} {$form.total_price.html}
