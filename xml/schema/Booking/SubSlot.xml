@@ -2,7 +2,7 @@
 
 <table>
   <base>CRM/Booking</base>
-  <class>Slot</class>
+  <class>SubSlot</class>
   <name>civicrm_booking_sub_slot</name>
   <comment></comment>
   <log>true</log>
