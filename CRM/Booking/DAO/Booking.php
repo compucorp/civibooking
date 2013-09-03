@@ -158,12 +158,12 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
   public $is_deleted;
   /**
    *
-   * @var datetime
+   * @var int unsigned
    */
   public $created_by;
   /**
    *
-   * @var int unsigned
+   * @var datetime
    */
   public $created_date;
   /**
@@ -235,7 +235,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'name' => 'secondary_contact_id',
           'type' => CRM_Utils_Type::T_INT,
           'title' => ts('Secondary Contact ID') ,
-          'required' => true,
+          'required' => false,
           'import' => true,
           'where' => 'civicrm_booking.secondary_contact_id',
           'headerPattern' => '/contact(.?id)?/i',
@@ -255,7 +255,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'name' => 'status_id',
           'type' => CRM_Utils_Type::T_INT,
           'title' => ts('Status ID') ,
-          'default' => 'UL',
+          'default' => 'NULL',
           'pseudoconstant' => array(
             'optionGroupName' => 'booking_booking_status',
           )
@@ -310,13 +310,13 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         ) ,
         'created_by' => array(
           'name' => 'created_by',
-          'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
+          'type' => CRM_Utils_Type::T_INT,
           'title' => ts('Created By') ,
           'required' => true,
         ) ,
         'created_date' => array(
           'name' => 'created_date',
-          'type' => CRM_Utils_Type::T_INT,
+          'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
           'title' => ts('Created Date') ,
           'required' => true,
         ) ,
