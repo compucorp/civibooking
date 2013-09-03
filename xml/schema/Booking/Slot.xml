@@ -31,6 +31,18 @@
   </foreignKey>
 
   <field>
+    <name>resource_id</name>
+    <type>int unsigned</type>
+    <comment>FK to resource ID</comment>
+  </field>
+  <foreignKey>
+    <name>resource_id</name>
+    <table>civicrm_booking_resource</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
     <name>config_id</name>
     <type>int unsigned</type>
     <comment>FK to resource configuration option ID</comment>
@@ -55,19 +67,8 @@
   </field>
 
   <field>
-    <name>quantity</name>
-    <type>int</type>
-    <required>true</required>
-  </field>
-
-  <field>
     <name>note</name>
     <type>text</type>
-  </field>
-
-  <field>
-    <name>parent_id</name>
-    <type>int unsigned</type>
   </field>
 
   <field>
