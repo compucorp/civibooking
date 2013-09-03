@@ -119,7 +119,7 @@
             {$form.send_conformation.html}
           </div>
       </div>
-      <fieldset><legend>{ts}Email booking conformation{/ts}</legend>
+      <fieldset id="email-confirmation" class="hiddenElement"><legend>{ts}Email booking conformation{/ts}</legend>
         <div class="crm-section">
           <div class="label">
            {$form.email_to.label}
@@ -148,7 +148,7 @@
             {$form.record_contribution.html}
           </div>
       </div>
-      <fieldset><legend>{ts}Payment details{/ts}</legend>
+      <fieldset id="payment-detail" class="hiddenElement"><legend>{ts}Payment details{/ts}</legend>
         <div class="crm-section">
           <div class="label">
            {$form.select_payment_contact.label}
@@ -164,7 +164,7 @@
 
           </div>
           <div class="content">
-            {$currencySymbols} {$amount} <br/>
+            {$currencySymbols}{$totalAmount} <br/>
               <span class="description"> {ts}Booking payment amount. A contribution record will be created for this amount.{/ts} </span>
           </div>
         </div>
@@ -174,7 +174,7 @@
 
           </div>
           <div class="content">
-            {$form.financial_type_id.label}
+            {$form.financial_type_id.html}
             <br/>
             <span class="description">{ts}Select the appropriate financial type for this payment.{/ts}</span>
 
@@ -217,14 +217,48 @@
           </div>
         </div>
       </fieldset>
-  <div id="crm-booking-dialog" class="crm-container"><</div>
+  <div id="crm-booking-dialog" class="crm-container"></div>
 </div>
 <div class="clear"></div>
 {include file="CRM/common/formButtons.tpl" location="bottom"}
 {literal}
 <script type="text/javascript">
-cj(function() {
+cj(function($) {
   CRM.BookingApp.start();
+  $.fn.toggleCheck = function(targetElement){
+    if($(this).is(":checked")) {
+      $(targetElement).show();
+    }else{
+      $(targetElement).hide();
+    }
+  }
+
+  $('#send_conformation').change(function() {
+    $(this).toggleCheck('#email-confirmation');
+  });
+
+  $('#record_contribution').change(function() {
+    $(this).toggleCheck('#payment-detail');
+  });
+
+  function loadHiddenElement(){
+    var input = $( ":checkbox" );
+    _.each(input, function(element) {
+      if($(element).is(":checked")){
+        var elid = $(element).attr('id');
+       if(elid == 'send_conformation'){
+        $('#email-confirmation').show();
+       }else if(elid == 'record_contribution'){
+        $('#payment-detail').show();
+       }
+      }
+    });
+  }
+
+  $(document).ready(loadHiddenElement);
+
+
+
 });
 </script>
 {/literal}
