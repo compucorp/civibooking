@@ -115,12 +115,7 @@ class CRM_Booking_DAO_SubSlot extends CRM_Core_DAO
    *
    * @var datetime
    */
-  public $start;
-  /**
-   *
-   * @var datetime
-   */
-  public $end;
+  public $time_required;
   /**
    *
    * @var text
@@ -195,16 +190,10 @@ class CRM_Booking_DAO_SubSlot extends CRM_Core_DAO
           'type' => CRM_Utils_Type::T_INT,
           'FKClassName' => 'CRM_Booking_DAO_ResourceConfigOption',
         ) ,
-        'start' => array(
-          'name' => 'start',
+        'time_required' => array(
+          'name' => 'time_required',
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('Start') ,
-          'required' => true,
-        ) ,
-        'end' => array(
-          'name' => 'end',
-          'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('End') ,
+          'title' => ts('Time Required') ,
           'required' => true,
         ) ,
         'note' => array(
@@ -239,8 +228,7 @@ class CRM_Booking_DAO_SubSlot extends CRM_Core_DAO
         'slot_id' => 'slot_id',
         'resource_id' => 'resource_id',
         'config_id' => 'config_id',
-        'start' => 'start',
-        'end' => 'end',
+        'time_required' => 'time_required',
         'note' => 'note',
         'is_cancelled' => 'is_cancelled',
         'is_deleted' => 'is_deleted',
