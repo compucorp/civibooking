@@ -64,7 +64,8 @@
   <field>
     <name>unit_id</name>
     <title>Unit ID</title>
-    <type>int unsigned</type>
+    <type>varchar</type>
+    <length>512</length>
     <comment>The unit associated with this config option. Implicit FK to option_value row in booking_size_unit option_group.</comment>
     <add>4.4</add>
     <pseudoconstant>

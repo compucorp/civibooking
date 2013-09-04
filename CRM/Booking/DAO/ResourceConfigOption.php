@@ -117,7 +117,7 @@ class CRM_Booking_DAO_ResourceConfigOption extends CRM_Core_DAO
   /**
    * The unit associated with this config option. Implicit FK to option_value row in booking_size_unit option_group.
    *
-   * @var int unsigned
+   * @var string
    */
   public $unit_id;
   /**
@@ -203,8 +203,10 @@ class CRM_Booking_DAO_ResourceConfigOption extends CRM_Core_DAO
         ) ,
         'unit_id' => array(
           'name' => 'unit_id',
-          'type' => CRM_Utils_Type::T_INT,
+          'type' => CRM_Utils_Type::T_STRING,
           'title' => ts('Unit ID') ,
+          'maxlength' => 512,
+          'size' => CRM_Utils_Type::HUGE,
           'pseudoconstant' => array(
             'optionGroupName' => 'booking_size_unit',
           )

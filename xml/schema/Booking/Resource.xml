@@ -55,7 +55,8 @@
   <field>
     <name>type_id</name>
     <title>Type ID</title>
-    <type>int unsigned</type>
+    <type>varchar</type>
+    <length>512</length>
     <required>true</required>
     <comment>The type associated with this resource. Implicit FK to option_value row in booking_resource_type option_group.</comment>
     <add>4.4</add>
@@ -67,8 +68,8 @@
   <field>
     <name>location_id</name>
     <title>Location ID</title>
-    <required>true</required>
-    <type>int unsigned</type>
+    <type>varchar</type>
+    <length>512</length>
     <comment>The location associated with this resource. Implicit FK to option_value row in booking_resource_location option_group.</comment>
     <add>4.4</add>
     <pseudoconstant>

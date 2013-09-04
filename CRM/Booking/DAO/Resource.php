@@ -112,13 +112,13 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
   /**
    * The type associated with this resource. Implicit FK to option_value row in booking_resource_type option_group.
    *
-   * @var int unsigned
+   * @var string
    */
   public $type_id;
   /**
    * The location associated with this resource. Implicit FK to option_value row in booking_resource_location option_group.
    *
-   * @var int unsigned
+   * @var string
    */
   public $location_id;
   /**
@@ -205,18 +205,21 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         ) ,
         'type_id' => array(
           'name' => 'type_id',
-          'type' => CRM_Utils_Type::T_INT,
+          'type' => CRM_Utils_Type::T_STRING,
           'title' => ts('Type ID') ,
           'required' => true,
+          'maxlength' => 512,
+          'size' => CRM_Utils_Type::HUGE,
           'pseudoconstant' => array(
             'optionGroupName' => 'booking_resource_type',
           )
         ) ,
         'location_id' => array(
           'name' => 'location_id',
-          'type' => CRM_Utils_Type::T_INT,
+          'type' => CRM_Utils_Type::T_STRING,
           'title' => ts('Location ID') ,
-          'required' => true,
+          'maxlength' => 512,
+          'size' => CRM_Utils_Type::HUGE,
           'pseudoconstant' => array(
             'optionGroupName' => 'booking_resource_location',
           )
