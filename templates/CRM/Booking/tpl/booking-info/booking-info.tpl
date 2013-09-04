@@ -1,9 +1,9 @@
 <script id="booking-info-contact-template" type="text/template">
     <div class="label">
-        {$form.contact.label}
+        {$form.primary_contact_id.label}
       </div>
       <div class="content">
-        {$form.contact.html}
+        {$form.primary_contact_id.html}
         {ts}OR{/ts} <select class="crm-booking-create-contact-select">
         <option value="">{ts}- create new contact -{/ts}</option>
         {crmAPI var='UFGroup' entity='UFGroup' action='get' is_active=1 is_reserved=1}
@@ -19,10 +19,10 @@
 
 <script id="booking-info-organisation-template" type="text/template">
     <div class="label">
-        {$form.organisation.label}
+        {$form.secondary_contact_id.label}
       </div>
       <div class="content">
-        {$form.organisation.html}
+        {$form.secondary_contact_id.html}
         {ts}OR{/ts} <select class="crm-booking-create-contact-select">
         <option value="">{ts}- create new contact -{/ts}</option>
         {crmAPI var='UFGroup' entity='UFGroup' action='get' is_active=1 is_reserved=1}
