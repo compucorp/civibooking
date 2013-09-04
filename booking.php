@@ -300,7 +300,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => 'Dashboard',
           'name' => 'booking_dashboard',
-          'url' => 'civicrm/booking/dashboard',
+          'url' => 'civicrm/booking/dashboard&reset=1',
           'permission' => null,
           'operator' => null,
           'separator' => 1,
@@ -314,7 +314,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => 'New booking',
           'name' => 'new_booking',
-          'url' => 'civicrm/booking/add',
+          'url' => 'civicrm/booking/add&reset=1',
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -328,7 +328,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => 'Find booking',
           'name' => 'find_booking',
-          'url' => 'civicrm/booking/search',
+          'url' => 'civicrm/booking/search&reset=1',
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -342,7 +342,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => 'Manage resources',
           'name' => 'manage_resources',
-          'url' => 'civicrm/booking/resource',
+          'url' => 'civicrm/booking/resource&reset=1',
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -356,7 +356,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => 'Diary view',
           'name' => 'diary_view',
-          'url' => 'civicrm/booking/diary',
+          'url' => 'civicrm/booking/diary&reset=1',
           'permission' => null,
           'operator' => null,
           'separator' => 1,
