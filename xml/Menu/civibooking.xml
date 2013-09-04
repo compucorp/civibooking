@@ -18,8 +18,8 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/booking/resource</path>
-    <page_callback>CRM_Booking_Page_Resource</page_callback>
+    <path>civicrm/admin/resource</path>
+    <page_callback>CRM_Admin_Page_Resource</page_callback>
     <title>Manange resources</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
