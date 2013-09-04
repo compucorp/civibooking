@@ -96,7 +96,7 @@ cj(function($) {
                   },
                   'api.option_value.get':{
                     value: '$value.unit_id',
-                    option_group_id: '$value.api.option_group.get.id'
+                    option_group_id: '$value.api.option_group.get.value'
                   }
                 }
               }
