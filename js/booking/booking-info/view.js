@@ -10,7 +10,9 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
       delay: 400
     }).result(function(event, data) {
       var selectedCID = data[1];
-      $(targetElement).val(selectedCID);
+      console.log(selectedCID);
+      console.log($('input[name="' + targetElement + '"]'));
+      $('input[name="' + targetElement + '"]').val(selectedCID);
     });
   });
 
@@ -88,7 +90,7 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
   BookingInfo.Organisation = Backbone.Marionette.ItemView.extend({
     template: '#booking-info-organisation-template',
     onRender: function(){
-      BookingApp.vent.trigger('init:autocomplete', '#organisation', '#organisation_select_id', this.$el);
+      BookingApp.vent.trigger('init:autocomplete', '#secondary_contact_id', 'secondary_contact_select_id', this.$el);
     },
     events: {
       'change .crm-booking-create-contact-select': 'createContactDialog',
@@ -100,8 +102,8 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
         BookingApp.vent.trigger('render:dialog',
           profile,
           $(e.target).find(':selected').text(),
-          '#organisation',
-          '#organisation_select_id');
+          '#secondary_contact_id',
+          'secondary_contact_select_id');
         $(e.target).val('');
       }
     },
@@ -112,7 +114,7 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
     template: '#booking-info-contact-template',
 
     onRender: function(){
-      BookingApp.vent.trigger('init:autocomplete', '#contact', '#contact_select_id', this.$el);
+      BookingApp.vent.trigger('init:autocomplete', '#primary_contact_id', 'primary_contact_select_id', this.$el);
     },
     events: {
       'change .crm-booking-create-contact-select': 'createContactDialog',
@@ -124,8 +126,8 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
         BookingApp.vent.trigger('render:dialog',
           profile,
           $(e.target).find(':selected').text(),
-          '#contact',
-          '#contact_select_id');
+          '#primary_contact_id',
+          'primary_contact_select_id');
         $(e.target).val('');
       }
     },

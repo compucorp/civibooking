@@ -70,8 +70,9 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
       array()
     );
 
-    $emailToContacts = array('1' => ts('Contact 1'),
-                             '2' => ts('Contact 2'));
+    $emailToContacts = array('1' => ts('Primary contact'),
+                             '2' => ts('Secondary contact'),
+                             '3' => ts('Both'));
     $this->add('select', 'email_to', ts('Email to'),
       $emailToContacts, FALSE,
       array(
@@ -82,8 +83,8 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
 
     $this->addElement('checkbox', 'record_contribution', ts('Record Booking Payment?'));
 
-    $paymentContacts =  array('1' => ts('Contact 1'),
-                             '2' => ts('Contact 2'));
+    $paymentContacts =  array('1' => ts('Primary contact'),
+                              '2' => ts('Secondary contact'));
     $this->add('select', 'select_payment_contact', ts('Select contact'),
       $paymentContacts, FALSE,
       array(
@@ -218,7 +219,6 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
 
     $resourcesValue = json_decode($selectResource['resources'], true);
     $subResourcesValue = json_decode($addSubResoruce['sub_resources'], true);
-    dpr($subResourcesValue);
     $subResources = $subResourcesValue['sub_resources'];
 
     //Build resources array for passing to Booking APIs
@@ -250,13 +250,13 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     $booking['primary_contact_id'] = CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
     $booking['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo);
     $booking['po_number'] = CRM_Utils_Array::value('po_no', $bookingInfo);
-    $booking['booking_status'] = CRM_Utils_Array::value('booking_status', $bookingInfo);
-    $booking['status_id '] =CRM_Utils_Array::value('title', $bookingInfo);
-    $booking['description '] =CRM_Utils_Array::value('description', $bookingInfo);
-    $booking['notes '] =CRM_Utils_Array::value('note', $bookingInfo);
+    $booking['status_id'] = CRM_Utils_Array::value('booking_status', $bookingInfo);
+    $booking['title'] =CRM_Utils_Array::value('title', $bookingInfo);
+    $booking['description'] =CRM_Utils_Array::value('description', $bookingInfo);
+    $booking['notes'] =CRM_Utils_Array::value('note', $bookingInfo);
 
     //FIX ME: Get discount amount from step 2
-    $booking['discount_amount '] = 0;
+    $booking['discount_amount'] = 0;
 
 
     $booking['participants_estimate'] = CRM_Utils_Array::value('enp', $bookingInfo);
@@ -286,11 +286,25 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
       $booking['payment_status'] = 0;
     }
 
+    $session =& CRM_Core_Session::singleton( );
+    $booking['created_by'] =  $session->get( 'userID' );
+    $booking['created_date'] = date();
+    $booking['updated_by'] = $session->get( 'userID' );
+    $booking['updated_date'] = date();
+
     $booking['version'] = 3; //Add version 3 before calling APIs
     $bookingResult = civicrm_api('Booking', 'Create', $booking);
 
+    // user context
+    $url = CRM_Utils_System::url('civicrm/booking/add',
+      "reset=1"
+    );
+
+    CRM_Core_Session::setStatus($booking['title'], ts('Saved'), 'success');
 
     parent::postProcess();
+    CRM_Utils_System::redirect( $url);
+
   }
 
   static function registerScripts() {
