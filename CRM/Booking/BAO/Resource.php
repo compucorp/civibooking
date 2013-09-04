@@ -8,9 +8,7 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
     return $typeGroupId;
   }
 
-  static function getResourcesByType($type) {
-    dprint_r($type);
-
+  static function getResourcesByType($type, $includeLimited = false) {
     $typeGroupId = self::getResourceTypeGroupId();
     $params = array(1 => array( $type, 'String'));
     $query = "
@@ -45,7 +43,7 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
 
 
 
-  static function getResourceTypes($includeLimited = true){
+  static function getResourceTypes($includeLimited = false){
 
     $typeGroupId = self::getResourceTypeGroupId();
     if($typeGroupId){
@@ -66,6 +64,7 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
 
        $query .= "$whereClause";
 
+
       $resourceTypes = array();
       $dao = CRM_Core_DAO::executeQuery($query);
       while ($dao->fetch()) {
@@ -76,6 +75,7 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
           'option_group_id' => $dao->option_group_id
         );
       }
+
       return $resourceTypes;
     }else{
       CRM_Core_Error::fatal('Civibooking resource type option group appears to be missing.');
