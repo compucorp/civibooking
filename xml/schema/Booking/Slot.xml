@@ -21,6 +21,7 @@
   <field>
     <name>booking_id</name>
     <type>int unsigned</type>
+    <required>true</required>
     <comment>FK to Booking ID</comment>
   </field>
   <foreignKey>
@@ -33,6 +34,7 @@
   <field>
     <name>resource_id</name>
     <type>int unsigned</type>
+    <required>true</required>
     <comment>FK to resource ID</comment>
   </field>
   <foreignKey>

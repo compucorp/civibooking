@@ -44,7 +44,7 @@
     <uniqueName>secondary_contact_id</uniqueName>
     <title>Secondary Contact ID</title>
     <type>int unsigned</type>
-    <required>true</required>
+    <required>false</required>
     <import>true</import>
     <headerPattern>/contact(.?id)?/i</headerPattern>
     <dataPattern>/^\d+$/</dataPattern>
@@ -134,14 +134,14 @@
 
   <field>
     <name>created_by</name>
-    <type>datetime</type>
+    <type>int unsigned</type>
     <required>true</required>
 
   </field>
 
   <field>
     <name>created_date</name>
-    <type>int unsigned</type>
+    <type>datetime</type>
     <required>true</required>
   </field>
 

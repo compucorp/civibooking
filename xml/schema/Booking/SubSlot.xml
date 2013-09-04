@@ -55,16 +55,11 @@
   </foreignKey>
 
   <field>
-    <name>start</name>
+    <name>time_required</name>
     <type>datetime</type>
     <required>true</required>
   </field>
 
-  <field>
-    <name>end</name>
-    <type>datetime</type>
-    <required>true</required>
-  </field>
 
   <field>
     <name>note</name>
