@@ -113,7 +113,7 @@ class CRM_Booking_Page_AJAX {
         "id" => $key,
         "start_date" => CRM_Utils_Array::value('start', $slot),
         "end_date" =>CRM_Utils_Array::value('end', $slot),
-        "text" => CRM_Utils_Array::value('note', $slot),
+        "text" => $key . ' ' . CRM_Utils_Array::value('note', $slot),
         "resource_id" => CRM_Utils_Array::value('resource_id', $slot),
         "color" => "rgb(255,0,0)",
         "readonly" => true));
@@ -123,6 +123,7 @@ class CRM_Booking_Page_AJAX {
     CRM_Utils_System::civiExit();
 
   }
+
 
 
 }
