@@ -23,7 +23,7 @@ var ModalRegion = Backbone.Marionette.Region.extend({
   },
 
   hideModal: function(){
-    cj('#crm-booking-dialog').dialog("close");
+    cj('#crm-booking-dialog').dialog().dialog("close");
   }
 });
 
