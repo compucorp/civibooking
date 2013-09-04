@@ -39,7 +39,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
       $currencySymbols = $config->defaultCurrencySymbol;
     }
 
-    $resourceTypes = CRM_Booking_BAO_Resource::getResourceTypes(false);
+    $resourceTypes = CRM_Booking_BAO_Resource::getResourceTypes();
     $resources = array();
     foreach ($resourceTypes as $key => $type) {
       $result = CRM_Booking_BAO_Resource::getResourcesByType($key);
