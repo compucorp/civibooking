@@ -28,6 +28,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       if ($.trim($("#sub_resources").val())) {
         this.model.attributes = JSON.parse($.trim($("#sub_resources").val()));
       }
+      console.log($("#total_price").val());
       this.model.attributes.total_price = $("#total_price").val();
       this.model.attributes.sub_total = $("#sub_total").val();
       this.model.attributes.adhoc_charges = $("#adhoc_charge").val();
@@ -50,15 +51,17 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       if($.trim($("#sub_resources").val())) {
         this.$el.find("span[id^='resource-total-price-']").each(function(){
           var el = $(this);
-          var resourceTotalPrice = 0.0;
+          console.log(el);
+          var resourceTotalPrice = null;
           _.find(items, function (item) {
             if(item.parent_ref_id === el.data('ref')){
               resourceTotalPrice += parseFloat(item.price_estimate);
             }
           });
-          el.text(resourceTotalPrice);
-          self.$el.find('#crm-booking-sub-resource-row-' + el.data('ref')).show();
-
+          if(resourceTotalPrice != null){
+            el.text(resourceTotalPrice);
+            self.$el.find('#crm-booking-sub-resource-row-' + el.data('ref')).show();
+          }
         });
       }
       this.$el.find("#sub-total-summary").text(this.model.get("sub_total"));
@@ -78,7 +81,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     },
     addSubResource: function(e){
      var ref = $(e.currentTarget).data('ref');
-     CRM.api('Resource', 'get', {'sequential': 1, ' is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
+     CRM.api('Resource', 'get', {'sequential': 1, 'is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
       {success: function(data) {
           var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref});
           var view = new AddSubResource.AddSubResourceModal({model: model, resources: data.values});
