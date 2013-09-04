@@ -198,7 +198,7 @@ function booking_civicrm_navigationMenu( &$params ) {
     $maxAdminMenuKey = max( array_keys($params[$administerMenuId]['child']));
     $params[$administerMenuId]['child'][$maxKey+1] =  array(
         'attributes' => array(
-          'label' => 'booking',
+          'label' => 'CiviBooking',
           'name' => 'admin_booking',
           'url' => '#',
           'permission' => null,
@@ -209,6 +209,20 @@ function booking_civicrm_navigationMenu( &$params ) {
           'active' => 1
         ),
         'child' =>  array(
+          $manageResourcesKey => array(
+          'attributes' => array(
+            'label' => 'Manage resources',
+            'name' => 'manage_resources',
+            'url' => 'civicrm/admin/resource&reset=1',
+            'permission' => null,
+            'operator' => null,
+            'separator' => 0,
+            'parentID' => $bookingKey,
+            'navID' => $findbookingKey,
+            'active' => 1
+          ),
+         'child' => null
+        ),
           $bookingStatusKey => array(
             'attributes' => array(
               'label' => 'Booking status',
@@ -267,7 +281,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           ),
           $componentSettingKey => array(
             'attributes' => array(
-              'label' => 'booking Component Settings',
+              'label' => 'Booking Component Settings',
               'name' => 'booking_component_settings',
               'url' =>'civicrm/admin/setting/preferences/booking?reset=1',
               'permission' => null,
@@ -329,20 +343,6 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => 'Find booking',
           'name' => 'find_booking',
           'url' => 'civicrm/booking/search&reset=1',
-          'permission' => null,
-          'operator' => null,
-          'separator' => 0,
-          'parentID' => $bookingKey,
-          'navID' => $findbookingKey,
-          'active' => 1
-        ),
-       'child' => null
-      ),
-      $manageResourcesKey => array(
-        'attributes' => array(
-          'label' => 'Manage resources',
-          'name' => 'manage_resources',
-          'url' => 'civicrm/booking/resource&reset=1',
           'permission' => null,
           'operator' => null,
           'separator' => 0,
