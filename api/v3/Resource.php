@@ -8,7 +8,7 @@
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRM/API+Architecture+Standards
  */
-function _civicrm_api3_booking_resource_create_spec(&$spec) {
+function _civicrm_api3_resource_create_spec(&$spec) {
   //$spec['magicword']['api.required'] = 1;
 }
 
@@ -21,7 +21,7 @@ function _civicrm_api3_booking_resource_create_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_booking_resource_create($params) {
+function civicrm_api3_resource_create($params) {
   return _civicrm_api3_basic_create('CRM_Booking_BAO_Resource', $params);
   //return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
@@ -37,8 +37,8 @@ function civicrm_api3_booking_resource_create($params) {
  * @throws API_Exception
  */
 function civicrm_api3_resource_get($params) {
-  return _civicrm_api3_basic_get('CRM_Booking_BAO_Resource', $params);
-  //return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  //return _civicrm_api3_basic_get('CRM_Booking_BAO_Resource', $params);
+  return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
 
 
