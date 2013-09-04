@@ -2,6 +2,7 @@ SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `civicrm_booking_payment`;
 DROP TABLE IF EXISTS `civicrm_booking_slot`;
+DROP TABLE IF EXISTS `civicrm_booking_sub_slot`;
 DROP TABLE IF EXISTS `civicrm_booking_resource_criteria`;
 DROP TABLE IF EXISTS `civicrm_booking_resource_config_option`;
 DROP TABLE IF EXISTS `civicrm_booking_resource`;
