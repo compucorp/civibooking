@@ -45,7 +45,7 @@
     <!-- Booking status option value  -->
      <OptionValue>
         <label>Provisional</label>
-        <value>provisional</value>
+        <value>1</value>
         <name>provisional</name>
         <filter>0</filter>
         <is_default>1</is_default>
@@ -58,7 +58,7 @@
       </OptionValue>
       <OptionValue>
         <label>Booked</label>
-        <value>booked</value>
+        <value>2</value>
         <name>booked</name>
         <filter>0</filter>
         <is_default>0</is_default>
@@ -71,7 +71,7 @@
       </OptionValue>
       <OptionValue>
         <label>Cancelled</label>
-        <value>cancelled</value>
+        <value>3</value>
         <name>cancelled</name>
         <filter>0</filter>
         <is_default>0</is_default>
@@ -84,7 +84,7 @@
       </OptionValue>
       <OptionValue>
         <label>Complete</label>
-        <value>complete</value>
+        <value>4</value>
         <name>complete</name>
         <filter>0</filter>
         <is_default>0</is_default>
