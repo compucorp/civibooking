@@ -63,7 +63,6 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
    */
   function setDefaultValues() {
     $defaults = array( );
-    dprint_r($this->_subTotal);
     $defaults['sub_total'] = $this->_subTotal;
     $defaults['adhoc_charge'] = 0;
     $defaults['discount_amount']=0;
