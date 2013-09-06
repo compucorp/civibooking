@@ -243,6 +243,7 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'is_deleted' => array(
           'name' => 'is_deleted',
           'type' => CRM_Utils_Type::T_BOOLEAN,
+          'required' => true,
         ) ,
       );
     }

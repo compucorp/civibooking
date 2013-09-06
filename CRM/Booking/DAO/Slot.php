@@ -183,11 +183,13 @@ class CRM_Booking_DAO_Slot extends CRM_Core_DAO
         'booking_id' => array(
           'name' => 'booking_id',
           'type' => CRM_Utils_Type::T_INT,
+          'required' => true,
           'FKClassName' => 'CRM_Booking_DAO_Booking',
         ) ,
         'resource_id' => array(
           'name' => 'resource_id',
           'type' => CRM_Utils_Type::T_INT,
+          'required' => true,
           'FKClassName' => 'CRM_Booking_DAO_Resource',
         ) ,
         'config_id' => array(
