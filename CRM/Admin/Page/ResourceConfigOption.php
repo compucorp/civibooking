@@ -36,7 +36,7 @@
 /**
  * Page for displaying list of resources
  */
-class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
+class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
 
   /**
    * The action links that we need to display for the browse screen
@@ -46,13 +46,16 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
    */
   static $_links = NULL;
 
+
+  protected $_sid = NULL; //TODO::GET SID from the URL
+
   /**
    * Get BAO Name
    *
    * @return string Classname of BAO.
    */
   function getBAOName() {
-    return 'CRM_Booking_BAO_Resource';
+    return 'CRM_Booking_BAO_ResourceConfigOption';
   }
 
   /**
@@ -65,27 +68,27 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
       self::$_links = array(
         CRM_Core_Action::UPDATE => array(
           'name' => ts('Edit'),
-          'url' => 'civicrm/admin/resource',
-          'qs' => 'action=update&id=%%id%%&reset=1',
-          'title' => ts('Edit Resource'),
+          'url' => 'civicrm/admin/resource/config_option',
+          'qs' => 'action=update&id=%%id%%&sid=%%sid%%&reset=1',
+          'title' => ts('Edit Resource Configuration Option'),
         ),
         CRM_Core_Action::DISABLE => array(
           'name' => ts('Disable'),
           'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_Resource' . '\',\'' . 'enable-disable' . '\' );"',
           'ref' => 'disable-action',
-          'title' => ts('Disable Resource'),
+          'title' => ts('Disable Resource Configuration Option'),
         ),
         CRM_Core_Action::ENABLE => array(
           'name' => ts('Enable'),
           'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_Resource' . '\',\'' . 'disable-enable' . '\' );"',
           'ref' => 'enable-action',
-          'title' => ts('Enable Resource'),
+          'title' => ts('Enable Resource Configuration Option'),
         ),
         CRM_Core_Action::DELETE => array(
           'name' => ts('Delete'),
-          'url' => 'civicrm/admin/resource',
+          'url' => 'civicrm/admin/resource/config_option',
           'qs' => 'action=delete&id=%%id%%',
-          'title' => ts('Delete Resource'),
+          'title' => ts('Delete Resource Configuration Option'),
         ),
       );
     }
@@ -104,14 +107,18 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
    *
    */
   function run() {
+    $this->_sid = CRM_Utils_Request::retrieve('sid', 'Positive',
+      $this, FALSE, 0
+    );
+    $this->assign('sid', $this->_sid);
     // set title and breadcrumb
-    CRM_Utils_System::setTitle(ts('Settings - Manage Resource'));
+    CRM_Utils_System::setTitle(ts('Settings - Resource Configuration Option'));
     /*$breadCrumb = array(array('title' => ts('Administration'),
         'url' => CRM_Utils_System::url('civicrm/admin',
         'reset=1'
         ),
       ));
-    CRM_Utils_System::appendBreadCrumb($breadCrumb);*/
+    CRM_Utils_System::appendBreadCrumb($breadCrumb); */
     return parent::run();
   }
 
@@ -123,16 +130,17 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
    * @static
    */
   function browse($action = NULL) {
-    // get all custom groups sorted by weight
-    $resources = array();
-    $dao = new CRM_Booking_DAO_Resource();
+    // get all config option sorted by weight
+    $configOption = array();
+    $dao = new CRM_Booking_DAO_ResourceConfigOption();
+    $dao->set_id = $this->_sid;
     $dao->orderBy('weight');
     $dao->find();
 
     while ($dao->fetch()) {
 
-      $resources[$dao->id] = array();
-      CRM_Core_DAO::storeValues($dao, $resources[$dao->id]);
+      $configOption[$dao->id] = array();
+      CRM_Core_DAO::storeValues($dao, $configOption[$dao->id]);
       //TODO:: GET Actual type and location
 
       // form all action links
@@ -146,13 +154,15 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
         $action -= CRM_Core_Action::DISABLE;
       }
 
-      $resources[$dao->id]['action'] = CRM_Core_Action::formLink(self::links(), $action,
-        array('id' => $dao->id)
+      $configOption[$dao->id]['action'] = CRM_Core_Action::formLink(self::links(), $action,
+        array('id' => $dao->id,
+              'sid' => $this->_sid
+              )
       );
 
     }
 
-    $this->assign('rows', $resources);
+    $this->assign('rows', $configOption);
   }
 
   /**
@@ -161,7 +171,7 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
    * @return string Classname of edit form.
    */
   function editForm() {
-    return 'CRM_Admin_Form_Resource';
+    return 'CRM_Admin_Form_ResourceConfigOption';
   }
 
   /**
@@ -170,7 +180,7 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
    * @return string name of this page.
    */
   function editName() {
-    return 'Resource';
+    return 'ResourceConfigOption';
   }
 
   /**

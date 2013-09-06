@@ -24,4 +24,43 @@ class CRM_Booking_BAO_ResourceConfigSet extends CRM_Booking_DAO_ResourceConfigSe
   }
 
 
+  /**
+   * Takes a bunch of params that are needed to match certain criteria and
+   * retrieves the relevant objects. It also stores all the retrieved
+   * values in the default array
+   *
+   * @param array $params   (reference ) an assoc array of name/value pairs
+   * @param array $defaults (reference ) an assoc array to hold the flattened values
+   *
+     * @return object CRM_Booking_DAO_Resource object on success, null otherwise
+   * @access public
+   * @static
+   */
+  static function retrieve(&$params, &$defaults) {
+    $configSet = new CRM_Booking_DAO_ResourceConfigSet();
+    $configSet->copyValues($params);
+    if ($configSet->find(TRUE)) {
+      CRM_Core_DAO::storeValues($configSet, $defaults);
+      return $configSet;
+    }
+    return NULL;
+  }
+
+  static function getActiveSet(){
+    $configSetDAO = new CRM_Booking_DAO_ResourceConfigSet();
+    $configSetDAO->orderBy('weight');
+    $configSetDAO->is_active = 1;
+    $configSetDAO->is_deleted = 0;
+    $configSetDAO->find();
+    $configSets = array();
+    while ($configSetDAO->fetch()) {
+      $configSets[$configSetDAO->id] = array();
+      CRM_Core_DAO::storeValues($configSetDAO, $configSets[$configSetDAO->id]);
+    }
+    return $configSets;
+  }
+
+
+
+
 }

@@ -24,7 +24,7 @@
  +--------------------------------------------------------------------+
 *}
 {if $action eq 1 or $action eq 2 or $action eq 8}
-   {include file="CRM/Admin/Form/Resource.tpl"}
+   {include file="CRM/Admin/Form/ResourceConfigOption.tpl"}
 {else}
 {if $rows}
 <div id="ltype">
@@ -34,9 +34,9 @@
         <table class="selector">
         <tr class="columnheader">
             <th >{ts}Label{/ts}</th>
-            <th >{ts}Description{/ts}</th>
-            <th >{ts}Type{/ts}</th>
-            <th >{ts}Location{/ts}</th>
+            <th >{ts}Price{/ts}</th>
+            <th >{ts}Max Size{/ts}</th>
+            <th >{ts}Unit{/ts}</th>
             <th >{ts}Weight{/ts}</th>
             <th >{ts}Enabled?{/ts}</th>
             <th ></th>
@@ -44,9 +44,9 @@
         {foreach from=$rows item=row}
         <tr id="row_{$row.id}" class="crm-booking_resource {cycle values="odd-row,even-row"} {$row.class}{if NOT $row.is_active} disabled{/if}">
             <td class="crm-booking-resource-name">{$row.label}</td>
-            <td class="crm-booking-resource-description">{$row.description}</td>
-            <td class="crm-booking-resource-type">{$row.type_id}</td>
-            <td class="crm-booking-resource-location">{$row.location_id}</td>
+            <td class="crm-booking-resource-description">{$row.price}</td>
+            <td class="crm-booking-resource-type">{$row.max_size}</td>
+            <td class="crm-booking-resource-location">{$row.unit_id}</td>
             <td class="crm-booking-resource-weight">{$row.weight}</td>
             <td id="row_{$row.id}_status" class="crm-booking-resource-is_active">{if $row.is_active eq 1} {ts}Yes{/ts} {else} {ts}No{/ts} {/if}</td>
             <td>{$row.action|replace:'xx':$row.id}</td>
@@ -57,17 +57,17 @@
 
         {if $action ne 1 and $action ne 2}
         <div class="action-link">
-          <a href="{crmURL q="action=add&reset=1"}" id="new" class="button"><span><div class="icon add-icon"></div>{ts}Add Resource{/ts}</span></a>
+          <a href="{crmURL q="action=add&sid=$sid&reset=1"}" id="newResourceConfigOption" class="button"><span><div class="icon add-icon"></div>{ts}Add Resource{/ts}</span></a>
         </div>
         {/if}
 </div>
 {elseif $action ne 1}
     <div class="messages status no-popup">
       <div class="icon inform-icon"></div>
-        {ts}There are no resources.{/ts}
+        {ts}There are no resources configuration option.{/ts}
      </div>
      <div class="action-link">
-       <a href="{crmURL p='civicrm/admin/resource' q="action=add&reset=1"}" id="newResource" class="button"><span><div class="icon add-icon"></div>{ts}Add Resource{/ts}</span></a>
+       <a href="{crmURL p='civicrm/admin/resource/config_option' q="action=add&sid=$sid&reset=1"}" id="newResourceConfigOption" class="button"><span><div class="icon add-icon"></div>{ts}Add Resource Configruation Options{/ts}</span></a>
      </div>
 {/if}
 {/if}

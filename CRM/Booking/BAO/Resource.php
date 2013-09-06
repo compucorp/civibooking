@@ -8,6 +8,29 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
     return $typeGroupId;
   }
 
+    /**
+   * Takes a bunch of params that are needed to match certain criteria and
+   * retrieves the relevant objects. It also stores all the retrieved
+   * values in the default array
+   *
+   * @param array $params   (reference ) an assoc array of name/value pairs
+   * @param array $defaults (reference ) an assoc array to hold the flattened values
+   *
+     * @return object CRM_Booking_DAO_Resource object on success, null otherwise
+   * @access public
+   * @static
+   */
+  static function retrieve(&$params, &$defaults) {
+    $resource = new CRM_Booking_DAO_Resource();
+    $resource->copyValues($params);
+    if ($resource->find(TRUE)) {
+      CRM_Core_DAO::storeValues($resource, $defaults);
+      return $resource;
+    }
+    return NULL;
+  }
+
+
   static function getResourcesByType($type, $includeLimited = false) {
     $typeGroupId = self::getResourceTypeGroupId();
     $params = array(1 => array( $type, 'String'));

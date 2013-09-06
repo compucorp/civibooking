@@ -24,4 +24,29 @@ class CRM_Booking_BAO_ResourceConfigOption extends CRM_Booking_DAO_ResourceConfi
   }
 
 
+
+    /**
+   * Takes a bunch of params that are needed to match certain criteria and
+   * retrieves the relevant objects. It also stores all the retrieved
+   * values in the default array
+   *
+   * @param array $params   (reference ) an assoc array of name/value pairs
+   * @param array $defaults (reference ) an assoc array to hold the flattened values
+   *
+     * @return object CRM_Booking_DAO_ResourceConfigOtpion object on success, null otherwise
+   * @access public
+   * @static
+   */
+  static function retrieve(&$params, &$defaults) {
+    $configOption = new CRM_Booking_DAO_ResourceConfigOption();
+    $configOption->copyValues($params);
+    if ($configOption->find(TRUE)) {
+      CRM_Core_DAO::storeValues($configOption, $defaults);
+      return $configOption;
+    }
+    return NULL;
+  }
+
+
+
 }
