@@ -77,13 +77,13 @@ class CRM_Admin_Page_ResourceConfigSet extends CRM_Core_Page_Basic {
         ),
         CRM_Core_Action::DISABLE => array(
           'name' => ts('Disable'),
-          'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_Resource' . '\',\'' . 'enable-disable' . '\' );"',
+          'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_ResourceConfigSet' . '\',\'' . 'enable-disable' . '\' );"',
           'ref' => 'disable-action',
           'title' => ts('Disable Resource Configuration Set'),
         ),
         CRM_Core_Action::ENABLE => array(
           'name' => ts('Enable'),
-          'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_Resource' . '\',\'' . 'disable-enable' . '\' );"',
+          'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_ResourceConfigSet' . '\',\'' . 'disable-enable' . '\' );"',
           'ref' => 'enable-action',
           'title' => ts('Enable Resource Configuration Set'),
         ),

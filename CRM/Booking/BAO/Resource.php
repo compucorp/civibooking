@@ -147,20 +147,18 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
 
 
   /**
-   * Unsets the Resource's is_active flag in the database
+   * update the is_active flag in the db
+   *
+   * @param int      $id        id of the database record
+   * @param boolean  $is_active value we want to set the is_active field
+   *
+   * @return Object             DAO object on sucess, null otherwise
+   * @static
    */
-  public function disable() {
-    $this->is_enabled = 0;
-    $this->save();
+  static function setIsActive($id, $is_active) {
+    return CRM_Core_DAO::setFieldValue('CRM_Booking_DAO_Resource', $id, 'is_active', $is_active);
   }
 
-    /**
-   * Sets the Resource's is_active flag in the database
-   */
-  public function enable() {
-    $this->is_enabled = 1;
-    $this->save();
-  }
 
   /**
    * Sets the Resource's is_deleted flag in the database
