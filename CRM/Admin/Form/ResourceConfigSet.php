@@ -42,7 +42,6 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
   function preProcess() {
     parent::preProcess();
     CRM_Utils_System::setTitle(ts('Settings - Resource Configuration Set'));
-
   }
 
   /**
@@ -94,7 +93,14 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
 
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
-
+    $defaults = parent::setDefaultValues();
+    if (!CRM_Utils_Array::value('weight', $defaults)) {
+      $query = "SELECT max( `weight` ) as weight FROM `civicrm_booking_resource_config_set`";;
+      $dao = new CRM_Core_DAO();
+      $dao->query($query);
+      $dao->fetch();
+      $defaults['weight'] = ($dao->weight + 1);
+    }
     return $defaults;
   }
 
@@ -124,13 +130,12 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
       $set = CRM_Booking_BAO_ResourceConfigSet::create($params);
 
       if ($this->_action & CRM_Core_Action::UPDATE) {
-        CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $resource->title)), ts('Saved'), 'success');
+        CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $set->title)), ts('Saved'), 'success');
       }
       else {
         $url = CRM_Utils_System::url('civicrm/admin/resource/config_set/config_option', 'reset=1&action=add&sid=' . $set->id);
-        CRM_Core_Session::setStatus(ts("Your resource configuration set '%1' has been added. You can add resource option now.",
-            array(1 => $set->title)
-          ), ts('Saved'), 'success');
+        CRM_Core_Session::setStatus(
+          ts("Your resource configuration set '%1' has been added. You can add resource option now.", array(1 => $set->title)), ts('Saved'), 'success');
         $session = CRM_Core_Session::singleton();
         $session->replaceUserContext($url);
       }

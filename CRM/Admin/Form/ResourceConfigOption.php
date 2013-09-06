@@ -108,7 +108,13 @@ class CRM_Admin_Form_ResourceConfigOption extends CRM_Admin_Form {
 
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
-
+    if (!CRM_Utils_Array::value('weight', $defaults)) {
+      $query = "SELECT max( `weight` ) as weight FROM `civicrm_booking_resource_config_option`";;
+      $dao = new CRM_Core_DAO();
+      $dao->query($query);
+      $dao->fetch();
+      $defaults['weight'] = ($dao->weight + 1);
+    }
     return $defaults;
   }
 
