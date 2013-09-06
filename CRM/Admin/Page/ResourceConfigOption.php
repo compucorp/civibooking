@@ -130,8 +130,10 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
    * @static
    */
   function browse($action = NULL) {
+    $units =  CRM_Booking_DAO_ResourceConfigOption::buildOptions('unit_id', 'create');
+
     // get all config option sorted by weight
-    $configOption = array();
+    $configOptions = array();
     $dao = new CRM_Booking_DAO_ResourceConfigOption();
     $dao->set_id = $this->_sid;
     $dao->orderBy('weight');
@@ -140,9 +142,9 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
 
     while ($dao->fetch()) {
 
-      $configOption[$dao->id] = array();
-      CRM_Core_DAO::storeValues($dao, $configOption[$dao->id]);
-      //TODO:: GET Actual type and location
+      $configOptions[$dao->id] = array();
+      CRM_Core_DAO::storeValues($dao, $configOptions[$dao->id]);
+      $configOptions[$dao->id]['unit'] =  CRM_Utils_Array::value(CRM_Utils_Array::value('unit_id', $configOptions[$dao->id]), $units);
 
       // form all action links
       $action = array_sum(array_keys($this->links()));
@@ -155,7 +157,7 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
         $action -= CRM_Core_Action::DISABLE;
       }
 
-      $configOption[$dao->id]['action'] = CRM_Core_Action::formLink(self::links(), $action,
+      $configOptions[$dao->id]['action'] = CRM_Core_Action::formLink(self::links(), $action,
         array('id' => $dao->id,
               'sid' => $this->_sid
               )
@@ -163,7 +165,7 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
 
     }
 
-    $this->assign('rows', $configOption);
+    $this->assign('rows', $configOptions);
   }
 
   /**

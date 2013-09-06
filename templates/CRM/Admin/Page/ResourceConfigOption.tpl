@@ -46,7 +46,7 @@
             <td class="crm-booking-resource-name">{$row.label}</td>
             <td class="crm-booking-resource-description">{$row.price}</td>
             <td class="crm-booking-resource-type">{$row.max_size}</td>
-            <td class="crm-booking-resource-location">{$row.unit_id}</td>
+            <td class="crm-booking-resource-location">{$row.unit}</td>
             <td class="crm-booking-resource-weight">{$row.weight}</td>
             <td id="row_{$row.id}_status" class="crm-booking-resource-is_active">{if $row.is_active eq 1} {ts}Yes{/ts} {else} {ts}No{/ts} {/if}</td>
             <td>{$row.action|replace:'xx':$row.id}</td>
