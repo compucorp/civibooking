@@ -78,7 +78,7 @@ class CRM_Admin_Form_ResourceConfigOption extends CRM_Admin_Form {
     );
 
     $this->addFormRule(array('CRM_Admin_Form_ResourceConfigOption', 'formRule'), $this);
-    $cancelURL = CRM_Utils_System::url('civicrm/admin/resource/config_option', "&sid=$this->_sid&reset=1");
+    $cancelURL = CRM_Utils_System::url('civicrm/admin/resource/config_set/config_option', "&sid=$this->_sid&reset=1");
     $cancelURL = str_replace('&amp;', '&', $cancelURL);
     $this->addButtons(
       array(
