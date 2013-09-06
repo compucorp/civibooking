@@ -23,6 +23,16 @@ function booking_civicrm_tabs(&$tabs, $cid) {
     $tabs[] = $tab;
 }
 
+
+/**
+ * Implementation of hook_civicrm_perm()
+ *
+ */
+function cividiscount_civicrm_perm() {
+  return array('view CiviBooking', 'administer CiviBooking');
+}
+
+
 /**
  * Implementation of hook_civicrm_config
  */
