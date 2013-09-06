@@ -188,7 +188,7 @@
         <weight>23</weight>
         <description></description>
         <is_optgroup>0</is_optgroup>
-        <is_reserved>1</is_reserved>
+        <is_reserved>0</is_reserved>
         <is_active>1</is_active>
         <option_group_name>booking_size_unit</option_group_name>
       </OptionValue>
@@ -201,7 +201,7 @@
         <weight>24</weight>
         <description></description>
         <is_optgroup>0</is_optgroup>
-        <is_reserved>1</is_reserved>
+        <is_reserved>0</is_reserved>
         <is_active>1</is_active>
         <option_group_name>booking_size_unit</option_group_name>
       </OptionValue>
@@ -214,7 +214,7 @@
         <weight>25</weight>
         <description></description>
         <is_optgroup>0</is_optgroup>
-        <is_reserved>1</is_reserved>
+        <is_reserved>0</is_reserved>
         <is_active>1</is_active>
         <option_group_name>booking_size_unit</option_group_name>
       </OptionValue>
@@ -227,7 +227,7 @@
         <weight>26</weight>
         <description></description>
         <is_optgroup>0</is_optgroup>
-        <is_reserved>1</is_reserved>
+        <is_reserved>0</is_reserved>
         <is_active>1</is_active>
         <option_group_name>booking_size_unit</option_group_name>
       </OptionValue>
@@ -240,7 +240,7 @@
         <weight>27</weight>
         <description></description>
         <is_optgroup>0</is_optgroup>
-        <is_reserved>1</is_reserved>
+        <is_reserved>0</is_reserved>
         <is_active>1</is_active>
         <option_group_name>booking_size_unit</option_group_name>
     </OptionValue>
@@ -253,7 +253,7 @@
         <weight>28</weight>
         <description></description>
         <is_optgroup>0</is_optgroup>
-        <is_reserved>1</is_reserved>
+        <is_reserved>0</is_reserved>
         <is_active>1</is_active>
         <option_group_name>booking_size_unit</option_group_name>
     </OptionValue>
@@ -268,7 +268,7 @@
         <weight>23</weight>
         <description></description>
         <is_optgroup>0</is_optgroup>
-        <is_reserved>1</is_reserved>
+        <is_reserved>0</is_reserved>
         <is_active>1</is_active>
         <option_group_name>booking_cancellation_charges</option_group_name>
       </OptionValue>
@@ -281,7 +281,7 @@
         <weight>24</weight>
         <description></description>
         <is_optgroup>0</is_optgroup>
-        <is_reserved>1</is_reserved>
+        <is_reserved>0</is_reserved>
         <is_active>1</is_active>
         <option_group_name>booking_cancellation_charges</option_group_name>
       </OptionValue>
@@ -294,7 +294,7 @@
         <weight>25</weight>
         <description></description>
         <is_optgroup>0</is_optgroup>
-        <is_reserved>1</is_reserved>
+        <is_reserved>0</is_reserved>
         <is_active>1</is_active>
         <option_group_name>booking_cancellation_charges</option_group_name>
       </OptionValue>
