@@ -10,7 +10,7 @@ require_once 'booking.civix.php';
  * Display a booking tab listing booking belong to that contact.
  */
 function booking_civicrm_tabs(&$tabs, $cid) {
-    $count = 0; //TODO Count number of booking and show on the tab
+    $count = CRM_Booking_BAO_Booking::getBookingContactCount($cid); //TODO Count number of booking and show on the tab
     $tab = array(
       'id' => 'booking',
       'count' => $count,

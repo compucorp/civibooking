@@ -69,5 +69,11 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
   }
 
+  static function getBookingContactCount($contactId){
+    $params = array(1 => array( $contactId, 'Integer'));
+    $query = "SELECT COUNT(DISTINCT(id)) AS count  FROM civicrm_booking WHERE primary_contact_id = %1";
+    return CRM_Core_DAO::singleValueQuery($query, $params);
+  }
+
 
 }
