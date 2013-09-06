@@ -23,5 +23,4 @@ class CRM_Booking_BAO_BookingConfig extends CRM_Booking_DAO_BookingConfig {
     return $resourceDAO->save();
   }
 
-
 }

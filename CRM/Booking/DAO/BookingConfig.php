@@ -97,12 +97,29 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    *
    * @var int unsigned
    */
+  public $domain_id;
+  /**
+   * Default financial type for payment
+   *
+   * @var int unsigned
+   */
   public $financial_type_default;
+  /**
+   * Price set to use for ad-hoc charges
+   *
+   * @var int unsigned
+   */
+  public $price_set_default;
   /**
    *
    * @var time
    */
   public $day_start_at;
+  /**
+   *
+   * @var time
+   */
+  public $day_end_at;
   /**
    *
    * @var boolean
@@ -123,6 +140,12 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    * @var string
    */
   public $bcc_email_address;
+  /**
+   * Create an activity record againt contact for conformation emails
+   *
+   * @var boolean
+   */
+  public $created_activity;
   /**
    *
    * @var string
@@ -145,6 +168,23 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
     parent::__construct();
   }
   /**
+   * return foreign keys and entity references
+   *
+   * @static
+   * @access public
+   * @return array of CRM_Core_EntityReference
+   */
+  static function getReferenceColumns()
+  {
+    if (!self::$_links) {
+      self::$_links = array(
+        new CRM_Core_EntityReference(self::getTableName() , 'financial_type_default', 'civicrm_financial_type', 'id') ,
+        new CRM_Core_EntityReference(self::getTableName() , 'price_set_default', 'civicrm_price_set', 'id') ,
+      );
+    }
+    return self::$_links;
+  }
+  /**
    * returns all the column names of this table
    *
    * @access public
@@ -159,16 +199,35 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'type' => CRM_Utils_Type::T_INT,
           'required' => true,
         ) ,
+        'domain_id' => array(
+          'name' => 'domain_id',
+          'type' => CRM_Utils_Type::T_INT,
+          'required' => true,
+        ) ,
         'financial_type_default' => array(
           'name' => 'financial_type_default',
           'type' => CRM_Utils_Type::T_INT,
           'title' => ts('Financial Type Default') ,
           'required' => true,
+          'FKClassName' => 'CRM_Financial_DAO_FinancialType',
+        ) ,
+        'price_set_default' => array(
+          'name' => 'price_set_default',
+          'type' => CRM_Utils_Type::T_INT,
+          'title' => ts('Price Set Default') ,
+          'required' => true,
+          'FKClassName' => 'CRM_Price_DAO_PriceSet',
         ) ,
         'day_start_at' => array(
           'name' => 'day_start_at',
           'type' => CRM_Utils_Type::T_TIME,
           'title' => ts('Day Start At') ,
+          'required' => true,
+        ) ,
+        'day_end_at' => array(
+          'name' => 'day_end_at',
+          'type' => CRM_Utils_Type::T_TIME,
+          'title' => ts('Day End At') ,
           'required' => true,
         ) ,
         'log_confirmation_email' => array(
@@ -197,6 +256,11 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'title' => ts('Bcc Email Address') ,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
+        ) ,
+        'created_activity' => array(
+          'name' => 'created_activity',
+          'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => ts('Created Activity') ,
         ) ,
         'slot_avaliable_colour' => array(
           'name' => 'slot_avaliable_colour',
@@ -228,12 +292,16 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
     if (!(self::$_fieldKeys)) {
       self::$_fieldKeys = array(
         'id' => 'id',
+        'domain_id' => 'domain_id',
         'financial_type_default' => 'financial_type_default',
+        'price_set_default' => 'price_set_default',
         'day_start_at' => 'day_start_at',
+        'day_end_at' => 'day_end_at',
         'log_confirmation_email' => 'log_confirmation_email',
         'selected_email_address' => 'selected_email_address',
         'cc_email_address' => 'cc_email_address',
         'bcc_email_address' => 'bcc_email_address',
+        'created_activity' => 'created_activity',
         'slot_avaliable_colour' => 'slot_avaliable_colour',
         'slot_unavaliable_colour' => 'slot_unavaliable_colour',
       );
