@@ -38,6 +38,7 @@
             <th >{ts}Type{/ts}</th>
             <th >{ts}Location{/ts}</th>
             <th >{ts}Weight{/ts}</th>
+            <th >{ts}Unlimited?{/ts}</th>
             <th >{ts}Enabled?{/ts}</th>
             <th ></th>
         </tr>
@@ -48,6 +49,7 @@
             <td class="crm-booking-resource-type">{$row.type_id}</td>
             <td class="crm-booking-resource-location">{$row.location_id}</td>
             <td class="crm-booking-resource-weight">{$row.weight}</td>
+            <td class="crm-booking-resource-is_unlimited">{if $row.is_unlimited eq 1} {ts}Yes{/ts} {else} {ts}No{/ts} {/if}</td>
             <td id="row_{$row.id}_status" class="crm-booking-resource-is_active">{if $row.is_active eq 1} {ts}Yes{/ts} {else} {ts}No{/ts} {/if}</td>
             <td>{$row.action|replace:'xx':$row.id}</td>
         </tr>

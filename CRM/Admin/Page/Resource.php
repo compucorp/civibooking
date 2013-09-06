@@ -127,6 +127,7 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
     $resources = array();
     $dao = new CRM_Booking_DAO_Resource();
     $dao->orderBy('weight');
+    $dao->is_deleted = FALSE;
     $dao->find();
 
     while ($dao->fetch()) {

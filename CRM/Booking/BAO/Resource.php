@@ -2,11 +2,26 @@
 
 class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
 
-  static function getResourceTypeGroupId(){
-    $result = civicrm_api('OptionGroup', 'get',array('version' => 3, 'name' => 'booking_resource_type'));
-    $typeGroupId = $result['id'];
-    return $typeGroupId;
+      /**
+   * takes an associative array and creates a resource object
+   *
+   * the function extract all the params it needs to initialize the create a
+   * resource object. the params array could contain additional unused name/value
+   * pairs
+   *
+   * @param array $params (reference ) an assoc array of name/value pairs
+   * @param array $ids    the array that holds all the db ids
+   *
+   * @return object CRM_Booking_BAO_Resource object
+   * @access public
+   * @static
+   */
+  static function create(&$params) {
+    $resourceDAO = new CRM_Booking_DAO_Resource();
+    $resourceDAO->copyValues($params);
+    return $resourceDAO->save();
   }
+
 
     /**
    * Takes a bunch of params that are needed to match certain criteria and
@@ -28,6 +43,30 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
       return $resource;
     }
     return NULL;
+  }
+
+  /**
+   * Function to delete Resoruce
+   *
+   * @param  int  $id     Id of the Resoruce to be deleted.
+   *
+   * @return boolean
+   *
+   * @access public
+   * @static
+   */
+  static function del($id) {
+    $resource = new CRM_Booking_DAO_Resource();
+    $resource->id = $id;
+    $resource->is_deleted = 1;
+    return $resource->save();
+  }
+
+
+  static function getResourceTypeGroupId(){
+    $result = civicrm_api('OptionGroup', 'get',array('version' => 3, 'name' => 'booking_resource_type'));
+    $typeGroupId = $result['id'];
+    return $typeGroupId;
   }
 
 

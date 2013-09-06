@@ -98,16 +98,45 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
     return $defaults;
   }
 
-  /**
+ /**
    * Function to process the form
    *
    * @access public
    *
-   * @return Void
+   * @return None
    */
   public function postProcess() {
+    CRM_Utils_System::flushCache();
+    $params = $this->exportValues();
+    if ($this->_action & CRM_Core_Action::DELETE) {
+      CRM_Booking_BAO_ResourceConfigSet::del($this->_id);
+      CRM_Core_Session::setStatus(ts('Selected resource configuration set has been deleted.'), ts('Record Deleted'), 'success');
+    }
+    else {
+      $params = $this->exportValues();
 
+      if($this->_id){
+        $params['id'] = $this->_id;
+        if(!isset($params['is_active'])){
+          $params['is_active'] = 0;
+        }
+      }
+      $set = CRM_Booking_BAO_ResourceConfigSet::create($params);
+
+      if ($this->_action & CRM_Core_Action::UPDATE) {
+        CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $resource->title)), ts('Saved'), 'success');
+      }
+      else {
+        $url = CRM_Utils_System::url('civicrm/admin/resource/config_set/config_option', 'reset=1&action=add&sid=' . $set->id);
+        CRM_Core_Session::setStatus(ts("Your resource configuration set '%1' has been added. You can add resource option now.",
+            array(1 => $set->title)
+          ), ts('Saved'), 'success');
+        $session = CRM_Core_Session::singleton();
+        $session->replaceUserContext($url);
+      }
+    }
   }
+
 
 
 }

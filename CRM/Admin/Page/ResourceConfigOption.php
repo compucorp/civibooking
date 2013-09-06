@@ -68,7 +68,7 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
       self::$_links = array(
         CRM_Core_Action::UPDATE => array(
           'name' => ts('Edit'),
-          'url' => 'civicrm/admin/resource/config_option',
+          'url' => 'civicrm/admin/resource/config_set/config_option',
           'qs' => 'action=update&id=%%id%%&sid=%%sid%%&reset=1',
           'title' => ts('Edit Resource Configuration Option'),
         ),
@@ -86,8 +86,8 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
         ),
         CRM_Core_Action::DELETE => array(
           'name' => ts('Delete'),
-          'url' => 'civicrm/admin/resource/config_option',
-          'qs' => 'action=delete&id=%%id%%',
+          'url' => 'civicrm/admin/resource/config_set/config_option',
+          'qs' => 'action=delete&id=%%id%%&sid=%%sid%%',
           'title' => ts('Delete Resource Configuration Option'),
         ),
       );
@@ -135,6 +135,7 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
     $dao = new CRM_Booking_DAO_ResourceConfigOption();
     $dao->set_id = $this->_sid;
     $dao->orderBy('weight');
+    $dao->is_deleted = FALSE;
     $dao->find();
 
     while ($dao->fetch()) {
@@ -189,7 +190,7 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
    * @return string user context.
    */
   function userContext($mode = NULL) {
-    return 'civicrm/admin/resource';
+    return 'civicrm/admin/resource/config_set/config_option';
   }
 }
 

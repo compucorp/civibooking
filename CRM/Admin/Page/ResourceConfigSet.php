@@ -71,7 +71,7 @@ class CRM_Admin_Page_ResourceConfigSet extends CRM_Core_Page_Basic {
         ),
         CRM_Core_Action::BROWSE => array(
           'name' => ts('Edit Options'),
-          'url' => 'civicrm/admin/resource/config_option',
+          'url' => 'civicrm/admin/resource/config_set/config_option',
           'qs' => 'sid=%%id%%&reset=1',
           'title' => ts('Edit Resource Configurtation Options'),
         ),
@@ -133,6 +133,7 @@ class CRM_Admin_Page_ResourceConfigSet extends CRM_Core_Page_Basic {
     $configSet = array();
     $dao = new CRM_Booking_DAO_ResourceConfigSet();
     $dao->orderBy('weight');
+    $dao->is_deleted = FALSE;
     $dao->find();
 
     while ($dao->fetch()) {

@@ -42,7 +42,9 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
   function preProcess() {
     parent::preProcess();
     CRM_Utils_System::setTitle(ts('Settings - Resource'));
-
+    $this->_id = CRM_Utils_Request::retrieve('id', 'Positive',
+      $this, FALSE, 0
+    );
   }
 
   /**
@@ -76,7 +78,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'weight'), TRUE);
     $this->add('checkbox', 'is_active', ts('Enabled?'));
-    $this->add('checkbox', 'is_unlimited', ts('Is Unlimited?'),CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'is_unlimited'), TRUE);
+    $this->add('checkbox', 'is_unlimited', ts('Is Unlimited?'));
 
 
     $configSets =  array('' => ts('- select -'));
@@ -132,16 +134,35 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     return $defaults;
   }
 
+
   /**
    * Function to process the form
    *
    * @access public
    *
-   * @return Void
+   * @return None
    */
   public function postProcess() {
+    CRM_Utils_System::flushCache();
+    $params = $this->exportValues();
+    if ($this->_action & CRM_Core_Action::DELETE) {
+      CRM_Booking_BAO_Resource::del($this->_id);
+      CRM_Core_Session::setStatus(ts('Selected resource has been deleted.'), ts('Record Deleted'), 'success');
+    }
+    else {
+      $params = $this->exportValues();
 
+      if($this->_id){
+        $params['id'] = $this->_id;
+        if(!isset($params['is_active'])){
+          $params['is_active'] = 0;
+        }
+      }
+      $resource = CRM_Booking_BAO_Resource::create($params);
+      CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $resource->label)), ts('Saved'), 'success');
+    }
   }
+
 
 
 }

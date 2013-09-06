@@ -4,7 +4,7 @@ class CRM_Booking_BAO_ResourceConfigSet extends CRM_Booking_DAO_ResourceConfigSe
 
 
     /**
-   * takes an associative array and creates a resource object
+   * takes an associative array and creates a resource config set object
    *
    * the function extract all the params it needs to initialize the create a
    * resource object. the params array could contain additional unused name/value
@@ -13,14 +13,31 @@ class CRM_Booking_BAO_ResourceConfigSet extends CRM_Booking_DAO_ResourceConfigSe
    * @param array $params (reference ) an assoc array of name/value pairs
    * @param array $ids    the array that holds all the db ids
    *
-   * @return object CRM_Booking_BAO_Resource object
+   * @return object CRM_Booking_BAO_ResourceConfigSet object
    * @access public
    * @static
    */
   static function create(&$params) {
-    $resourceDAO = new CRM_Booking_DAO_ResourceConfigSet();
-    $resourceDAO->copyValues($params);
-    return $resourceDAO->save();
+    $configSet = new CRM_Booking_DAO_ResourceConfigSet();
+    $configSet->copyValues($params);
+    return $configSet->save();
+  }
+
+    /**
+   * Function to delete Resoruce
+   *
+   * @param  int  $id     Id of the Resoruce Config to be deleted.
+   *
+   * @return boolean
+   *
+   * @access public
+   * @static
+   */
+  static function del($id) {
+    $configSet = new CRM_Booking_DAO_ResourceConfigSet();
+    $configSet->id = $id;
+    $configSet->is_deleted = 1;
+    return $configSet->save();
   }
 
 
