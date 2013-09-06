@@ -66,16 +66,17 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       array()
     );
 
-    $this->add('text', 'name', ts('Title'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'label '), TRUE);
-
+    $this->add('text', 'label', ts('Label'), array('size' => 50, 'maxlength' => 255), TRUE);
+    $this->add('textarea', 'description', ts('Description'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'description'), FALSE);
+    /*
     $this->addWysiwyg('description',
         ts('Description'),
         CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'description')
-    );
+    );*/
 
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'weight'), TRUE);
     $this->add('checkbox', 'is_active', ts('Enabled?'));
-    $this->add('checkbox', 'is_unlimited', ts('Is Unlimited?'));
+    $this->add('checkbox', 'is_unlimited', ts('Is Unlimited?'),CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'is_unlimited'), TRUE);
 
 
     $configSets =  array('' => ts('- select -'));
@@ -83,7 +84,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     foreach ($activeSets as $key => $set) {
       $configSets[$key] = $set['title'];
     }
-    $this->add('select', 'resource_config_set_id', ts('Resource configuration set'), $configSets, TRUE);
+    $this->add('select', 'set_id', ts('Resource configuration set'), $configSets, TRUE);
 
     $locations =  CRM_Booking_BAO_Resource::buildOptions('location_id', 'create');
     $this->add('select', 'location_id', ts('Resoruce Location'),
@@ -127,8 +128,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
 
   function setDefaultValues() {
-    $defaults = array();
-
+    $defaults = parent::setDefaultValues();
     return $defaults;
   }
 

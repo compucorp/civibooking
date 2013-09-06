@@ -38,10 +38,15 @@
  */
 class CRM_Admin_Form_ResourceConfigOption extends CRM_Admin_Form {
   protected $_id = NULL;
+  protected $_sid = NULL;
 
   function preProcess() {
     parent::preProcess();
     CRM_Utils_System::setTitle(ts('Settings - Resource Configuration Option'));
+    $this->_sid = CRM_Utils_Request::retrieve('sid', 'Positive',
+      $this, FALSE, 0
+    );
+    $this->assign('sid', $this->_sid);
 
   }
 
@@ -58,7 +63,7 @@ class CRM_Admin_Form_ResourceConfigOption extends CRM_Admin_Form {
       return;
     }
 
-    $this->add('text', 'name', ts('Title'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigOption', 'label '), TRUE);
+    $this->add('text', 'label', ts('Label'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'price', ts('Price'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigOption', 'price '), TRUE);
     $this->add('text', 'max_size', ts('Max Size'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigOption', 'max_size '), TRUE);
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigOption', 'weight'), TRUE);
@@ -73,7 +78,7 @@ class CRM_Admin_Form_ResourceConfigOption extends CRM_Admin_Form {
     );
 
     $this->addFormRule(array('CRM_Admin_Form_ResourceConfigOption', 'formRule'), $this);
-    $cancelURL = CRM_Utils_System::url('civicrm/admin/resource', "&reset=1");
+    $cancelURL = CRM_Utils_System::url('civicrm/admin/resource/config_option', "&sid=$this->_sid&reset=1");
     $cancelURL = str_replace('&amp;', '&', $cancelURL);
     $this->addButtons(
       array(
@@ -102,7 +107,7 @@ class CRM_Admin_Form_ResourceConfigOption extends CRM_Admin_Form {
 
 
   function setDefaultValues() {
-    $defaults = array();
+    $defaults = parent::setDefaultValues();
 
     return $defaults;
   }

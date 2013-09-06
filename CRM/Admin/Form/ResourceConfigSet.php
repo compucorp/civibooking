@@ -58,13 +58,13 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
       return;
     }
 
-    $this->add('text', 'name', ts('Title'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigSet', 'title '), TRUE);
+    $this->add('text', 'title', ts('Title'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigSet', 'weight'), TRUE);
     $this->add('checkbox', 'is_active', ts('Enabled?'));
 
 
     $this->addFormRule(array('CRM_Admin_Form_Resource', 'formRule'), $this);
-    $cancelURL = CRM_Utils_System::url('civicrm/admin/resource', "&reset=1");
+    $cancelURL = CRM_Utils_System::url('civicrm/admin/resource/config_set', "&reset=1");
     $cancelURL = str_replace('&amp;', '&', $cancelURL);
     $this->addButtons(
       array(
@@ -93,7 +93,7 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
 
 
   function setDefaultValues() {
-    $defaults = array();
+    $defaults = parent::setDefaultValues();
 
     return $defaults;
   }

@@ -33,8 +33,8 @@
   </div>
 {else}
   <table class="form-layout-compressed">
-    <tr class="crm-resource-config-set-form-block-name">
-        <td class="label">{$form.name.label}</td><td>{$form.name.html}</td>
+    <tr class="crm-resource-config-set-form-block-title">
+        <td class="label">{$form.title.label}</td><td>{$form.title.html}</td>
     </tr>
     <tr class="crm-resource-config-set-form-block-weight">
         <td class="label">{$form.weight.label}</td><td>{$form.weight.html}</td>

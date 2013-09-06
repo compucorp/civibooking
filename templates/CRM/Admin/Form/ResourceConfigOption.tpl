@@ -33,8 +33,8 @@
   </div>
 {else}
   <table class="form-layout-compressed">
-    <tr class="crm-resource-configuration-option-form-block-name">
-        <td class="label">{$form.name.label}</td><td>{$form.name.html}</td>
+    <tr class="crm-resource-configuration-option-form-block-label">
+        <td class="label">{$form.label.label}</td><td>{$form.label.html}</td>
     </tr>
     <tr class="crm-resource-configuration-option-form-block-price">
         <td class="label">{$form.price.label}</td><td>{$form.price.html}</td>

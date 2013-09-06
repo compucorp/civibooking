@@ -47,7 +47,7 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
   static $_links = NULL;
 
 
-  protected $_sid = NULL; //TODO::GET SID from the URL
+  protected $_sid = NULL;
 
   /**
    * Get BAO Name

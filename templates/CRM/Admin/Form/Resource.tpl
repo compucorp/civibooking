@@ -39,8 +39,8 @@
          {$form.type_id.html}
       </td>
     </tr>
-    <tr class="crm-bookingResource-form-block-name">
-        <td class="label">{$form.name.label}</td><td>{$form.name.html}</td>
+    <tr class="crm-bookingResource-form-block-label">
+        <td class="label">{$form.label.label}</td><td>{$form.label.html}</td>
     </tr>
     <tr class="crm-bookingResource-form-block-description">
         <td class="label">{$form.description.label}</td><td>{$form.description.html}</td>
@@ -51,19 +51,22 @@
          {$form.location_id.html}
       </td>
     </tr>
-    <tr class="crm-bookingResource-form-block-config-set">
-      <td class="label">{$form.resource_config_set_id.label}</td>
+    <tr class="crm-bookingResource-form-block-set_id">
+      <td class="label">{$form.set_id.label}</td>
       <td>
-         {$form.resource_config_set_id.html}
+         {$form.set_id.html}
          <br/>
-        {capture assign=ftUrl}{crmURL p='civicrm/admin/resource/config_set' q="reset=1"}{/capture}
+        {capture assign=ftUrl}{crmURL p='civicrm/admin/resource/config_set' q="reset=1&action=add"}{/capture}
         {ts 1=$ftUrl}<a href='%1'>Click here</a> if you want to add new configuration set to your site.{/ts}
       </td>
     </tr>
      <tr class="crm-bookingResource-form-block-weight">
         <td class="label">{$form.weight.label}</td><td>{$form.weight.html}</td>
     </tr>
-    <tr class="crm-bookingResource-form-block-weight">
+    <tr class="crm-bookingResource-form-block-is_unlimited">
+        <td class="label">{$form.is_unlimited.label}</td><td>{$form.is_unlimited.html}</td>
+    </tr>
+    <tr class="crm-bookingResource-form-block-is_active">
         <td class="label">{$form.is_active.label}</td><td>{$form.is_active.html}</td>
     </tr>
   </table>
