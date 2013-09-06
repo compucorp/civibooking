@@ -123,6 +123,9 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
    * @static
    */
   function browse($action = NULL) {
+    $types =  CRM_Booking_BAO_Resource::buildOptions('type_id', 'create');
+    $locations =  CRM_Booking_BAO_Resource::buildOptions('location_id', 'create');
+
     // get all custom groups sorted by weight
     $resources = array();
     $dao = new CRM_Booking_DAO_Resource();
@@ -134,7 +137,9 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
 
       $resources[$dao->id] = array();
       CRM_Core_DAO::storeValues($dao, $resources[$dao->id]);
-      //TODO:: GET Actual type and location
+      $resources[$dao->id]['type'] =  CRM_Utils_Array::value(CRM_Utils_Array::value('type_id', $resources[$dao->id]), $types);
+      $resources[$dao->id]['location'] =  CRM_Utils_Array::value(CRM_Utils_Array::value('location_id', $resources[$dao->id]), $locations);
+
 
       // form all action links
       $action = array_sum(array_keys($this->links()));
@@ -152,7 +157,6 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
       );
 
     }
-
     $this->assign('rows', $resources);
   }
 

@@ -46,8 +46,8 @@
         <tr id="row_{$row.id}" class="crm-booking_resource {cycle values="odd-row,even-row"} {$row.class}{if NOT $row.is_active} disabled{/if}">
             <td class="crm-booking-resource-name">{$row.label}</td>
             <td class="crm-booking-resource-description">{$row.description}</td>
-            <td class="crm-booking-resource-type">{$row.type_id}</td>
-            <td class="crm-booking-resource-location">{$row.location_id}</td>
+            <td class="crm-booking-resource-type">{$row.type}</td>
+            <td class="crm-booking-resource-location">{$row.location}</td>
             <td class="crm-booking-resource-weight">{$row.weight}</td>
             <td class="crm-booking-resource-is_unlimited">{if $row.is_unlimited eq 1} {ts}Yes{/ts} {else} {ts}No{/ts} {/if}</td>
             <td id="row_{$row.id}_status" class="crm-booking-resource-is_active">{if $row.is_active eq 1} {ts}Yes{/ts} {else} {ts}No{/ts} {/if}</td>
