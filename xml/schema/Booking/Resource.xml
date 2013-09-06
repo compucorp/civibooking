@@ -88,6 +88,7 @@
    <field>
     <name>is_unlimited</name>
     <type>boolean</type>
+    <default>0</default>
     <required>true</required>
 
    </field>
@@ -100,7 +101,9 @@
 
    <field>
     <name>is_deleted</name>
+    <default>0</default>
     <type>boolean</type>
+    <required>true</required>
    </field>
 
 

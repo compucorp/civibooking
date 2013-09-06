@@ -40,6 +40,7 @@
     <name>weight</name>
     <type>int unsigned</type>
     <required>true</required>
+    <required>true</required>
    </field>
 
    <field>
@@ -50,7 +51,9 @@
 
     <field>
     <name>is_deleted</name>
+    <default>0</default>
     <type>boolean</type>
+    <required>true</required>
    </field>
 
 
