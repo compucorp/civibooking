@@ -2,6 +2,14 @@
 
 class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
+   /**
+   * static field for all the booking information that we can potentially export
+   *
+   * @var array
+   * @static
+   */
+  static $_exportableFields = NULL;
+
 
   static function add(&$params){
     $bookingDAO = new CRM_Booking_DAO_Booking();
@@ -73,6 +81,35 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     $params = array(1 => array( $contactId, 'Integer'));
     $query = "SELECT COUNT(DISTINCT(id)) AS count  FROM civicrm_booking WHERE primary_contact_id = %1";
     return CRM_Core_DAO::singleValueQuery($query, $params);
+  }
+
+
+  /**
+   * Get the exportable fields for Booking
+   *
+   *
+   * @return array array of exportable Fields
+   * @access public
+   * @static
+   */
+  static function &exportableFields() {
+    if (!isset(self::$_exportableFields["booking"])) {
+      self::$_exportableFields["booking"] = array();
+
+      $exportableFields = CRM_Booking_DAO_Booking::export();
+
+      $bookingFields = array(
+        'booking_title' => array('title' => ts('Title'), 'type' => CRM_Utils_Type::T_STRING),
+        'booking_po_no' => array('title' => ts('PO Number'), 'type' => CRM_Utils_Type::T_STRING),
+        'booking_status' => array('title' => ts('Booking Status'), 'type' => CRM_Utils_Type::T_STRING),
+        'booking_payment_status' => array('title' => ts('Booking Status'), 'type' => CRM_Utils_Type::T_STRING),
+      );
+
+      $fields = array_merge($bookingFields, $exportableFields);
+
+      self::$_exportableFields["booking"] = $fields;
+    }
+    return self::$_exportableFields["booking"];
   }
 
 
