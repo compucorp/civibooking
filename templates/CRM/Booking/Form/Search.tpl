@@ -23,54 +23,55 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
+{* Search form and results for Bookings *}
+{assign var="showBlock" value="'searchForm'"}
+{assign var="hideBlock" value="'searchForm_show'"}
 <div class="crm-block crm-form-block crm-booking-search-form-block">
-<div class="crm-accordion-wrapper crm-booking_search-accordion {if $rows}collapsed{/if}">
- <div class="crm-accordion-header crm-master-accordion-header">
-            {ts}Edit Search Criteria{/ts}
-</div><!-- /.crm-accordion-header -->
- <div class="crm-accordion-body">
+  <div class="crm-accordion-wrapper crm-booking_search_form-accordion {if $rows}collapsed{/if}">
+      <div class="crm-accordion-header crm-master-accordion-header">
+          {ts}Edit Search Criteria{/ts}
+       </div><!-- /.crm-accordion-header -->
+      <div class="crm-accordion-body">
         {strip}
-            <table class="form-layout">
-              <tr>
-                <td class="font-size12pt" colspan="2">
-                    {$form.title.label}&nbsp;&nbsp;{$form.title.html|crmAddClass:'twenty'}
-                </td>
-              </tr>
-               <tr>
-               <td colspan="2" class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</td>
+          <table class="form-layout">
+            <tr>
+              <td class="font-size12pt" colspan="2">{$form.sort_name.label}&nbsp;&nbsp;{$form.sort_name.html|crmAddClass:'twenty'}&nbsp;&nbsp;&nbsp;{$form.buttons.html}
+              </td>
+            </tr>
+              {include file="CRM/Booking/Form/Search/Common.tpl"}
+            <tr>
+               <td colspan="2">{$form.buttons.html}</td>
             </tr>
             </table>
         {/strip}
-</div><!-- /.crm-accordion-body -->
-</div><!-- /.crm-accordion-wrapper -->
+      </div><!-- /.crm-accordion-body -->
+    </div><!-- /.crm-accordion-wrapper -->
 </div><!-- /.crm-form-block -->
-    {if $rowsEmpty || $rows}
-<div class="crm-content-block">
-    {if $rowsEmpty}
+
+{if $rowsEmpty || $rows}
+  <div class="crm-content-block">
+  {if $rowsEmpty}
   <div class="crm-results-block crm-results-block-empty">
-        {include file="CRM/Booking/Form/Search/EmptyResults.tpl"}
-    </div>
-    {/if}
-
-    {if $rows}
-  <div class="crm-results-block">
-          {* Search request has returned 1 or more matching rows. Display results and collapse the search criteria fieldset. *}
-
-          {* Search request has returned 1 or more matching rows. *}
-
-             {* This section handles form elements for action task select and submit *}
-             <div class="crm-search-tasks">
-             {include file="CRM/common/searchResultTasks.tpl"}
-             </div>
-
-             {* This section displays the rows along and includes the paging controls *}
-             <div class="crm-search-results">
-             {include file="CRM/Booking/Form/Selector.tpl" context="Search"}
-             </div>
-          {* END Actions/Results section *}
+      {include file="CRM/Booking/Form/Search/EmptyResults.tpl"}
   </div>
-    {/if}
-</div>
+  {/if}
+  {if $rows}
+      <div class="crm-results-block">
+      {* Search request has returned 1 or more matching rows. *}
+          {* This section handles form elements for action task select and submit *}
+          <div class="crm-search-tasks crm-event-search-tasks">
+              {include file="CRM/common/searchResultTasks.tpl" context="booking"}
+          </div>
+
+          {* This section displays the rows along and includes the paging controls *}
+          <div id="bookingSearch" class="crm-search-results">
+                {include file="CRM/Booking/Form/Selector.tpl" context="Search"}
+          </div>
+      {* END Actions/Results section *}
+      </div>
+  {/if}
+
+  </div>
 {/if}
 {literal}
 <script type="text/javascript">
@@ -79,3 +80,4 @@ cj(function() {
 });
 </script>
 {/literal}
+
