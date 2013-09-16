@@ -23,7 +23,6 @@ function booking_civicrm_tabs(&$tabs, $cid) {
     $tabs[] = $tab;
 }
 
-
 /**
  * Implementation of hook_civicrm_perm()
  *
@@ -318,7 +317,7 @@ function booking_civicrm_navigationMenu( &$params ) {
       'active' => 1
     ),
     'child' => array(
-      1 => array(
+      /*1 => array(
         'attributes' => array(
           'label' => 'Dashboard',
           'name' => 'booking_dashboard',
@@ -331,7 +330,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'active' => 1
         ),
         'child' => null
-      ),
+      ),*/
       2 => array(
         'attributes' => array(
           'label' => 'New Booking',
