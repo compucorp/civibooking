@@ -149,6 +149,7 @@ class CRM_Booking_BAO_BookingContactQuery extends CRM_Contact_BAO_Query{
     $this->_element['contact_id'] = 1;
     $this->_tables['civicrm_contact'] = 1;
 
+
     if (!empty($this->_params)) {
       $this->buildParamsLookup();
     }
@@ -572,6 +573,8 @@ class CRM_Booking_BAO_BookingContactQuery extends CRM_Contact_BAO_Query{
         break;
       }
     }
+    //TODO:: Fix permission clause
+    $this->setSkipPermission(TRUE); //Hack skip permission so the query/count would work!
     $this->generatePermissionClause($onlyDeleted, $count);
 
     // building the query string
@@ -583,9 +586,6 @@ class CRM_Booking_BAO_BookingContactQuery extends CRM_Contact_BAO_Query{
       elseif ($this->_useGroupBy) {
         $groupBy = ' GROUP BY contact_a.id';
       }
-    }
-    if ($this->_mode & CRM_Contact_BAO_Query::MODE_ACTIVITY && (!$count)) {
-      $groupBy = 'GROUP BY civicrm_activity.id ';
     }
 
     $order = $orderBy = $limit = '';
@@ -626,35 +626,7 @@ class CRM_Booking_BAO_BookingContactQuery extends CRM_Contact_BAO_Query{
           $order = " ORDER BY contact_a.sort_name asc, contact_a.id";
         }
       }
-      // hack for order clause
-      if ($order) {
-        $fieldStr = trim(str_replace('ORDER BY', '', $order));
-        $fieldOrder = explode(' ', $fieldStr);
-        $field = $fieldOrder[0];
 
-        if ($field) {
-          switch ($field) {
-            case 'city':
-            case 'postal_code':
-              $this->_whereTables["civicrm_address"] = 1;
-              $order = str_replace($field, "civicrm_address.{$field}", $order);
-              break;
-
-            case 'country':
-            case 'state_province':
-              $this->_whereTables["civicrm_{$field}"] = 1;
-              $order = str_replace($field, "civicrm_{$field}.name", $order);
-              break;
-
-            case 'email':
-              $this->_whereTables["civicrm_email"] = 1;
-              $order = str_replace($field, "civicrm_email.{$field}", $order);
-              break;
-          }
-          $this->_fromClause = self::fromClause($this->_tables, NULL, NULL, $this->_primaryLocation, $this->_mode);
-          $this->_simpleFromClause = self::fromClause($this->_whereTables, NULL, NULL, $this->_primaryLocation, $this->_mode);
-        }
-      }
 
       if ($rowCount > 0 && $offset >= 0) {
         $limit = " LIMIT $offset, $rowCount ";
