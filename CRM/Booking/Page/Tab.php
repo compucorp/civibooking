@@ -40,13 +40,10 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
    * @access public
    */
   function view() {
-    // build associated contributions
-    $this->associatedContribution();
-    /*
 
     $controller = new CRM_Core_Controller_Simple(
-      'CRM_Event_Form_ParticipantView',
-      ts('View Participant'),
+      'CRM_Booking_Form_BookingView',
+      ts('View Booking'),
       $this->_action
     );
     $controller->setEmbedded(TRUE);
@@ -54,38 +51,17 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
     $controller->set('cid', $this->_contactId);
 
     return $controller->run();
-    */
+
   }
 
   /**
-   * This function is called when action is update or new
+   * This function is called when action is delete the row
    *
    * return null
    * @access public
    */
-  function edit() {
-    // set https for offline cc transaction
-    $mode = CRM_Utils_Request::retrieve('mode', 'String', $this);
-    if ($mode == 'test' || $mode == 'live') {
-      CRM_Utils_System::redirectToSSL();
-    }
-
-    if ($this->_action != CRM_Core_Action::ADD) {
-      // get associated contributions only on edit/delete
-      $this->associatedContribution();
-    }
-
-    $controller = new CRM_Core_Controller_Simple(
-      'CRM_Event_Form_Participant',
-      'Create Participation',
-      $this->_action
-    );
-
-    $controller->setEmbedded(TRUE);
-    $controller->set('id', $this->_id);
-    $controller->set('cid', $this->_contactId);
-
-    return $controller->run();
+  function delete() {
+    //TODO::Implement delete method
   }
 
   function preProcess() {
@@ -109,8 +85,8 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
 
     $this->assign('action', $this->_action);
 
-    if ($this->_permission == CRM_Core_Permission::EDIT && !CRM_Core_Permission::check('edit event participants')) {
-      // demote to view since user does not have edit event participants rights
+    if ($this->_permission == CRM_Core_Permission::EDIT && !CRM_Core_Permission::check('edit booking')) {
+      // demote to view since user does not have edit booking rights
       $this->_permission = CRM_Core_Permission::VIEW;
       $this->assign('permission', 'view');
     }
@@ -125,34 +101,27 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
   function run() {
     $this->preProcess();
 
-    // check if we can process credit card registration
-    //CRM_Core_Payment::allowBackofficeCreditCard($this);
-
-    // Only show credit card registration button if user has CiviContribute permission
-    if (CRM_Core_Permission::access('CiviContribute')) {
-      $this->assign('accessContribution', TRUE);
-    }
-    else {
-      $this->assign('accessContribution', FALSE);
-    }
-
     $this->setContext();
 
     if ($this->_action & CRM_Core_Action::VIEW) {
       $this->view();
     }
+    /* //WE DO NOT HANDLE/ADD OR EDIT
     elseif ($this->_action & (CRM_Core_Action::UPDATE |
         CRM_Core_Action::ADD |
         CRM_Core_Action::DELETE
       )) {
       $this->edit();
-    }
-    else {
+    }*/
+    elseif ($this->_action & CRM_Core_Action::DELETE){
+      $this->edit();
+    }else {
       $this->browse();
     }
 
     return parent::run();
   }
+
 
   function setContext() {
     $context = CRM_Utils_Request::retrieve('context',
@@ -210,7 +179,9 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
         break;
 
       case 'booking':
-        dpr('fuck you');
+        $url = CRM_Utils_System::url('civicrm/contact/view',
+          "reset=1&force=1&cid={$this->_contactId}&selectedChild=booking"
+        );
         break;
 
       case 'standalone':
@@ -250,32 +221,4 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
     $session->pushUserContext($url);
   }
 
-  /**
-   * This function is used for the to show the associated
-   * contribution for the participant
-   *
-   * return null
-   * @access public
-   */
-  function associatedContribution() {
-    if (CRM_Core_Permission::access('CiviContribute')) {
-      $this->assign('accessContribution', TRUE);
-      $controller = new CRM_Core_Controller_Simple(
-        'CRM_Contribute_Form_Search',
-        ts('Contributions'),
-        NULL,
-        FALSE, FALSE, TRUE
-      );
-      $controller->setEmbedded(TRUE);
-      $controller->set('force', 1);
-      $controller->set('cid', $this->_contactId);
-      $controller->set('participantId', $this->_id);
-      $controller->set('context', 'contribution');
-      $controller->process();
-      $controller->run();
-    }
-    else {
-      $this->assign('accessContribution', FALSE);
-    }
-  }
 }
