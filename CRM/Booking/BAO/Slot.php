@@ -23,6 +23,38 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
     return $slotDAO->save();
   }
 
+  static function getBookingSlot($bookingID){
+    $params = array(1 => array( $bookingID, 'Integer'));
+
+    $query = "
+      SELECT civicrm_booking_slot.id,
+             civicrm_booking_slot.booking_id,
+             civicrm_booking_slot.resource_id,
+             civicrm_booking_slot.config_id,
+             civicrm_booking_slot.start,
+             civicrm_booking_slot.end,
+             civicrm_booking_slot.note
+      FROM civicrm_booking_slot
+      LEFT JOIN civicrm_booking ON civicrm_booking.id = civicrm_booking_slot.booking_id
+      WHERE 1
+      AND civicrm_booking.id = %1";
+
+    $slots = array();
+    $dao = CRM_Core_DAO::executeQuery($query, $params);
+    while ($dao->fetch()) {
+      $slots[$dao->id] = array(
+        'id' => $dao->id,
+        'booking_id' => $dao->booking_id,
+        'resource_id' => $dao->resource_id,
+        'config_id' => $dao->config_id,
+        'start' => $dao->start,
+        'end' => $dao->end,
+        'note' => $dao->note,
+      );
+    }
+    return $slots;
+  }
+
 
   static function getSlotBetweenDate($from, $to){
 
