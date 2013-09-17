@@ -177,7 +177,7 @@ class CRM_Booking_BAO_Query {
         $from .= " ";
         break;
       case 'booking_associated_contact':
-        $from = " $side JOIN civicrm_contact booking_associated_contact ON (booking_associated_contact.id = 'civicrm_booking.secondary_contact_id')";
+        //$from = " $side JOIN civicrm_contact booking_associated_contact ON (booking_associated_contact.id = civicrm_booking.secondary_contact_id)";
         break;
 
     }
@@ -206,8 +206,8 @@ class CRM_Booking_BAO_Query {
         'booking_status_id' => 1,
         /*'booking_payment_status' => 1,
         'booking_price' => 1,
-        'booking_event_date' => 1,*/
-        'booking_associated_contact' => 1,
+        'booking_event_date' => 1,
+        'booking_associated_contact' => 1,*/
       );
     }
 
