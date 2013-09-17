@@ -77,6 +77,34 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
   }
 
+
+  /**
+   * Given the list of params in the params array, fetch the object
+   * and store the values in the values array
+   *
+   * @param array $params input parameters to find object
+   * @param array $values output values of the object
+   *
+   * @return CRM_Event_BAO_ฺBooking|null the found object or null
+   * @access public
+   * @static
+   */
+  static function getValues(&$params, &$values, &$ids) {
+    if (empty($params)) {
+      return NULL;
+    }
+    $booking = new CRM_Booking_DAO_Booking();
+    $booking->copyValues($params);
+    $booking->find();
+    $bookings = array();
+    while ($booking->fetch()) {
+      $ids['booking'] = $booking->id;
+      CRM_Core_DAO::storeValues($booking, $values[$booking->id]);
+      $bookings[$booking->id] = $booking;
+    }
+    return $bookings;
+  }
+
   static function getBookingContactCount($contactId){
     $params = array(1 => array( $contactId, 'Integer'));
     $query = "SELECT COUNT(DISTINCT(id)) AS count  FROM civicrm_booking WHERE primary_contact_id = %1";
