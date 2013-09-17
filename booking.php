@@ -18,7 +18,7 @@ function booking_civicrm_tabs(&$tabs, $cid) {
       'weight' => '998',
     );
     //if ($count > 0) {
-    $tab['url'] = CRM_Utils_System::url('civicrm/booking/tab', "reset=1&cid={$cid}&snippet=1&force=1", false, null, false);
+    $tab['url'] = CRM_Utils_System::url('civicrm/contact/view/booking', "reset=1&cid={$cid}&snippet=1&force=1", false, null, false);
     //}
     $tabs[] = $tab;
 }
@@ -28,7 +28,7 @@ function booking_civicrm_tabs(&$tabs, $cid) {
  *
  */
 function cividiscount_civicrm_perm() {
-  return array('view CiviBooking', 'administer CiviBooking');
+  return array('view booking', 'administer CiviBooking');
 }
 
 
