@@ -54,15 +54,34 @@
           {assign var=cbName value=$row.checkbox}
           <td>{$form.$cbName.html}</td>
        {/if}
-       {* TODO: Get icon and tooltip for the contact type <td class="crm-participant-contact_type">{$row.contact_type}</td> *}
+        <td class="crm-booking-contact_type">{* {$row.contact_type} *}</td>
+        <td class="crm-booking-sort_name"><a href="{crmURL p='civicrm/contact/view' q="reset=1&cid=`$row.contact_id`"}" title="{ts}View contact record{/ts}">{$row.sort_name}</a></td>
     {/if}
-    <td class="crm-booking-contact-1"><a href="{crmURL p='civicrm/contact/view' q="reset=1&cid=`$row.contact_id`"}">{$row.sort_name}</a></td>
+
     <td class="crm-booking-title">
         {$row.booking_title}
     </td>
-    <td class="crm-booking-status">
+    <td class="crm-booking-create-date">
+        {$row.booking_created_date}
+    </td>
+    <td class="crm-booking-associated-contact">
+        {$row.booking_associated_contact}
+    </td>
+
+    <td class="crm-booking-event_date">
+        {$row.booking_event_date}
+    </td>
+    <td class="crm-booking-price">
+        {$row.booking_price}
+    </td>
+     <td class="crm-booking-status">
         {$row.booking_status}
     </td>
+
+    <td class="crm-booking-payment-status">
+        {$row.payment_status}
+    </td>
+
     <td>{$row.action|replace:'xx':$row.booking_id}</td>
   </tr>
   {/foreach}

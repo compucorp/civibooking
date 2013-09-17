@@ -69,6 +69,11 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     'sort_name',
     'booking_title',
     'booking_status',
+    'booking_payment_status',
+    'booking_price',
+    'booking_event_date',
+    'booking_associated_contact',
+    'booking_created_date',
   );
 
   /**
@@ -144,8 +149,10 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     $limit        = NULL,
     $context      = 'search'
   ) {
+
     // submitted form values
     $this->_queryParams = &$queryParams;
+
 
     $this->_single  = $single;
     $this->_limit   = $limit;
@@ -155,6 +162,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
 
     // type of selector
     $this->_action = $action;
+
 
     $bookingQuery = CRM_Booking_BAO_Query::defaultReturnProperties(
       CRM_Booking_BAO_BookingContactQuery::MODE_BOOKING,
@@ -170,8 +178,9 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
       CRM_Booking_BAO_BookingContactQuery::MODE_BOOKING
     );
 
-     //$this->_query->_distinctComponentClause = " civicrm_booking.id";
-     //$this->_query->_groupByComponentClause = " GROUP BY civicrm_booking.id ";
+
+    $this->_query->_distinctComponentClause = " civicrm_booking.id";
+    $this->_query->_groupByComponentClause = " GROUP BY civicrm_booking.id ";
 
   }
   //end of constructor
@@ -283,6 +292,18 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
       $this->_bookingClause
     );
 
+
+   //lets handle view, edit and delete separately.
+    $permissions = array(CRM_Core_Permission::VIEW, CRM_Core_Permission::EDIT, CRM_Core_Permission::DELETE);
+    /*if (CRM_Core_Permission::check('edit event Booking')) {
+      $permissions[] = CRM_Core_Permission::EDIT;
+    }
+    if (CRM_Core_Permission::check('delete in Booking')) {
+      $permissions[] = CRM_Core_Permission::DELETE;
+    }*/
+    $mask = CRM_Core_Action::mask($permissions);
+
+
     // process the result of the query
     $rows = array();
 
@@ -297,16 +318,13 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
 
         $row['checkbox'] = CRM_Core_Form::CB_PREFIX . $result->contact_id;
 
-        $row['action'] = CRM_Core_Action::formLink(
-          self::links(
-           $this->_key,
-           $this->_context,
-           $this->_compContext),
-            array(
+        $row['action'] = CRM_Core_Action::formLink(self::links($this->_key, $this->_context),
+          $mask,
+          array(
             'id' => $result->booking_id,
             'cid' => $result->contact_id,
             'cxt' => $this->_context,
-            )
+          )
         );
       }
 
@@ -341,24 +359,52 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
   public function &getColumnHeaders($action = NULL, $output = NULL) {
     if (!isset(self::$_columnHeaders)) {
       self::$_columnHeaders = array(
-        array('name' => ts('Booking'),
+        array('name' => ts('Title'),
           'sort' => 'booking_title',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
         array(
-          'name' => ts('Status'),
+          'name' => ts('Date Made'),
+          'sort' => 'booking_created_date',
+          'direction' => CRM_Utils_Sort::DONTCARE,
+        ),
+        array(
+          'name' => ts('Associated Contact'),
+          'sort' => 'booking_associated_contact',
+          'direction' => CRM_Utils_Sort::DONTCARE,
+        ),
+        array(
+          'name' => ts('Event date'),
+          'sort' => 'booking_event_date',
+          'direction' => CRM_Utils_Sort::DONTCARE,
+        ),
+        array(
+          'name' => ts('Price'),
+          'sort' => 'booking_price',
+          'direction' => CRM_Utils_Sort::DONTCARE,
+        ),
+
+        array(
+          'name' => ts('Booking Status'),
           'sort' => 'booking_status',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
+        array(
+          'name' => ts('Payment Status'),
+          'sort' => 'booking_payment_status',
+          'direction' => CRM_Utils_Sort::DONTCARE,
+        ),
+
         array('desc' => ts('Actions')),
       );
 
       if (!$this->_single) {
         $pre = array(
+          array('desc' => ts('Contact Type')),
           array(
             'name' => ts('Primary Contact'),
             'sort' => 'sort_name',
-            'direction' => CRM_Utils_Sort::ASCENDING,
+            'direction' => CRM_Utils_Sort::DONTCARE,
           ),
         );
         self::$_columnHeaders = array_merge($pre, self::$_columnHeaders);

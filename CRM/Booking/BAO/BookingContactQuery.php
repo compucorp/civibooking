@@ -290,6 +290,8 @@ class CRM_Booking_BAO_BookingContactQuery extends CRM_Contact_BAO_Query{
         case 'civicrm_booking':
         case 'booking_status':
         case 'booking_payment_status':
+        case 'booking_price':
+        case 'booking_associated_contact':
           $from .= CRM_Booking_BAO_Query::from($name, $mode, $side);
           continue;
         default:
