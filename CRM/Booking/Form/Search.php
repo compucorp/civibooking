@@ -107,6 +107,7 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
 
   function preProcess() {
 
+
     $this->set('searchFormName', 'Search');
     /**
      * set the button names
@@ -118,17 +119,17 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
     $this->_done = FALSE;
     $this->defaults = array();
 
-    /*
+  /*
      * we allow the controller to set force/reset externally, useful when we are being
      * driven by the wizard framework
      */
-
     $this->_reset   = CRM_Utils_Request::retrieve('reset', 'Boolean', CRM_Core_DAO::$_nullObject);
     $this->_force   = CRM_Utils_Request::retrieve('force', 'Boolean', $this, FALSE);
     $this->_limit   = CRM_Utils_Request::retrieve('limit', 'Positive', $this);
     $this->_context = CRM_Utils_Request::retrieve('context', 'String', $this, FALSE, 'search');
-
+    $this->_ssID    = CRM_Utils_Request::retrieve('ssID', 'Positive', $this);
     $this->assign("context", $this->_context);
+
 
     // get user submitted values
     // get it from controller only if form has been submitted, else preProcess has set this
@@ -146,12 +147,13 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
 
     $sortID = NULL;
     if ($this->get(CRM_Utils_Sort::SORT_ID)) {
-      $sortID = CRM_Utils_Sort::sortIDValue($this->get(CRM_Utils_Sort::SORT_ID),
+        $sortID = CRM_Utils_Sort::sortIDValue($this->get(CRM_Utils_Sort::SORT_ID),
         $this->get(CRM_Utils_Sort::SORT_DIRECTION)
       );
     }
 
     $this->_queryParams = CRM_Booking_BAO_BookingContactQuery::convertFormValues($this->_formValues);
+
     $selector = new CRM_Booking_Selector_Search($this->_queryParams,
       $this->_action,
       NULL,
@@ -159,6 +161,8 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
       $this->_limit,
       $this->_context
     );
+
+
     $prefix = NULL;
     if ($this->_context == 'user') {
       $prefix = $this->_prefix;
@@ -179,7 +183,6 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
     $controller->setEmbedded(TRUE);
     $controller->moveFromSessionToTemplate();
 
-    dpr($this->get('summary'));
 
     //$this->assign('bookingSummary', $this->get('summary'));
   }
@@ -299,7 +302,6 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
     if ($this->_done) {
       return;
     }
-
     $this->_done = TRUE;
 
     if (!empty($_POST)) {
@@ -314,6 +316,7 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
 
     $this->set('formValues', $this->_formValues);
     $this->set('queryParams', $this->_queryParams);
+
 
     $buttonName = $this->controller->getButtonName();
     if ($buttonName == $this->_actionButtonName || $buttonName == $this->_printButtonName) {
@@ -344,14 +347,17 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
       $this->_context
     );
 
+
     $selector->setKey($this->controller->_key);
+
 
     $prefix = NULL;
     if ($this->_context == 'basic' || $this->_context == 'user') {
       $prefix = $this->_prefix;
     }
 
-    $controller = new CRM_Core_Selector_Controller($selector,
+    $controller = new CRM_Core_Selector_Controller(
+      $selector,
       $this->get(CRM_Utils_Pager::PAGE_ID),
       $sortID,
       CRM_Core_Action::VIEW,
@@ -361,9 +367,9 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
     );
     $controller->setEmbedded(TRUE);
 
+
     $query = &$selector->getQuery();
     if ($this->_context == 'user') {
-      $query->setSkipPermission(TRUE);
     }
     /*
     $summary = &$query->summaryBooking($this->_context);
@@ -377,12 +383,22 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
     // if this search has been forced
     // then see if there are any get values, and if so over-ride the post values
     // note that this means that GET over-rides POST :)
-
     if (!$this->_force) {
       return;
     }
 
-    //TODO:: Imple fixFormValues
+    $cid = CRM_Utils_Request::retrieve('cid', 'Positive', $this);
+
+    if ($cid) {
+      $cid = CRM_Utils_Type::escape($cid, 'Integer');
+      if ($cid > 0) {
+        $this->_formValues['contact_id'] = $cid;
+
+        // also assign individual mode to the template
+        $this->_single = TRUE;
+      }
+    }
+
 
     //give values to default.
     $this->_defaults = $this->_formValues;
