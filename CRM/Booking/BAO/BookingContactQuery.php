@@ -428,8 +428,11 @@ class CRM_Booking_BAO_BookingContactQuery extends CRM_Contact_BAO_Query{
 
   function whereClauseSingle(&$values) {
     switch ($values[0]) {
-      case 'booking_status_id':
-      case 'booking_payment_id':
+       case 'civicrm_booking':
+        case 'booking_status':
+        case 'booking_payment_status':
+        case 'booking_price':
+        case 'booking_associated_contact':
         CRM_Booking_BAO_Query::whereClauseSingle($values, $this);
         return;
       default:
