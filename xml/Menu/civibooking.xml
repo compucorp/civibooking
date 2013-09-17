@@ -6,7 +6,7 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/booking/tab</path>
+    <path>civicrm/contact/view/booking</path>
     <page_callback>CRM_Booking_Page_Tab</page_callback>
     <title>Tab</title>
     <access_arguments>access CiviCRM</access_arguments>
