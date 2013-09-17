@@ -27,7 +27,7 @@
 {assign var="showBlock" value="'searchForm'"}
 {assign var="hideBlock" value="'searchForm_show'"}
 <div class="crm-block crm-form-block crm-booking-search-form-block">
-  <div class="crm-accordion-wrapper crm-booking_search_form-accordion {if $rows}collapsed{/if}">
+  <div class="crm-accordion-wrapper crm-booking-search-form-accordion {if $rows}collapsed{/if}">
       <div class="crm-accordion-header crm-master-accordion-header">
           {ts}Edit Search Criteria{/ts}
        </div><!-- /.crm-accordion-header -->
