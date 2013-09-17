@@ -23,7 +23,11 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
-
+{if $action eq 8} {* delete , we ignore add,update *}
+    {include file="CRM/Booking/Form/Booking.tpl"}
+{elseif $action eq 4}
+    {include file="CRM/Booking/Form/BookingView.tpl"}
+{else}
     <div class="view-content">
         {if $action eq 16 and $permission EQ 'edit'}
            {capture assign=newBookingURL}{crmURL p="civicrm/booking/add/" q="reset=1&action=add&cid=`$contactId`}{/capture}
@@ -41,7 +45,7 @@
         {else}
             <div class="messages status no-popup">
                     <div class="icon inform-icon"></div>
-                    {ts}No bookinks have been recorded from this contact.{/ts}
+                    {ts}No booking have been recorded from this contact.{/ts}
             </div>
         {/if}
 
@@ -54,3 +58,4 @@
             {include file="CRM/Booking/Page/BookingSoft.tpl"}
         {/if}
     </div>
+{/if}
