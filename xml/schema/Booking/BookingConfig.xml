@@ -39,6 +39,7 @@
     <onDelete>CASCADE</onDelete>
   </foreignKey>
 
+  <!--
   <field>
     <name>price_set_default</name>
     <type>int unsigned</type>
@@ -52,8 +53,7 @@
     <add>4.4</add>
     <onDelete>CASCADE</onDelete>
   </foreignKey>
-
-
+  -->
 
   <field>
     <name>day_start_at</name>
@@ -66,7 +66,6 @@
     <type>time</type>
     <required>true</required>
   </field>
-
 
   <field>
     <name>log_confirmation_email</name>
@@ -106,7 +105,13 @@
   </field>
 
   <field>
-    <name>slot_unavaliable_colour</name>
+    <name>slot_booked_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+
+  <field>
+    <name>slot_reserved_colour</name>
     <type>varchar</type>
     <length>10</length>
   </field>

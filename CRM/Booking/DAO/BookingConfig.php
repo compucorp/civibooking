@@ -105,12 +105,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    */
   public $financial_type_default;
   /**
-   * Price set to use for ad-hoc charges
-   *
-   * @var int unsigned
-   */
-  public $price_set_default;
-  /**
    *
    * @var time
    */
@@ -155,7 +149,12 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    *
    * @var string
    */
-  public $slot_unavaliable_colour;
+  public $slot_booked_colour;
+  /**
+   *
+   * @var string
+   */
+  public $slot_reserved_colour;
   /**
    * class constructor
    *
@@ -179,7 +178,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
     if (!self::$_links) {
       self::$_links = array(
         new CRM_Core_EntityReference(self::getTableName() , 'financial_type_default', 'civicrm_financial_type', 'id') ,
-        new CRM_Core_EntityReference(self::getTableName() , 'price_set_default', 'civicrm_price_set', 'id') ,
       );
     }
     return self::$_links;
@@ -210,13 +208,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'title' => ts('Financial Type Default') ,
           'required' => true,
           'FKClassName' => 'CRM_Financial_DAO_FinancialType',
-        ) ,
-        'price_set_default' => array(
-          'name' => 'price_set_default',
-          'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Price Set Default') ,
-          'required' => true,
-          'FKClassName' => 'CRM_Price_DAO_PriceSet',
         ) ,
         'day_start_at' => array(
           'name' => 'day_start_at',
@@ -269,10 +260,17 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'maxlength' => 10,
           'size' => CRM_Utils_Type::TWELVE,
         ) ,
-        'slot_unavaliable_colour' => array(
-          'name' => 'slot_unavaliable_colour',
+        'slot_booked_colour' => array(
+          'name' => 'slot_booked_colour',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Slot Unavaliable Colour') ,
+          'title' => ts('Slot Booked Colour') ,
+          'maxlength' => 10,
+          'size' => CRM_Utils_Type::TWELVE,
+        ) ,
+        'slot_reserved_colour' => array(
+          'name' => 'slot_reserved_colour',
+          'type' => CRM_Utils_Type::T_STRING,
+          'title' => ts('Slot Reserved Colour') ,
           'maxlength' => 10,
           'size' => CRM_Utils_Type::TWELVE,
         ) ,
@@ -294,7 +292,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
         'id' => 'id',
         'domain_id' => 'domain_id',
         'financial_type_default' => 'financial_type_default',
-        'price_set_default' => 'price_set_default',
         'day_start_at' => 'day_start_at',
         'day_end_at' => 'day_end_at',
         'log_confirmation_email' => 'log_confirmation_email',
@@ -303,7 +300,8 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
         'bcc_email_address' => 'bcc_email_address',
         'created_activity' => 'created_activity',
         'slot_avaliable_colour' => 'slot_avaliable_colour',
-        'slot_unavaliable_colour' => 'slot_unavaliable_colour',
+        'slot_booked_colour' => 'slot_booked_colour',
+        'slot_reserved_colour' => 'slot_reserved_colour',
       );
     }
     return self::$_fieldKeys;

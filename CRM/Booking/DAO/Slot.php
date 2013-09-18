@@ -123,6 +123,11 @@ class CRM_Booking_DAO_Slot extends CRM_Core_DAO
   public $end;
   /**
    *
+   * @var int
+   */
+  public $quantity;
+  /**
+   *
    * @var text
    */
   public $note;
@@ -209,18 +214,36 @@ class CRM_Booking_DAO_Slot extends CRM_Core_DAO
           'title' => ts('End') ,
           'required' => true,
         ) ,
+        'quantity' => array(
+          'name' => 'quantity',
+          'type' => CRM_Utils_Type::T_INT,
+          'title' => ts('Quantity') ,
+          'required' => true,
+        ) ,
         'note' => array(
           'name' => 'note',
           'type' => CRM_Utils_Type::T_TEXT,
           'title' => ts('Note') ,
         ) ,
-        'is_cancelled' => array(
+        'slot_is_cancelled' => array(
           'name' => 'is_cancelled',
           'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => ts('Slot is cancelled') ,
+          'import' => true,
+          'where' => 'civicrm_booking_slot.is_cancelled',
+          'headerPattern' => '',
+          'dataPattern' => '',
+          'export' => true,
         ) ,
-        'is_deleted' => array(
+        'slot_is_deleted' => array(
           'name' => 'is_deleted',
           'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => ts('Slot is in the Trash') ,
+          'import' => true,
+          'where' => 'civicrm_booking_slot.is_deleted',
+          'headerPattern' => '',
+          'dataPattern' => '',
+          'export' => true,
         ) ,
       );
     }
@@ -243,9 +266,10 @@ class CRM_Booking_DAO_Slot extends CRM_Core_DAO
         'config_id' => 'config_id',
         'start' => 'start',
         'end' => 'end',
+        'quantity' => 'quantity',
         'note' => 'note',
-        'is_cancelled' => 'is_cancelled',
-        'is_deleted' => 'is_deleted',
+        'is_cancelled' => 'slot_is_cancelled',
+        'is_deleted' => 'slot_is_deleted',
       );
     }
     return self::$_fieldKeys;

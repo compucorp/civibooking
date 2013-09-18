@@ -77,12 +77,10 @@
     </pseudoconstant>
   </field>
 
-
   <field>
     <name>weight</name>
     <type>int</type>
     <required>true</required>
-    <!-- <default>1</default> -->
   </field>
 
    <field>

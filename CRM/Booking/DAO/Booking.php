@@ -118,9 +118,9 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
   public $status_id;
   /**
    *
-   * @var string
+   * @var datetime
    */
-  public $title;
+  public $event_date;
   /**
    *
    * @var string
@@ -128,14 +128,14 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
   public $description;
   /**
    *
-   * @var float
+   * @var text
    */
-  public $discount_amount;
+  public $notes;
   /**
    *
    * @var text
    */
-  public $notes;
+  public $adhoc_charges_note;
   /**
    *
    * @var string
@@ -146,6 +146,11 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
    * @var string
    */
   public $participants_actual;
+  /**
+   *
+   * @var float
+   */
+  public $discount_amount;
   /**
    *
    * @var int unsigned
@@ -246,7 +251,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'booking_po_number' => array(
           'name' => 'po_number',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Po Number') ,
+          'title' => ts('PO Number') ,
           'required' => true,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
@@ -255,18 +260,16 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'name' => 'status_id',
           'type' => CRM_Utils_Type::T_INT,
           'title' => ts('Status ID') ,
-          'default' => 'NULL',
+          'required' => true,
           'pseudoconstant' => array(
             'optionGroupName' => 'booking_booking_status',
           )
         ) ,
-        'booking_title' => array(
-          'name' => 'title',
-          'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Booking Title') ,
+        'booking_event_date' => array(
+          'name' => 'event_date',
+          'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
+          'title' => ts('Event Date') ,
           'required' => true,
-          'maxlength' => 50,
-          'size' => CRM_Utils_Type::BIG,
         ) ,
         'description' => array(
           'name' => 'description',
@@ -275,15 +278,15 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
-        'discount_amount' => array(
-          'name' => 'discount_amount',
-          'type' => CRM_Utils_Type::T_MONEY,
-          'title' => ts('Discount Amount') ,
-        ) ,
         'notes' => array(
           'name' => 'notes',
           'type' => CRM_Utils_Type::T_TEXT,
           'title' => ts('Notes') ,
+        ) ,
+        'adhoc_charges_note' => array(
+          'name' => 'adhoc_charges_note',
+          'type' => CRM_Utils_Type::T_TEXT,
+          'title' => ts('Adhoc Charges Note') ,
         ) ,
         'participants_estimate' => array(
           'name' => 'participants_estimate',
@@ -299,14 +302,26 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
+        'discount_amount' => array(
+          'name' => 'discount_amount',
+          'type' => CRM_Utils_Type::T_MONEY,
+          'title' => ts('Discount Amount') ,
+        ) ,
         'payment_status' => array(
           'name' => 'payment_status',
           'type' => CRM_Utils_Type::T_INT,
           'title' => ts('Payment Status') ,
+          'required' => true,
         ) ,
-        'is_deleted' => array(
+        'booking_is_deleted' => array(
           'name' => 'is_deleted',
           'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => ts('Booking is in the Trash') ,
+          'import' => true,
+          'where' => 'civicrm_booking.is_deleted',
+          'headerPattern' => '',
+          'dataPattern' => '',
+          'export' => true,
         ) ,
         'created_by' => array(
           'name' => 'created_by',
@@ -352,14 +367,15 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'secondary_contact_id' => 'secondary_contact_id',
         'po_number' => 'booking_po_number',
         'status_id' => 'status_id',
-        'title' => 'booking_title',
+        'event_date' => 'booking_event_date',
         'description' => 'description',
-        'discount_amount' => 'discount_amount',
         'notes' => 'notes',
+        'adhoc_charges_note' => 'adhoc_charges_note',
         'participants_estimate' => 'participants_estimate',
         'participants_actual' => 'participants_actual',
+        'discount_amount' => 'discount_amount',
         'payment_status' => 'payment_status',
-        'is_deleted' => 'is_deleted',
+        'is_deleted' => 'booking_is_deleted',
         'created_by' => 'created_by',
         'created_date' => 'created_date',
         'updated_by' => 'updated_by',

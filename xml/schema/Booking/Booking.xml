@@ -59,12 +59,13 @@
     <onDelete>CASCADE</onDelete>
   </foreignKey>
 
+
   <field>
     <name>po_number</name>
     <type>varchar</type>
     <length>255</length>
     <comment></comment>
-    <title>Po Number</title>
+    <title>PO Number</title>
     <required>true</required>
     <!--<export>true</export>-->
     <uniqueName>booking_po_number</uniqueName>
@@ -75,7 +76,7 @@
     <name>status_id</name>
     <title>Status ID</title>
     <type>int unsigned</type>
-    <default>NULL</default>
+    <required>true</required>
     <comment>The status associated with this booking. Implicit FK to option_value row in booking status option_group.</comment>
     <add>4.4</add>
     <pseudoconstant>
@@ -84,15 +85,13 @@
   </field>
 
   <field>
-    <name>title</name>
-    <type>varchar</type>
-    <length>50</length>
+    <name>event_date</name>
+    <type>datetime</type>
     <required>true</required>
-    <comment></comment>
-    <title>Booking Title</title>
-    <!-- <export>true</export>-->
-    <uniqueName>booking_title</uniqueName>
+    <title>Event Date</title>
+    <uniqueName>booking_event_date</uniqueName>
   </field>
+
 
   <field>
     <name>description</name>
@@ -100,13 +99,14 @@
     <length>255</length>
   </field>
 
-  <field>
-    <name>discount_amount</name>
-    <type>decimal</type>
-  </field>
 
   <field>
     <name>notes</name>
+    <type>text</type>
+  </field>
+
+  <field>
+    <name>adhoc_charges_note</name>
     <type>text</type>
   </field>
 
@@ -123,20 +123,35 @@
   </field>
 
    <field>
-    <name>payment_status</name>
-    <type>int unsigned</type>
+    <name>discount_amount</name>
+    <type>decimal</type>
   </field>
 
    <field>
-    <name>is_deleted</name>
-    <type>boolean</type>
+    <name>payment_status</name>
+    <type>int unsigned</type>
+    <required>true</required>
   </field>
+
+  <field>
+       <name>is_deleted</name>
+       <uniqueName>booking_is_deleted</uniqueName>
+       <title>Booking is in the Trash</title>
+       <type>boolean</type>
+       <default>0</default>
+       <import>true</import>
+       <add>4.4</add>
+  </field>
+  <index>
+       <name>index_is_deleted</name>
+       <fieldName>is_deleted</fieldName>
+       <add>4.4</add>
+  </index>
 
   <field>
     <name>created_by</name>
     <type>int unsigned</type>
     <required>true</required>
-
   </field>
 
   <field>

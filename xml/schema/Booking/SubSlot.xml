@@ -60,21 +60,46 @@
     <required>true</required>
   </field>
 
+  <field>
+    <name>quantity</name>
+    <type>int</type>
+    <required>true</required>
+  </field>
 
   <field>
     <name>note</name>
     <type>text</type>
   </field>
 
-  <field>
-    <name>is_cancelled</name>
-    <type>boolean</type>
-  </field>
-
    <field>
-    <name>is_deleted</name>
-    <type>boolean</type>
+       <name>is_cancelled</name>
+       <uniqueName>slot_is_cancelled</uniqueName>
+       <title>SubSlot is cancelled</title>
+       <type>boolean</type>
+       <default>0</default>
+       <import>true</import>
+       <add>4.4</add>
   </field>
+  <index>
+       <name>index_is_cancelled</name>
+       <fieldName>is_cancelled</fieldName>
+       <add>4.4</add>
+  </index>
+
+  <field>
+       <name>is_deleted</name>
+       <uniqueName>sub_slot_is_deleted</uniqueName>
+       <title>SubSlot is in the Trash</title>
+       <type>boolean</type>
+       <default>0</default>
+       <import>true</import>
+       <add>4.4</add>
+  </field>
+  <index>
+       <name>index_is_deleted</name>
+       <fieldName>is_deleted</fieldName>
+       <add>4.4</add>
+  </index>
 
 
 </table>
