@@ -22,8 +22,52 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
       'is_reserved' => 1
     );
     $result = civicrm_api('ActivityType', 'create', $params);
-    //$this->executeSqlFile('sql/civibooking.sql');
-    //$this->executeSqlFile('sql/civibooking_sample.sql');
+
+    $result = civicrm_api('OptionGroup', 'getsingle', array(
+      'version' => 3,
+      'sequential' => 1,
+      'name' => 'msg_tpl_workflow_booking')
+    );
+
+    if(isset($result['id'])){
+      $params = array(
+        'version' => 3,
+        'sequential' => 1,
+        'option_group_id' => $result['id'],
+      );
+      $opvResult = civicrm_api('OptionValue', 'get', $params);
+      if(isset($opvResult['values'])  && !empty($opvResult['values'])){
+        foreach ($opvResult['values'] as  $value) {
+          switch ($value['name']) {
+            case 'booking_offline_receipt':
+              $html = file_get_contents($this->extensionDir . '/msg_tpl/booking_offline_receipt.html', FILE_USE_INCLUDE_PATH);
+              $text = file_get_contents($this->extensionDir . '/msg_tpl/booking_offline_receipt.txt', FILE_USE_INCLUDE_PATH);
+              $title = ts("Booking - Confirmation and Receipt (off-line)");
+              break;
+          }
+          if(isset($title)){
+            $params = array(
+              'version' => 3,
+              'sequential' => 1,
+              'msg_title' => $title,
+              'msg_subject' => ts("Booking - Confirmation Receipt"),
+              'msg_text' => $text,
+              'msg_html' => $html,
+              'is_active' => 1,
+              'workflow_id' =>  $value['id'],
+              'is_default' => 1,
+              'is_reserved' => 0,
+            );
+            $result = civicrm_api('MessageTemplate', 'create', $params);
+            $params['is_default'] = 0;
+            $params['is_reserved'] = 1;
+            //re-created another template
+            $result = civicrm_api('MessageTemplate', 'create', $params);
+
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -46,6 +90,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
    *
   */
   public function disable() {
+   //TODO:: Disable the message template
    $this->executeSqlFile('sql/civibooking_disable.sql');
   }
 
