@@ -72,6 +72,7 @@ CREATE TABLE `civicrm_booking` (
 ,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
+
 -- /*******************************************************
 -- *
 -- * civicrm_booking_config
@@ -82,11 +83,9 @@ CREATE TABLE `civicrm_booking_config` (
 
      `id` int unsigned NOT NULL AUTO_INCREMENT  ,
      `domain_id` int unsigned NOT NULL   ,
-     `financial_type_default` int unsigned NOT NULL   COMMENT 'Default financial type for payment',
      `day_start_at` time NOT NULL   ,
      `day_end_at` time NOT NULL   ,
      `log_confirmation_email` tinyint NOT NULL  DEFAULT 0 ,
-     `selected_email_address` varchar(255)    ,
      `cc_email_address` varchar(255)    ,
      `bcc_email_address` varchar(255)    ,
      `created_activity` tinyint    COMMENT 'Create an activity record againt contact for conformation emails',
@@ -97,7 +96,7 @@ CREATE TABLE `civicrm_booking_config` (
     PRIMARY KEY ( `id` )
 
 
-,          CONSTRAINT FK_civicrm_booking_config_financial_type_default FOREIGN KEY (`financial_type_default`) REFERENCES `civicrm_financial_type`(`id`) ON DELETE CASCADE
+
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************

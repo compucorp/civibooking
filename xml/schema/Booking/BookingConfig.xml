@@ -24,37 +24,6 @@
     <required>true</required>
   </field>
 
-
-  <field>
-    <name>financial_type_default</name>
-    <type>int unsigned</type>
-    <required>true</required>
-    <comment>Default financial type for payment</comment>
-  </field>
-  <foreignKey>
-    <name>financial_type_default</name>
-    <table>civicrm_financial_type</table>
-    <key>id</key>
-    <add>4.4</add>
-    <onDelete>CASCADE</onDelete>
-  </foreignKey>
-
-  <!--
-  <field>
-    <name>price_set_default</name>
-    <type>int unsigned</type>
-    <required>true</required>
-    <comment>Price set to use for ad-hoc charges</comment>
-  </field>
-   <foreignKey>
-    <name>price_set_default</name>
-    <table>civicrm_price_set</table>
-    <key>id</key>
-    <add>4.4</add>
-    <onDelete>CASCADE</onDelete>
-  </foreignKey>
-  -->
-
   <field>
     <name>day_start_at</name>
     <type>time</type>
@@ -72,12 +41,6 @@
     <type>boolean</type>
     <required>true</required>
     <default>0</default>
-  </field>
-
-  <field>
-    <name>selected_email_address</name>
-    <type>varchar</type>
-    <length>255</length>
   </field>
 
   <field>

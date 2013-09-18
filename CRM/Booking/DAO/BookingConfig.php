@@ -99,12 +99,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    */
   public $domain_id;
   /**
-   * Default financial type for payment
-   *
-   * @var int unsigned
-   */
-  public $financial_type_default;
-  /**
    *
    * @var time
    */
@@ -167,22 +161,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
     parent::__construct();
   }
   /**
-   * return foreign keys and entity references
-   *
-   * @static
-   * @access public
-   * @return array of CRM_Core_EntityReference
-   */
-  static function getReferenceColumns()
-  {
-    if (!self::$_links) {
-      self::$_links = array(
-        new CRM_Core_EntityReference(self::getTableName() , 'financial_type_default', 'civicrm_financial_type', 'id') ,
-      );
-    }
-    return self::$_links;
-  }
-  /**
    * returns all the column names of this table
    *
    * @access public
@@ -201,13 +179,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'name' => 'domain_id',
           'type' => CRM_Utils_Type::T_INT,
           'required' => true,
-        ) ,
-        'financial_type_default' => array(
-          'name' => 'financial_type_default',
-          'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Financial Type Default') ,
-          'required' => true,
-          'FKClassName' => 'CRM_Financial_DAO_FinancialType',
         ) ,
         'day_start_at' => array(
           'name' => 'day_start_at',
@@ -291,7 +262,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
       self::$_fieldKeys = array(
         'id' => 'id',
         'domain_id' => 'domain_id',
-        'financial_type_default' => 'financial_type_default',
         'day_start_at' => 'day_start_at',
         'day_end_at' => 'day_end_at',
         'log_confirmation_email' => 'log_confirmation_email',
