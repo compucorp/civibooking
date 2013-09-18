@@ -14,6 +14,28 @@ DROP TABLE IF EXISTS `civicrm_booking`;
 
 SET FOREIGN_KEY_CHECKS=1;
 
+
+-- /*******************************************************
+-- *
+-- * civicrm_booking_adhoc_charges_item
+-- *
+-- *******************************************************/
+CREATE TABLE `civicrm_booking_adhoc_charges_item` (
+
+
+     `id` int unsigned NOT NULL AUTO_INCREMENT  ,
+     `name` varchar(255) NOT NULL   ,
+     `label` varchar(255) NOT NULL   ,
+     `price` decimal(20,2) NOT NULL   ,
+     `weight` int unsigned NOT NULL   ,
+     `is_active` tinyint NOT NULL
+,
+    PRIMARY KEY ( `id` )
+
+
+
+)  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
+
 -- /*******************************************************
 -- *
 -- * civicrm_booking
@@ -26,15 +48,16 @@ CREATE TABLE `civicrm_booking` (
      `primary_contact_id` int unsigned NOT NULL   COMMENT 'FK to Contact ID',
      `secondary_contact_id` int unsigned NULL   COMMENT 'FK to Contact ID',
      `po_number` varchar(255) NOT NULL   ,
-     `status_id` int unsigned   DEFAULT NULL COMMENT 'The status associated with this booking. Implicit FK to option_value row in booking status option_group.',
-     `title` varchar(50) NOT NULL   ,
+     `status_id` int unsigned NOT NULL   COMMENT 'The status associated with this booking. Implicit FK to option_value row in booking status option_group.',
+     `event_date` datetime NOT NULL   ,
      `description` varchar(255)    ,
-     `discount_amount` decimal(20,2)    ,
      `notes` text    ,
+     `adhoc_charges_note` text    ,
      `participants_estimate` varchar(255)    ,
      `participants_actual` varchar(255)    ,
-     `payment_status` int unsigned    ,
-     `is_deleted` tinyint    ,
+     `discount_amount` decimal(20,2)    ,
+     `payment_status` int unsigned NOT NULL   ,
+     `is_deleted` tinyint   DEFAULT 0 ,
      `created_by` int unsigned NOT NULL   ,
      `created_date` datetime NOT NULL   ,
      `updated_by` int unsigned NOT NULL   ,
@@ -42,10 +65,12 @@ CREATE TABLE `civicrm_booking` (
 ,
     PRIMARY KEY ( `id` )
 
+    ,     INDEX `index_is_deleted`(
+        is_deleted
+  )
 
 ,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
-
 
 -- /*******************************************************
 -- *
@@ -58,7 +83,6 @@ CREATE TABLE `civicrm_booking_config` (
      `id` int unsigned NOT NULL AUTO_INCREMENT  ,
      `domain_id` int unsigned NOT NULL   ,
      `financial_type_default` int unsigned NOT NULL   COMMENT 'Default financial type for payment',
-     `price_set_default` int unsigned NOT NULL   COMMENT 'Price set to use for ad-hoc charges',
      `day_start_at` time NOT NULL   ,
      `day_end_at` time NOT NULL   ,
      `log_confirmation_email` tinyint NOT NULL  DEFAULT 0 ,
@@ -67,14 +91,14 @@ CREATE TABLE `civicrm_booking_config` (
      `bcc_email_address` varchar(255)    ,
      `created_activity` tinyint    COMMENT 'Create an activity record againt contact for conformation emails',
      `slot_avaliable_colour` varchar(10)    ,
-     `slot_unavaliable_colour` varchar(10)
+     `slot_booked_colour` varchar(10)    ,
+     `slot_reserved_colour` varchar(10)
 ,
     PRIMARY KEY ( `id` )
 
 
-,          CONSTRAINT FK_civicrm_booking_config_financial_type_default FOREIGN KEY (`financial_type_default`) REFERENCES `civicrm_financial_type`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_config_price_set_default FOREIGN KEY (`price_set_default`) REFERENCES `civicrm_price_set`(`id`) ON DELETE CASCADE
+,          CONSTRAINT FK_civicrm_booking_config_financial_type_default FOREIGN KEY (`financial_type_default`) REFERENCES `civicrm_financial_type`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
-NGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
 -- *
@@ -96,7 +120,6 @@ CREATE TABLE `civicrm_booking_cancellation` (
 ,          CONSTRAINT FK_civicrm_booking_cancellation_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
-
 -- /*******************************************************
 -- *
 -- * civicrm_booking_resource_config_set
@@ -115,6 +138,26 @@ CREATE TABLE `civicrm_booking_resource_config_set` (
 
 
 
+)  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
+
+
+-- /*******************************************************
+-- *
+-- * civicrm_booking_adhoc_charges
+-- *
+-- *******************************************************/
+CREATE TABLE `civicrm_booking_adhoc_charges` (
+
+
+     `id` int unsigned NOT NULL AUTO_INCREMENT  ,
+     `booking_id` int unsigned NOT NULL   COMMENT 'FK to Booking ID',
+     `item_id` int unsigned NOT NULL   COMMENT 'FK to Item ID',
+     `quantity` int NOT NULL
+,
+    PRIMARY KEY ( `id` )
+
+
+,          CONSTRAINT FK_civicrm_booking_adhoc_charges_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_adhoc_charges_item_id FOREIGN KEY (`item_id`) REFERENCES `civicrm_booking_adhoc_charges_item`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -197,12 +240,19 @@ CREATE TABLE `civicrm_booking_slot` (
      `config_id` int unsigned    COMMENT 'FK to resource configuration option ID',
      `start` datetime NOT NULL   ,
      `end` datetime NOT NULL   ,
+     `quantity` int NOT NULL   ,
      `note` text    ,
-     `is_cancelled` tinyint    ,
-     `is_deleted` tinyint
+     `is_cancelled` tinyint   DEFAULT 0 ,
+     `is_deleted` tinyint   DEFAULT 0
 ,
     PRIMARY KEY ( `id` )
 
+    ,     INDEX `index_is_cancelled`(
+        is_cancelled
+  )
+  ,     INDEX `index_is_deleted`(
+        is_deleted
+  )
 
 ,          CONSTRAINT FK_civicrm_booking_slot_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_slot_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_slot_config_id FOREIGN KEY (`config_id`) REFERENCES `civicrm_booking_resource_config_option`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
@@ -220,15 +270,23 @@ CREATE TABLE `civicrm_booking_sub_slot` (
      `resource_id` int unsigned    COMMENT 'FK to resource ID',
      `config_id` int unsigned    COMMENT 'FK to resource configuration option ID',
      `time_required` datetime NOT NULL   ,
+     `quantity` int NOT NULL   ,
      `note` text    ,
-     `is_cancelled` tinyint    ,
-     `is_deleted` tinyint
+     `is_cancelled` tinyint   DEFAULT 0 ,
+     `is_deleted` tinyint   DEFAULT 0
 ,
     PRIMARY KEY ( `id` )
 
+    ,     INDEX `index_is_cancelled`(
+        is_cancelled
+  )
+  ,     INDEX `index_is_deleted`(
+        is_deleted
+  )
 
 ,          CONSTRAINT FK_civicrm_booking_sub_slot_slot_id FOREIGN KEY (`slot_id`) REFERENCES `civicrm_booking_slot`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_sub_slot_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_sub_slot_config_id FOREIGN KEY (`config_id`) REFERENCES `civicrm_booking_resource_config_option`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
+
 -- /*******************************************************
 -- *
 -- * civicrm_booking_payment
@@ -246,5 +304,7 @@ CREATE TABLE `civicrm_booking_payment` (
 
 ,          CONSTRAINT FK_civicrm_booking_payment_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_payment_contribution_id FOREIGN KEY (`contribution_id`) REFERENCES `civicrm_contribution`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
+
+
 
 
