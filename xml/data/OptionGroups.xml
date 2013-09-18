@@ -2,7 +2,7 @@
 <CustomData>
  <OptionGroups>
     <OptionGroup>
-      <name>booking_booking_status</name>
+      <name>booking_status</name>
       <title>Booking status</title>
       <description></description>
       <is_reserved>1</is_reserved>
@@ -40,6 +40,13 @@
       <is_reserved>1</is_reserved>
       <is_active>1</is_active>
     </OptionGroup>
+    <OptionGroup>
+      <name>msg_tpl_workflow_booking</name>
+      <title>Message Template Workflow for Bookings</title>
+      <description>Message Template Workflow for Bookings</description>
+      <is_reserved>1</is_reserved>
+      <is_active>1</is_active>
+    </OptionGroup>
   </OptionGroups>
   <OptionValues>
     <!-- Booking status option value  -->
@@ -54,7 +61,7 @@
         <is_optgroup>0</is_optgroup>
         <is_reserved>1</is_reserved>
         <is_active>1</is_active>
-        <option_group_name>booking_booking_status</option_group_name>
+        <option_group_name>booking_status</option_group_name>
       </OptionValue>
       <OptionValue>
         <label>Booked</label>
@@ -67,7 +74,7 @@
         <is_optgroup>0</is_optgroup>
         <is_reserved>1</is_reserved>
         <is_active>1</is_active>
-        <option_group_name>booking_booking_status</option_group_name>
+        <option_group_name>booking_status</option_group_name>
       </OptionValue>
       <OptionValue>
         <label>Cancelled</label>
@@ -80,7 +87,7 @@
         <is_optgroup>0</is_optgroup>
         <is_reserved>1</is_reserved>
         <is_active>1</is_active>
-        <option_group_name>booking_booking_status</option_group_name>
+        <option_group_name>booking_status</option_group_name>
       </OptionValue>
       <OptionValue>
         <label>Complete</label>
@@ -93,7 +100,7 @@
         <is_optgroup>0</is_optgroup>
         <is_reserved>1</is_reserved>
         <is_active>1</is_active>
-        <option_group_name>booking_booking_status</option_group_name>
+        <option_group_name>booking_status</option_group_name>
       </OptionValue>
     <!-- End booking status option value -->
     <!-- Resource type option value  -->
@@ -299,5 +306,16 @@
         <option_group_name>booking_cancellation_charges</option_group_name>
       </OptionValue>
     <!-- End cancellation charges option value -->
+    <OptionValue>
+        <label>Booking - Booking Confirmation and Receipt (off-line)</label>
+        <value>1</value>
+        <name>booking_offline_receipt</name>
+        <is_default>0</is_default>
+        <weight>1</weight>
+        <is_optgroup>0</is_optgroup>
+        <is_reserved>0</is_reserved>
+        <is_active>1</is_active>
+        <option_group_name>msg_tpl_workflow_booking</option_group_name>
+      </OptionValue>
    </OptionValues>
 </CustomData>
