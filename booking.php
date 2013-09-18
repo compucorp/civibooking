@@ -52,6 +52,7 @@ function booking_civicrm_xmlMenu(&$files) {
  * Implementation of hook_civicrm_install
  */
 function booking_civicrm_install() {
+
 	require_once 'CRM/Utils/Migrate/Import.php';
   $import = new CRM_Utils_Migrate_Import( );
 
@@ -68,23 +69,6 @@ function booking_civicrm_install() {
  * Implementation of hook_civicrm_uninstall
  */
 function booking_civicrm_uninstall() {
-  /*
-  _booking_delete_option_group('booking_status');
-  _booking_delete_option_group('resource_type');
-  _booking_delete_option_group('resource_location');
-  _booking_delete_option_group('resource_criteria');
-  _booking_delete_option_group('cancellation_charges');
-  _booking_delete_option_group('size_unit');
-  $ov = civicrm_api('OptionValue', 'getsingle', array(
-      'version' => 3,
-      'name' => 'booking',
-  ));
-  if($ov['id']){
-    $delResult = civicrm_api('OptionValue', 'delete', array(
-      'version' => 3,
-      'id' => $ov['id'],
-    ));
-  }*/
   return _booking_civix_civicrm_uninstall();
 }
 
@@ -139,7 +123,7 @@ function booking_civicrm_navigationMenu( &$params ) {
    $result = civicrm_api('OptionGroup', 'getsingle', array(
     'version' => 3,
     'sequential' => 1,
-    'name' => 'booking_booking_status')
+    'name' => 'booking_status')
    );
    if($result['id']){
       $bookingStatusGid = $result['id'];
@@ -359,6 +343,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         ),
        'child' => null
       ),
+      /*
       4 => array(
         'attributes' => array(
           'label' => 'Diary View',
@@ -372,7 +357,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'active' => 1
           ),
         'child' => null
-      ),
+      ),*/
     )
   );
    array_unshift($params, $bookingMenu);
