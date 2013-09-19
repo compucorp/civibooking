@@ -216,10 +216,12 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       }
       var configPrice = this.model.get('configuration').price
       var quantity = quantitySelector.val();
-      var priceEstimate = quantity * configPrice;
-      this.model.set('quantity', quantity);
-      this.model.set('price_estimate', priceEstimate);
-      this.$el.find('#price-estimate').html(priceEstimate);
+      if(CRM.BookingApp.Utils.isPositiveInteger(quantity)){
+         var priceEstimate = quantity * configPrice;
+        this.model.set('quantity', quantity);
+        this.model.set('price_estimate', priceEstimate);
+        this.$el.find('#price-estimate').html(priceEstimate);
+      }
     },
 
     getConfigurations: function(e){
