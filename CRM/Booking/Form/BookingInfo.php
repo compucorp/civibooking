@@ -31,6 +31,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     $this->assign('currencySymbols', $currencySymbols);
 
     $addSubResourcePage = $this->controller->exportValues('AddSubResource');
+
     $totalAmount = $addSubResourcePage['total_price'];
     $this->assign('totalAmount', $totalAmount);
 
@@ -70,7 +71,27 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
       array()
     );
 
-    $emailToContacts = array('1' => ts('Primary contact'),
+     $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address');
+    if (empty($fromEmailAddress)) {
+      //redirect user to enter from email address.
+      $url = CRM_Utils_System::url('civicrm/admin/options/from_email_address', 'group=from_email_address&action=add&reset=1');
+      $status = ts("There is no valid from email address present. You can add here <a href='%1'>Add From Email Address.</a>", array(1 => $url));
+      $session->setStatus($status, ts('Notice'));
+    }
+    else {
+      foreach ($fromEmailAddress as $key => $email) {
+        $fromEmailAddress[$key] = htmlspecialchars($fromEmailAddress[$key]);
+      }
+    }
+
+    $this->add('select', 'from_email_address',
+      ts('From Email Address'), array(
+        '' => ts('- select -')) + $fromEmailAddress, FALSE
+    );
+
+
+    $emailToContacts = array('' => ts('- select -'),
+                             '1' => ts('Primary contact'),
                              '2' => ts('Secondary contact'),
                              '3' => ts('Both'));
     $this->add('select', 'email_to', ts('Email to'),
@@ -83,7 +104,8 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
 
     $this->addElement('checkbox', 'record_contribution', ts('Record Booking Payment?'));
 
-    $paymentContacts =  array('1' => ts('Primary contact'),
+    $paymentContacts =  array('' => ts('- select -'),
+                              '1' => ts('Primary contact'),
                               '2' => ts('Secondary contact'));
     $this->add('select', 'select_payment_contact', ts('Select contact'),
       $paymentContacts, FALSE,
@@ -174,6 +196,10 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
         if(!$emailTo){
           $errors['email_to'] = ts('Please select a contact(s) to send email to.');
         }
+        $fromEmailAddreess = CRM_Utils_Array::value('from_email_address', $params);
+        if(!$fromEmailAddreess){
+          $errors['from_email_address'] = ts('Please select a contact(s) to send email to.');
+        }
      }
 
 
@@ -181,7 +207,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
      if($recordContribution){
 
         $selectPaymentContact = CRM_Utils_Array::value('select_payment_contact', $params);
-        if($selectPaymentContact){
+        if(!$selectPaymentContact){
           $errors['select_payment_contact'] = ts('Please select a contact for recording payment.');
         }
 
@@ -220,6 +246,8 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     $resourcesValue = json_decode($selectResource['resources'], true);
     $subResourcesValue = json_decode($addSubResoruce['sub_resources'], true);
     $subResources = $subResourcesValue['sub_resources'];
+
+    exit;
 
     //Build resources array for passing to Booking APIs
     $resources = array();

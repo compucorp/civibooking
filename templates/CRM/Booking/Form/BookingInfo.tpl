@@ -120,10 +120,17 @@
           </div>
       </div>
       <fieldset id="email-confirmation" class="hiddenElement"><legend>{ts}Email booking conformation{/ts}</legend>
+      <div class="crm-section">
+          <div class="label">
+           {$form.from_email_address.label}
+          </div>
+          <div class="content">
+            {$form.from_email_address.html}
+          </div>
+        </div>
         <div class="crm-section">
           <div class="label">
            {$form.email_to.label}
-
           </div>
           <div class="content">
             {$form.email_to.html}
