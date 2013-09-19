@@ -6,7 +6,7 @@
         <label for="{$item.name}">{$item.label}</label>
       </div>
        <div class="content">
-        <input type="text" value="{$item.price}" disabled/> &times; <input type="text"/> &#61; {$currencySymbols}<span id="{$item.name}">0</span>
+        <input type="text" size="5px" value="{$item.price}" disabled/> &times; <input name="{$item.name}" data-id="{$item.id}" data-price="{$item.price}" type="text" size="5px" class="item" /> &#61; {$currencySymbols}<span id="{$item.name}">0</span>
       </div>
       <div class="clear"></div>
     </div>
@@ -25,14 +25,13 @@
       <label for="note">{ts}Note{/ts}</label>
     </div>
     <div class="content">
-      <textarea name="note" rows="4" cols="50">
-      </textarea>
+      <textarea id="adhoc-charges-note" name="note" rows="4" cols="50"></textarea>
   </div>
     <div class="clear"></div>
   </div>
   <div class="crm-submit-buttons">
     <span class="crm-button crm-button-type-next">
-      <input class="validate form-submit default form-save" name="" value="{ts}Update ad-hoc charges{/ts}" type="submit" id="add-to-basket">
+      <input class="validate form-submit default form-save" value="{ts}Update ad-hoc charges{/ts}" type="submit" id="update-adhoc-charges">
     </span>
   </div>
 </form>
