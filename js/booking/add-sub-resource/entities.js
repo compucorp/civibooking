@@ -5,9 +5,10 @@ CRM.BookingApp.module('Entities', function(Entities, BookingApp, Backbone, Mario
       sub_resources: {},
       resources: {},
       sub_total: 0,
-      adhoc_charges:0,
+      adhoc_charges: {},
       discount_amount:0,
-      total_price:0
+      total_price:0,
+
     },
   });
 
@@ -21,6 +22,14 @@ CRM.BookingApp.module('Entities', function(Entities, BookingApp, Backbone, Mario
       time_reuired: null,
       note: null,
       price_estimate: 0,
+    },
+  });
+
+  Entities.AdhocCharges = Backbone.Model.extend({
+    defaults: {
+      items: {},
+      note: null,
+      total: 0,
     },
   });
 
