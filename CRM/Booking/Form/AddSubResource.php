@@ -47,9 +47,18 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     require_once 'CRM/Booking/Utils/DateTime.php';
     $this->assign('timeOptions', CRM_Booking_Utils_DateTime::getTimeRange());
 
-    //$this->assign('sub_total', $this->_subTotal);
-    //$this->assign('total_price', $this->_total);
+    // get all custom groups sorted by weight
+    $items = array();
+    $bao = new CRM_Booking_BAO_AdhocChargesItem();
+    $bao->orderBy('weight');
+    $bao->is_active = 1;
+    $bao->find();
+    while ($bao->fetch()) {
+      $items[$bao->id] = array();
+      CRM_Core_DAO::storeValues($bao, $items[$bao->id]);
+    }
 
+    $this->assign('items', $items);
     self::registerScripts();
 
   }
