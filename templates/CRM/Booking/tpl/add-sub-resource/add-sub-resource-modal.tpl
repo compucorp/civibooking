@@ -53,7 +53,7 @@
       <label for="note">{ts}Note{/ts}</label>
     </div>
     <div class="content">
-      <textarea name="note" rows="4" cols="50"></textarea>
+      <textarea name="note" rows="4" cols="50" id="sub-resource-note"></textarea>
   </div>
     <div class="clear"></div>
   </div>

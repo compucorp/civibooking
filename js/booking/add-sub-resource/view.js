@@ -33,7 +33,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       this.model.attributes.sub_total = $("#sub_total").val();
       this.model.attributes.adhoc_charges = $("#adhoc_charge").val();
       this.model.attributes.discount_amount = $("#discount_amount").val();
-
     },
     onRender: function(){
       var self = this;
@@ -263,7 +262,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         this.onRenderError(errors);
         return false;
       }
-
+      this.model.set('note',this.$el.find('#sub-resource-note').val() );
       var parentRefId = this.model.get('parent_ref_id');
       var refId = CRM.BookingApp.Utils.getCurrentUnixTimstamp();
       this.model.set('ref_id', refId);
@@ -291,7 +290,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
 
       //set total price for resource tow
       $("#resource-total-price-" + resourceRefId).text(subResourceModel.attributes.resources[resourceRefId]);
-
+      console.log(subResourceModel.attributes);
       CRM.BookingApp.vent.trigger('render:price', subResourceModel, resourceRefId );
       CRM.BookingApp.vent.trigger('update:resources', subResourceModel);
       CRM.BookingApp.modal.close(this);
@@ -347,6 +346,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       var newTotal = parseFloat(adhocChargesTotal) + parseFloat(currentTotal);
       subResourceModel.set("total_price", parseFloat(newTotal).toFixed(2));
       CRM.BookingApp.vent.trigger('render:price', subResourceModel);
+      console.log(subResourceModel.attributes);
       CRM.BookingApp.modal.close(this);
     }
 
