@@ -35,9 +35,8 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
              civicrm_booking_slot.end,
              civicrm_booking_slot.note
       FROM civicrm_booking_slot
-      LEFT JOIN civicrm_booking ON civicrm_booking.id = civicrm_booking_slot.booking_id
       WHERE 1
-      AND civicrm_booking.id = %1";
+      AND  civicrm_booking_slot.booking_id = %1";
 
     $slots = array();
     $dao = CRM_Core_DAO::executeQuery($query, $params);
