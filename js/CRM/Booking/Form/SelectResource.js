@@ -61,13 +61,13 @@ cj(function($) {
           if(ev.readonly){
             $(".crm-booking-form-add-resource").attr("disabled", true);
             $("#price-estimate").html(ev.price);
-            $("#note").val(ev.note);
+            $("#resource-note").val(ev.note);
             $("input[name='quantity']").val(ev.quantity);
             $("#add-resource-btn").hide();
           }else{
             $("#SelectResource :input").attr("disabled", false);
             $("#price-estimate").html('0');
-            $("#note").val('');
+            $("#resource-note").val('');
             $("input[name='quantity']").val('');
             $("#add-resource-btn").show();
           }
@@ -145,13 +145,13 @@ cj(function($) {
     var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
     var endTime = $("#end-time-select").val().split(":");
     var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);
-    ev.text = [$("#resource-label").val(), " - ", ev.id].join("");
+    ev.text = [$("#resource-label").val(), " - ", ts("Provisional")].join("");
     ev.start_date = startDate;
     ev.end_date = endDate;
     ev.price = $("#price-estimate").html();
     ev.quantity = $('input[name="quantity"]').val();
     ev.configuration_id = $('#configSelect').val();
-    ev.note = $("note").val();
+    ev.note = $("#resource-note").val();
     ev.readonly = true;
     var item = {
       id: ev.id,
