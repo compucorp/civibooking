@@ -279,6 +279,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         return false;
       }
       this.model.set('note',this.$el.find('#sub-resource-note').val() );
+      this.model.set('time_required',this.$el.find('#sub-resource-note').val() );
+
       var parentRefId = this.model.get('parent_ref_id');
       var refId = CRM.BookingApp.Utils.getCurrentUnixTimstamp();
       this.model.set('ref_id', refId);

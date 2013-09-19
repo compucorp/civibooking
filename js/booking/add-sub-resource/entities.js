@@ -19,7 +19,7 @@ CRM.BookingApp.module('Entities', function(Entities, BookingApp, Backbone, Mario
       resource: {id : null, label :null},
       configuration: {id : null, label :null, price :0},
       quantity: 0,
-      time_reuired: null,
+      time_required: null,
       note: null,
       price_estimate: 0,
     },
