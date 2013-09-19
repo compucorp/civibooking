@@ -42,7 +42,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     parent::buildQuickForm();
 
     $this->addElement('hidden', "primary_contact_select_id");
-    $this->add('text', "primary_contact_id", ts('Primary contact'));
+    $this->add('text', "primary_contact_id", ts('Primary contact'), array(), TRUE );
 
     $this->addElement('hidden', "secondary_contact_select_id");
     $this->add('text', "secondary_contact_id", ts('Secondary contact'));
@@ -52,12 +52,12 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
     $this->add('select', 'booking_status', ts('Booking status'),
       array('' => ts('- select -')) + $bookingStatus,
-      FALSE,
+      TRUE,
       array()
     );
 
-    $this->add('text', 'title', ts('Title'));
-    $this->addDate('event_start_date', ts('Date'), FALSE, array('formatType' => 'activityDate'));
+    $this->add('text', 'title', ts('Title'), array(), TRUE);
+    $this->addDate('event_start_date', ts('Date'), TRUE, array('formatType' => 'activityDate'));
     $this->add('textarea', 'description', ts('Description'));
     $this->add('textarea', 'note', ts('Note'));
 
@@ -167,28 +167,12 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
 
   static function formRule($params, $files, $self) {
     $errors = array();
-
+    //make sure primary contact is selected
     $contactId = CRM_Utils_Array::value('primary_contact_select_id', $params);
     if(!$contactId){
       $errors['primary_contact_id'] = ts('This field is required.');
     }
 
-    $bookingStatus = CRM_Utils_Array::value('booking_status', $params);
-    if(!$bookingStatus){
-      $errors['booking_status'] = ts('This field is required.');
-    }
-
-    $title = CRM_Utils_Array::value('title', $params);
-    if(!$title){
-      $errors['title'] = ts('This field is required.');
-
-    }
-
-    /*
-    $eventStartDate = CRM_Utils_Array::value('event_start_date', $params);
-    if(!$eventStartDate){
-      $errors['event_start_date'] = ts('This field is required');
-    }*/
 
     $sendConfirmation = CRM_Utils_Array::value('send_conformation', $params);
     if($sendConfirmation){
@@ -246,8 +230,6 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     $resourcesValue = json_decode($selectResource['resources'], true);
     $subResourcesValue = json_decode($addSubResoruce['sub_resources'], true);
     $subResources = $subResourcesValue['sub_resources'];
-
-    exit;
 
     //Build resources array for passing to Booking APIs
     $resources = array();
