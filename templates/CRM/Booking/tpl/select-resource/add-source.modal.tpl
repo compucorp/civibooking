@@ -86,7 +86,7 @@
         <label for="note">{ts}Note{/ts}</label>
       </div>
       <div class="content">
-        <textarea id="note" class="crm-booking-form-add-resource"></textarea>
+        <textarea id="resource-note" class="crm-booking-form-add-resource"></textarea>
       </div>
       <div class="clear"></div>
     </div>
