@@ -4,14 +4,15 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     $('#sub_resources').val(JSON.stringify(model.toJSON()));
    });
 
-  CRM.BookingApp.vent.on("render:price", function (model, resourceRefId){
+  CRM.BookingApp.vent.on("render:price", function (model){
     $("#total_price").val(model.attributes.total_price);
     $("#total-price-summary").text(model.attributes.total_price);
     $("#sub_total").val(model.attributes.sub_total);
     $("#sub-total-summary").text(model.attributes.sub_total);
+    /*
     if(resourceRefId != null){
       $("#resource-total-price-" + resourceRefId).text(model.attributes.resources[resourceRefId]);
-    }
+    }*/
   });
 
   CRM.BookingApp.vent.on("render:options", function (options){
@@ -28,7 +29,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       if ($.trim($("#sub_resources").val())) {
         this.model.attributes = JSON.parse($.trim($("#sub_resources").val()));
       }
-      console.log($("#total_price").val());
       this.model.attributes.total_price = $("#total_price").val();
       this.model.attributes.sub_total = $("#sub_total").val();
       this.model.attributes.adhoc_charges = $("#adhoc_charge").val();
@@ -51,7 +51,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       if($.trim($("#sub_resources").val())) {
         this.$el.find("span[id^='resource-total-price-']").each(function(){
           var el = $(this);
-          console.log(el);
           var resourceTotalPrice = null;
           _.find(items, function (item) {
             if(item.parent_ref_id === el.data('ref')){
@@ -98,7 +97,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       CRM.BookingApp.vent.trigger('render:price', this.model, null );
     },
     editAdhocCharge: function(e){
-      var view = new AddSubResource.EditAdhocChargesModal();
+      var model = new CRM.BookingApp.Entities.AdhocCharges();
+      var view = new AddSubResource.EditAdhocChargesModal({model: model});
       view.title = ts('Edit ad-hoc charges');
       CRM.BookingApp.modal.show(view);
     },
@@ -186,21 +186,21 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     },
 
     updatePriceEstmate: function(e){
-      var qualitySelector = this.$el.find('#quantity');
+      var quantitySelector = this.$el.find('#quantity');
       if(e.type == 'change'){
         var configSelect = this.$el.find('#configuration_select');
         if(configSelect.val() !== ''){
           configSelect.find(':selected').data('price');
           var price = configSelect.find(':selected').data('price');
           this.model.set('configuration', {id: configSelect.val(), label:  configSelect.find(':selected').text(), price: price});
-          qualitySelector.prop('disabled', false);
+          quantitySelector.prop('disabled', false);
         }else{
           qualitySelector.prop('disabled', true);
-          qualitySelector.val('');
+          quantitySelector.val('');
         }
       }
       var configPrice = this.model.get('configuration').price
-      var quantity = qualitySelector.val();
+      var quantity = quantitySelector.val();
       var priceEstimate = quantity * configPrice;
       this.model.set('quantity', quantity);
       this.model.set('price_estimate', priceEstimate);
@@ -274,7 +274,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       var priceEstimate = this.model.get("price_estimate");
 
       var subResourceModel = CRM.BookingApp.main.currentView.model;
-      console.log(subResourceModel);
       subResourceModel.attributes.sub_resources[refId] = this.model.toJSON();
 
       var currentSubTotal = subResourceModel.get('sub_total');
@@ -286,10 +285,12 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       subResourceModel.set("total_price", newTotal);
 
       var currentResourceTotal = subResourceModel.get("resources")[resourceRefId];
-      console.log(currentResourceTotal);
 
       var resourceTotalPrice = parseFloat(currentResourceTotal) + parseFloat(priceEstimate);
       subResourceModel.attributes.resources[resourceRefId] = resourceTotalPrice;
+
+      //set total price for resource tow
+      $("#resource-total-price-" + resourceRefId).text(subResourceModel.attributes.resources[resourceRefId]);
 
       CRM.BookingApp.vent.trigger('render:price', subResourceModel, resourceRefId );
       CRM.BookingApp.vent.trigger('update:resources', subResourceModel);
@@ -298,10 +299,56 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
 
   });
 
-  AddSubResource.EditAdhocChargesModal = Backbone.Marionette.ItemView.extend({
+  AddSubResource.EditAdhocChargesModal =BookingApp.Common.Views.BookingProcessModal.extend({
     template: "#edit-adhoc-charges-template",
     className: "modal-dialog",
-    events: {},
+    onRender: function(){
+      BookingApp.Common.Views.BookingProcessModal.prototype.onRender.apply(this, arguments);
+    },
+    events: {
+      'keypress .item': 'updatePrice',
+      'keyup .item': 'updatePrice',
+      'keydown .item': 'updatePrice',
+      'click #update-adhoc-charges': 'updateAdhocCharges',
+    },
+    updatePrice: function(e){
+      var el = $(e.currentTarget);
+      var itemId = el.data('id');
+      var price = el.data('price');
+      var quantity = el.val();
+      var name = el.attr('name');
+      if(quantity != undefined && quantity.length != 0){
+        var itemPrice = parseFloat(price) * parseFloat(quantity);
+        this.$el.find('#'+ name).html(parseFloat(itemPrice).toFixed(2));
+        var item = {id: itemId, price: price, quantity: quantity, item_price: itemPrice}
+        this.model.attributes.items[itemId] = item;
+      }else{
+        this.$el.find('#'+ name).html(0);
+        //if(itemId in this.model.attributes.items){
+         delete this.model.attributes.items[itemId];
+        //}
+      }
+      var items = this.model.get('items');
+      var total = 0.0;
+      _.each(items,function(item){
+       total = parseFloat(total) +  parseFloat(item.item_price);
+      });
+      this.$el.find('#total-adhoc-charges').html(parseFloat(total).toFixed(2));
+      this.model.set('total', total);
+    },
+    updateAdhocCharges: function(e){
+      e.preventDefault();
+      var subResourceModel = CRM.BookingApp.main.currentView.model;
+      this.model.set('note',this.$el.find('#adhoc-charges-note').val() );
+      var adhocChargesTotal = this.model.get('total');
+      $('#ad-hoc-charge-summary').html(parseFloat(adhocChargesTotal).toFixed(2));
+      subResourceModel.set('adhoc_charges', this.model.attributes);
+      var currentTotal = subResourceModel.get('total_price');
+      var newTotal = parseFloat(adhocChargesTotal) + parseFloat(currentTotal);
+      subResourceModel.set("total_price", parseFloat(newTotal).toFixed(2));
+      CRM.BookingApp.vent.trigger('render:price', subResourceModel);
+      CRM.BookingApp.modal.close(this);
+    }
 
   });
 
