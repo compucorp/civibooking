@@ -182,7 +182,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
         }
         $fromEmailAddreess = CRM_Utils_Array::value('from_email_address', $params);
         if(!$fromEmailAddreess){
-          $errors['from_email_address'] = ts('Please select a contact(s) to send email to.');
+          $errors['from_email_address'] = ts('Please select a from email address.');
         }
      }
 
