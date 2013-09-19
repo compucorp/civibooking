@@ -18,9 +18,9 @@ class CRM_Booking_BAO_ResourceCriteria extends CRM_Booking_DAO_Criteria {
    * @static
    */
   static function create(&$params) {
-    $resourceDAO = new CRM_Booking_DAO_Criteria();
-    $resourceDAO->copyValues($params);
-    return $resourceDAO->save();
+    $dao = new CRM_Booking_DAO_Criteria();
+    $dao->copyValues($params);
+    return $dao->save();
   }
 
 
