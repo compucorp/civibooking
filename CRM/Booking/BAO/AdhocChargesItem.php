@@ -38,7 +38,7 @@ class CRM_Booking_BAO_AdhocChargesItem extends CRM_Booking_DAO_AdhocChargesItem 
   static function retrieve(&$params, &$defaults) {
     $item = new CRM_Booking_DAO_AdhocChargesItem();
     $item->copyValues($params);
-    if ($dao->find(TRUE)) {
+    if ($item->find(TRUE)) {
       CRM_Core_DAO::storeValues($item, $defaults);
       return $item;
     }
