@@ -81,7 +81,6 @@
 
  <field>
        <name>is_cancelled</name>
-       <uniqueName>slot_is_cancelled</uniqueName>
        <title>Slot is cancelled</title>
        <type>boolean</type>
        <default>0</default>
@@ -96,7 +95,6 @@
 
   <field>
        <name>is_deleted</name>
-       <uniqueName>slot_is_deleted</uniqueName>
        <title>Slot is in the Trash</title>
        <type>boolean</type>
        <default>0</default>

@@ -225,7 +225,7 @@ class CRM_Booking_DAO_Slot extends CRM_Core_DAO
           'type' => CRM_Utils_Type::T_TEXT,
           'title' => ts('Note') ,
         ) ,
-        'slot_is_cancelled' => array(
+        'is_cancelled' => array(
           'name' => 'is_cancelled',
           'type' => CRM_Utils_Type::T_BOOLEAN,
           'title' => ts('Slot is cancelled') ,
@@ -235,7 +235,7 @@ class CRM_Booking_DAO_Slot extends CRM_Core_DAO
           'dataPattern' => '',
           'export' => true,
         ) ,
-        'slot_is_deleted' => array(
+        'is_deleted' => array(
           'name' => 'is_deleted',
           'type' => CRM_Utils_Type::T_BOOLEAN,
           'title' => ts('Slot is in the Trash') ,
@@ -268,8 +268,8 @@ class CRM_Booking_DAO_Slot extends CRM_Core_DAO
         'end' => 'end',
         'quantity' => 'quantity',
         'note' => 'note',
-        'is_cancelled' => 'slot_is_cancelled',
-        'is_deleted' => 'slot_is_deleted',
+        'is_cancelled' => 'is_cancelled',
+        'is_deleted' => 'is_deleted',
       );
     }
     return self::$_fieldKeys;

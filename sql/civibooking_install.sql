@@ -14,8 +14,7 @@ DROP TABLE IF EXISTS `civicrm_booking`;
 
 SET FOREIGN_KEY_CHECKS=1;
 
-
--- /*******************************************************
+/*******************************************************
 -- *
 -- * civicrm_booking_adhoc_charges_item
 -- *
@@ -56,7 +55,7 @@ CREATE TABLE `civicrm_booking` (
      `participants_estimate` varchar(255)    ,
      `participants_actual` varchar(255)    ,
      `discount_amount` decimal(20,2)    ,
-     `payment_status` int unsigned NOT NULL   ,
+     `payment_status_id` int unsigned NOT NULL   COMMENT 'The contribution status associated with this booking. Implicit FK to option_value row in contribution status option_group.',
      `is_deleted` tinyint   DEFAULT 0 ,
      `created_by` int unsigned NOT NULL   ,
      `created_date` datetime NOT NULL   ,
@@ -73,6 +72,8 @@ CREATE TABLE `civicrm_booking` (
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 
+
+
 -- /*******************************************************
 -- *
 -- * civicrm_booking_config
@@ -82,13 +83,12 @@ CREATE TABLE `civicrm_booking_config` (
 
 
      `id` int unsigned NOT NULL AUTO_INCREMENT  ,
-     `domain_id` int unsigned NOT NULL   ,
+     `domain_id` int unsigned    ,
      `day_start_at` time NOT NULL   ,
      `day_end_at` time NOT NULL   ,
-     `log_confirmation_email` tinyint NOT NULL  DEFAULT 0 ,
+     `log_confirmation_email` tinyint NOT NULL  DEFAULT 0 COMMENT 'Create an activity record againt contact for conformation emails',
      `cc_email_address` varchar(255)    ,
      `bcc_email_address` varchar(255)    ,
-     `created_activity` tinyint    COMMENT 'Create an activity record againt contact for conformation emails',
      `slot_avaliable_colour` varchar(10)    ,
      `slot_booked_colour` varchar(10)    ,
      `slot_reserved_colour` varchar(10)
@@ -98,6 +98,7 @@ CREATE TABLE `civicrm_booking_config` (
 
 
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
+
 
 -- /*******************************************************
 -- *
@@ -268,7 +269,7 @@ CREATE TABLE `civicrm_booking_sub_slot` (
      `slot_id` int unsigned    COMMENT 'FK to Slot ID',
      `resource_id` int unsigned    COMMENT 'FK to resource ID',
      `config_id` int unsigned    COMMENT 'FK to resource configuration option ID',
-     `time_required` datetime NOT NULL   ,
+     `time_required` time NOT NULL   ,
      `quantity` int NOT NULL   ,
      `note` text    ,
      `is_cancelled` tinyint   DEFAULT 0 ,
