@@ -24,6 +24,34 @@ class CRM_Booking_BAO_SubSlot extends CRM_Booking_DAO_SubSlot {
   }
 
 
+  /**
+   * Given the list of params in the params array, fetch the object
+   * and store the values in the values array
+   *
+   * @param array $params input parameters to find object
+   * @param array $values output values of the object
+   *
+   * @return CRM_Event_BAO_ฺSubSlot|null the found object or null
+   * @access public
+   * @static
+   */
+  static function getValues(&$params, &$values, &$ids) {
+    if (empty($params)) {
+      return NULL;
+    }
+    $subSlot = new CRM_Booking_BAO_SubSlot();
+    $subSlot->copyValues($params);
+    $subSlot->find();
+    $subSlots = array();
+    while ($subSlot->fetch()) {
+      $ids['subSlot'] = $subSlot->id;
+      CRM_Core_DAO::storeValues($subSlot, $values[$subSlot->id]);
+      $subSlots[$subSlot->id] = $subSlot;
+    }
+    return $subSlots;
+  }
+
+
    static function getSubSlotSlot($slotId){
     $params = array(1 => array( $slotId, 'Integer'));
 
