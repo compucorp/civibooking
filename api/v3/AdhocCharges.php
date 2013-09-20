@@ -8,7 +8,7 @@
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRM/API+Architecture+Standards
  */
-function _civicrm_api3_addhoc_charges_create_spec(&$spec) {
+function _civicrm_api3_adhoc_charges_create_spec(&$spec) {
 
 }
 
@@ -21,7 +21,7 @@ function _civicrm_api3_addhoc_charges_create_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_addhoc_charges_create($params) {
+function civicrm_api3_adhoc_charges_create($params) {
   return _civicrm_api3_basic_create('CRM_Booking_BAO_AdhocCharges', $params);
 }
 
@@ -35,7 +35,7 @@ function civicrm_api3_addhoc_charges_create($params) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_addhoc_charges_get($params) {
+function civicrm_api3_adhoc_charges_get($params) {
   return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
 
