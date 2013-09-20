@@ -34,7 +34,6 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
 
     $totalAmount = $addSubResourcePage['total_price'];
     $this->assign('totalAmount', $totalAmount);
-
     self::registerScripts();
   }
 
@@ -172,13 +171,15 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     if(!$contactId){
       $errors['primary_contact_id'] = ts('This field is required.');
     }
-
+    $secondaryContactId = CRM_Utils_Array::value('secondary_contact_select_id', $params);
 
     $sendConfirmation = CRM_Utils_Array::value('send_conformation', $params);
     if($sendConfirmation){
         $emailTo = CRM_Utils_Array::value('email_to', $params);
         if(!$emailTo){
           $errors['email_to'] = ts('Please select a contact(s) to send email to.');
+        }else if($emailTo == 2 && !$secondaryContactId || $emailTo == 3 && !$secondaryContactId ){
+          $errors['select_payment_contact'] = ts('Please select add secondary contact.');
         }
         $fromEmailAddreess = CRM_Utils_Array::value('from_email_address', $params);
         if(!$fromEmailAddreess){
@@ -190,9 +191,13 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
      $recordContribution = CRM_Utils_Array::value('record_contribution', $params);
      if($recordContribution){
 
+        //TODO:: Check if txn_id is already exist
+
         $selectPaymentContact = CRM_Utils_Array::value('select_payment_contact', $params);
         if(!$selectPaymentContact){
           $errors['select_payment_contact'] = ts('Please select a contact for recording payment.');
+        }else if($selectPaymentContact == 2 && !$secondaryContactId){
+          $errors['select_payment_contact'] = ts('Please select add secondary contact.');
         }
 
         $financialTypeId = CRM_Utils_Array::value('financial_type_id', $params);
@@ -200,11 +205,10 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
          $errors['financial_type_id'] = ts('Please select a financial type.');
         }
 
-        /*
         $receivedDate = CRM_Utils_Array::value('receive_date', $params);
         if(!$receivedDate){
          $errors['receive_date'] = ts('This field is required.');
-        }*/
+        }
 
         $paymentInstrumentId = CRM_Utils_Array::value('payment_instrument_id', $params);
         if(!$paymentInstrumentId){
@@ -238,13 +242,16 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
       unset($resource['id']);
       unset($resource['label']);
       unset($resource['text']);
+      unset($resource['readonly']);
+      $resource['start_date'] = CRM_Utils_Date::processDate($resource['start_date']);
+      $resource['start_date'] = CRM_Utils_Date::processDate($resource['end_date']);
       $resource['sub_resources'] = array();
       foreach ($subResources as $subKey => $subResource) {
         if($key == $subResource['parent_ref_id']){
           $subResourceTmp['resource_id'] = $subResource['resource']['id'];
           $subResourceTmp['configuration_id'] = $subResource['configuration']['id'];
           $subResourceTmp['quantity'] = $subResource['quantity'];
-          $subResourceTmp['time_required'] = $subResource['time_reuired'];
+          $subResourceTmp['time_required'] = $subResource['time_required'];
           $subResourceTmp['note'] = $subResource['note'];
           $subResourceTmp['price_estimate'] = $subResource['price_estimate'];
           array_push($resource['sub_resources'], $subResourceTmp);
@@ -254,56 +261,103 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
       array_push($resources,  $resource);
     }
 
+    $adhocCharges =  CRM_Utils_Array::value('adhoc_charges', $subResourcesValue);
+
+
     $booking = array();
     $booking['resources'] = $resources;
+    $booking['adhoc_charges'] = $adhocCharges;
 
     $booking['primary_contact_id'] = CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
     $booking['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo);
     $booking['po_number'] = CRM_Utils_Array::value('po_no', $bookingInfo);
     $booking['status_id'] = CRM_Utils_Array::value('booking_status', $bookingInfo);
     $booking['title'] =CRM_Utils_Array::value('title', $bookingInfo);
-    $booking['description'] =CRM_Utils_Array::value('description', $bookingInfo);
-    $booking['notes'] =CRM_Utils_Array::value('note', $bookingInfo);
 
-    //FIX ME: Get discount amount from step 2
-    $booking['discount_amount'] = 0;
+
+    $booking['description'] =CRM_Utils_Array::value('description', $bookingInfo);
+    $booking['notes'] = CRM_Utils_Array::value('note', $bookingInfo);
+    $booking['event_date'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('event_start_date', $bookingInfo));
+
+    $booking['discount_amount'] = CRM_Utils_Array::value('discount_amount', $addSubResoruce);
+    //add adhoc charge
+    $booking['adhoc_charges_note'] = CRM_Utils_Array::value('note', $adhocCharges);
 
 
     $booking['participants_estimate'] = CRM_Utils_Array::value('enp', $bookingInfo);
     $booking['participants_actual'] = CRM_Utils_Array::value('fnp', $bookingInfo);
 
-    $sendConfirmation = CRM_Utils_Array::value('send_conformation', $bookingInfo);
-    $booking['send_conformation'] = $sendConfirmation;
-    if($sendConfirmation){
-      $booking['email_to'] = CRM_Utils_Array::value('email_to', $params);
-    }
     $recordContribution = CRM_Utils_Array::value('record_contribution', $bookingInfo);
-    $booking['record_contribution'] = $recordContribution;
-    if($recordContribution){
-
-      $booking['payment_contact'] = CRM_Utils_Array::value('select_payment_contact', $bookingInfo);
-      $booking['receive_date'] = CRM_Utils_Array::value('receive_date', $bookingInfo);
-      $booking['financial_type_id'] = CRM_Utils_Array::value('financial_type_id', $bookingInfo);
-      $booking['payment_instrument_id'] = CRM_Utils_Array::value('payment_instrument_id', $bookingInfo);
-      $booking['trxn_id'] = CRM_Utils_Array::value('trxn_id', $bookingInfo);
-      $booking['contribution_status_id'] = CRM_Utils_Array::value('contribution_status_id', $bookingInfo);
-
-      //FIXED ME: Get unpiad status from option value
-      $booking['payment_status'] = 1;
+    if(!$recordContribution){
+       //FIXED ME: Get default contribution status or pending from option value
+      //Note hard code
+      $booking['payment_status_id'] = 2;
 
     }else{
-      //FIXED ME: Get unpiad status from option value
-      $booking['payment_status'] = 0;
+
+      $booking['payment_status_id'] = CRM_Utils_Array::value('contribution_status_id', $bookingInfo);
+
     }
 
+    $now  = date('YmdHis');
     $session =& CRM_Core_Session::singleton( );
     $booking['created_by'] =  $session->get( 'userID' );
-    $booking['created_date'] = date();
+    $booking['created_date'] = $now;
     $booking['updated_by'] = $session->get( 'userID' );
-    $booking['updated_date'] = date();
+    $booking['updated_date'] = $now;
 
     $booking['version'] = 3; //Add version 3 before calling APIs
+    $booking['validate'] = FALSE; //Make sure we ignore slot validation
+
     $bookingResult = civicrm_api('Booking', 'Create', $booking);
+
+    if(CRM_Utils_Array::value('id', $bookingResult)){
+      if($recordContribution){
+        $values = array();
+        if(CRM_Utils_Array::value('select_payment_contact', $bookingInfo) == 1){
+          $values['payment_contact'] =  CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
+        }else{
+          $values['payment_contact'] =  CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo);
+        }
+        $values['total_amount'] = round(CRM_Utils_Array::value('total_price', $addSubResoruce), 2);
+        $values['booking_id'] = CRM_Utils_Array::value('id', $bookingResult);
+        $values['receive_date'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('receive_date', $bookingInfo));
+        $values['financial_type_id'] = CRM_Utils_Array::value('financial_type_id', $bookingInfo);
+        $values['payment_instrument_id'] = CRM_Utils_Array::value('payment_instrument_id', $bookingInfo);
+        $values['trxn_id'] = CRM_Utils_Array::value('trxn_id', $bookingInfo);
+        //Payment status is a contribution status
+        $values['payment_status_id'] = CRM_Utils_Array::value('contribution_status_id', $bookingInfo);
+        $values['booking_title'] = CRM_Utils_Array::value('title', $bookingInfo);
+
+        CRM_Booking_BAO_Booking::recordContribution($values);
+
+      }
+
+
+      $sendConfirmation = CRM_Utils_Array::value('send_conformation', $bookingInfo);
+      if($sendConfirmation){
+        $values['from_email_address'] = CRM_Utils_Array::value('from_email_address', $bookingInfo);
+        $values['booking_id'] = CRM_Utils_Array::value('id', $bookingResult);
+        $emailTo = CRM_Utils_Array::value('email_to', $bookingInfo);
+        $contactIds = array();
+
+        if($emailTo == 1){
+          array_push($contactIds, CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo));
+        }elseif ($emailTo == 2){
+          array_push($contactIds, CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo));
+        }else{
+          array_push($contactIds, CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo));
+          array_push($contactIds, CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo));
+        }
+        foreach ($contactIds as $key => $cid) {
+          CRM_Booking_BAO_Booking::sendMail($cid, $values);
+        }
+        exit;
+      }
+
+    }
+
+    exit;
 
     // user context
     $url = CRM_Utils_System::url('civicrm/booking/add',
