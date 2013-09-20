@@ -56,7 +56,7 @@
 
   <field>
     <name>time_required</name>
-    <type>datetime</type>
+    <type>time</type>
     <required>true</required>
   </field>
 
