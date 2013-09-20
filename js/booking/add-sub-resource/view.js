@@ -11,12 +11,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     $("#sub-total-summary").text(model.attributes.sub_total);
     $('#adhoc_charge').val(model.attributes.adhoc_charges.total);
     $('#ad-hoc-charge-summary').html(model.attributes.adhoc_charges.total);
-
-
-    /*
-    if(resourceRefId != null){
-      $("#resource-total-price-" + resourceRefId).text(model.attributes.resources[resourceRefId]);
-    }*/
   });
 
   CRM.BookingApp.vent.on("render:options", function (options){
@@ -280,8 +274,9 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         this.onRenderError(errors);
         return false;
       }
+      console.log(this.$el);
       this.model.set('note',this.$el.find('#sub-resource-note').val() );
-      this.model.set('time_required',this.$el.find('#sub-resource-note').val() );
+      this.model.set('time_required',this.$el.find('#time_required').val() );
 
       var parentRefId = this.model.get('parent_ref_id');
       var refId = CRM.BookingApp.Utils.getCurrentUnixTimstamp();
@@ -379,7 +374,5 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     }
 
   });
-
-
 
 });
