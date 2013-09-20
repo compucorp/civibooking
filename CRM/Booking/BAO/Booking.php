@@ -124,7 +124,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           'receive_date' =>  CRM_Utils_Array::value('receive_date', $values),
           'contribution_status_id' =>  CRM_Utils_Array::value('contribution_status_id', $values),
           'source' => CRM_Utils_Array::value('booking_title', $values),
-          'trxn_id' =>  CRM_Utils_Array::value('trxn_id', $values),
+          //'trxn_id' =>  CRM_Utils_Array::value('trxn_id', $values),
         );
          //$result = civicrm_api('Contribution', 'create', $params);
         //call contribution directly as if the trxn_id exist we cannot continue
@@ -271,305 +271,70 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     return self::$_exportableFields["booking"];
   }
 
-
   /**
-   * Function to send the emails
-   *
-   * @param array   $contactIDs        contact ids
-   * @param array   $values            associated array of fields
-   * @param boolean $isTest            if in test mode
-   * @param boolean $returnMessageText return the message text instead of sending the mail
+   * Process that send e-mails
    *
    * @return void
    * @access public
-   * @static
    */
-  static function sendMail($contactIDs, &$values, $isTest = FALSE, $returnMessageText = FALSE, $fieldTypes = NULL) {
-    $gIds = $params = array();
-    $email = NULL;
-    if (isset($values['custom_pre_id'])) {
-      $preProfileType = CRM_Core_BAO_UFField::getProfileType($values['custom_pre_id']);
-      if ($preProfileType == 'Membership' && CRM_Utils_Array::value('membership_id', $values)) {
-        $params['custom_pre_id'] = array(
-          array(
-            'member_id',
-            '=',
-            $values['membership_id'],
-            0,
-            0,
-          ),
-        );
-      }
-      elseif ($preProfileType == 'Contribution' && CRM_Utils_Array::value('contribution_id', $values)) {
-        $params['custom_pre_id'] = array(
-          array(
-            'contribution_id',
-            '=',
-            $values['contribution_id'],
-            0,
-            0,
-          ),
-        );
-      }
+  static function sendMail($contactID, &$values, $isTest = FALSE, $returnMessageText = FALSE) {
 
-      $gIds['custom_pre_id'] = $values['custom_pre_id'];
-    }
+    $template = CRM_Core_Smarty::singleton();
 
-    if (isset($values['custom_post_id'])) {
-      $postProfileType = CRM_Core_BAO_UFField::getProfileType($values['custom_post_id']);
-      if ($postProfileType == 'Membership' && CRM_Utils_Array::value('membership_id', $values)) {
-        $params['custom_post_id'] = array(
-          array(
-            'member_id',
-            '=',
-            $values['membership_id'],
-            0,
-            0,
-          ),
-        );
-      }
-      elseif ($postProfileType == 'Contribution' && CRM_Utils_Array::value('contribution_id', $values)) {
-        $params['custom_post_id'] = array(
-          array(
-            'contribution_id',
-            '=',
-            $values['contribution_id'],
-            0,
-            0,
-          ),
-        );
-      }
+    list($displayName, $email) = CRM_Contact_BAO_Contact_Location::getEmailDetails($contactID);
 
-      $gIds['custom_post_id'] = $values['custom_post_id'];
-    }
+    //send email only when email is present
+    if (isset($email) || $returnMessageText) {
 
-    if (CRM_Utils_Array::value('is_for_organization', $values)) {
-      if (CRM_Utils_Array::value('membership_id', $values)) {
-        $params['onbehalf_profile'] = array(
-          array(
-            'member_id',
-            '=',
-            $values['membership_id'],
-            0,
-            0,
-          ),
-        );
-      }
-      elseif (CRM_Utils_Array::value('contribution_id', $values)) {
-        $params['onbehalf_profile'] = array(
-          array(
-            'contribution_id',
-            '=',
-            $values['contribution_id'],
-            0,
-            0,
-          ),
-        );
-      }
-    }
-
-    //check whether it is a test drive
-    if ($isTest && !empty($params['custom_pre_id'])) {
-      $params['custom_pre_id'][] = array(
-        'contribution_test',
-        '=',
-        1,
-        0,
-        0,
-      );
-    }
-
-    if ($isTest && !empty($params['custom_post_id'])) {
-      $params['custom_post_id'][] = array(
-        'contribution_test',
-        '=',
-        1,
-        0,
-        0,
-      );
-    }
-
-    if (!$returnMessageText && !empty($gIds)) {
-      //send notification email if field values are set (CRM-1941)
-      foreach ($gIds as $key => $gId) {
-        if ($gId) {
-          $email = CRM_Core_DAO::getFieldValue('CRM_Core_DAO_UFGroup', $gId, 'notify');
-          if ($email) {
-            $val = CRM_Core_BAO_UFGroup::checkFieldsEmptyValues($gId, $contactID, CRM_Utils_Array::value($key, $params), true );
-            CRM_Core_BAO_UFGroup::commonSendMail($contactID, $val);
-          }
-        }
-      }
-    }
-
-    if ( CRM_Utils_Array::value('is_email_receipt', $values) ||
-      CRM_Utils_Array::value('onbehalf_dupe_alert', $values) ||
-      $returnMessageText
-    ) {
-      $template = CRM_Core_Smarty::singleton();
-
-      // get the billing location type
-      if (!array_key_exists('related_contact', $values)) {
-        $locationTypes = CRM_Core_PseudoConstant::get('CRM_Core_DAO_Address', 'location_type_id');
-        $billingLocationTypeId = array_search('Billing', $locationTypes);
-      }
-      else {
-        // presence of related contact implies onbehalf of org case,
-        // where location type is set to default.
-        $locType = CRM_Core_BAO_LocationType::getDefault();
-        $billingLocationTypeId = $locType->id;
-      }
-
-      if (!array_key_exists('related_contact', $values)) {
-        list($displayName, $email) = CRM_Contact_BAO_Contact_Location::getEmailDetails($contactID, FALSE, $billingLocationTypeId);
-      }
-      // get primary location email if no email exist( for billing location).
-      if (!$email) {
-        list($displayName, $email) = CRM_Contact_BAO_Contact_Location::getEmailDetails($contactID);
-      }
-      if (empty($displayName)) {
-        list($displayName, $email) = CRM_Contact_BAO_Contact_Location::getEmailDetails($contactID);
-      }
-
-      //for display profile need to get individual contact id,
-      //hence get it from related_contact if on behalf of org true CRM-3767
-      //CRM-5001 Contribution/Membership:: On Behalf of Organization,
-      //If profile GROUP contain the Individual type then consider the
-      //profile is of Individual ( including the custom data of membership/contribution )
-      //IF Individual type not present in profile then it is consider as Organization data.
-      $userID = $contactID;
-      if ($preID = CRM_Utils_Array::value('custom_pre_id', $values)) {
-        if (CRM_Utils_Array::value('related_contact', $values)) {
-          $preProfileTypes = CRM_Core_BAO_UFGroup::profileGroups($preID);
-          if (in_array('Individual', $preProfileTypes) || in_array('Contact', $postProfileTypes)) {
-            //Take Individual contact ID
-            $userID = CRM_Utils_Array::value('related_contact', $values);
-          }
-        }
-        self::buildCustomDisplay($preID, 'customPre', $userID, $template, $params['custom_pre_id']);
-      }
-      $userID = $contactID;
-      if ($postID = CRM_Utils_Array::value('custom_post_id', $values)) {
-        if (CRM_Utils_Array::value('related_contact', $values)) {
-          $postProfileTypes = CRM_Core_BAO_UFGroup::profileGroups($postID);
-          if (in_array('Individual', $postProfileTypes) || in_array('Contact', $postProfileTypes)) {
-            //Take Individual contact ID
-            $userID = CRM_Utils_Array::value('related_contact', $values);
-          }
-        }
-        self::buildCustomDisplay($postID, 'customPost', $userID, $template, $params['custom_post_id']);
-      }
-
-      $title = isset($values['title']) ? $values['title'] : CRM_Contribute_PseudoConstant::contributionPage($values['contribution_page_id']);
-
-      // set email in the template here
       $tplParams = array(
         'email' => $email,
-        'receiptFromEmail' => CRM_Utils_Array::value('receipt_from_email', $values),
-        'contactID' => $contactID,
-        'displayName' => $displayName,
-        'contributionID' => CRM_Utils_Array::value('contribution_id', $values),
-        'contributionOtherID' => CRM_Utils_Array::value('contribution_other_id', $values),
-        'membershipID' => CRM_Utils_Array::value('membership_id', $values),
-        // CRM-5095
-        'lineItem' => CRM_Utils_Array::value('lineItem', $values),
-        // CRM-5095
-        'priceSetID' => CRM_Utils_Array::value('priceSetID', $values),
-        'title' => $title,
-        'isShare' => CRM_Utils_Array::value('is_share', $values),
+        //TODO:: build the booking tpl
       );
-
-      if ($contributionTypeId = CRM_Utils_Array::value('financial_type_id', $values)) {
-        $tplParams['contributionTypeId'] = $contributionTypeId;
-        $tplParams['contributionTypeName'] = CRM_Core_DAO::getFieldValue('CRM_Financial_DAO_FinancialType',
-          $contributionTypeId);
-      }
-
-      if ($contributionPageId = CRM_Utils_Array::value('id', $values)) {
-        $tplParams['contributionPageId'] = $contributionPageId;
-      }
+      dpr($contactID);
+      $sendTemplateParams = array(
+        'groupName' => 'msg_tpl_workflow_booking',
+        'valueName' => 'booking_offline_receipt',
+        'contactId' => $contactID,
+        'isTest' => $isTest,
+        'tplParams' => $tplParams,
+        'PDFFilename' => 'bookingReceipt.pdf',
+      );
 
       // address required during receipt processing (pdf and email receipt)
+      //TODO:: add addresss
       if ($displayAddress = CRM_Utils_Array::value('address', $values)) {
-        $tplParams['address'] = $displayAddress;
+        $sendTemplateParams['tplParams']['address'] = $displayAddress;
       }
 
-      // CRM-6976
-      $originalCCReceipt = CRM_Utils_Array::value('cc_receipt', $values);
-
-      // cc to related contacts of contributor OR the one who
-      // signs up. Is used for cases like - on behalf of
-      // contribution / signup ..etc
-      if (array_key_exists('related_contact', $values)) {
-        list($ccDisplayName, $ccEmail) = CRM_Contact_BAO_Contact_Location::getEmailDetails($values['related_contact']);
-        $ccMailId = "{$ccDisplayName} <{$ccEmail}>";
-
-        $values['cc_receipt'] = CRM_Utils_Array::value('cc_receipt', $values) ? ($values['cc_receipt'] . ',' . $ccMailId) : $ccMailId;
-
-        // reset primary-email in the template
-        $tplParams['email'] = $ccEmail;
-
-        $tplParams['onBehalfName'] = $displayName;
-        $tplParams['onBehalfEmail'] = $email;
-
-        $ufJoinParams = array(
-          'module' => 'onBehalf',
-          'entity_table' => 'civicrm_contribution_page',
-          'entity_id' => $values['id'],
-        );
-        $OnBehalfProfile = CRM_Core_BAO_UFJoin::getUFGroupIds($ufJoinParams);
-        $profileId = $OnBehalfProfile[0];
-        $userID = $contactID;
-        self::buildCustomDisplay($profileId, 'onBehalfProfile', $userID, $template, $params['onbehalf_profile'], $fieldTypes);
+      //TODO:: add line titem tpl params
+      if ($lineItem = CRM_Utils_Array::value('lineItem', $values)) {
+        $sendTemplateParams['tplParams']['lineItem'] = $lineItem;
+        }
       }
 
-      // use either the contribution or membership receipt, based on whether it’s a membership-related contrib or not
-      $sendTemplateParams = array(
-        'groupName' => $tplParams['membershipID'] ? 'msg_tpl_workflow_membership' : 'msg_tpl_workflow_contribution',
-        'valueName' => $tplParams['membershipID'] ? 'membership_online_receipt' : 'contribution_online_receipt',
-        'contactId' => $contactID,
-        'tplParams' => but ,
-        'isTest' => $isTest,
-        'PDFFilename' => 'receipt.pdf',
-      );
-
-      if ($returnMessageText) {
+     if ($returnMessageText) {
         list($sent, $subject, $message, $html) = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
-        return array(
-          'subject' => $subject,
-          'body' => $message,
-          'to' => $displayName,
-          'html' => $html,
+          return array(
+            'subject' => $subject,
+            'body' => $message,
+            'to' => $displayName,
+            'html' => $html,
         );
       }
-
-      if ($values['is_email_receipt']) {
-        $sendTemplateParams['from'] = CRM_Utils_Array::value('receipt_from_name', $values) . ' <' . $values['receipt_from_email'] . '>';
+      else {
+        dpr($email);
+        //TODO: get from email from the system
+        $sendTemplateParams['from'] = "erawat.chamanont@compucorp.co.uk". " <Erawat Chamanont>";
         $sendTemplateParams['toName'] = $displayName;
         $sendTemplateParams['toEmail'] = $email;
-        $sendTemplateParams['cc'] = CRM_Utils_Array::value('cc_receipt', $values);
-        $sendTemplateParams['bcc'] = CRM_Utils_Array::value('bcc_receipt', $values);
-        list($sent, $subject, $message, $html) = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
-      }
-
-      // send duplicate alert, if dupe match found during on-behalf-of processing.
-      if (CRM_Utils_Array::value('onbehalf_dupe_alert', $values)) {
-        $sendTemplateParams['groupName'] = 'msg_tpl_workflow_contribution';
-        $sendTemplateParams['valueName'] = 'contribution_dupalert';
-        $sendTemplateParams['from'] = ts('Automatically Generated') . " <{$values['receipt_from_email']}>";
-        $sendTemplateParams['toName'] = CRM_Utils_Array::value('receipt_from_name', $values);
-        $sendTemplateParams['toEmail'] = CRM_Utils_Array::value('receipt_from_email', $values);
-        $sendTemplateParams['tplParams']['onBehalfID'] = $contactID;
-        $sendTemplateParams['tplParams']['receiptMessage'] = $message;
-
-        // fix cc and reset back to original, CRM-6976
-        $sendTemplateParams['cc'] = $originalCCReceipt;
-
+        //$sendTemplateParams['autoSubmitted'] = TRUE;
+        //TODO:: get cc email from the system;
+       // $sendTemplateParams['cc'] = CRM_Utils_Array::value('cc_confirm', 'cc@ccc');
+        //TODO:: add bcc email
+        //$sendTemplateParams['bcc'] = CRM_Utils_Array::value('bcc_confirm', 'bcc@bcc');
         CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
+
       }
-    }
+
   }
-
-
-
 }
