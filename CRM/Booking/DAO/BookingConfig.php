@@ -109,15 +109,11 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    */
   public $day_end_at;
   /**
+   * Create an activity record againt contact for conformation emails
    *
    * @var boolean
    */
   public $log_confirmation_email;
-  /**
-   *
-   * @var string
-   */
-  public $selected_email_address;
   /**
    *
    * @var string
@@ -128,12 +124,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    * @var string
    */
   public $bcc_email_address;
-  /**
-   * Create an activity record againt contact for conformation emails
-   *
-   * @var boolean
-   */
-  public $created_activity;
   /**
    *
    * @var string
@@ -178,7 +168,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
         'domain_id' => array(
           'name' => 'domain_id',
           'type' => CRM_Utils_Type::T_INT,
-          'required' => true,
         ) ,
         'day_start_at' => array(
           'name' => 'day_start_at',
@@ -198,13 +187,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'title' => ts('Log Confirmation Email') ,
           'required' => true,
         ) ,
-        'selected_email_address' => array(
-          'name' => 'selected_email_address',
-          'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Selected Email Address') ,
-          'maxlength' => 255,
-          'size' => CRM_Utils_Type::HUGE,
-        ) ,
         'cc_email_address' => array(
           'name' => 'cc_email_address',
           'type' => CRM_Utils_Type::T_STRING,
@@ -218,11 +200,6 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'title' => ts('Bcc Email Address') ,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
-        ) ,
-        'created_activity' => array(
-          'name' => 'created_activity',
-          'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => ts('Created Activity') ,
         ) ,
         'slot_avaliable_colour' => array(
           'name' => 'slot_avaliable_colour',
@@ -265,10 +242,8 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
         'day_start_at' => 'day_start_at',
         'day_end_at' => 'day_end_at',
         'log_confirmation_email' => 'log_confirmation_email',
-        'selected_email_address' => 'selected_email_address',
         'cc_email_address' => 'cc_email_address',
         'bcc_email_address' => 'bcc_email_address',
-        'created_activity' => 'created_activity',
         'slot_avaliable_colour' => 'slot_avaliable_colour',
         'slot_booked_colour' => 'slot_booked_colour',
         'slot_reserved_colour' => 'slot_reserved_colour',
