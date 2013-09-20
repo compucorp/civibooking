@@ -35,7 +35,7 @@ function civicrm_api3_adhoc_charges_item_create($params) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_adhoc_chages_item_get($params) {
+function civicrm_api3_adhoc_charges_item_get($params) {
   return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
 
