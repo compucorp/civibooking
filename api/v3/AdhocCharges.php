@@ -9,7 +9,9 @@
  * @see http://wiki.civicrm.org/confluence/display/CRM/API+Architecture+Standards
  */
 function _civicrm_api3_adhoc_charges_create_spec(&$spec) {
-
+  $spec['booking_id']['api.required'] = 1;
+  $spec['item_id']['api.required'] = 1;
+  $spec['quantity']['api.required'] = 1;
 }
 
 /**
