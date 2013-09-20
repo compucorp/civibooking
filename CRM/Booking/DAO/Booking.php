@@ -152,10 +152,11 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
    */
   public $discount_amount;
   /**
+   * The contribution status associated with this booking. Implicit FK to option_value row in contribution status option_group.
    *
    * @var int unsigned
    */
-  public $payment_status;
+  public $payment_status_id;
   /**
    *
    * @var boolean
@@ -307,11 +308,14 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'type' => CRM_Utils_Type::T_MONEY,
           'title' => ts('Discount Amount') ,
         ) ,
-        'payment_status' => array(
-          'name' => 'payment_status',
+        'payment_status_id' => array(
+          'name' => 'payment_status_id',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Payment Status') ,
+          'title' => ts('Payment status idD') ,
           'required' => true,
+          'pseudoconstant' => array(
+            'optionGroupName' => 'booking_booking_status',
+          )
         ) ,
         'booking_is_deleted' => array(
           'name' => 'is_deleted',
@@ -374,7 +378,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'participants_estimate' => 'participants_estimate',
         'participants_actual' => 'participants_actual',
         'discount_amount' => 'discount_amount',
-        'payment_status' => 'payment_status',
+        'payment_status_id' => 'payment_status_id',
         'is_deleted' => 'booking_is_deleted',
         'created_by' => 'created_by',
         'created_date' => 'created_date',

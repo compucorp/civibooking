@@ -127,10 +127,18 @@
     <type>decimal</type>
   </field>
 
-   <field>
-    <name>payment_status</name>
+
+
+ <field>
+    <name>payment_status_id</name>
+    <title>Payment status idD</title>
     <type>int unsigned</type>
     <required>true</required>
+    <comment>The contribution status associated with this booking. Implicit FK to option_value row in contribution status option_group.</comment>
+    <add>4.4</add>
+    <pseudoconstant>
+      <optionGroupName>booking_booking_status</optionGroupName>
+    </pseudoconstant>
   </field>
 
   <field>
