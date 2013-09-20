@@ -112,43 +112,98 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     if(!CRM_Utils_Array::value('booking_id', $values)){
       return;
     }else{
-    $slots = CRM_Booking_BAO_Slot::getBookingSlot()
+      try{
+       $transaction = new CRM_Core_Transaction();
+       $params = array(
+          'version' => 3,
+          'sequential' => 1,
+          'contact_id' => CRM_Utils_Array::value('payment_contact', $values),
+          'financial_type_id' => CRM_Utils_Array::value('financial_type_id', $values),
+          'total_amount' =>  CRM_Utils_Array::value('total_amount', $values),
+          'payment_instrument_id' =>  CRM_Utils_Array::value('payment_instrument_id', $values),
+          'receive_date' =>  CRM_Utils_Array::value('receive_date', $values),
+          'contribution_status_id' =>  CRM_Utils_Array::value('contribution_status_id', $values),
+          'source' => CRM_Utils_Array::value('booking_title', $values),
+          'trxn_id' =>  CRM_Utils_Array::value('trxn_id', $values),
+        );
+         //$result = civicrm_api('Contribution', 'create', $params);
+        //call contribution directly as if the trxn_id exist we cannot continue
+        $contribution = CRM_Contribute_BAO_Contribution::add($params);
+        if($contribution instanceof CRM_Core_Error){
+          throw new Exception($contribution->_errors[0]['message']);
+        }
 
-    /*
-        if($slotID){
+        $payment = array('booking_id' => $bookingID, 'contribution_id' => $contribution->id);
+        CRM_Booking_BAO_Payment::create($payment);
+
+        $result = civicrm_api('Slot', 'get', array('version' => 3, 'booking_id' => $bookingID));
+        $slots = CRM_Utils_Array::value('values', $result);
+        $lineItem = array('version' => 3, 'financial_type_id' => CRM_Utils_Array::value('financial_type_id', $values));
+        foreach ($slots as $slot) {
+          $slotID = $slot['id'];
+
           $lineItem['entity_table'] = "civicrm_booking_slot";
           $lineItem['entity_id'] = $slotID;
-          $lineItem['qty'] =  CRM_Utils_Array::value('quantity', $resource);
-          //TODO get unit price;
-          $lineItem['unit_price'] =  CRM_Utils_Array::value('quantity', $resource);
-          $lineItem['line_total'] =  CRM_Utils_Array::value('price', $resource);
-          //$result = civicrm_api('LineItem', 'create', $params);
-          dpr($result);
 
-        }*/
+          $configId =  CRM_Utils_Array::value('config_id', $slot);
+          $configResult = civicrm_api('ResourceConfigOption', 'get', array('version' => 3, 'id' => $configId));
+          $config = CRM_Utils_Array::value('values', $configResult);
+          $lineItem['label'] = CRM_Utils_Array::value('label', $config[$configId]);
 
-       //$subSlotId =  CRM_Utils_Array::value('id', $slotResult);
-            /*
-            if($subSlotId){
-              $lineItem['entity_table'] = "civicrm_booking_sub_slot";
-              $lineItem['entity_id'] = $subSlotId;
-              $lineItem['qty'] = CRM_Utils_Array::value('quantity', $subResource);
-              //TODO:// calulate pice;
-              //$lineItem['unit_price'] =
-              //$lineItem['line_total'] =
-              //$result = civicrm_api('LineItem', 'create', $params);
-              dpr($result);
-            *
-            }*/
-/*
-      $params = array(
-  'version' => 3,
-  'sequential' => 1,
-);
-    $result = civicrm_api('Contribution', 'create', $params);*/
+          $unitPrice = CRM_Utils_Array::value('price', $config[$configId]);
+          $lineItem['unit_price'] = $unitPrice;
+          $qty = CRM_Utils_Array::value('quantity', $slot);
 
-    dpr($values);
-    exit;
+          $lineItem['qty'] = $qty;
+          $lineItem['line_total'] =  $unitPrice * $qty;
+          $lineItemResult = civicrm_api('LineItem', 'create', $lineItem);
+          $result = civicrm_api('SubSlot', 'get', array('version' => 3 ,'slot_id' => $slotID));
+          $subSlots = CRM_Utils_Array::value('values', $result);
+          foreach ($subSlots as $subSlot) {
+
+            $subSlotID = $subSlot['id'];
+
+            $lineItem['entity_table'] = "civicrm_booking_sub_slot";
+            $lineItem['entity_id'] = $subSlotID;
+            $configId =  CRM_Utils_Array::value('config_id', $slot);
+            $configResult = civicrm_api('ResourceConfigOption', 'get', array('version' => 3, 'id' => $configId));
+            $config = CRM_Utils_Array::value('values', $configResult);
+            $lineItem['label'] = CRM_Utils_Array::value('label', $config[$configId]);
+
+            $unitPrice = CRM_Utils_Array::value('price', $config[$configId]);
+            $lineItem['unit_price'] = $unitPrice;
+            $qty = CRM_Utils_Array::value('quantity', $slot);
+
+            $lineItem['qty'] = $qty;
+            $lineItem['line_total'] =  $unitPrice * $qty;
+            $lineItemResult = civicrm_api('LineItem', 'create', $lineItem);
+          }
+        }
+
+        $adhocChargesResult = civicrm_api('AdhocCharges', 'get', array('version' => 3, 'booking_id' => $bookingID));
+        $adhocChargesValues = CRM_Utils_Array::value('values', $adhocChargesResult);
+        foreach ($adhocChargesValues as $id => $adhocCharges) {
+
+          $lineItem['entity_table'] = "civicrm_booking_adhoc_charges";
+          $lineItem['entity_id'] = $id;
+          $itemId =  CRM_Utils_Array::value('item_id', $adhocCharges);
+          $itemResult = civicrm_api('AdhocChargesItem', 'get', array('version' => 3, 'id' => $itemId));
+          $itemValue = CRM_Utils_Array::value('values', $itemResult);
+          $lineItem['label'] = CRM_Utils_Array::value('label', $itemValue[$itemId]);
+
+          $unitPrice = CRM_Utils_Array::value('price', $itemValue[$itemId]);
+          $lineItem['unit_price'] = $unitPrice;
+          $qty = CRM_Utils_Array::value('quantity', $adhocCharges);
+
+          $lineItem['qty'] = $qty;
+          $lineItem['line_total'] =  $unitPrice * $qty;
+          $lineItemResult = civicrm_api('LineItem', 'create', $lineItem);
+        }
+
+      }catch (Exception $e) {
+          $transaction->rollback();
+          CRM_Core_Error::fatal($e->getMessage());
+      }
     }
 
   }
