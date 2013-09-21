@@ -126,15 +126,12 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           'source' => CRM_Utils_Array::value('booking_title', $values),
           //'trxn_id' =>  CRM_Utils_Array::value('trxn_id', $values),
         );
-         //$result = civicrm_api('Contribution', 'create', $params);
-        //call contribution directly as if the trxn_id exist we cannot continue
-        $contribution = CRM_Contribute_BAO_Contribution::add($params);
-        if($contribution instanceof CRM_Core_Error){
-          throw new Exception($contribution->_errors[0]['message']);
+        $contribution = civicrm_api('Contribution', 'create', $params);
+        $contributionId = CRM_Utils_Array::value('id', $contribution);
+        if($contributionId){
+          $payment = array('booking_id' => $bookingID, 'contribution_id' => $contributionId);
+          CRM_Booking_BAO_Payment::create($payment);
         }
-
-        $payment = array('booking_id' => $bookingID, 'contribution_id' => $contribution->id);
-        CRM_Booking_BAO_Payment::create($payment);
 
         $result = civicrm_api('Slot', 'get', array('version' => 3, 'booking_id' => $bookingID));
         $slots = CRM_Utils_Array::value('values', $result);
