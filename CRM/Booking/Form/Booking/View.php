@@ -48,7 +48,7 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
   public function preProcess() {
     parent::preProcess();
 
-    //TODO:: Implement lresolveDefaults, see how participant works
+    //TODO:: Implement resolveDefaults, see how participant works
     //CRM_Booking_BAO_Booking::resolveDefaults($values[$bookingID]);
     //GET Slot
     $slots = CRM_Booking_BAO_Slot::getBookingSlot($this->_id);
@@ -56,11 +56,11 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
       $slots[$key]['sub_slots'] = CRM_Booking_BAO_SubSlot::getSubSlotSlot($key);
     }
 
-    $this->_values[$this->_id]['slots'] = $slots;
+    $this->_values['slots'] = $slots;
 
-    $this->assign($this->_values[$this->_id]);
+    $this->assign($this->_values);
 
-    $displayName = CRM_Contact_BAO_Contact::displayName($this->_values[$this->_id]['primary_contact_id']);
+    $displayName = CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']);
 
     $this->assign('displayName', $displayName);
     $this->assign('contact_id', $this->_cid);
