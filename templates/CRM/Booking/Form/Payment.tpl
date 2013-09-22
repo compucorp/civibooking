@@ -1,3 +1,12 @@
+<div class="crm-section">
+          <div class="label">
+           {$form.record_contribution.label}
+
+          </div>
+          <div class="content">
+            {$form.record_contribution.html}
+          </div>
+      </div>
 <fieldset id="payment-detail" class="hiddenElement"><legend>{ts}Payment details{/ts}</legend>
         <div class="crm-section">
           <div class="label">

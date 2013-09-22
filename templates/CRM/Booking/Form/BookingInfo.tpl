@@ -146,15 +146,6 @@
             {ts}Unpaid{/ts}
           </div>
       </div>
-      <div class="crm-section">
-          <div class="label">
-           {$form.record_contribution.label}
-
-          </div>
-          <div class="content">
-            {$form.record_contribution.html}
-          </div>
-      </div>
       {include file="CRM/Booking/Form/Payment.tpl"}
   <div id="crm-booking-dialog" class="crm-container"></div>
 </div>
