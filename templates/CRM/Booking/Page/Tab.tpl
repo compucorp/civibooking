@@ -24,12 +24,16 @@
  +--------------------------------------------------------------------+
 *}
 {* action = edit/delete/view or close (cancel) *}
-{if $action eq 2 or $action eq 8 or $action eq 262144 or $action eq 4}
-    {include file="CRM/Booking/Form/Booking.tpl"}
+{if $action eq 4}
+    {include file="CRM/Booking/Form/Booking/View.tpl"}
+{elseif $action eq 2 or $action eq 8 }
+    {include file="CRM/Booking/Form/Booking/Update.tpl"}
+{elseif $action eq 262144}
+    {include file="CRM/Booking/Form/Booking/Cancel.tpl"}
 {else}
     <div class="view-content">
         {if $action eq 16 and $permission EQ 'edit'}
-           {capture assign=newBookingURL}{crmURL p="civicrm/booking/add/" q="reset=1&action=add&cid=`$contactId`}{/capture}
+           {capture assign=newBookingURL}{crmURL p="civicrm/booking/add/" q="reset=1&action=add&cid=`$contact_id`}{/capture}
             <div class="action-link">
                 <a accesskey="N" href="{$newBookingURL}" class="button"><span><div class="icon add-icon"></div>{ts}Add a booking for this contact{/ts}</span>
                 </a>

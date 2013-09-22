@@ -34,15 +34,16 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
   }
 
 
-  /*
+  /**
    * This function is called when action is view
    *
    * return null
    * @access public
+   */
   function view() {
 
     $controller = new CRM_Core_Controller_Simple(
-      'CRM_Booking_Form_BookingView',
+      'CRM_Booking_Form_Booking_View',
       ts('View Booking'),
       $this->_action
     );
@@ -52,10 +53,10 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
 
     return $controller->run();
 
-  }*/
+  }
 
   /**
-   * This function is called when action is view, edit or delete
+   * This function is called when action is edit or delete
    *
    * return null
    * @access public
@@ -63,7 +64,7 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
   function edit() {
 
     $controller = new CRM_Core_Controller_Simple(
-      'CRM_Booking_Form_Booking',
+      'CRM_Booking_Form_Booking_Update',
       ts('Booking'),
       $this->_action
     );
@@ -73,6 +74,29 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
 
     return $controller->run();
   }
+
+
+  /**
+   * This function is called when action is cancel
+   *
+   * return null
+   * @access public
+   */
+  function cancel() {
+
+    $controller = new CRM_Core_Controller_Simple(
+      'CRM_Booking_Form_Booking_Cancel',
+      ts('Booking'),
+      $this->_action
+    );
+    $controller->setEmbedded(TRUE);
+    $controller->set('id', $this->_id);
+    $controller->set('cid', $this->_contactId);
+
+    return $controller->run();
+  }
+
+
 
   function preProcess() {
     $context       = CRM_Utils_Request::retrieve('context', 'String', $this);
@@ -113,8 +137,12 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
 
     $this->setContext();
 
-    if ($this->_action & (CRM_Core_Action::UPDATE | CRM_Core_Action::DELETE | ($this->_action & CRM_Core_Action::VIEW))) {
+    if ($this->_action & (CRM_Core_Action::UPDATE | CRM_Core_Action::DELETE)) {
       $this->edit();
+    }elseif ($this->_action & CRM_Core_Action::VIEW){
+      $this->view();
+    }elseif ($this->_action & CRM_Core_Action::CLOSE){
+      $this->cancel();
     }else {
       $this->browse();
     }
