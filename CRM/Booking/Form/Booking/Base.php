@@ -55,17 +55,9 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
   public function preProcess() {
     $this->_id = $this->get('id');
     $this->_cid = $this->get('cid');
-    //$this->$_bookingID = CRM_Utils_Request::retrieve('id', 'Positive', $this, TRUE);
-    //$contactID     = CRM_Utils_Request::retrieve('cid', 'Positive', $this, TRUE);
     $params        = array('id' => $this->_id);
-    $values        = $ids = array();
 
-
-    CRM_Booking_BAO_Booking::getValues($params,
-      $this->_values,
-      $ids
-    );
-
+    CRM_Booking_BAO_Booking::retrieve($params, $this->_values );
 
     if (empty($this->_values)) {
       CRM_Core_Error::statusBounce(ts('The requested booking record does not exist (possibly the record was deleted).'));
