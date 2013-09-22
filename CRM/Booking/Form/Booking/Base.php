@@ -113,7 +113,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     }
 
 
-    if (($this->_action & CRM_Core_Action::DELETE) & ($this->_action & CRM_Core_Action::VIEW)) {
+    if (($this->_action & CRM_Core_Action::DELETE) || ($this->_action & CRM_Core_Action::VIEW)) {
       return;
     }else{
 
