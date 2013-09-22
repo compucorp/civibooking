@@ -64,7 +64,7 @@ class CRM_Booking_BAO_SubSlot extends CRM_Booking_DAO_SubSlot {
              civicrm_booking_sub_slot.note
       FROM civicrm_booking_sub_slot
       WHERE 1
-      AND civicrm_booking_slot.id = %1
+      AND civicrm_booking_sub_slot.slot_id = %1
      ";
 
     $slots = array();
