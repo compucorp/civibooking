@@ -65,6 +65,25 @@ class CRM_Booking_BAO_SubSlot extends CRM_Booking_DAO_SubSlot {
 
 
   /**
+   * Function to delete SubSlot
+   *
+   * @param  int  $id     Id of the SubSlot to be deleted.
+   *
+   * @return boolean
+   *
+   * @access public
+   * @static
+   */
+  static function cancel($id) {
+    $dao = new CRM_Booking_DAO_SubSlot();
+    $dao->id = $id;
+    $dao->is_cancelled = 1;
+    return $dao->save();
+  }
+
+
+
+  /**
    * Given the list of params in the params array, fetch the object
    * and store the values in the values array
    *
