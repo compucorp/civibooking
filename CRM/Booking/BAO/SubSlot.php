@@ -25,6 +25,46 @@ class CRM_Booking_BAO_SubSlot extends CRM_Booking_DAO_SubSlot {
 
 
   /**
+   * Takes a bunch of params that are needed to match certain criteria and
+   * retrieves the relevant objects. It also stores all the retrieved
+   * values in the default array
+   *
+   * @param array $params   (reference ) an assoc array of name/value pairs
+   * @param array $defaults (reference ) an assoc array to hold the flattened values
+   *
+     * @return object CRM_Booking_DAO_SubSlot object on success, null otherwise
+   * @access public
+   * @static
+   */
+  static function retrieve(&$params, &$defaults) {
+    $dao = new CRM_Booking_DAO_SubSlot();
+    $dao->copyValues($params);
+    if ($dao->find(TRUE)) {
+      CRM_Core_DAO::storeValues($dao, $defaults);
+      return $dao;
+    }
+    return NULL;
+  }
+
+  /**
+   * Function to delete SubSlot
+   *
+   * @param  int  $id     Id of the SubSlot to be deleted.
+   *
+   * @return boolean
+   *
+   * @access public
+   * @static
+   */
+  static function del($id) {
+    $dao = new CRM_Booking_DAO_SubSlot();
+    $dao->id = $id;
+    $dao->is_deleted = 1;
+    return $dao->save();
+  }
+
+
+  /**
    * Given the list of params in the params array, fetch the object
    * and store the values in the values array
    *
