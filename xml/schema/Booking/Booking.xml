@@ -61,14 +61,13 @@
 
 
   <field>
-    <name>po_number</name>
+    <name>title</name>
     <type>varchar</type>
     <length>255</length>
     <comment></comment>
-    <title>PO Number</title>
+    <title>Title</title>
     <required>true</required>
-    <!--<export>true</export>-->
-    <uniqueName>booking_po_number</uniqueName>
+    <uniqueName>booking_title</uniqueName>
   </field>
 
 
@@ -90,6 +89,17 @@
     <required>true</required>
     <title>Event Date</title>
     <uniqueName>booking_event_date</uniqueName>
+  </field>
+
+  <field>
+    <name>po_number</name>
+    <type>varchar</type>
+    <length>255</length>
+    <comment></comment>
+    <title>PO Number</title>
+    <required>true</required>
+    <export>true</export>
+    <uniqueName>booking_po_number</uniqueName>
   </field>
 
 

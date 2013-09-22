@@ -109,7 +109,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
    *
    * @var string
    */
-  public $po_number;
+  public $title;
   /**
    * The status associated with this booking. Implicit FK to option_value row in booking status option_group.
    *
@@ -121,6 +121,11 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
    * @var datetime
    */
   public $event_date;
+  /**
+   *
+   * @var string
+   */
+  public $po_number;
   /**
    *
    * @var string
@@ -249,10 +254,10 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'export' => true,
           'FKClassName' => 'CRM_Contact_DAO_Contact',
         ) ,
-        'booking_po_number' => array(
-          'name' => 'po_number',
+        'booking_title' => array(
+          'name' => 'title',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('PO Number') ,
+          'title' => ts('Title') ,
           'required' => true,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
@@ -271,6 +276,18 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
           'title' => ts('Event Date') ,
           'required' => true,
+        ) ,
+        'booking_po_number' => array(
+          'name' => 'po_number',
+          'type' => CRM_Utils_Type::T_STRING,
+          'title' => ts('PO Number') ,
+          'required' => true,
+          'maxlength' => 255,
+          'size' => CRM_Utils_Type::HUGE,
+          'export' => true,
+          'where' => 'civicrm_booking.po_number',
+          'headerPattern' => '',
+          'dataPattern' => '',
         ) ,
         'description' => array(
           'name' => 'description',
@@ -369,9 +386,10 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'id' => 'id',
         'primary_contact_id' => 'primary_contact_id',
         'secondary_contact_id' => 'secondary_contact_id',
-        'po_number' => 'booking_po_number',
+        'title' => 'booking_title',
         'status_id' => 'status_id',
         'event_date' => 'booking_event_date',
+        'po_number' => 'booking_po_number',
         'description' => 'description',
         'notes' => 'notes',
         'adhoc_charges_note' => 'adhoc_charges_note',

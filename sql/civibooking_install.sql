@@ -46,9 +46,10 @@ CREATE TABLE `civicrm_booking` (
      `id` int unsigned NOT NULL AUTO_INCREMENT  ,
      `primary_contact_id` int unsigned NOT NULL   COMMENT 'FK to Contact ID',
      `secondary_contact_id` int unsigned NULL   COMMENT 'FK to Contact ID',
-     `po_number` varchar(255) NOT NULL   ,
+     `title` varchar(255) NOT NULL   ,
      `status_id` int unsigned NOT NULL   COMMENT 'The status associated with this booking. Implicit FK to option_value row in booking status option_group.',
      `event_date` datetime NOT NULL   ,
+     `po_number` varchar(255) NOT NULL   ,
      `description` varchar(255)    ,
      `notes` text    ,
      `adhoc_charges_note` text    ,
@@ -70,9 +71,6 @@ CREATE TABLE `civicrm_booking` (
 
 ,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
-
-
-
 
 -- /*******************************************************
 -- *
