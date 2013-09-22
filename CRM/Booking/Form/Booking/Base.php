@@ -120,6 +120,53 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       );
     }
 
+
+    if (($this->_action & CRM_Core_Action::DELETE) & ($this->_action & CRM_Core_Action::VIEW)) {
+      return;
+    }else{
+
+      $this->addElement('checkbox', 'record_contribution', ts('Record Booking Payment?'));
+
+      $paymentContacts =  array('' => ts('- select -'),
+                                '1' => ts('Primary contact'),
+                                '2' => ts('Secondary contact'));
+      $this->add('select', 'select_payment_contact', ts('Select contact'),
+        $paymentContacts, FALSE,
+        array(
+          'id' => 'select_payment_contact',
+        )
+      );
+
+
+      $this->addDate('receive_date', ts('Received'), FALSE, array('formatType' => 'activityDate'));
+
+
+      $this->assign('amount', 300);
+
+      $this->add('select', 'financial_type_id',
+        ts('Financial Type'),
+        array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::financialType()
+      );
+
+      $this->add('select', 'payment_instrument_id',
+          ts('Paid By'),
+          array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::paymentInstrument(),
+          FALSE,
+          array()
+      );
+
+      $this->add('text', 'trxn_id', ts('Transaction ID'));
+
+      $this->add('select', 'contribution_status_id',
+          ts('Payment Status'),
+          array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::contributionStatus(),
+          FALSE,
+          array()
+      );
+    }
+
+
+
   }
 }
 
