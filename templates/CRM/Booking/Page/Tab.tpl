@@ -23,10 +23,9 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
-{if $action eq 8} {* delete , we ignore add,update *}
+{* action = edit/delete/view or close (cancel) *}
+{if $action eq 2 or $action eq 8 or $action eq 262144 or $action eq 4}
     {include file="CRM/Booking/Form/Booking.tpl"}
-{elseif $action eq 4}
-    {include file="CRM/Booking/Form/BookingView.tpl"}
 {else}
     <div class="view-content">
         {if $action eq 16 and $permission EQ 'edit'}

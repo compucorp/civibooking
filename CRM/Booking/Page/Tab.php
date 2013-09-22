@@ -33,12 +33,12 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
     }
   }
 
-  /**
+
+  /*
    * This function is called when action is view
    *
    * return null
    * @access public
-   */
   function view() {
 
     $controller = new CRM_Core_Controller_Simple(
@@ -52,16 +52,26 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
 
     return $controller->run();
 
-  }
+  }*/
 
   /**
-   * This function is called when action is delete the row
+   * This function is called when action is view, edit or delete
    *
    * return null
    * @access public
    */
-  function delete() {
-    //TODO::Implement delete method
+  function edit() {
+
+    $controller = new CRM_Core_Controller_Simple(
+      'CRM_Booking_Form_Booking',
+      ts('Booking'),
+      $this->_action
+    );
+    $controller->setEmbedded(TRUE);
+    $controller->set('id', $this->_id);
+    $controller->set('cid', $this->_contactId);
+
+    return $controller->run();
   }
 
   function preProcess() {
@@ -103,17 +113,7 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
 
     $this->setContext();
 
-    if ($this->_action & CRM_Core_Action::VIEW) {
-      $this->view();
-    }
-    /* //WE DO NOT HANDLE/ADD OR EDIT
-    elseif ($this->_action & (CRM_Core_Action::UPDATE |
-        CRM_Core_Action::ADD |
-        CRM_Core_Action::DELETE
-      )) {
-      $this->edit();
-    }*/
-    elseif ($this->_action & CRM_Core_Action::DELETE){
+    if ($this->_action & (CRM_Core_Action::UPDATE | CRM_Core_Action::DELETE | ($this->_action & CRM_Core_Action::VIEW))) {
       $this->edit();
     }else {
       $this->browse();
@@ -140,7 +140,8 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
 
     switch ($context) {
       case 'dashboard':
-        $url = CRM_Utils_System::url('civicrm/event', 'reset=1');
+        //TODO:: Implement dashboard for booking
+        $url = CRM_Utils_System::url('civicrm/booking', 'reset=1');
         break;
 
       case 'search':
@@ -154,7 +155,7 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
           $url = CRM_Utils_System::url('civicrm/contact/search/advanced', $urlParams);
         }
         else {
-          $url = CRM_Utils_System::url('civicrm/event/search', $urlParams);
+          $url = CRM_Utils_System::url('civicrm/booking/search', $urlParams);
         }
         break;
 
@@ -212,7 +213,7 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
         if ($this->_contactId) {
           $cid = '&cid=' . $this->_contactId;
         }
-        $url = CRM_Utils_System::url('civicrm/event/search',
+        $url = CRM_Utils_System::url('civicrm/booking/search',
           'force=1' . $cid
         );
         break;

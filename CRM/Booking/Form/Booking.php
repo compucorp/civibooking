@@ -37,7 +37,7 @@
  * This class generates form components for Booking
  *
  */
-class CRM_Booking_Form_BookingView extends CRM_Core_Form {
+class CRM_Booking_Form_Booking extends CRM_Core_Form {
 
   /**
    * Function to set variables up before form is built
