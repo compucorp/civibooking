@@ -220,6 +220,24 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
           'qs' => 'reset=1&action=update&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
           'title' => ts('Edit Booking'),
         ),
+        CRM_Core_Action::BASIC => array(
+          'name' => ts('Update Status'),
+          'url' => 'civicrm/contact/view/booking',
+          'qs' => 'reset=1&action=update&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
+          'title' => ts('Update Status'),
+        ),
+        CRM_Core_Action::ADVANCED => array(
+          'name' => ts('Record Payment'),
+          'url' => 'civicrm/contact/view/booking',
+          'qs' => 'reset=1&action=update&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
+          'title' => ts('Edit Booking'),
+        ),
+        CRM_Core_Action::CLOSE => array(
+          'name' => ts('Cancel'),
+          'url' => 'civicrm/contact/view/booking',
+          'qs' => 'reset=1&action=close&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
+          'title' => ts('Edit Booking'),
+        ),
         CRM_Core_Action::DELETE => array(
           'name' => ts('Delete'),
           'url' => 'civicrm/contact/view/booking',
