@@ -46,8 +46,7 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
    * @access public
    */
   public function preProcess() {
-
-
+    parent::preProcess();
   }
 
   /**
@@ -57,7 +56,29 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
    * @access public
    */
   public function buildQuickForm() {
+    parent::buildQuickForm();
+
+    $status =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
+    $paymentStatus =  CRM_Booking_BAO_Booking::buildOptions('payment_status_id', 'create');
+
+    $this->_values['status'] =  CRM_Utils_Array::value(CRM_Utils_Array::value('status_id', $this->_values ), $status);
+    $this->_values['payment_status'] =  CRM_Utils_Array::value(CRM_Utils_Array::value('payment_status_id', $this->_values ), $paymentStatus);
+    $this->assign('booking', $this->_values);
+
+    $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
+    $this->add('select', 'booking_status', ts('Booking status'),
+      array('' => ts('- select -')) + $bookingStatus,
+      FALSE,
+      array()
+    );
 
   }
+
+
+  function setDefaultValues() {
+    $defaults = parent::setDefaultValues();
+    return $defaults;
+  }
+
 }
 
