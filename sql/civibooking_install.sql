@@ -53,7 +53,7 @@ CREATE TABLE `civicrm_booking` (
      `po_number` varchar(255) NOT NULL   ,
      `total_amount` decimal(20,2) NOT NULL   COMMENT 'Total amount of this booking calculated from slots,sub slots, ad-hoc charges and discount amount',
      `description` varchar(255)    ,
-     `notes` text    ,
+     `note` text    ,
      `adhoc_charges_note` text    ,
      `participants_estimate` varchar(255)    ,
      `participants_actual` varchar(255)    ,
