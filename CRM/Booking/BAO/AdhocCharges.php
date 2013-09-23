@@ -24,4 +24,30 @@ class CRM_Booking_BAO_AdhocCharges extends CRM_Booking_DAO_AdhocCharges {
   }
 
 
+  static function getBookingAdhocCharges($bookingID){
+    $params = array(1 => array( $bookingID, 'Integer'));
+
+    $query = "
+      SELECT civicrm_booking_adhoc_charges.id,
+             civicrm_booking_adhoc_charges.booking_id,
+             civicrm_booking_adhoc_charges.item_id,
+             civicrm_booking_adhoc_charges.quantity
+      FROM civicrm_booking_adhoc_charges
+      WHERE 1
+      AND  civicrm_booking_adhoc_charges.booking_id = %1";
+
+    $charges = array();
+    $dao = CRM_Core_DAO::executeQuery($query, $params);
+    while ($dao->fetch()) {
+      $charges[$dao->id] = array(
+        'id' => $dao->id,
+        'booking_id' => $dao->booking_id,
+        'item_id' => $dao->item_id,
+        'quantity' => $dao->quantity,
+      );
+    }
+    return $charges;
+  }
+
+
 }
