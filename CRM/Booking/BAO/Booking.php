@@ -307,6 +307,99 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     return self::$_exportableFields["booking"];
   }
 
+
+  static function getBookingAmount($id){
+    if(!$id){
+      return;
+    }
+    $bookingAmount = array(
+      'resource_fees' => 0,
+      'sub_resource_fees' => 0,
+      'adhoc_charges_fees' => 0,
+      'discount_amount' => 0,
+      'total_amount' => 0,
+    );
+    self::retrieve($params = array('id' => $id), $booking);
+    $bookingAmount['discount_amount'] = CRM_Utils_Array::value('discount_amount', $booking);
+    $slots = CRM_Booking_BAO_Slot::getBookingSlot($id);
+    $subSlots = array();
+    foreach ($slots as $key => $slot) {
+      $subSlotResult = CRM_Booking_BAO_SubSlot::getSubSlotSlot($slot['id']);
+      foreach ($subSlotResult as $key => $subSlot) {
+        $subSlots[$key] = $subSlot;
+      }
+    }
+    $adhocCharges = CRM_Booking_BAO_AdhocCharges::getBookingAdhocCharges($id);
+    CRM_Booking_BAO_Payment::retrieve($params = array('booking_id' => $id), $payment);
+    if(!empty($payment) && isset($payment['contribution_id'])){ // contribution exit so get all price from line item
+      $params = array(
+        'version' => 3,
+        'id' => $payment['contribution_id'],
+        );
+      $result = civicrm_api('Contribution', 'get', $params);
+      $contribution = CRM_Utils_Array::value($payment['contribution_id'], $result['values'] );
+      $bookingAmount['total_amount']  = CRM_Utils_Array::value('total_amount', $contribution);
+      foreach ($slots as $slotId => $slot) {
+        $params = array(
+          'version' => 3,
+          'entity_id' => $slotId,
+          'entity_table' => 'civicrm_booking_slot',
+        );
+        $result = civicrm_api('LineItem', 'get', $params);
+        $lineItem = CRM_Utils_Array::value($result['id'], $result['values']);
+        $bookingAmount['resource_fees']  += CRM_Utils_Array::value('line_total', $lineItem);
+      }
+      foreach ($subSlots as $subSlotId => $subSlots) {
+        $params = array(
+          'version' => 3,
+          'entity_id' => $subSlotId,
+          'entity_table' => 'civicrm_booking_sub_slot',
+        );
+        $result = civicrm_api('LineItem', 'get', $params);
+        $lineItem = CRM_Utils_Array::value($result['id'], $result['values']);
+        $bookingAmount['sub_resource_fees']  += CRM_Utils_Array::value('line_total', $lineItem);
+      }
+      foreach ($adhocCharges as $charges) {
+        $params = array(
+          'version' => 3,
+          'entity_id' => CRM_Utils_Array::value('id', $charges),
+          'entity_table' => 'civicrm_booking_adhoc_charges',
+        );
+        $result = civicrm_api('LineItem', 'get', $params);
+        $lineItem = CRM_Utils_Array::value($result['id'], $result['values']);
+        $bookingAmount['adhoc_charges_fees']  += CRM_Utils_Array::value('line_total', $lineItem);
+      }
+    }else{
+      foreach ($slots as $id => $slot) {
+        $bookingAmount['resource_fees'] += self::_calulateSlotPrice(CRM_Utils_Array::value('config_id', $slot) ,CRM_Utils_Array::value('quantity', $slot));
+      }
+      foreach ($subSlots as $id => $subSlot) {
+        $bookingAmount['sub_resource_fees'] += self::_calulateSlotPrice(CRM_Utils_Array::value('config_id', $subSlot) ,CRM_Utils_Array::value('quantity', $subSlot));
+      }
+      foreach ($adhocCharges as $charges) {
+        $price = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_AdhocChargesItem',
+          CRM_Utils_Array::value('item_id', $charges) ,
+          'price',
+          'id'
+        );
+        $bookingAmount['adhoc_charges_fees'] += ($price * CRM_Utils_Array::value('quantity', $charges));
+      }
+      $bookingAmount['total_amount'] = ($bookingAmount['resource_fees'] + $bookingAmount['sub_resource_fees'] + $bookingAmount['adhoc_charges_fees']) - $bookingAmount['discount_amount'];
+    }
+    return $bookingAmount;
+  }
+
+  static function _calulateSlotPrice($configId, $qty){
+    if(!$configId & !$qty){
+      return NULL;
+    }
+    $price = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
+      $configId,
+      'price',
+      'id'
+    );
+    return $price * $qty;
+  }
   /**
    * Process that send e-mails
    *
