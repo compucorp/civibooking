@@ -331,7 +331,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'title' => ts('Payment status idD') ,
           'required' => true,
           'pseudoconstant' => array(
-            'optionGroupName' => 'booking_booking_status',
+            'optionGroupName' => 'contribution_status',
           )
         ) ,
         'booking_is_deleted' => array(
