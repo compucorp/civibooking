@@ -282,6 +282,8 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     $booking['event_date'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('event_start_date', $bookingInfo));
 
     $booking['discount_amount'] = CRM_Utils_Array::value('discount_amount', $addSubResoruce);
+    $booking['total_amount'] = CRM_Utils_Array::value('total_price', $addSubResoruce));
+
     //add adhoc charge
     $booking['adhoc_charges_note'] = CRM_Utils_Array::value('note', $adhocCharges);
 
@@ -321,7 +323,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
         }else{
           $values['payment_contact'] =  CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo);
         }
-       
+
         $values['total_amount'] = round(CRM_Utils_Array::value('total_price', $addSubResoruce), 2);
         $values['booking_id'] = CRM_Utils_Array::value('id', $bookingResult);
         $values['receive_date'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('receive_date', $bookingInfo));
