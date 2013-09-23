@@ -18,9 +18,24 @@ class CRM_Booking_BAO_BookingConfig extends CRM_Booking_DAO_BookingConfig {
    * @static
    */
   static function create(&$params) {
-    $resourceDAO = new CRM_Booking_DAO_BookingConfig();
-    $resourceDAO->copyValues($params);
-    return $resourceDAO->save();
+    if(!CRM_Utils_Array::value('id', $params)){
+      //make sure we don't create new record
+      return;
+    }
+    $dao = new CRM_Booking_DAO_BookingConfig();
+    $dao->copyValues($params);
+    return $dao->save();
   }
+
+  static function getConfig(){
+    $dao = new CRM_Booking_DAO_BookingConfig();
+    $dao->find();
+    $config = array();
+    while ($dao->fetch()) {
+      CRM_Core_DAO::storeValues($dao, $config);
+      return $config;
+    }
+  }
+
 
 }
