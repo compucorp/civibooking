@@ -7,7 +7,7 @@
   </div>
   <div class="crm-section">
     <div class="label">{$form.cancellation_date.label}</div>
-    <div class="content">{$form.cancellation_date.html}</div>
+    <div class="content">{include file="CRM/common/jcalendar.tpl" elementName=cancellation_date}</div>
   </div>
   <div class="crm-section">
     <div class="label">{$form.resource_fee.label}</div>
