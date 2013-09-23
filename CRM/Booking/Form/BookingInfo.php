@@ -141,6 +141,9 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
       array('onclick' => "showHideByValue( 'send_receipt', '', 'notice', 'table-row', 'radio', false); showHideByValue( 'send_receipt', '', 'fromEmail', 'table-row', 'radio', false);")
     );
 
+    $this->addElement('checkbox', 'include_payment_information', '', ts(' Include payment information on booking confirmation email?'));
+
+
     $buttons = array(
       array('type' => 'back',
         'name' => ts('<< Back'),
@@ -149,7 +152,6 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
         'type' => 'submit',
         'name' => ts('Complate and save'),
       ),
-
     );
 
     $this->addButtons($buttons);
@@ -282,7 +284,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     $booking['event_date'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('event_start_date', $bookingInfo));
 
     $booking['discount_amount'] = CRM_Utils_Array::value('discount_amount', $addSubResoruce);
-    $booking['total_amount'] = CRM_Utils_Array::value('total_price', $addSubResoruce));
+    $booking['total_amount'] = CRM_Utils_Array::value('total_price', $addSubResoruce);
 
     //add adhoc charge
     $booking['adhoc_charges_note'] = CRM_Utils_Array::value('note', $adhocCharges);

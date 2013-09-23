@@ -36,8 +36,8 @@
     <div class="content">{$form.contribution_status_id.html}</div>
   </div>
   <div class="crm-section">
-    <div class="label">{$form.send_email_receipt.label}</div>
-    <div class="content">{$form.send_email_receipt.html}</div>
+    <div class="label"></div>
+    <div class="content">{$form.include_payment_information.html}</div>
 </div>
 </fieldset>
 {literal}

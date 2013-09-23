@@ -23,6 +23,10 @@
     <div class="label">{ts}Payment status{/ts}</div>
     <div class="content">{$booking.payment_status}</div>
   </div>
+ <div class="crm-section">
+    <div class="label"></div>
+    <div class="content">{$form.send_confirmation_email.html}</div>
+  </div>
   {include file="CRM/Booking/Form/Payment.tpl"}
  <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 {/if}

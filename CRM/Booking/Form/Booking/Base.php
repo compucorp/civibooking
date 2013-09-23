@@ -119,6 +119,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     if (($this->_action & CRM_Core_Action::DELETE) || ($this->_action & CRM_Core_Action::VIEW)) {
       return;
     }else{
+      $this->addElement('checkbox', 'send_confirmation_email', ts('Send booking confirmation email?'));
 
       $this->addElement('checkbox', 'record_contribution', ts('Record Payment?'));
       $paymentContacts =  array('' => ts('- select -'),
@@ -158,7 +159,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           array()
       );
 
-      $this->addElement('checkbox', 'send_email_receipt', ts('Send email receipt?'));
+      $this->addElement('checkbox', 'include_payment_information', '', ts(' Include payment information on booking confirmation email?'));
 
     }
   }
