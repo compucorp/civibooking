@@ -250,16 +250,18 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
       $resource['start_date'] = CRM_Utils_Date::processDate($resource['start_date']);
       $resource['start_date'] = CRM_Utils_Date::processDate($resource['end_date']);
       $resource['sub_resources'] = array();
-      foreach ($subResources as $subKey => $subResource) {
-        if($key == $subResource['parent_ref_id']){
-          $subResourceTmp['resource_id'] = $subResource['resource']['id'];
-          $subResourceTmp['configuration_id'] = $subResource['configuration']['id'];
-          $subResourceTmp['quantity'] = $subResource['quantity'];
-          $subResourceTmp['time_required'] = $subResource['time_required'];
-          $subResourceTmp['note'] = $subResource['note'];
-          $subResourceTmp['price_estimate'] = $subResource['price_estimate'];
-          array_push($resource['sub_resources'], $subResourceTmp);
-          unset($subResources[$subKey]);
+      if(isset($subResources)){
+       foreach ($subResources as $subKey => $subResource) {
+          if($key == $subResource['parent_ref_id']){
+            $subResourceTmp['resource_id'] = $subResource['resource']['id'];
+            $subResourceTmp['configuration_id'] = $subResource['configuration']['id'];
+            $subResourceTmp['quantity'] = $subResource['quantity'];
+            $subResourceTmp['time_required'] = $subResource['time_required'];
+            $subResourceTmp['note'] = $subResource['note'];
+            $subResourceTmp['price_estimate'] = $subResource['price_estimate'];
+            array_push($resource['sub_resources'], $subResourceTmp);
+            unset($subResources[$subKey]);
+          }
         }
       }
       array_push($resources,  $resource);
@@ -337,18 +339,17 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
         $values['booking_title'] = CRM_Utils_Array::value('title', $bookingInfo);
 
         CRM_Booking_BAO_Booking::recordContribution($values);
-        //make sure contribution activity added
-
       }
-
 
       $sendConfirmation = CRM_Utils_Array::value('send_conformation', $bookingInfo);
       if($sendConfirmation){
-        $values['from_email_address'] = CRM_Utils_Array::value('from_email_address', $bookingInfo);
+        //$session =& CRM_Core_Session::singleton( );
+        //$values['source_contact_id'] =$session->get( 'userID' ); // which is contact id of the user
+        $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address');
+        $values['from_email_address'] = CRM_Utils_Array::value(CRM_Utils_Array::value('from_email_address', $bookingInfo), $fromEmailAddress);
         $values['booking_id'] = CRM_Utils_Array::value('id', $bookingResult);
         $emailTo = CRM_Utils_Array::value('email_to', $bookingInfo);
         $contactIds = array();
-
         if($emailTo == 1){
           array_push($contactIds, CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo));
         }elseif ($emailTo == 2){
@@ -359,16 +360,11 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
         }
         foreach ($contactIds as $key => $cid) {
           $resturn = CRM_Booking_BAO_Booking::sendMail($cid, $values);
-          //log an activity if sending email
         }
-        exit;
+        //Finally add booking activity
+        CRM_Booking_BAO_Booking::createActivity(CRM_Utils_Array::value('id', $bookingResult));
       }
-
-      //Finally add booking activity
-
     }
-
-    exit;
 
     // user context
     $url = CRM_Utils_System::url('civicrm/booking/add',
