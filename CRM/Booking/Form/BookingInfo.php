@@ -30,10 +30,6 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     }
     $this->assign('currencySymbols', $currencySymbols);
 
-    $addSubResourcePage = $this->controller->exportValues('AddSubResource');
-
-    $totalAmount = $addSubResourcePage['total_price'];
-    $this->assign('totalAmount', $totalAmount);
     self::registerScripts();
   }
 
@@ -116,7 +112,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
 
     $this->addDate('receive_date', ts('Received'), FALSE, array('formatType' => 'activityDate'));
 
-    $this->add('text', 'total_amount', ts('Amount'));
+    $this->add('text', 'total_amount', ts('Amount'), array('disabled' => 'disabled'));
 
     $this->add('select', 'financial_type_id',
       ts('Financial Type'),
@@ -225,11 +221,18 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     return empty($errors) ? TRUE : $errors;
   }
 
+
+  function setDefaultValues() {
+    $defaults = parent::setDefaultValues();
+    $addSubResourcePage = $this->controller->exportValues('AddSubResource');
+    $defaults['total_amount'] = $addSubResourcePage['total_price'];
+    return $defaults;
+  }
+
   function postProcess() {
     $bookingInfo = $this->exportValues();
     $selectResource = $this->controller->exportValues('SelectResource');
     $addSubResoruce = $this->controller->exportValues('AddSubResource');
-
     $resourcesValue = json_decode($selectResource['resources'], true);
     $subResourcesValue = json_decode($addSubResoruce['sub_resources'], true);
     $subResources = $subResourcesValue['sub_resources'];
@@ -318,6 +321,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
         }else{
           $values['payment_contact'] =  CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo);
         }
+       
         $values['total_amount'] = round(CRM_Utils_Array::value('total_price', $addSubResoruce), 2);
         $values['booking_id'] = CRM_Utils_Array::value('id', $bookingResult);
         $values['receive_date'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('receive_date', $bookingInfo));
