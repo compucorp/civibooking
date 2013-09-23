@@ -120,7 +120,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       $this->addElement('checkbox', 'record_contribution', ts('Record Payment?'));
       $paymentContacts =  array('' => ts('- select -'),
                                 $this->_values['primary_contact_id'] => CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']));
-      if($this->_values['secondary_contact_id']){
+      if(isset($this->_values['secondary_contact_id'])){
         $paymentContacts[$this->_values['secondary_contact_id']] =  CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
       }
       $this->add('select', 'select_payment_contact', ts('Select contact'),
