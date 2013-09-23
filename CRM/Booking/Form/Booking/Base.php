@@ -189,11 +189,13 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         //TODO:: the instrument id return wrong value
         $defaults['payment_instrument_id'] = $contribution['instrument_id'];
         $defaults['contribution_status_id'] = $contribution['contribution_status_id'];
-
       }
-      $defaults['booking_status'] = $this->_values['status_id'];
+      if ($this->_action & CRM_Core_Action::CLOSE){
+        $defaults = $this->_values;
+      }
+      return $defaults;
+
     }
-    return $defaults;
   }
 
 }
