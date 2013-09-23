@@ -172,6 +172,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     if (($this->_action & CRM_Core_Action::DELETE) || ($this->_action & CRM_Core_Action::VIEW)) {
       return;
     }else{
+      $defaults = array();
       CRM_Booking_BAO_Payment::retrieve($params = array('booking_id' => $this->_id), $payment);
       if(!empty($payment) && isset($payment['contribution_id'])){ //payment exist
         $defaults['record_contribution'] = 1;
