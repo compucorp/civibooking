@@ -268,7 +268,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'title' => ts('Status ID') ,
           'required' => true,
           'pseudoconstant' => array(
-            'optionGroupName' => 'booking_booking_status',
+            'optionGroupName' => 'booking_status',
           )
         ) ,
         'booking_event_date' => array(

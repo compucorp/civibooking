@@ -79,7 +79,7 @@
     <comment>The status associated with this booking. Implicit FK to option_value row in booking status option_group.</comment>
     <add>4.4</add>
     <pseudoconstant>
-      <optionGroupName>booking_booking_status</optionGroupName>
+      <optionGroupName>booking_status</optionGroupName>
     </pseudoconstant>
   </field>
 
