@@ -65,21 +65,21 @@
         {$row.booking_created_date}
     </td>
     <td class="crm-booking-associated-contact">
-        {$row.booking_associated_contact}
+        {$row.booking_associated_contact_sort_name}
     </td>
 
     <td class="crm-booking-event_date">
         {$row.booking_event_date}
     </td>
-    <td class="crm-booking-price">
-        {$row.booking_price}
+    <td class="crm-booking-total_amount">
+        {$row.booking_total_amount}
     </td>
      <td class="crm-booking-status">
         {$row.booking_status}
     </td>
 
     <td class="crm-booking-payment-status">
-        {$row.payment_status}
+        {$row.booking_payment_status}
     </td>
 
     <td>{$row.action|replace:'xx':$row.booking_id}</td>
