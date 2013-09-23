@@ -118,6 +118,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
              civicrm_booking_slot.booking_id,
              civicrm_booking_slot.resource_id,
              civicrm_booking_slot.config_id,
+             civicrm_booking_slot.quantity,
              civicrm_booking_slot.start,
              civicrm_booking_slot.end,
              civicrm_booking_slot.note

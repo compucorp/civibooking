@@ -119,6 +119,7 @@ class CRM_Booking_BAO_SubSlot extends CRM_Booking_DAO_SubSlot {
              civicrm_booking_sub_slot.slot_id,
              civicrm_booking_sub_slot.resource_id,
              civicrm_booking_sub_slot.config_id,
+             civicrm_booking_sub_slot.quantity,
              civicrm_booking_sub_slot.time_required,
              civicrm_booking_sub_slot.note
       FROM civicrm_booking_sub_slot
