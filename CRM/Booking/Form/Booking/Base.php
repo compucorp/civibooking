@@ -62,6 +62,9 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     if (empty($this->_values)) {
       CRM_Core_Error::statusBounce(ts('The requested booking record does not exist (possibly the record was deleted).'));
     }
+    //ResoveDefault
+    CRM_Booking_BAO_Booking::resolveDefaults($this->_values);
+
 
   }
 
