@@ -279,6 +279,51 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
   }
 
 
+   /**
+   * Get the values for pseudoconstants for name->value and reverse.
+   *
+   * @param array   $defaults (reference) the default values, some of which need to be resolved.
+   * @param boolean $reverse  true if we want to resolve the values in the reverse direction (value -> name)
+   *
+   * @return void
+   * @access public
+   * @static
+   */
+  static function resolveDefaults(&$defaults, $reverse = FALSE) {
+    self::lookupValue($defaults, 'status', CRM_Booking_BAO_Booking::buildOptions('status_id', 'create'), $reverse);
+    self::lookupValue($defaults, 'payment_status',CRM_Booking_BAO_Booking::buildOptions('payment_status_id', 'create'), $reverse);
+  }
+
+  /**
+   * This function is used to convert associative array names to values
+   * and vice-versa.
+   *
+   * This function is used by both the web form layer and the api. Note that
+   * the api needs the name => value conversion, also the view layer typically
+   * requires value => name conversion
+   */
+  static function lookupValue(&$defaults, $property, &$lookup, $reverse) {
+    $id = $property . '_id';
+
+    $src = $reverse ? $property : $id;
+    $dst = $reverse ? $id : $property;
+
+    if (!array_key_exists($src, $defaults)) {
+      return FALSE;
+    }
+
+    $look = $reverse ? array_flip($lookup) : $lookup;
+
+    if (is_array($look)) {
+      if (!array_key_exists($defaults[$src], $look)) {
+        return FALSE;
+      }
+    }
+    $defaults[$dst] = $look[$defaults[$src]];
+    return TRUE;
+  }
+
+
   /**
    * Get the exportable fields for Booking
    *
