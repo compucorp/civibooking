@@ -102,6 +102,16 @@
     <uniqueName>booking_po_number</uniqueName>
   </field>
 
+   <field>
+    <name>total_amount</name>
+    <title>Total amount</title>
+    <type>decimal</type>
+    <required>true</required>
+    <import>true</import>
+    <export>true</export>
+    <comment>Total amount of this booking calculated from slots,sub slots, ad-hoc charges and discount amount</comment>
+  </field>
+
 
   <field>
     <name>description</name>

@@ -127,6 +127,12 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
    */
   public $po_number;
   /**
+   * Total amount of this booking calculated from slots,sub slots, ad-hoc charges and discount amount
+   *
+   * @var float
+   */
+  public $total_amount;
+  /**
    *
    * @var string
    */
@@ -289,6 +295,17 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'headerPattern' => '',
           'dataPattern' => '',
         ) ,
+        'total_amount' => array(
+          'name' => 'total_amount',
+          'type' => CRM_Utils_Type::T_MONEY,
+          'title' => ts('Total amount') ,
+          'required' => true,
+          'import' => true,
+          'where' => 'civicrm_booking.total_amount',
+          'headerPattern' => '',
+          'dataPattern' => '',
+          'export' => true,
+        ) ,
         'description' => array(
           'name' => 'description',
           'type' => CRM_Utils_Type::T_STRING,
@@ -390,6 +407,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'status_id' => 'status_id',
         'event_date' => 'booking_event_date',
         'po_number' => 'booking_po_number',
+        'total_amount' => 'total_amount',
         'description' => 'description',
         'notes' => 'notes',
         'adhoc_charges_note' => 'adhoc_charges_note',

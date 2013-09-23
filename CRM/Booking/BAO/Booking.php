@@ -321,6 +321,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     );
     self::retrieve($params = array('id' => $id), $booking);
     $bookingAmount['discount_amount'] = CRM_Utils_Array::value('discount_amount', $booking);
+    $bookingAmount['total_amount'] = CRM_Utils_Array::value('total_amount', $booking);
     $slots = CRM_Booking_BAO_Slot::getBookingSlot($id);
     $subSlots = array();
     foreach ($slots as $key => $slot) {
@@ -332,6 +333,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     $adhocCharges = CRM_Booking_BAO_AdhocCharges::getBookingAdhocCharges($id);
     CRM_Booking_BAO_Payment::retrieve($params = array('booking_id' => $id), $payment);
     if(!empty($payment) && isset($payment['contribution_id'])){ // contribution exit so get all price from line item
+      /*
       $params = array(
         'version' => 3,
         'id' => $payment['contribution_id'],
@@ -339,6 +341,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       $result = civicrm_api('Contribution', 'get', $params);
       $contribution = CRM_Utils_Array::value($payment['contribution_id'], $result['values'] );
       $bookingAmount['total_amount']  = CRM_Utils_Array::value('total_amount', $contribution);
+      */
       foreach ($slots as $slotId => $slot) {
         $params = array(
           'version' => 3,
@@ -384,7 +387,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         );
         $bookingAmount['adhoc_charges_fees'] += ($price * CRM_Utils_Array::value('quantity', $charges));
       }
-      $bookingAmount['total_amount'] = ($bookingAmount['resource_fees'] + $bookingAmount['sub_resource_fees'] + $bookingAmount['adhoc_charges_fees']) - $bookingAmount['discount_amount'];
     }
     return $bookingAmount;
   }
@@ -400,6 +402,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     );
     return $price * $qty;
   }
+
+
   /**
    * Process that send e-mails
    *
