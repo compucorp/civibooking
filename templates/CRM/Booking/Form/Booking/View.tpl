@@ -59,7 +59,7 @@
       </tr>
       <tr class="crm-bookingview-form-block-associated-contact">
         <td class="label">{ts}Associated Contact{/ts}</td><td>
-          {$secondary_contact_id}
+          {$secondaryContactDisplayName}
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-date-made">
@@ -69,7 +69,7 @@
       </tr>
       <tr class="crm-bookingview-form-block-event-date">
         <td class="label">{ts}Event Date{/ts}</td><td>
-
+          {$event_date}
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-po-no">
@@ -79,7 +79,7 @@
       </tr>
        <tr class="crm-bookingview-form-block-price">
         <td class="label">{ts}Price{/ts}</td><td>
-          {$price}
+          {$total_amount}
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-booking_status">
@@ -131,8 +131,8 @@
 
       {foreach from=$slots item=slot}
       <tr class="{cycle values="odd-row,even-row"}">
-        <td>{$slot.resource_id}</td>
-        <td>{$slot.config_id}</td>
+        <td>{$slot.resource_label}</td>
+        <td>{$slot.config_label}</td>
         <td>{$slot.start}</td>
         <td>{$slot.end}</td>
         <td>{$slot.note}</td>
@@ -152,10 +152,10 @@
             </thead>
             {foreach from=$slot.sub_slots item=subSlot}
             <tr class="{cycle values="odd-row,even-row"}">
-              <td>{$subSlot.resource_id}</td>
-              <td>{$subSlot.config_id}</td>
-              <td>{$slot.time_required}</td>
-              <td>{$slot.note}</td>
+              <td>{$subSlot.resource_label}</td>
+              <td>{$subSlot.config_label}</td>
+              <td>{$subSlot.time_required}</td>
+              <td>{$subSlot.note}</td>
             </tr>
             {/foreach}
         </table>
