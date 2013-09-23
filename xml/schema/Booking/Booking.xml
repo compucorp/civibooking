@@ -121,7 +121,7 @@
 
 
   <field>
-    <name>notes</name>
+    <name>note</name>
     <type>text</type>
   </field>
 

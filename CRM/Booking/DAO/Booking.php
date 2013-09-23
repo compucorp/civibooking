@@ -141,7 +141,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
    *
    * @var text
    */
-  public $notes;
+  public $note;
   /**
    *
    * @var text
@@ -313,10 +313,10 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
-        'notes' => array(
-          'name' => 'notes',
+        'note' => array(
+          'name' => 'note',
           'type' => CRM_Utils_Type::T_TEXT,
-          'title' => ts('Notes') ,
+          'title' => ts('Note') ,
         ) ,
         'adhoc_charges_note' => array(
           'name' => 'adhoc_charges_note',
@@ -409,7 +409,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'po_number' => 'booking_po_number',
         'total_amount' => 'total_amount',
         'description' => 'description',
-        'notes' => 'notes',
+        'note' => 'note',
         'adhoc_charges_note' => 'adhoc_charges_note',
         'participants_estimate' => 'participants_estimate',
         'participants_actual' => 'participants_actual',
