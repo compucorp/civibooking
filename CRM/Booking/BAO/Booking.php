@@ -448,6 +448,31 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     return $price * $qty;
   }
 
+  static function createActivity($bookingID){
+    //$session =& CRM_Core_Session::singleton( );
+    //$userId = $session->get( 'userID' ); // which is contact id of the user
+    self::retrieve($params = array('id' => $bookingID), $booking);
+
+    $params = array(
+      'version' => 3,
+      'option_group_name' => 'activity_type',
+      'name' => 'booking_acivity_booking',
+    );
+    $optionValue = civicrm_api('OptionValue', 'get', $params);
+    $activityTypeId = $optionValue['values'][$optionValue['id']]['value'];
+    $params = array(
+      'version' => 3,
+      /*'source_contact_id' => $userId,*/ //api should pick the loggin id automatically
+      'activity_type_id' => $activityTypeId,
+      'subject' =>  CRM_Utils_Array::value('title', $booking),
+      'activity_date_time' => date('YmdHis'),
+      'target_contact_id' => CRM_Utils_Array::value('primary_contact_id', $booking),
+      'status_id' => 2,
+      'priority_id' => 1,
+    );
+    $result = civicrm_api('Activity', 'create', $params);
+  }
+
 
   /**
    * Process that send e-mails
@@ -456,6 +481,9 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
    * @access public
    */
   static function sendMail($contactID, &$values, $isTest = FALSE, $returnMessageText = FALSE) {
+
+    //TODO:: check if from email address is entered
+    $config = CRM_Booking_BAO_BookingConfig::getConfig();
 
     $template = CRM_Core_Smarty::singleton();
 
@@ -468,7 +496,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         'email' => $email,
         //TODO:: build the booking tpl
       );
-      dpr($contactID);
+
       $sendTemplateParams = array(
         'groupName' => 'msg_tpl_workflow_booking',
         'valueName' => 'booking_offline_receipt',
@@ -490,29 +518,47 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         }
       }
 
+      $sendTemplateParams['from'] =  $values['from_email_address'];
+      $sendTemplateParams['toName'] = $displayName;
+      $sendTemplateParams['toEmail'] = $email;
+      //$sendTemplateParams['autoSubmitted'] = TRUE;
+      $cc = CRM_Utils_Array::value('cc_email_address', $config);
+      if($cc){
+        $sendTemplateParams['cc'] = $cc;
+      }
+      $bcc = CRM_Utils_Array::value('bcc_email_address', $config);
+      if($bcc){
+        $sendTemplateParams['bcc'] = $bcc;
+      }
+     list($sent, $subject, $message, $html)  = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
+     if($sent & CRM_Utils_Array::value('log_confirmation_email', $config)){
+        $params = array(
+          'version' => 3,
+          'option_group_name' => 'activity_type',
+          'name' => 'Email',
+        );
+        $optionValue = civicrm_api('OptionValue', 'get', $params);
+        $activityTypeId = $optionValue['values'][$optionValue['id']]['value'];
+        $params = array(
+          'version' => 3,
+          /*'source_contact_id' => $values['source_contact_id'],*/
+          'activity_type_id' => $activityTypeId,
+          'subject' => ts('Booking Confirmation Email'),
+          'activity_date_time' => date('YmdHis'),
+          'target_contact_id' => $contactID,
+          'status_id' => 2,
+          'priority_id' => 1,
+        );
+        $result = civicrm_api('Activity', 'create', $params);
+     }
+
      if ($returnMessageText) {
-        list($sent, $subject, $message, $html) = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
-          return array(
+        return array(
             'subject' => $subject,
             'body' => $message,
             'to' => $displayName,
             'html' => $html,
         );
-      }
-      else {
-        dpr($email);
-        //TODO: get from email from the system
-        $sendTemplateParams['from'] = "erawat.chamanont@compucorp.co.uk". " <Erawat Chamanont>";
-        $sendTemplateParams['toName'] = $displayName;
-        $sendTemplateParams['toEmail'] = $email;
-        //$sendTemplateParams['autoSubmitted'] = TRUE;
-        //TODO:: get cc email from the system;
-       // $sendTemplateParams['cc'] = CRM_Utils_Array::value('cc_confirm', 'cc@ccc');
-        //TODO:: add bcc email
-        //$sendTemplateParams['bcc'] = CRM_Utils_Array::value('bcc_confirm', 'bcc@bcc');
-        CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
-
-      }
-
+     }
   }
 }
