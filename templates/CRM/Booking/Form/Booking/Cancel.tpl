@@ -1,4 +1,5 @@
 <h3>{ts}Cancel Booking?{/ts}</h3>
+<div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="top"}</div>
 <div class="crm-form-block crm-cancel-booking-form-block">
   <div class="crm-section">
     <div class="label">{$form.event_date.label}</div>
