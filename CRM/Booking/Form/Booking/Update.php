@@ -47,6 +47,7 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
    */
   public function preProcess() {
     parent::preProcess();
+    $this->assign('booking', $this->_values);
   }
 
   /**
@@ -57,13 +58,6 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
    */
   public function buildQuickForm() {
     parent::buildQuickForm();
-
-    $status =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
-    $paymentStatus =  CRM_Booking_BAO_Booking::buildOptions('payment_status_id', 'create');
-
-    $this->_values['status'] =  CRM_Utils_Array::value(CRM_Utils_Array::value('status_id', $this->_values ), $status);
-    $this->_values['payment_status'] =  CRM_Utils_Array::value(CRM_Utils_Array::value('payment_status_id', $this->_values ), $paymentStatus);
-    $this->assign('booking', $this->_values);
 
     $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
     $this->add('select', 'booking_status', ts('Booking status'),
@@ -77,7 +71,26 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
 
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
+    $defaults['booking_status'] = $this->_values['status_id'];
     return $defaults;
+  }
+
+
+  function postProcess(){
+    CRM_Utils_System::flushCache();
+    if ($this->_action & CRM_Core_Action::DELETE) {
+      CRM_Booking_BAO_Booking::del($this->_id);
+      CRM_Core_Session::setStatus(ts('Selected booking has been deleted.'), ts('Record Deleted'), 'success');
+    }
+    else {
+      $values = $this->exportValues();
+      $params['id'] = $this->_id;
+      $params['status_id'] = $values['booking_status'];
+      $booking = CRM_Booking_BAO_Booking::add($params);
+      CRM_Core_Session::setStatus(ts('The booking \'%1\' has been saved.', array(1 => $booking->id)), ts('Saved'), 'success');
+
+    }
+
   }
 
 }
