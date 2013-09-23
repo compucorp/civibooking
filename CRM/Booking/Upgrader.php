@@ -18,7 +18,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
       'label' =>  'Booking',
       'name' => 'booking_acivity_booking',
       'weight' => 1,
-      'is_active' => 0,
+      'is_active' => 1,
       'is_reserved' => 1
     );
     $result = civicrm_api('ActivityType', 'create', $params);
