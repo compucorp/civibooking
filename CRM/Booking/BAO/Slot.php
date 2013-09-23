@@ -134,6 +134,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
         'booking_id' => $dao->booking_id,
         'resource_id' => $dao->resource_id,
         'config_id' => $dao->config_id,
+        'quantity' => $dao->quantity,
         'start' => $dao->start,
         'end' => $dao->end,
         'note' => $dao->note,
