@@ -70,9 +70,9 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     'booking_title',
     'booking_status',
     'booking_payment_status',
-    'booking_price',
+    'booking_total_amount',
     'booking_event_date',
-    'booking_associated_contact',
+    'booking_associated_contact_sort_name',
     'booking_created_date',
   );
 
@@ -345,7 +345,6 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
           )
         );
       }
-
       $rows[] = $row;
     }
 
@@ -398,7 +397,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
         ),
         array(
           'name' => ts('Price'),
-          'sort' => 'booking_price',
+          'sort' => 'booking_total_amount',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
 

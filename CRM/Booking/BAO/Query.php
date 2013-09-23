@@ -56,7 +56,6 @@ class CRM_Booking_BAO_Query {
       $query->_element['booking_id'] = 1;
       $query->_tables['civicrm_booking'] = $query->_whereTables['civicrm_booking'] = 1;
 
-           //add status and status_id
       if (CRM_Utils_Array::value('booking_status', $query->_returnProperties) ||
         CRM_Utils_Array::value('booking_status_id', $query->_returnProperties)
       ) {
@@ -70,8 +69,6 @@ class CRM_Booking_BAO_Query {
         $query->_whereTables['booking_status'] = 1;
       }
 
-
-           //add status and status_id
       if (CRM_Utils_Array::value('booking_payment_status', $query->_returnProperties) ||
         CRM_Utils_Array::value('booking_payment_status_id', $query->_returnProperties)
       ) {
@@ -97,40 +94,25 @@ class CRM_Booking_BAO_Query {
         $query->_element['booking_created_date'] = 1;
       }
 
-      //lookup price from contribution
-      if (CRM_Utils_Array::value('booking_price', $query->_returnProperties)) {
-        /*
-        $query->_select['booking_price'] = "civicrm_booking.price as booking_price";
-        $query->_element['booking_price'] = 1;
-        $query->_tables['civicrm_booking'] = 1;
-        $query->_tables['booking_price'] = 1;
-        $query->_whereTables['civicrm_booking'] = 1;
-        $query->_whereTables['booking_price'] = 1;*/
+      if (CRM_Utils_Array::value('booking_total_amount', $query->_returnProperties)) {
+        $query->_select['booking_total_amount'] = "civicrm_booking.total_amount as booking_total_amount";
+        $query->_element['booking_total_amount'] = 1;
       }
-
 
       if (CRM_Utils_Array::value('booking_event_date', $query->_returnProperties)) {
-        //FIXME - Add event date to the database
-        /*
         $query->_select['booking_event_date'] = "civicrm_booking.event_date as booking_event_date";
         $query->_element['booking_event_date'] = 1;
-        */
       }
-
-       //lookup price from contribution
       if (CRM_Utils_Array::value('booking_associated_contact', $query->_returnProperties)) {
         $query->_select['booking_associated_contact'] = "civicrm_booking.secondary_contact_id as booking_associated_contact_id";
         $query->_select['booking_associated_contact_id'] = "booking_associated_contact.sort_name as booking_associated_contact_sort_name";
         $query->_element['booking_associated_contact'] = 1;
         $query->_element['booking_associated_contact_id'] = 1;
-        $query->_tables['civicrm_booking'] = 1;
+        $query->_tables['civicrm_contact'] = 1;
         $query->_tables['booking_associated_contact'] = 1;
-        $query->_whereTables['civicrm_booking'] = 1;
+        $query->_whereTables['civicrm_contact'] = 1;
         $query->_whereTables['booking_associated_contact'] = 1;
       }
-
-
-
     }
   }
 
@@ -167,19 +149,13 @@ class CRM_Booking_BAO_Query {
         $from = " $side JOIN civicrm_option_group option_group_booking_status ON (option_group_booking_status.name = 'booking_booking_status')";
         $from .= " $side JOIN civicrm_option_value booking_status ON (civicrm_booking.status_id = booking_status.value AND option_group_booking_status.id = booking_status.option_group_id ) ";
         break;
-      //TODO JOIN booking payment
       case 'booking_payment_status':
-        $from .= "";
-        break;
-
-       //TODO JOIN booking price
-      case 'booking_price':
-        $from .= " ";
+            $from = " $side JOIN civicrm_option_group option_group_booking_payment ON (option_group_booking_payment.name = 'contribution_status')";
+        $from .= " $side JOIN civicrm_option_value booking_payment_status ON (civicrm_booking.payment_status_id = booking_payment_status.value AND option_group_booking_payment.id = booking_payment_status.option_group_id ) ";
         break;
       case 'booking_associated_contact':
-        //$from = " $side JOIN civicrm_contact booking_associated_contact ON (booking_associated_contact.id = civicrm_booking.secondary_contact_id)";
+        $from = " $side JOIN civicrm_contact booking_associated_contact ON (booking_associated_contact.id = civicrm_booking.secondary_contact_id)";
         break;
-
     }
     return $from;
   }
@@ -204,10 +180,11 @@ class CRM_Booking_BAO_Query {
         'display_name' => 1,
         'booking_title' => 1,
         'booking_status_id' => 1,
-        /*'booking_payment_status' => 1,
-        'booking_price' => 1,
+        'booking_payment_status_id' => 1,
+        'booking_created_date' => 1,
+        'booking_total_amount' => 1,
         'booking_event_date' => 1,
-        'booking_associated_contact' => 1,*/
+        'booking_associated_contact' => 1,
       );
     }
 
