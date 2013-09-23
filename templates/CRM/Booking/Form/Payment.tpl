@@ -8,8 +8,8 @@
     <div class="content">{$form.select_payment_contact.html}</div>
   </div>
   <div class="crm-section">
-    <div class="label">{ts}Amount{/ts}</div>
-    <div class="content">{$currencySymbols}{$totalAmount} <br/>
+    <div class="label">{$form.total_amount.label}</div>
+    <div class="content">{$currencySymbols}{$form.total_amount.html} <br/>
       <span class="description"> {ts}Booking payment amount. A contribution record will be created for this amount.{/ts} </span>
     </div>
   </div>
@@ -35,4 +35,32 @@
     <div class="label">{$form.contribution_status_id.label}</div>
     <div class="content">{$form.contribution_status_id.html}</div>
   </div>
+  <div class="crm-section">
+    <div class="label">{$form.send_email_receipt.label}</div>
+    <div class="content">{$form.send_email_receipt.html}</div>
+</div>
 </fieldset>
+{literal}
+<script type="text/javascript">
+cj(function($) {
+
+  $('#record_contribution').change(function() {
+    if($(this).is(":checked")){
+     $('#payment-detail').show();
+    }else{
+     $('#payment-detail').hide();
+    }
+  });
+
+  function loadPaymentDetail(){
+    var input = $( "input[name='record_contribution']" );
+    if(input.is(":checked")){
+      $('#payment-detail').show();
+    }
+  }
+  $(document).ready(loadPaymentDetail);
+
+});
+</script>
+{/literal}
+

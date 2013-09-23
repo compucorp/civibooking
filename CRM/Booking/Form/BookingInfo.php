@@ -116,8 +116,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
 
     $this->addDate('receive_date', ts('Received'), FALSE, array('formatType' => 'activityDate'));
 
-
-    $this->assign('amount', 300);
+    $this->add('text', 'total_amount', ts('Amount'));
 
     $this->add('select', 'financial_type_id',
       ts('Financial Type'),
@@ -330,6 +329,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
         $values['booking_title'] = CRM_Utils_Array::value('title', $bookingInfo);
 
         CRM_Booking_BAO_Booking::recordContribution($values);
+        //make sure contribution activity added
 
       }
 
@@ -350,10 +350,13 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
           array_push($contactIds, CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo));
         }
         foreach ($contactIds as $key => $cid) {
-          CRM_Booking_BAO_Booking::sendMail($cid, $values);
+          $resturn = CRM_Booking_BAO_Booking::sendMail($cid, $values);
+          //log an activity if sending email
         }
         exit;
       }
+
+      //Finally add booking activity
 
     }
 
