@@ -35,6 +35,7 @@ CREATE TABLE `civicrm_booking_adhoc_charges_item` (
 
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
+
 -- /*******************************************************
 -- *
 -- * civicrm_booking
@@ -50,6 +51,7 @@ CREATE TABLE `civicrm_booking` (
      `status_id` int unsigned NOT NULL   COMMENT 'The status associated with this booking. Implicit FK to option_value row in booking status option_group.',
      `event_date` datetime NOT NULL   ,
      `po_number` varchar(255) NOT NULL   ,
+     `total_amount` decimal(20,2) NOT NULL   COMMENT 'Total amount of this booking calculated from slots,sub slots, ad-hoc charges and discount amount',
      `description` varchar(255)    ,
      `notes` text    ,
      `adhoc_charges_note` text    ,
@@ -71,7 +73,6 @@ CREATE TABLE `civicrm_booking` (
 
 ,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
-
 -- /*******************************************************
 -- *
 -- * civicrm_booking_config
