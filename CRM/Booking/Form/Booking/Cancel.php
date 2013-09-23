@@ -93,7 +93,11 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
 
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
-    list($resourceFees, $subResourceFees, $adhocCharges, $totalAmount) = CRM_Booking_BAO_Booking::getBookingAmount($this->_id);
+    $bookingAmount = CRM_Booking_BAO_Booking::getBookingAmount($this->_id);
+    $defaults['resource_fee'] = CRM_Utils_Array::value('resource_fees', $bookingAmount);
+    $defaults['sub_resource_fee'] = CRM_Utils_Array::value('sub_resource_fees', $bookingAmount);
+    $defaults['adhoc_charges'] = CRM_Utils_Array::value('adhoc_charges_fees', $bookingAmount);
+    $defaults['booking_total'] = CRM_Utils_Array::value('total_amount', $bookingAmount);
     return $defaults;
   }
 
