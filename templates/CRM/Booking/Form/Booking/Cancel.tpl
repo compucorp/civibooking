@@ -21,6 +21,10 @@
     <div class="label">{$form.adhoc_charges.label}</div>
     <div class="content">{$form.adhoc_charges.html}</div>
   </div>
+   <div class="crm-section">
+    <div class="label">{$form.discount_amount.label}</div>
+    <div class="content">{$form.discount_amount.html}</div>
+  </div>
   <div class="crm-section">
     <div class="label">{$form.booking_total.label}</div>
     <div class="content">{$form.booking_total.html}</div>
@@ -32,10 +36,6 @@
   <div class="crm-section">
     <div class="label">{$form.cancellation_charge.label}</div>
     <div class="content">{$form.cancellation_charge.html}</div>
-  </div>
-  <div class="crm-section">
-    <div class="label">{$form.resource_fee.label}</div>
-    <div class="content">{$form.resource_fee.html}</div>
   </div>
    <div class="crm-section">
     <div class="label">{$form.adjustment.label}</div>
