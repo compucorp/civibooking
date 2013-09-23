@@ -117,11 +117,12 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       return;
     }else{
 
-      $this->addElement('checkbox', 'record_contribution', ts('Record Booking Payment?'));
-
+      $this->addElement('checkbox', 'record_contribution', ts('Record Payment?'));
       $paymentContacts =  array('' => ts('- select -'),
-                                '1' => ts('Primary contact'),
-                                '2' => ts('Secondary contact'));
+                                $this->_values['primary_contact_id'] => CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']));
+      if($this->_values['secondary_contact_id']){
+        $paymentContacts[$this->_values['secondary_contact_id']] =  CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
+      }
       $this->add('select', 'select_payment_contact', ts('Select contact'),
         $paymentContacts, FALSE,
         array(
@@ -129,11 +130,9 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         )
       );
 
-
       $this->addDate('receive_date', ts('Received'), FALSE, array('formatType' => 'activityDate'));
 
-
-      $this->assign('amount', 300);
+      $this->add('text', 'total_amount', ts('Amount'), array( 'disabled' => 'disabled' ));
 
       $this->add('select', 'financial_type_id',
         ts('Financial Type'),
@@ -155,10 +154,47 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           FALSE,
           array()
       );
+
+      $this->addElement('checkbox', 'send_email_receipt', ts('Send email receipt?'));
+
     }
-
-
-
   }
+
+   /**
+   * This function sets the default values for the form. that in edit mode
+   * the default values are retrieved from the database
+   *
+   * @access public
+   *
+   * @return None
+   */
+  function setDefaultValues() {
+    if (($this->_action & CRM_Core_Action::DELETE) || ($this->_action & CRM_Core_Action::VIEW)) {
+      return;
+    }else{
+      CRM_Booking_BAO_Payment::retrieve($params = array('booking_id' => $this->_id), $payment);
+      if(!empty($payment) && isset($payment['contribution_id'])){ //payment exist
+        $defaults['record_contribution'] = 1;
+        $params = array(
+          'version' => 3,
+          'id' => $payment['contribution_id'],
+        );
+        $result = civicrm_api('Contribution', 'get', $params);
+        $contribution = CRM_Utils_Array::value($payment['contribution_id'], $result['values'] );
+        $defaults['select_payment_contact'] = $contribution['contact_id'];
+        //$defaults['receive_date'] = $contribution['receive_date']; //fixed received date
+        $defaults['total_amount'] = $contribution['total_amount'];
+        $defaults['trxn_id'] = $contribution['trxn_id'];
+        $defaults['financial_type_id'] = $contribution['financial_type_id'];
+        //TODO:: the instrument id return wrong value
+        $defaults['payment_instrument_id'] = $contribution['instrument_id'];
+        $defaults['contribution_status_id'] = $contribution['contribution_status_id'];
+
+      }
+      $defaults['booking_status'] = $this->_values['status_id'];
+    }
+    return $defaults;
+  }
+
 }
 
