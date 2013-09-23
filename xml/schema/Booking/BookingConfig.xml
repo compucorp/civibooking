@@ -56,7 +56,7 @@
   </field>
 
   <field>
-    <name>slot_avaliable_colour</name>
+    <name>slot_new_colour</name>
     <type>varchar</type>
     <length>10</length>
   </field>
@@ -68,10 +68,17 @@
   </field>
 
   <field>
-    <name>slot_reserved_colour</name>
+    <name>slot_provisional_colour</name>
     <type>varchar</type>
     <length>10</length>
   </field>
+
+ <field>
+    <name>slot_being_edited_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+
 
 
 </table>

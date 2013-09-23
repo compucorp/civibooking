@@ -128,7 +128,7 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    *
    * @var string
    */
-  public $slot_avaliable_colour;
+  public $slot_new_colour;
   /**
    *
    * @var string
@@ -138,7 +138,12 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    *
    * @var string
    */
-  public $slot_reserved_colour;
+  public $slot_provisional_colour;
+  /**
+   *
+   * @var string
+   */
+  public $slot_being_edited_colour;
   /**
    * class constructor
    *
@@ -201,10 +206,10 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
-        'slot_avaliable_colour' => array(
-          'name' => 'slot_avaliable_colour',
+        'slot_new_colour' => array(
+          'name' => 'slot_new_colour',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Slot Avaliable Colour') ,
+          'title' => ts('Slot New Colour') ,
           'maxlength' => 10,
           'size' => CRM_Utils_Type::TWELVE,
         ) ,
@@ -215,10 +220,17 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'maxlength' => 10,
           'size' => CRM_Utils_Type::TWELVE,
         ) ,
-        'slot_reserved_colour' => array(
-          'name' => 'slot_reserved_colour',
+        'slot_provisional_colour' => array(
+          'name' => 'slot_provisional_colour',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Slot Reserved Colour') ,
+          'title' => ts('Slot Provisional Colour') ,
+          'maxlength' => 10,
+          'size' => CRM_Utils_Type::TWELVE,
+        ) ,
+        'slot_being_edited_colour' => array(
+          'name' => 'slot_being_edited_colour',
+          'type' => CRM_Utils_Type::T_STRING,
+          'title' => ts('Slot Being Edited Colour') ,
           'maxlength' => 10,
           'size' => CRM_Utils_Type::TWELVE,
         ) ,
@@ -244,9 +256,10 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
         'log_confirmation_email' => 'log_confirmation_email',
         'cc_email_address' => 'cc_email_address',
         'bcc_email_address' => 'bcc_email_address',
-        'slot_avaliable_colour' => 'slot_avaliable_colour',
+        'slot_new_colour' => 'slot_new_colour',
         'slot_booked_colour' => 'slot_booked_colour',
-        'slot_reserved_colour' => 'slot_reserved_colour',
+        'slot_provisional_colour' => 'slot_provisional_colour',
+        'slot_being_edited_colour' => 'slot_being_edited_colour',
       );
     }
     return self::$_fieldKeys;
