@@ -48,12 +48,35 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
   public function preProcess() {
     parent::preProcess();
 
-    //TODO:: Implement resolveDefaults, see how participant works
-    //CRM_Booking_BAO_Booking::resolveDefaults($values[$bookingID]);
-    //GET Slot
     $slots = CRM_Booking_BAO_Slot::getBookingSlot($this->_id);
     foreach ($slots as $key => $slot) {
-      $slots[$key]['sub_slots'] = CRM_Booking_BAO_SubSlot::getSubSlotSlot($key);
+      //Quite expensive
+      $slots[$key]['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource',
+        $slot['resource_id'],
+        'label',
+        'id'
+      );
+      $slots[$key]['config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
+        $slot['config_id'],
+        'label',
+        'id'
+      );
+      $subSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($key);
+      foreach ($subSlots as $key => $subSlot) {
+        $subSlots[$key]['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource',
+          $subSlot['resource_id'],
+          'label',
+          'id'
+        );
+        $subSlots[$key]['config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
+          $subSlot['config_id'],
+          'label',
+          'id'
+        );
+      }
+
+      $slots[$key]['sub_slots'] = $subSlots;
+
     }
 
     $this->_values['slots'] = $slots;
@@ -61,8 +84,10 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
     $this->assign($this->_values);
 
     $displayName = CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']);
+    $secondaryContactDisplayName = CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
 
     $this->assign('displayName', $displayName);
+    $this->assign('secondaryContactDisplayName',$secondaryContactDisplayName );
     $this->assign('contact_id', $this->_cid);
     // omitting contactImage from title for now since the summary overlay css doesn't work outside of our crm-container
     CRM_Utils_System::setTitle(ts('View Booking for') .  ' ' . $displayName);
