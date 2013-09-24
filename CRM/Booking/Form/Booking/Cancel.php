@@ -98,9 +98,6 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
   }
 
 
-
-
-
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
     $bookingAmount = CRM_Booking_BAO_Booking::getBookingAmount($this->_id);
