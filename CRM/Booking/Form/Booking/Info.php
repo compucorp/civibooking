@@ -160,18 +160,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['participants_estimate'] = CRM_Utils_Array::value('enp', $bookingInfo);
     $booking['participants_actual'] = CRM_Utils_Array::value('fnp', $bookingInfo);
 
-    $recordContribution = CRM_Utils_Array::value('record_contribution', $bookingInfo);
-    if(!$recordContribution){
-       //FIXED ME: Get default contribution status or pending from option value
-      //Note hard code
-      $booking['payment_status_id'] = 2;
-
-    }else{
-
-      $booking['payment_status_id'] = CRM_Utils_Array::value('contribution_status_id', $bookingInfo);
-
-    }
-
     $now  = date('YmdHis');
     $session =& CRM_Core_Session::singleton( );
     $booking['created_by'] =  $session->get( 'userID' );
@@ -183,65 +171,20 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['validate'] = FALSE; //Make sure we ignore slot validation
 
     $bookingResult = civicrm_api('Booking', 'Create', $booking);
-
-    if(CRM_Utils_Array::value('id', $bookingResult)){
-      if($recordContribution){
-        $values = array();
-        if(CRM_Utils_Array::value('select_payment_contact', $bookingInfo) == 1){
-          $values['payment_contact'] =  CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
-        }else{
-          $values['payment_contact'] =  CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo);
-        }
-
-        $values['total_amount'] = round(CRM_Utils_Array::value('total_price', $addSubResoruce), 2);
-        $values['booking_id'] = CRM_Utils_Array::value('id', $bookingResult);
-        $values['receive_date'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('receive_date', $bookingInfo));
-        $values['financial_type_id'] = CRM_Utils_Array::value('financial_type_id', $bookingInfo);
-        $values['payment_instrument_id'] = CRM_Utils_Array::value('payment_instrument_id', $bookingInfo);
-        $values['trxn_id'] = CRM_Utils_Array::value('trxn_id', $bookingInfo);
-        //Payment status is a contribution status
-        $values['payment_status_id'] = CRM_Utils_Array::value('contribution_status_id', $bookingInfo);
-        $values['booking_title'] = CRM_Utils_Array::value('title', $bookingInfo);
-
-        CRM_Booking_BAO_Booking::recordContribution($values);
-      }
-
-      $sendConfirmation = CRM_Utils_Array::value('send_confirmation', $bookingInfo);
-      if($sendConfirmation){
-        //$session =& CRM_Core_Session::singleton( );
-        //$values['source_contact_id'] =$session->get( 'userID' ); // which is contact id of the user
-        $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address');
-        $values['from_email_address'] = CRM_Utils_Array::value(CRM_Utils_Array::value('from_email_address', $bookingInfo), $fromEmailAddress);
-        $values['booking_id'] = CRM_Utils_Array::value('id', $bookingResult);
-        $emailTo = CRM_Utils_Array::value('email_to', $bookingInfo);
-        $contactIds = array();
-        if($emailTo == 1){
-          array_push($contactIds, CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo));
-        }elseif ($emailTo == 2){
-          array_push($contactIds, CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo));
-        }else{
-          array_push($contactIds, CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo));
-          array_push($contactIds, CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo));
-        }
-        $values['include_payment_info'] = CRM_Utils_Array::value('include_payment_information', $bookingInfo);
-        foreach ($contactIds as $key => $cid) {
-          $resturn = CRM_Booking_BAO_Booking::sendMail($cid, $values);
-        }
-        //Finally add booking activity
-        CRM_Booking_BAO_Booking::createActivity(CRM_Utils_Array::value('id', $bookingResult));
-      }
+    $bookingID = CRM_Utils_Array::value('id', $bookingResult);
+    if($bookingID){
+      $this->_id = $bookingID;
+      $this->_values = CRM_Utils_Array::value('values', $bookingResult);
+      parent::postProcess();
+      // user context
+      $url = CRM_Utils_System::url('civicrm/booking/add',
+        "reset=1"
+      );
+      CRM_Core_Session::setStatus($booking['title'], ts('Saved'), 'success');
+      CRM_Utils_System::redirect( $url);
+    }else{
+      //TODO:: show fatal error
     }
-
-    // user context
-    $url = CRM_Utils_System::url('civicrm/booking/add',
-      "reset=1"
-    );
-
-    CRM_Core_Session::setStatus($booking['title'], ts('Saved'), 'success');
-
-    parent::postProcess();
-    CRM_Utils_System::redirect( $url);
-
   }
 
   static function registerScripts() {
