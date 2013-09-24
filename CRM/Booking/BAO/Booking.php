@@ -124,7 +124,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           'receive_date' =>  CRM_Utils_Array::value('receive_date', $values),
           'contribution_status_id' =>  CRM_Utils_Array::value('contribution_status_id', $values),
           'source' => CRM_Utils_Array::value('booking_title', $values),
-          //'trxn_id' =>  CRM_Utils_Array::value('trxn_id', $values),
+          'trxn_id' =>  CRM_Utils_Array::value('trxn_id', $values),
         );
         $contribution = civicrm_api('Contribution', 'create', $params);
         $contributionId = CRM_Utils_Array::value('id', $contribution);
@@ -461,11 +461,10 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     return $price * $qty;
   }
 
-  static function createActivity($bookingID){
+  static function createActivity($params){
     //$session =& CRM_Core_Session::singleton( );
     //$userId = $session->get( 'userID' ); // which is contact id of the user
-    self::retrieve($params = array('id' => $bookingID), $booking);
-
+    //self::retrieve($params = array('id' => $bookingID), $booking);
     $params = array(
       'version' => 3,
       'option_group_name' => 'activity_type',
@@ -477,9 +476,9 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       'version' => 3,
       /*'source_contact_id' => $userId,*/ //api should pick the loggin id automatically
       'activity_type_id' => $activityTypeId,
-      'subject' =>  CRM_Utils_Array::value('title', $booking),
+      'subject' =>  CRM_Utils_Array::value('title', $params),
       'activity_date_time' => date('YmdHis'),
-      'target_contact_id' => CRM_Utils_Array::value('primary_contact_id', $booking),
+      'target_contact_id' => CRM_Utils_Array::value('target_contact_id', $params),
       'status_id' => 2,
       'priority_id' => 1,
     );
@@ -494,7 +493,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
    * @access public
    */
   static function sendMail($contactID, &$values, $isTest = FALSE, $returnMessageText = FALSE) {
-
     //TODO:: check if from email address is entered
     $config = CRM_Booking_BAO_BookingConfig::getConfig();
 
@@ -503,7 +501,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     list($displayName, $email) = CRM_Contact_BAO_Contact_Location::getEmailDetails($contactID);
 
     //send email only when email is present
-    if (isset($email) || $returnMessageText) {
+    if ($email) {
 
       $tplParams = array(
         'email' => $email,
@@ -519,6 +517,11 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         'PDFFilename' => 'bookingReceipt.pdf',
       );
 
+      if(CRM_Utils_Array::value('include_payment_info', $values)){
+        //TODO: add contribution detail
+        $sendTemplateParams['tplParams']['contribution'] = NULL;
+      }
+
       // address required during receipt processing (pdf and email receipt)
       //TODO:: add addresss
       if ($displayAddress = CRM_Utils_Array::value('address', $values)) {
@@ -528,7 +531,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       //TODO:: add line titem tpl params
       if ($lineItem = CRM_Utils_Array::value('lineItem', $values)) {
         $sendTemplateParams['tplParams']['lineItem'] = $lineItem;
-        }
       }
 
       $sendTemplateParams['from'] =  $values['from_email_address'];
@@ -543,35 +545,35 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       if($bcc){
         $sendTemplateParams['bcc'] = $bcc;
       }
-     list($sent, $subject, $message, $html)  = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
-     if($sent & CRM_Utils_Array::value('log_confirmation_email', $config)){
-        $params = array(
-          'version' => 3,
-          'option_group_name' => 'activity_type',
-          'name' => 'Email',
-        );
-        $optionValue = civicrm_api('OptionValue', 'get', $params);
-        $activityTypeId = $optionValue['values'][$optionValue['id']]['value'];
-        $params = array(
-          'version' => 3,
-          /*'source_contact_id' => $values['source_contact_id'],*/
-          'activity_type_id' => $activityTypeId,
-          'subject' => ts('Booking Confirmation Email'),
-          'activity_date_time' => date('YmdHis'),
-          'target_contact_id' => $contactID,
-          'status_id' => 2,
-          'priority_id' => 1,
-        );
-        $result = civicrm_api('Activity', 'create', $params);
-     }
-
-     if ($returnMessageText) {
+      list($sent, $subject, $message, $html)  = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
+      if($sent & CRM_Utils_Array::value('log_confirmation_email', $config)){
+          $params = array(
+            'version' => 3,
+            'option_group_name' => 'activity_type',
+            'name' => 'Email',
+          );
+          $optionValue = civicrm_api('OptionValue', 'get', $params);
+          $activityTypeId = $optionValue['values'][$optionValue['id']]['value'];
+          $params = array(
+            'version' => 3,
+            /*'source_contact_id' => $values['source_contact_id'],*/
+            'activity_type_id' => $activityTypeId,
+            'subject' => ts('Booking Confirmation Email'),
+            'activity_date_time' => date('YmdHis'),
+            'target_contact_id' => $contactID,
+            'status_id' => 2,
+            'priority_id' => 1,
+          );
+          $result = civicrm_api('Activity', 'create', $params);
+       }
+      if ($returnMessageText) {
         return array(
-            'subject' => $subject,
-            'body' => $message,
-            'to' => $displayName,
-            'html' => $html,
+          'subject' => $subject,
+          'body' => $message,
+          'to' => $displayName,
+          'html' => $html,
         );
-     }
+      }
+    }
   }
 }
