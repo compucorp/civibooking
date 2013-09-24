@@ -92,7 +92,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
     $addSubResourcePage = $this->controller->exportValues('AddSubResource');
-    $defaults['total_amount'] = $addSubResourcePage['total_price'];
+    $defaults['total_amount'] = $addSubResourcePage['total_price']; //use the amount that passing from the form
     return $defaults;
   }
 
@@ -113,7 +113,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       unset($resource['text']);
       unset($resource['readonly']);
       $resource['start_date'] = CRM_Utils_Date::processDate($resource['start_date']);
-      $resource['start_date'] = CRM_Utils_Date::processDate($resource['end_date']);
+      $resource['end_date'] = CRM_Utils_Date::processDate($resource['end_date']);
       $resource['sub_resources'] = array();
       if(isset($subResources)){
        foreach ($subResources as $subKey => $subResource) {
@@ -170,20 +170,22 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['version'] = 3; //Add version 3 before calling APIs
     $booking['validate'] = FALSE; //Make sure we ignore slot validation
 
-    $bookingResult = civicrm_api('Booking', 'Create', $booking);
-    $bookingID = CRM_Utils_Array::value('id', $bookingResult);
+    $result = civicrm_api('Booking', 'Create', $booking);
+    $bookingID = CRM_Utils_Array::value('id', $result);
+    $booking =  CRM_Utils_Array::value($bookingID, CRM_Utils_Array::value('values', $result));
     if($bookingID){
       $this->_id = $bookingID;
-      $this->_values = CRM_Utils_Array::value('values', $bookingResult);
+      $this->_values = $booking;
       parent::postProcess();
+      $cid = CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
       // user context
-      $url = CRM_Utils_System::url('civicrm/booking/add',
-        "reset=1"
+      $url = CRM_Utils_System::url('civicrm/contact/view/booking',
+        "reset=1&id=$bookingID&cid=$cid&action=view"
       );
       CRM_Core_Session::setStatus($booking['title'], ts('Saved'), 'success');
       CRM_Utils_System::redirect( $url);
     }else{
-      //TODO:: show fatal error
+       CRM_Core_Error::fatal(ts("Cannot create booking"));
     }
   }
 
