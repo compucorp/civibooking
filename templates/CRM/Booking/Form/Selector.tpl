@@ -79,7 +79,11 @@
     </td>
 
     <td class="crm-booking-payment-status">
+      {if $row.booking_payment_status eq ''}
+           {ts}Unpaid{/ts}
+      {else}
         {$row.booking_payment_status}
+      {/if}
     </td>
 
     <td>{$row.action|replace:'xx':$row.booking_id}</td>
