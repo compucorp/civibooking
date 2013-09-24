@@ -74,8 +74,33 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
   function setDefaultValues() {
 
     $defaults = array();
-
-
+    if($this->_id){
+      $params = array(
+        'version' => 3,
+        'booking_id' => $this->_id,
+      );
+      $result = civicrm_api('Slot', 'get', $params);
+      $config = CRM_Booking_BAO_BookingConfig::getConfig();
+      $slots = array();
+      foreach ($result['values'] as $key => $value) {
+        CRM_Booking_BAO_Booking::retrieve($params, $booking );
+        $displayName = CRM_Contact_BAO_Contact::displayName(CRM_Utils_Array::value('primary_contact_id', $booking));
+        $slots[$key] = array(
+          'id' => CRM_Utils_Array::value('id', $value),
+          'resource_id' => CRM_Utils_Array::value('resource_id', $value),
+          'start_date' =>CRM_Utils_Array::value('start', $value) ,
+          'end_date' => CRM_Utils_Array::value('end', $value),
+          'label' => CRM_Booking_BAO_Resource::getFieldValue('label', CRM_Utils_Array::value('resource_id', $value)), // resource label
+          'text' =>  CRM_Utils_Array::value('booking_id', $value) . ' : ' . $displayName,
+          'configuration_id' => CRM_Utils_Array::value('config_id', $value),
+          'quantity' => CRM_Utils_Array::value('quantity', $value),
+          'price' => CRM_Booking_BAO_ResourceConfigOption::getFieldValue('price', CRM_Utils_Array::value('config_id', $value)), // resource price,
+          'note' => CRM_Utils_Array::value('note', $value),
+          'color' =>  CRM_Utils_Array::value('slot_being_edited_colour', $config),
+        );
+      }
+      $defaults['resources'] = json_encode($slots);
+    }
     return $defaults;
   }
 
