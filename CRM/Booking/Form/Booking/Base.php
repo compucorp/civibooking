@@ -58,6 +58,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     $params        = array('id' => $this->_id);
 
     CRM_Booking_BAO_Booking::retrieve($params, $this->_values );
+    $this->_values['payment_status'] =  CRM_Booking_BAO_Booking::getPaymentStatus($this->_id);
 
     if (empty($this->_values)) {
       CRM_Core_Error::statusBounce(ts('The requested booking record does not exist (possibly the record was deleted).'));
