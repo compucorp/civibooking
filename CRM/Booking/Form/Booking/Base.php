@@ -329,7 +329,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $values['trxn_id'] = CRM_Utils_Array::value('trxn_id', $bookingInfo);
         //Payment status is a contribution status
         $values['payment_status_id'] = CRM_Utils_Array::value('contribution_status_id', $bookingInfo);
-        $values['booking_title'] = CRM_Utils_Array::value('title', $bookingInfo);
+        $values['booking_title'] = CRM_Utils_Array::value('title', $this->_values);
 
         CRM_Booking_BAO_Booking::recordContribution($values);
       }
