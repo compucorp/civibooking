@@ -278,6 +278,20 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     return CRM_Core_DAO::singleValueQuery($query, $params);
   }
 
+  static function getPaymentStatus($id){
+    $params = array(1 => array( $id, 'Integer'));
+    $query = "SELECT civicrm_option_value.label as status
+              FROM civicrm_booking
+              LEFT JOIN civicrm_booking_payment ON civicrm_booking_payment.booking_id = civicrm_booking.id
+              LEFT JOIN civicrm_contribution ON civicrm_contribution.id = civicrm_booking_payment.contribution_id
+              LEFT JOIN civicrm_option_value ON civicrm_option_value.value = civicrm_contribution.contribution_status_id
+              LEFT JOIN civicrm_option_group ON civicrm_option_group.name = 'contribution_status'
+                                             AND civicrm_option_group.id = civicrm_option_value.option_group_id
+              WHERE civicrm_booking.id = %1";
+    return CRM_Core_DAO::singleValueQuery($query, $params);
+
+  }
+
 
    /**
    * Get the values for pseudoconstants for name->value and reverse.
@@ -291,7 +305,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
    */
   static function resolveDefaults(&$defaults, $reverse = FALSE) {
     self::lookupValue($defaults, 'status', CRM_Booking_BAO_Booking::buildOptions('status_id', 'create'), $reverse);
-    self::lookupValue($defaults, 'payment_status',CRM_Booking_BAO_Booking::buildOptions('payment_status_id', 'create'), $reverse);
   }
 
   /**
