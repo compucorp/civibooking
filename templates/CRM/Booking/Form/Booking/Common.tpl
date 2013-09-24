@@ -1,4 +1,28 @@
 <div class="crm-section">
+  <div class="label">{$form.send_confirmation.label}</div>
+  <div class="content">{$form.send_confirmation.html}</div>
+</div>
+ <fieldset id="email-confirmation" class="hiddenElement"><legend>{ts}Email booking conformation{/ts}</legend>
+  <div class="crm-section">
+    <div class="label">{$form.from_email_address.label}</div>
+    <div class="content">{$form.from_email_address.html}</div>
+  </div>
+  <div class="crm-section">
+    <div class="label">{$form.email_to.label}</div>
+    <div class="content">{$form.email_to.html}</div>
+   </div>
+</fieldset>
+<div class="crm-section">
+    <div class="label">{ts}Payment status{/ts}</div>
+    <div class="content">
+      {if $booking.payment_status eq ''}
+        {ts}Unpaid{/ts}
+      {else}
+        {$booking.payment_status}
+      {/if}
+    </div>
+  </div>
+<div class="crm-section">
   <div class="label">{$form.record_contribution.label}</div>
   <div class="content">{$form.record_contribution.html}</div>
 </div>
@@ -44,6 +68,15 @@
 <script type="text/javascript">
 cj(function($) {
 
+  $('#send_confirmation').change(function() {
+    if($(this).is(":checked")){
+     $('#email-confirmation').show();
+    }else{
+     $('#email-confirmation').hide();
+    }
+  });
+
+
   $('#record_contribution').change(function() {
     if($(this).is(":checked")){
      $('#payment-detail').show();
@@ -52,13 +85,18 @@ cj(function($) {
     }
   });
 
-  function loadPaymentDetail(){
+  function loadHiddenElements(){
     var input = $( "input[name='record_contribution']" );
     if(input.is(":checked")){
       $('#payment-detail').show();
     }
+    var input = $( "input[name='send_confirmation']" );
+    if(input.is(":checked")){
+      $('#email-confirmation').show();
+    }
   }
-  $(document).ready(loadPaymentDetail);
+
+  $(document).ready(loadHiddenElements);
 
 });
 </script>
