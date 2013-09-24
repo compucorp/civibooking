@@ -99,26 +99,45 @@ class CRM_Booking_Page_AJAX {
 
 
   static function getSlots(){
+    $config = CRM_Booking_BAO_BookingConfig::getConfig();
+    $bookedColour = CRM_Utils_Array::value('slot_booked_colour', $config);
+    $provisionalColour =  CRM_Utils_Array::value('slot_provisional_colour', $config);
+    $slotBeingEditColour =  CRM_Utils_Array::value('slot_being_edited_colour', $config);
+    $booking = NULL;
+    if (!empty($_GET['booking_id'])) {
+      $bookingId = CRM_Utils_Type::escape($_GET['booking_id'], 'String');
+    }
 
     $timeshift = CRM_Utils_Type::escape($_GET['timeshift'], 'String');
     $from = CRM_Utils_Type::escape($_GET['from'], 'String');
     $to = CRM_Utils_Type::escape($_GET['to'], 'String');
 
-
     $slots = array("data" => array());
     $results = CRM_Booking_BAO_Slot::getSlotBetweenDate($from, $to);
     foreach ($results as $key => $slot) {
-     array_push($slots['data'],
-      array(
+      $params  = array('id' => CRM_Utils_Array::value('booking_id', $slot));
+      CRM_Booking_BAO_Booking::retrieve($params, $booking );
+      $bookingStatus = CRM_Utils_Array::value('status_id', $booking);
+      $displayName = CRM_Contact_BAO_Contact::displayName(CRM_Utils_Array::value('primary_contact_id', $booking));
+      $data =  array(
         "id" => $key,
         "start_date" => CRM_Utils_Array::value('start', $slot),
         "end_date" =>CRM_Utils_Array::value('end', $slot),
-        "text" => $key . ' ' . CRM_Utils_Array::value('note', $slot),
+        "text" => CRM_Utils_Array::value('booking_id', $slot) . ' : ' . $displayName,
         "resource_id" => CRM_Utils_Array::value('resource_id', $slot),
-        "color" => "rgb(255,0,0)",
-        "readonly" => true));
+        "readonly" => true
+      );
+      if($bookingId == CRM_Utils_Array::value('booking_id', $slot)){
+        $data['color'] = $slotBeingEditColour;
+      }else{
+        if($bookingStatus == 1){ //Provisional, TODO: Fixed to get the value from the name i.e provisional
+          $data['color'] = $provisionalColour;
+        }else{
+          $data['color'] = $bookedColour;
+        }
+      }
+      array_push($slots['data'], $data);
     }
-
     echo json_encode($slots);
     CRM_Utils_System::civiExit();
 
