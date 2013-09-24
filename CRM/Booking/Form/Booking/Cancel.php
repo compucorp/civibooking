@@ -60,7 +60,7 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     parent::buildQuickForm();
 
     $this->add('text', 'event_date', ts('Date of Event'), array('disabled' => 'disabled'));
-    $this->addDate('cancellation_date', ts('Date of Cancellation'), FALSE, array('formatType' => 'activityDate'));
+    $this->addDate('cancellation_date', ts('Date of Cancellation'), TRUE, array('formatType' => 'activityDate'));
 
     $this->add('text', 'resource_fee', ts('Resource Fees'), array('disabled' => 'disabled'));
     $this->add('text', 'sub_resource_fee', ts('Sub Resource Fees'), array('disabled' => 'disabled'));
@@ -78,7 +78,7 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     }
     $this->add('select', 'cancellations', ts('Cancellation %'),
       array('' => ts('- select -')) + $cancellationCharges,
-      FALSE,
+      TRUE,
       array()
     );
 
@@ -88,7 +88,17 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
 
     $this->add('text', 'charge_amount', ts('Amount to Pay'), array('disabled' => 'disabled'));
 
+    $this->addFormRule( array( 'CRM_Booking_Form_Booking_Cancel', 'formRule' ), $this );
   }
+
+
+  static function formRule($params, $files, $self) {
+    $errors = parent::rules($params, $files, $self);
+    return empty($errors) ? TRUE : $errors;
+  }
+
+
+
 
 
   function setDefaultValues() {

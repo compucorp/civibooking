@@ -62,10 +62,17 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
     $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
     $this->add('select', 'booking_status', ts('Booking status'),
       array('' => ts('- select -')) + $bookingStatus,
-      FALSE,
+      TRUE,
       array()
     );
 
+    $this->addFormRule( array( 'CRM_Booking_Form_Booking_Update', 'formRule' ), $this );
+
+  }
+
+  static function formRule($params, $files, $self) {
+    $errors = parent::rules($params, $files, $self);
+    return empty($errors) ? TRUE : $errors;
   }
 
 
