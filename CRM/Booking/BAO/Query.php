@@ -150,8 +150,10 @@ class CRM_Booking_BAO_Query {
         $from .= " $side JOIN civicrm_option_value booking_status ON (civicrm_booking.status_id = booking_status.value AND option_group_booking_status.id = booking_status.option_group_id ) ";
         break;
       case 'booking_payment_status':
-            $from = " $side JOIN civicrm_option_group option_group_booking_payment ON (option_group_booking_payment.name = 'contribution_status')";
-        $from .= " $side JOIN civicrm_option_value booking_payment_status ON (civicrm_booking.payment_status_id = booking_payment_status.value AND option_group_booking_payment.id = booking_payment_status.option_group_id ) ";
+        $from .= " $side JOIN civicrm_booking_payment booking_payment on booking_payment.booking_id = civicrm_booking.id";
+        $from .= " $side JOIN civicrm_contribution contribution on contribution.id = booking_payment.contribution_id";
+        $from .= " $side JOIN civicrm_option_group option_group_booking_payment ON option_group_booking_payment.name = 'contribution_status'";
+        $from .= " $side JOIN civicrm_option_value booking_payment_status ON (contribution.contribution_status_id = booking_payment_status.value AND option_group_booking_payment.id = booking_payment_status.option_group_id ) ";
         break;
       case 'booking_associated_contact':
         $from = " $side JOIN civicrm_contact booking_associated_contact ON (booking_associated_contact.id = civicrm_booking.secondary_contact_id)";
