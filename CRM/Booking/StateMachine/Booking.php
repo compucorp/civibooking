@@ -54,7 +54,7 @@ class CRM_Booking_StateMachine_Booking extends CRM_Core_StateMachine {
     $this->_pages = array(
       'CRM_Booking_Form_SelectResource' => NULL,
       'CRM_Booking_Form_AddSubResource' => NULL,
-      'CRM_Booking_Form_BookingInfo' => NULL,
+      'CRM_Booking_Form_Booking_Info' => NULL,
     );
 
     $this->addSequentialPages($this->_pages, $action);

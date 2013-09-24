@@ -7,7 +7,7 @@ require_once 'CRM/Core/Form.php';
  *
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
-class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
+class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
   /**
    * Return a descriptive name for the page, used in wizard header
@@ -59,44 +59,15 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     $this->add('text', 'enp', ts('Estimate number of participants'));
     $this->add('text', 'fnp', ts('Final number of participants'));
 
+    /*
     $this->addElement('checkbox',
       'send_conformation',
       ts('Send booking comformation email?'),
       NULL,
       array()
-    );
+    );*/
 
-     $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address');
-    if (empty($fromEmailAddress)) {
-      //redirect user to enter from email address.
-      $url = CRM_Utils_System::url('civicrm/admin/options/from_email_address', 'group=from_email_address&action=add&reset=1');
-      $status = ts("There is no valid from email address present. You can add here <a href='%1'>Add From Email Address.</a>", array(1 => $url));
-      $session->setStatus($status, ts('Notice'));
-    }
-    else {
-      foreach ($fromEmailAddress as $key => $email) {
-        $fromEmailAddress[$key] = htmlspecialchars($fromEmailAddress[$key]);
-      }
-    }
-
-    $this->add('select', 'from_email_address',
-      ts('From Email Address'), array(
-        '' => ts('- select -')) + $fromEmailAddress, FALSE
-    );
-
-
-    $emailToContacts = array('' => ts('- select -'),
-                             '1' => ts('Primary contact'),
-                             '2' => ts('Secondary contact'),
-                             '3' => ts('Both'));
-    $this->add('select', 'email_to', ts('Email to'),
-      $emailToContacts, FALSE,
-      array(
-        'id' => 'email_to',
-      )
-    );
-
-
+    /*
     $this->addElement('checkbox', 'record_contribution', ts('Record Booking Payment?'));
 
     $paymentContacts =  array('' => ts('- select -'),
@@ -142,7 +113,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
     );
 
     $this->addElement('checkbox', 'include_payment_information', '', ts(' Include payment information on booking confirmation email?'));
-
+    */
 
     $buttons = array(
       array('type' => 'back',
@@ -156,7 +127,7 @@ class CRM_Booking_Form_BookingInfo extends CRM_Core_Form {
 
     $this->addButtons($buttons);
 
-    $this->addFormRule( array( 'CRM_Booking_Form_BookingInfo', 'formRule' ), $this );
+    $this->addFormRule( array( 'CRM_Booking_Form_Booking_Info', 'formRule' ), $this );
 
 
   }

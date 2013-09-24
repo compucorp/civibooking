@@ -110,43 +110,7 @@
         </div>
         </div>
       </fieldset>
-      <div class="crm-section">
-          <div class="label">
-           {$form.send_conformation.label}
-
-          </div>
-          <div class="content">
-            {$form.send_conformation.html}
-          </div>
-      </div>
-      <fieldset id="email-confirmation" class="hiddenElement"><legend>{ts}Email booking conformation{/ts}</legend>
-      <div class="crm-section">
-          <div class="label">
-           {$form.from_email_address.label}
-          </div>
-          <div class="content">
-            {$form.from_email_address.html}
-          </div>
-        </div>
-        <div class="crm-section">
-          <div class="label">
-           {$form.email_to.label}
-          </div>
-          <div class="content">
-            {$form.email_to.html}
-          </div>
-        </div>
-      </fieldset>
-       <div class="crm-section">
-          <div class="label">
-           {ts}Payment status{/ts}
-
-          </div>
-          <div class="content">
-            {ts}Unpaid{/ts}
-          </div>
-      </div>
-      {include file="CRM/Booking/Form/Payment.tpl"}
+      {include file="CRM/Booking/Form/Booking/Common.tpl"}
   <div id="crm-booking-dialog" class="crm-container"></div>
 </div>
 <div class="clear"></div>
@@ -155,40 +119,6 @@
 <script type="text/javascript">
 cj(function($) {
   CRM.BookingApp.start();
-  $.fn.toggleCheck = function(targetElement){
-    if($(this).is(":checked")) {
-      $(targetElement).show();
-    }else{
-      $(targetElement).hide();
-    }
-  }
-
-  $('#send_conformation').change(function() {
-    $(this).toggleCheck('#email-confirmation');
-  });
-
-  $('#record_contribution').change(function() {
-    $(this).toggleCheck('#payment-detail');
-  });
-
-  function loadHiddenElement(){
-    var input = $( ":checkbox" );
-    _.each(input, function(element) {
-      if($(element).is(":checked")){
-        var elid = $(element).attr('id');
-       if(elid == 'send_conformation'){
-        $('#email-confirmation').show();
-       }else if(elid == 'record_contribution'){
-        $('#payment-detail').show();
-       }
-      }
-    });
-  }
-
-  $(document).ready(loadHiddenElement);
-
-
-
 });
 </script>
 {/literal}
