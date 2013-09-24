@@ -59,61 +59,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $this->add('text', 'enp', ts('Estimate number of participants'));
     $this->add('text', 'fnp', ts('Final number of participants'));
 
-    /*
-    $this->addElement('checkbox',
-      'send_conformation',
-      ts('Send booking comformation email?'),
-      NULL,
-      array()
-    );*/
-
-    /*
-    $this->addElement('checkbox', 'record_contribution', ts('Record Booking Payment?'));
-
-    $paymentContacts =  array('' => ts('- select -'),
-                              '1' => ts('Primary contact'),
-                              '2' => ts('Secondary contact'));
-    $this->add('select', 'select_payment_contact', ts('Select contact'),
-      $paymentContacts, FALSE,
-      array(
-        'id' => 'select_payment_contact',
-      )
-    );
-
-
-    $this->addDate('receive_date', ts('Received'), FALSE, array('formatType' => 'activityDate'));
-
-    $this->add('text', 'total_amount', ts('Amount'), array('disabled' => 'disabled'));
-
-    $this->add('select', 'financial_type_id',
-      ts('Financial Type'),
-      array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::financialType()
-    );
-
-    $this->add('select', 'payment_instrument_id',
-        ts('Paid By'),
-        array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::paymentInstrument(),
-        FALSE,
-        array()
-    );
-
-    $this->add('text', 'trxn_id', ts('Transaction ID'));
-
-    $this->add('select', 'contribution_status_id',
-        ts('Payment Status'),
-        array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::contributionStatus(),
-        FALSE,
-        array()
-    );
-
-    $this->addElement('checkbox',
-      'send_receipt',
-      ts('Send Confirmation and Receipt?'), NULL,
-      array('onclick' => "showHideByValue( 'send_receipt', '', 'notice', 'table-row', 'radio', false); showHideByValue( 'send_receipt', '', 'fromEmail', 'table-row', 'radio', false);")
-    );
-
-    $this->addElement('checkbox', 'include_payment_information', '', ts(' Include payment information on booking confirmation email?'));
-    */
 
     $buttons = array(
       array('type' => 'back',
@@ -133,64 +78,13 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   }
 
   static function formRule($params, $files, $self) {
-    $errors = array();
+    $errors = parent::rules($params, $files, $self);
     //make sure primary contact is selected
     $contactId = CRM_Utils_Array::value('primary_contact_select_id', $params);
     if(!$contactId){
       $errors['primary_contact_id'] = ts('This field is required.');
     }
     $secondaryContactId = CRM_Utils_Array::value('secondary_contact_select_id', $params);
-
-    $sendConfirmation = CRM_Utils_Array::value('send_conformation', $params);
-    if($sendConfirmation){
-        $emailTo = CRM_Utils_Array::value('email_to', $params);
-        if(!$emailTo){
-          $errors['email_to'] = ts('Please select a contact(s) to send email to.');
-        }else if($emailTo == 2 && !$secondaryContactId || $emailTo == 3 && !$secondaryContactId ){
-          $errors['select_payment_contact'] = ts('Please select add secondary contact.');
-        }
-        $fromEmailAddreess = CRM_Utils_Array::value('from_email_address', $params);
-        if(!$fromEmailAddreess){
-          $errors['from_email_address'] = ts('Please select a from email address.');
-        }
-     }
-
-
-     $recordContribution = CRM_Utils_Array::value('record_contribution', $params);
-     if($recordContribution){
-
-        //TODO:: Check if txn_id is already exist
-
-        $selectPaymentContact = CRM_Utils_Array::value('select_payment_contact', $params);
-        if(!$selectPaymentContact){
-          $errors['select_payment_contact'] = ts('Please select a contact for recording payment.');
-        }else if($selectPaymentContact == 2 && !$secondaryContactId){
-          $errors['select_payment_contact'] = ts('Please select add secondary contact.');
-        }
-
-        $financialTypeId = CRM_Utils_Array::value('financial_type_id', $params);
-        if(!$financialTypeId){
-         $errors['financial_type_id'] = ts('Please select a financial type.');
-        }
-
-        $receivedDate = CRM_Utils_Array::value('receive_date', $params);
-        if(!$receivedDate){
-         $errors['receive_date'] = ts('This field is required.');
-        }
-
-        $paymentInstrumentId = CRM_Utils_Array::value('payment_instrument_id', $params);
-        if(!$paymentInstrumentId){
-         $errors['payment_instrument_id'] = ts('Please select a payment instrument.');
-        }
-
-        $contributionStatusId = CRM_Utils_Array::value('contribution_status_id', $params);
-        if(!$contributionStatusId){
-         $errors['contribution_status_id'] = ts('Please select a valid payment status.');
-        }
-
-     }
-
-
     return empty($errors) ? TRUE : $errors;
   }
 
