@@ -73,6 +73,8 @@ CREATE TABLE `civicrm_booking` (
 
 ,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
+
+
 -- /*******************************************************
 -- *
 -- * civicrm_booking_config
@@ -88,9 +90,10 @@ CREATE TABLE `civicrm_booking_config` (
      `log_confirmation_email` tinyint NOT NULL  DEFAULT 0 COMMENT 'Create an activity record againt contact for conformation emails',
      `cc_email_address` varchar(255)    ,
      `bcc_email_address` varchar(255)    ,
-     `slot_avaliable_colour` varchar(10)    ,
+     `slot_new_colour` varchar(10)    ,
      `slot_booked_colour` varchar(10)    ,
-     `slot_reserved_colour` varchar(10)
+     `slot_provisional_colour` varchar(10)    ,
+     `slot_being_edited_colour` varchar(10)
 ,
     PRIMARY KEY ( `id` )
 
