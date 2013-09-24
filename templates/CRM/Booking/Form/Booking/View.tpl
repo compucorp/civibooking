@@ -89,7 +89,11 @@
       </tr>
       <tr class="crm-bookingview-form-block-booking_payment_status">
         <td class="label">{ts}Payment status{/ts}</td><td>
-          {$payment_status}
+          {if $payment_status eq ''}
+           {ts}Unpaid{/ts}
+          {else}
+           {$payment_status}
+          {/if}
         </td>
       </tr>
      <tr class="crm-bookingview-form-block-description">
