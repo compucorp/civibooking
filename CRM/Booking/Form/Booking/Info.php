@@ -206,7 +206,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
         CRM_Booking_BAO_Booking::recordContribution($values);
       }
 
-      $sendConfirmation = CRM_Utils_Array::value('send_conformation', $bookingInfo);
+      $sendConfirmation = CRM_Utils_Array::value('send_confirmation', $bookingInfo);
       if($sendConfirmation){
         //$session =& CRM_Core_Session::singleton( );
         //$values['source_contact_id'] =$session->get( 'userID' ); // which is contact id of the user
@@ -223,6 +223,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
           array_push($contactIds, CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo));
           array_push($contactIds, CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo));
         }
+        $values['include_payment_info'] = CRM_Utils_Array::value('include_payment_information', $bookingInfo);
         foreach ($contactIds as $key => $cid) {
           $resturn = CRM_Booking_BAO_Booking::sendMail($cid, $values);
         }
