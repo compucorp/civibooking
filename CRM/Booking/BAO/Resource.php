@@ -45,6 +45,14 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
     return NULL;
   }
 
+  static function getFieldValue($field, $id){
+    return CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource',
+      $id,
+      $field,
+      'id'
+    );
+  }
+
   /**
    * Function to delete Resoruce
    *
