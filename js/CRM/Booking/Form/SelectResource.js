@@ -30,7 +30,12 @@ cj(function($) {
 
   scheduler.init("resource_scheduler", new Date() ,"timeline");
   scheduler.setLoadMode("day");
-  scheduler.load(CRM.url('civicrm/booking/ajax/slots'),"json");
+  if(bookingId){
+    var url = [CRM.url('civicrm/booking/ajax/slots'), '?booking_id=',bookingId].join('');
+  }else{
+    var url = CRM.url('civicrm/booking/ajax/slots');
+  }
+  scheduler.load(url,"json");
 
   scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);

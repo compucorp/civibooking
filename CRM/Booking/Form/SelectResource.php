@@ -13,7 +13,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    *
    * @var integer
    */
-  protected $_bookingID;
+  protected $_id;
 
   /**
    * Function to set variables up before form is built
@@ -22,6 +22,11 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    * @access public
    */
   public function preProcess() {
+
+    $this->_id = CRM_Utils_Request::retrieve('id', 'Positive',
+      $this, FALSE, 0
+    );
+    $this->assign('bookingId', $this->_id);
 
     $days = CRM_Booking_Utils_DateTime::getDays();
     $months = CRM_Utils_Date::getFullMonthNames();

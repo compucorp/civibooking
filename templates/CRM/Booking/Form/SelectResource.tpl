@@ -81,7 +81,9 @@
 </div>
 {literal}
 <script type="text/javascript">
-var crmDateFormat = "{/literal} {$dateformat} {literal}";
+var crmDateFormat = "{/literal}{$dateformat}{literal}";
+var bookingId = "{/literal}{$bookingId}{literal}";
+
 cj(function($) {
   var elements = [// original hierarhical array to display
       {/literal}
@@ -116,6 +118,8 @@ cj(function($) {
     folder_dy:20,
     dy:60
   });
+
+
 });
 </script>
 {/literal}
