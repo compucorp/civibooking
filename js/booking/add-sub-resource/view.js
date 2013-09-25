@@ -77,8 +77,9 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     },
     addSubResource: function(e){
      var ref = $(e.currentTarget).data('ref');
+     var startDate =  $(e.currentTarget).data('sdate');
      var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref});
-     var view = new AddSubResource.AddSubResourceModal({model: model});
+     var view = new AddSubResource.AddSubResourceModal({model: model, start_date: startDate});
      view.title = ts('Add sub resource');
      CRM.BookingApp.modal.show(view);
     },
@@ -138,8 +139,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
   AddSubResource.AddSubResourceModal = BookingApp.Common.Views.BookingProcessModal.extend({
     template: "#add-sub-resource-template",
     initialize: function(options){
-
-      //this.resources = options.resources;
+      this.startDate = options.start_date;
+      console.log(this.startDate);
     },
     events: {
       'click #add-to-basket': 'addSubResource',
@@ -154,6 +155,13 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       BookingApp.Common.Views.BookingProcessModal.prototype.onRender.apply(this, arguments);
       var thisView = this;
       this.$el.find('#loading').show();
+      var initsdate = moment(new Date(this.startDate));
+      var sTime = [initsdate.hours(), ":", initsdate.minute() <10?'0' + initsdate.minute() : initsdate.minute()].join("");
+      this.$el.find("#start-time-select").val(sTime);
+      this.$el.find("#start-day-select").val(initsdate.format("D"));
+      this.$el.find("#start-month-select").val(initsdate.months() + 1);
+      this.$el.find("#start-year-select").val(initsdate.years());
+
        CRM.api('Resource', 'get', {'sequential': 1, 'is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
         {success: function(data) {
 
@@ -188,12 +196,12 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         resource_select: {
           required: true
         },
-        config_select: {
+        configuration_select: {
           required: true
         },
-        time_required: {
+        /*time_required: {
           required: true
-        },
+        },*/
         quantity: {
           required: true,
           number: true
