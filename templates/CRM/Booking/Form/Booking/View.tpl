@@ -195,14 +195,14 @@
           <th scope="col">{ts}Total Amount{/ts}</th>
         </tr>
       </thead>
-      {*foreach from=$adhoc_charges item=$charges}
+      {foreach from=$adhoc_charges item=charges}
       <tr class="{cycle values="odd-row,even-row"}">
-        <td>{$charges.label}</td>
+        <td>{$charges.item_label}</td>
         <td>{$charges.unit_price}</td>
-        <td>{$charges.qty}</td>
+        <td>{$charges.quantity}</td>
         <td>{$charges.total_amount}</td>
       </tr>
-      {/foreach*}
+      {/foreach}
     </table>
     {/if}
     <div class="crm-submit-buttons">
