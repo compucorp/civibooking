@@ -77,15 +77,10 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     },
     addSubResource: function(e){
      var ref = $(e.currentTarget).data('ref');
-     CRM.api('Resource', 'get', {'sequential': 1, 'is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
-      {success: function(data) {
-          var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref});
-          var view = new AddSubResource.AddSubResourceModal({model: model, resources: data.values});
-          view.title = ts('Add sub resource');
-          CRM.BookingApp.modal.show(view);
-        }
-      }
-    );
+     var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref});
+     var view = new AddSubResource.AddSubResourceModal({model: model});
+     view.title = ts('Add sub resource');
+     CRM.BookingApp.modal.show(view);
     },
     addDiscountAmount: function(e){
       console.log(this.model);
@@ -143,7 +138,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
   AddSubResource.AddSubResourceModal = BookingApp.Common.Views.BookingProcessModal.extend({
     template: "#add-sub-resource-template",
     initialize: function(options){
-      this.resources = options.resources;
+
+      //this.resources = options.resources;
     },
     events: {
       'click #add-to-basket': 'addSubResource',
@@ -156,16 +152,27 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     },
     onRender: function(){
       BookingApp.Common.Views.BookingProcessModal.prototype.onRender.apply(this, arguments);
+      var thisView = this;
+      this.$el.find('#loading').show();
+       CRM.api('Resource', 'get', {'sequential': 1, 'is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
+        {success: function(data) {
 
-     var tpl = _.template($('#select-option-template').html());
-      var params = {
-        context:this,
-        template: tpl,
-        list:this.resources,
-        element: "#resource_select",
-        first_option: ['- ', ts('select resource'), ' -'].join("")
-      }
-      CRM.BookingApp.vent.trigger("render:options", params);
+            thisView.template =  _.template($('#add-sub-resource-template').html());
+            //thisView.resources = data.values;
+            var tpl = _.template($('#select-option-template').html());
+            var params = {
+                context:thisView,
+                template: tpl,
+                list:data.values,
+                element: "#resource_select",
+                first_option: ['- ', ts('select resource'), ' -'].join("")
+            }
+            CRM.BookingApp.vent.trigger("render:options", params);
+            thisView.$el.find('#loading').hide();
+            thisView.$el.find('#content').show();
+          }
+        }
+      );
 
 
     },
@@ -238,6 +245,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
                 }
               }
             };
+        this.$el.find('#config-loading').show();
+        this.$el.find('#configuration_select').hide();
         var self = this;
         CRM.api('Resource', 'get', params,
           { context: self,
@@ -253,7 +262,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
               first_option: '- ' + ts('select configuration') + ' -'
             }
             CRM.BookingApp.vent.trigger("render:options", params);
-
+            this.$el.find('#config-loading').hide();
+            this.$el.find('#configuration_select').show();
           }
         });
       }else{

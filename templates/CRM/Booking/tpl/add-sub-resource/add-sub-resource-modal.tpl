@@ -1,4 +1,6 @@
 <script id="add-sub-resource-template" type="text/template">
+<div id="loading" class="crm-loading-element">{ts}Loading ...{/ts}</div>
+<div id="content" class="hiddenElement">
 <form>
   <div class="crm-section">
     <div class="label">
@@ -15,10 +17,11 @@
     <div class="label">
       <label for="configuration_select">{ts}Configuration{/ts}</label>
     </div>
-    <div class="content">
-    <select name="configuration_select" id="configuration_select" class="form-select" disabled>
-      <option value="">- {ts}select configuration{/ts} -</option>
-    </select>
+    <div class="content configuration-select">
+      <span id="config-loading" class="crm-loading-element hiddenElement"></span>
+      <select name="configuration_select" id="configuration_select" class="form-select" disabled>
+        <option value="">- {ts}select configuration{/ts} -</option>
+      </select>
     </div>
     <div class="clear"></div>
   </div>
@@ -74,6 +77,7 @@
     </span>
   </div>
 </form>
+</div>
 </script>
 
 
