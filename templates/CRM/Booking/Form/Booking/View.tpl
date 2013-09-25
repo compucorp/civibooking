@@ -25,7 +25,7 @@
 *}
 {* View existing booking  record. *}
 <div class="crm-block crm-content-block crm-booking-view-form-block">
-    <h3>{ts}View Booking{/ts}</h3>
+    <h3>{ts}View Booking - ID {/ts}{$id}</h3>
     <div class="action-link">
         <div class="crm-submit-buttons">
           {if call_user_func(array('CRM_Core_Permission','check'), 'edit booking')}
