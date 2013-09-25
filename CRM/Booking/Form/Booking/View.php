@@ -49,37 +49,41 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
     parent::preProcess();
 
     $slots = CRM_Booking_BAO_Slot::getBookingSlot($this->_id);
+    $subSlots = array();
     foreach ($slots as $key => $slot) {
-      //Quite expensive
-      $slots[$key]['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource',
+      $label =  CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource',
         $slot['resource_id'],
         'label',
         'id'
       );
+      //Quite expensive
+      $slots[$key]['resource_label'] = $label;
       $slots[$key]['config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
         $slot['config_id'],
         'label',
         'id'
       );
-      $subSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($key);
-      foreach ($subSlots as $key => $subSlot) {
-        $subSlots[$key]['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource',
+      $childSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($key);
+      foreach ($childSlots as $key => $subSlot) {
+        $subSlot['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource',
           $subSlot['resource_id'],
           'label',
           'id'
         );
-        $subSlots[$key]['config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
+        $subSlot['config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
           $subSlot['config_id'],
           'label',
           'id'
         );
-      }
 
-      $slots[$key]['sub_slots'] = $subSlots;
+        $subSlot['parent_resource_label'] =  $label;
+        $subSlots[$subSlot['id']] = $subSlot;
+      }
 
     }
 
     $this->_values['slots'] = $slots;
+    $this->_values['sub_slots'] = $subSlots;
 
     $this->assign($this->_values);
 

@@ -101,11 +101,6 @@
           {$description}
         </td>
       </tr>
-      <tr class="crm-bookingview-form-block-discount_amount">
-        <td class="label">{ts}Discount amount{/ts}</td><td>
-          {$discount_amount}
-        </td>
-      </tr>
       <tr class="crm-bookingview-form-block-note">
         <td class="label">{ts}Note{/ts}</td><td>
           {$note}
@@ -121,53 +116,100 @@
           {$participants_actual}
         </td>
       </tr>
+      <tr class="crm-bookingview-form-block-discount_amount">
+        <td class="label">{ts}Sub Total{/ts}</td><td>
+          {$discount_amount}
+        </td>
+      </tr>
+         <tr class="crm-bookingview-form-block-discount_amount">
+        <td class="label">{ts}Discount amount{/ts}</td><td>
+          {$discount_amount}
+        </td>
+      </tr>
+         <tr class="crm-bookingview-form-block-discount_amount">
+        <td class="label">{ts}Total{/ts}</td><td>
+          {$discount_amount}
+        </td>
+      </tr>
     </table>
+    <h3>{ts}Resources{/ts}</h3>
     <table class="selector">
       <thead class="sticky">
         <tr>
           <th scope="col">{ts}Resource{/ts}</th>
+          <th scope="col">{ts}Start Date{/ts}</th>
+          <th scope="col">{ts}End Date{/ts}</th>
           <th scope="col">{ts}Configuration{/ts}</th>
-          <th scope="col">{ts}Start date{/ts}</th>
-          <th scope="col">{ts}End date{/ts}</th>
           <th scope="col">{ts}Note{/ts}</th>
+          <th scope="col">{ts}Price Per Unit{/ts}</th>
+          <th scope="col">{ts}Quantity{/ts}</th>
+          <th scope="col">{ts}Total Amount{/ts}</th>
         </tr>
       </thead>
-
       {foreach from=$slots item=slot}
       <tr class="{cycle values="odd-row,even-row"}">
         <td>{$slot.resource_label}</td>
-        <td>{$slot.config_label}</td>
         <td>{$slot.start}</td>
         <td>{$slot.end}</td>
-        <td>{$slot.note}</td>
+       <td>{$slot.config_label}</td>
+        <td>{subSlot.note}</td>
+        <td>{subSlot.unit_price}</td>
+        <td>{subSlot.qty}</td>
+        <td>{subSlot.total_amount}</td>
       </tr>
-      {if $slot.sub_slots}
-      <tr>
-        <td colspan="1">{ts}<h3>Sub slots</h3>{/ts}</td>
-        <td colspan="4">
-        <table >
-            <thead class="sticky">
-              <tr>
-                <th scope="col">{ts}Resource{/ts}</th>
-                <th scope="col">{ts}Configuration{/ts}</th>
-                <th scope="col">{ts}Time required{/ts}</th>
-                <th scope="col">{ts}Note{/ts}</th>
-              </tr>
-            </thead>
-            {foreach from=$slot.sub_slots item=subSlot}
-            <tr class="{cycle values="odd-row,even-row"}">
-              <td>{$subSlot.resource_label}</td>
-              <td>{$subSlot.config_label}</td>
-              <td>{$subSlot.time_required}</td>
-              <td>{$subSlot.note}</td>
-            </tr>
-            {/foreach}
-        </table>
-
-        <tr>
-        {/if}
       {/foreach}
     </table>
+    {if $sub_slots}
+     <h3>{ts}Sub Resources{/ts}</h3>
+     <table class="selector">
+      <thead class="sticky">
+        <tr>
+          <th scope="col">{ts}Resource{/ts}</th>
+          <th scope="col">{ts}Parent Resoruce{/ts}</th>
+          <th scope="col">{ts}Time Required{/ts}</th>
+          <th scope="col">{ts}Configuration{/ts}</th>
+          <th scope="col">{ts}Note{/ts}</th>
+          <th scope="col">{ts}Price Per Unit{/ts}</th>
+          <th scope="col">{ts}Quantity{/ts}</th>
+          <th scope="col">{ts}Total Amount{/ts}</th>
+        </tr>
+      </thead>
+
+      {foreach from=$sub_slots item=subSlot}
+      <tr class="{cycle values="odd-row,even-row"}">
+        <td>{$subSlot.resource_label}</td>
+        <td>{$subSlot.parent_resource_label}</td>
+        <td>{$subSlot.time_required}</td>
+        <td>{$subSlot.config_label}</td>
+        <td>{$subSlot.note}</td>
+        <td>{$subSlot.unit_price}</td>
+        <td>{$subSlot.qty}</td>
+        <td>{$subSlot.total_amount}</td>
+      </tr>
+      {/foreach}
+    </table>
+    {/if}
+    {if $adhoc_charges}
+     <h3>{ts}Adhoc Charges{/ts}</h3>
+     <table class="selector">
+      <thead class="sticky">
+        <tr>
+          <th scope="col">{ts}Item{/ts}</th>
+          <th scope="col">{ts}Price Per Unit{/ts}</th>
+          <th scope="col">{ts}Quantity{/ts}</th>
+          <th scope="col">{ts}Total Amount{/ts}</th>
+        </tr>
+      </thead>
+      {*foreach from=$adhoc_charges item=$charges}
+      <tr class="{cycle values="odd-row,even-row"}">
+        <td>{$charges.label}</td>
+        <td>{$charges.unit_price}</td>
+        <td>{$charges.qty}</td>
+        <td>{$charges.total_amount}</td>
+      </tr>
+      {/foreach*}
+    </table>
+    {/if}
     <div class="crm-submit-buttons">
           {if call_user_func(array('CRM_Core_Permission','check'), 'edit booking')}
             {assign var='urlParams' value="reset=1&id=$id&cid=$contact_id&action=update&context=$context&selectedChild=booking"}
