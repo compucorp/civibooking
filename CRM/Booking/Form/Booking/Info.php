@@ -112,8 +112,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       unset($resource['label']);
       unset($resource['text']);
       unset($resource['readonly']);
-      $resource['start_date'] = CRM_Utils_Date::processDate($resource['start_date']);
-      $resource['end_date'] = CRM_Utils_Date::processDate($resource['end_date']);
+      $resource['start_date'] = $resource['start_date'];
+      $resource['end_date'] = $resource['end_date'];
       $resource['sub_resources'] = array();
       if(isset($subResources)){
        foreach ($subResources as $subKey => $subResource) {
