@@ -58,7 +58,6 @@ CREATE TABLE `civicrm_booking` (
      `participants_estimate` varchar(255)    ,
      `participants_actual` varchar(255)    ,
      `discount_amount` decimal(20,2)    ,
-     `payment_status_id` int unsigned NOT NULL   COMMENT 'The contribution status associated with this booking. Implicit FK to option_value row in contribution status option_group.',
      `is_deleted` tinyint   DEFAULT 0 ,
      `created_by` int unsigned NOT NULL   ,
      `created_date` datetime NOT NULL   ,
@@ -271,7 +270,7 @@ CREATE TABLE `civicrm_booking_sub_slot` (
      `slot_id` int unsigned    COMMENT 'FK to Slot ID',
      `resource_id` int unsigned    COMMENT 'FK to resource ID',
      `config_id` int unsigned    COMMENT 'FK to resource configuration option ID',
-     `time_required` time NOT NULL   ,
+     `time_required` datetime NOT NULL   ,
      `quantity` int NOT NULL   ,
      `note` text    ,
      `is_cancelled` tinyint   DEFAULT 0 ,
@@ -288,6 +287,7 @@ CREATE TABLE `civicrm_booking_sub_slot` (
 
 ,          CONSTRAINT FK_civicrm_booking_sub_slot_slot_id FOREIGN KEY (`slot_id`) REFERENCES `civicrm_booking_slot`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_sub_slot_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_sub_slot_config_id FOREIGN KEY (`config_id`) REFERENCES `civicrm_booking_resource_config_option`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
+
 
 -- /*******************************************************
 -- *
