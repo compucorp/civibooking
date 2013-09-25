@@ -17,7 +17,7 @@
     <div class="label">
       <label for="configuration_select">{ts}Configuration{/ts}</label>
     </div>
-    <div class="content configuration-select">
+    <div class="content">
       <span id="config-loading" class="crm-loading-element hiddenElement"></span>
       <select name="configuration_select" id="configuration_select" class="form-select" disabled>
         <option value="">- {ts}select configuration{/ts} -</option>
@@ -41,8 +41,22 @@
       <label for="time_required">{ts}Time required{/ts}</label>
     </div>
     <div class="content">
-      <select id="time_required" name="time_required" class="form-select">
-        <option value="">- {ts}select time{/ts} -</option>
+      <select id="start-day-select" name="start-day-select">
+        {foreach from=$days item=day}
+          <option value="{$day}">{$day}</option>
+        {/foreach}
+     </select>
+     <select id="start-month-select" name="start-month-select">
+        {foreach from=$months key=k item=month}
+          <option value="{$k}">{$month}</option>
+        {/foreach}
+     </select>
+     <select id="start-year-select" name="start-year-select">
+        {foreach from=$years item=year}
+          <option value="{$year}">{$year}</option>
+        {/foreach}
+     </select>
+      <select id="start-time-select" name="start-time-select" >
         {foreach from=$timeOptions key=k item=time}
           <option value="{$time.time}">{$time.time}</option>
         {/foreach}
