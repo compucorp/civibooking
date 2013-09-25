@@ -65,7 +65,8 @@
         {$row.booking_created_date}
     </td>
     <td class="crm-booking-associated-contact">
-        {$row.booking_associated_contact_sort_name}
+        <a href="{crmURL p='civicrm/contact/view' q="reset=1&cid=`$row.booking_associated_contact_id`"}" title="{ts}View contact record{/ts}">{$row.booking_associated_contact_sort_name}
+        </a>
     </td>
 
     <td class="crm-booking-event_date">
