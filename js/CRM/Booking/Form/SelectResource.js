@@ -47,90 +47,92 @@ cj(function($) {
         modal: true,
         minWidth: 600,
         open: function() {
-          //insert the template so tag <form /> will work for validation
-          var template = _.template(cj('#add-resource-template').html());
-          $('#crm-booking-new-slot').html(template());
-          //TODO: Implement validation and using CiviCRM validation style
-          $('#add-resource-form').validate({
-                rules: {
-                    configuration: {
-                      required: true
-                    },
-                    quantity: {
-                      required: true,
-                      number: true
-                    },
-                }
-          });
+          $('#crm-booking-new-slot').html(['<div class="crm-loading-element">', ts('Loading ...'), '</div>'].join(""));
 
-          if(ev.readonly){
-            $(".crm-booking-form-add-resource").attr("disabled", true);
-            $("#price-estimate").html(ev.price);
-            $("#resource-note").val(ev.note);
-            $("input[name='quantity']").val(ev.quantity);
-            $("#add-resource-btn").hide();
-          }else{
-            $("#SelectResource :input").attr("disabled", false);
-            $("#price-estimate").html('0');
-            $("#resource-note").val('');
-            $("input[name='quantity']").val('');
-            $("#add-resource-btn").show();
-          }
-          var initStartDate = moment(new Date(ev.start_date));
-          var initEndDate = moment(new Date(ev.end_date));
-          var startTime = [initStartDate.hours(), ":", initStartDate.minute() <10?'0' + initStartDate.minute() : initStartDate.minute()].join("");
-          var endTime = [initEndDate.hours(), ":", initEndDate.minute() <10?'0' + initEndDate.minute() : initEndDate.minute()].join("");
-          $("#start-time-select").val(startTime);
-          $("#start-day-select").val(initStartDate.format("D"));
-          $("#start-month-select").val(initStartDate.months() + 1);
-          $("#start-year-select").val(initStartDate.years());
-          $("#end-time-select").val(endTime);
-          $("#end-day-select").val(initEndDate.format("D"));
-          $("#end-month-select").val(initEndDate.months() + 1);
-          $("#end-year-select").val(initEndDate.years());
-
-         CRM.api('Resource', 'get', {
-              id: ev.resource_id,
-              sequential: 1,
-              'api.resource_config_set.get': {
-                id: '$value.set_id',
-                'api.resource_config_option.get': {
-                  set_id: '$value.id',
-                  'api.option_group.get':{
-                    name: 'booking_size_unit',
-                  },
-                  'api.option_value.get':{
-                    value: '$value.unit_id',
-                    option_group_id: '$value.api.option_group.get.value'
+           CRM.api('Resource', 'get', {
+                id: ev.resource_id,
+                sequential: 1,
+                'api.resource_config_set.get': {
+                  id: '$value.set_id',
+                  'api.resource_config_option.get': {
+                    set_id: '$value.id',
+                    'api.option_group.get':{
+                      name: 'booking_size_unit',
+                    },
+                    'api.option_value.get':{
+                      value: '$value.unit_id',
+                      option_group_id: '$value.api.option_group.get.value'
+                    }
                   }
                 }
-              }
-            },
-          {
+              },
+            {
             success: function(data) {
-            var resource =  data['values']['0'];
-            $("#resource-label").val(resource.label);
-            var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
-            var optionsTemp = [];
-            if(ev.readonly){
-              var configId = ev.configuration_id;
-               _.each(options, function (item, key){
-                if(item.id == configId){
-                  item.selected = "selected";
-                }else{
-                  item.selected = "";
-                }
-                optionsTemp.push(item);
-              });
-              options = optionsTemp;
-            }
-            var template = _.template(cj('#select-config-option-template').html());
-            $('#configSelect').html(template({
-              options: options,
-              first_option:  ["- ", ts('select configuration')," -"].join("")}));
-              }
-            });
+              //insert the template so tag <form /> will work for validation
+              var template = _.template(cj('#add-resource-template').html());
+              $('#crm-booking-new-slot').html(template());
 
+              $('#add-resource-form').validate({
+                    rules: {
+                        configuration: {
+                          required: true
+                        },
+                        quantity: {
+                          required: true,
+                          number: true
+                        },
+                    }
+              });
+
+              if(ev.readonly){
+                $(".crm-booking-form-add-resource").attr("disabled", true);
+                $("#price-estimate").html(ev.price);
+                $("#resource-note").val(ev.note);
+                $("input[name='quantity']").val(ev.quantity);
+                $("#add-resource-btn").hide();
+              }else{
+                $("#SelectResource :input").attr("disabled", false);
+                $("#price-estimate").html('0');
+                $("#resource-note").val('');
+                $("input[name='quantity']").val('');
+                $("#add-resource-btn").show();
+              }
+              var initStartDate = moment(new Date(ev.start_date));
+              var initEndDate = moment(new Date(ev.end_date));
+              var startTime = [initStartDate.hours(), ":", initStartDate.minute() <10?'0' + initStartDate.minute() : initStartDate.minute()].join("");
+              var endTime = [initEndDate.hours(), ":", initEndDate.minute() <10?'0' + initEndDate.minute() : initEndDate.minute()].join("");
+              $("#start-time-select").val(startTime);
+              $("#start-day-select").val(initStartDate.format("D"));
+              $("#start-month-select").val(initStartDate.months() + 1);
+              $("#start-year-select").val(initStartDate.years());
+              $("#end-time-select").val(endTime);
+              $("#end-day-select").val(initEndDate.format("D"));
+              $("#end-month-select").val(initEndDate.months() + 1);
+              $("#end-year-select").val(initEndDate.years());
+
+
+              var resource =  data['values']['0'];
+              $("#resource-label").val(resource.label);
+              var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
+              var optionsTemp = [];
+              if(ev.readonly){
+                var configId = ev.configuration_id;
+                 _.each(options, function (item, key){
+                  if(item.id == configId){
+                    item.selected = "selected";
+                  }else{
+                    item.selected = "";
+                  }
+                  optionsTemp.push(item);
+                });
+                options = optionsTemp;
+              }
+              var template = _.template(cj('#select-config-option-template').html());
+              $('#configSelect').html(template({
+                options: options,
+                first_option:  ["- ", ts('select configuration')," -"].join("")}));
+                }
+              });
         },
         close: function() {
           scheduler.endLightbox(false, null);
