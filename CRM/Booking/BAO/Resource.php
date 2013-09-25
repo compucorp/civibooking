@@ -91,7 +91,8 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
            civicrm_booking_resource.location_id,
            civicrm_booking_resource.is_unlimited
      FROM  civicrm_booking_resource
-     WHERE civicrm_booking_resource.type_id = %1";
+     WHERE civicrm_booking_resource.type_id = %1
+     AND civicrm_booking_resource.is_active = 1";
 
     $resources = array();
     $dao = CRM_Core_DAO::executeQuery($query, $params);
