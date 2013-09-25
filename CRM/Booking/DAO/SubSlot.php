@@ -113,7 +113,7 @@ class CRM_Booking_DAO_SubSlot extends CRM_Core_DAO
   public $config_id;
   /**
    *
-   * @var time
+   * @var datetime
    */
   public $time_required;
   /**
@@ -197,7 +197,7 @@ class CRM_Booking_DAO_SubSlot extends CRM_Core_DAO
         ) ,
         'time_required' => array(
           'name' => 'time_required',
-          'type' => CRM_Utils_Type::T_TIME,
+          'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
           'title' => ts('Time Required') ,
           'required' => true,
         ) ,
