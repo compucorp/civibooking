@@ -12,6 +12,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     protected $_subTotal;
     protected $_total;
     protected $_discountAmount;
+    protected $_bookingId;
 
 
     /**
@@ -58,6 +59,14 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       CRM_Core_DAO::storeValues($bao, $items[$bao->id]);
     }
 
+    $days = CRM_Booking_Utils_DateTime::getDays();
+    $months = CRM_Utils_Date::getFullMonthNames();
+    $years = CRM_Booking_Utils_DateTime::getYears();
+
+    $this->assign('days', $days);
+    $this->assign('months', $months);
+    $this->assign('years', $years);
+
     $this->assign('items', $items);
     self::registerScripts();
 
@@ -76,6 +85,8 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     $defaults['adhoc_charge'] = 0;
     $defaults['discount_amount']=0;
     $defaults['total_price'] = $this->_total;
+
+    //{"sub_resources":{"1380046945":{"parent_ref_id":408,"ref_id":1380046945,"resource":{"id":"4","label":"Tea and coffee"},"configuration":{"id":"1","label":"Full tea and coffee set - $300.00 / Head","price":"300.00"},"quantity":"20","time_required":"8:00","note":"","price_estimate":6000}},"resources":{"408":6300},"sub_total":6300,"adhoc_charges":{"total":0},"total_price":6300}
 
     return $defaults;
   }
