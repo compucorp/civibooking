@@ -294,7 +294,16 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       }
       console.log(this.$el);
       this.model.set('note',this.$el.find('#sub-resource-note').val() );
-      this.model.set('time_required',this.$el.find('#time_required').val() );
+      var startTime =  this.$el.find("#start-time-select").val().split(":");
+      var startDate = new Date(
+        this.$el.find("#start-year-select").val(),
+        this.$el.find("#start-month-select").val() - 1,
+        this.$el.find("#start-day-select").val(),
+        startTime[0],
+        startTime[1]
+      );
+      var timeRequired = moment(startDate).format("YYYY-M-D HH:mm");
+      this.model.set('time_required', timeRequired);
 
       var parentRefId = this.model.get('parent_ref_id');
       var refId = CRM.BookingApp.Utils.getCurrentUnixTimstamp();

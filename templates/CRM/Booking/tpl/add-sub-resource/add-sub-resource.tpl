@@ -30,9 +30,10 @@
                 <table cborder=1 id="crm-booking-sub-resource-table-{$key}">
                 <thead>
                   <tr>
-                    <th rowspan="1" colspan="1">{ts}Sub resource label{/ts}</th>
+                    <th rowspan="1" colspan="1">{ts}Unlimited Resource Label{/ts}</th>
                     <th rowspan="1" colspan="1">{ts}Configuration{/ts}</th>
                     <th rowspan="1" colspan="1">{ts}Quality{/ts}</th>
+                    <th rowspan="1" colspan="1">{ts}Time Required{/ts}</th>
                     <th rowspan="1" colspan="1">{ts}Price{/ts}</th>
                     <th rowspan="1" colspan="1"></th>
                   </tr>
@@ -74,6 +75,7 @@
     <td><%= resource.label %></td>
     <td><%= configuration.label %></td>
     <td><%= quantity %></td>
+    <td><%= time_required %></td>
     <td>{$currencySymbols}<%= price_estimate %></td>
     <td><span><a href="#" data-ref="<%=ref_id %>" data-parent-ref="<%= parent_ref_id %>" data-price="<%= price_estimate %>"  class="remove-sub-resource action-item action-item-first" >{ts}Remove{/ts}</a></span></td>
   </tr>
