@@ -41,22 +41,22 @@
       <label for="time_required">{ts}Time required{/ts}</label>
     </div>
     <div class="content">
-      <select id="start-day-select" name="start-day-select">
+      <select id="required-day-select" name="required-day-select">
         {foreach from=$days item=day}
           <option value="{$day}">{$day}</option>
         {/foreach}
      </select>
-     <select id="start-month-select" name="start-month-select">
+     <select id="required-month-select" name="required-month-select">
         {foreach from=$months key=k item=month}
           <option value="{$k}">{$month}</option>
         {/foreach}
      </select>
-     <select id="start-year-select" name="start-year-select">
+     <select id="required-year-select" name="required-year-select">
         {foreach from=$years item=year}
           <option value="{$year}">{$year}</option>
         {/foreach}
      </select>
-      <select id="start-time-select" name="start-time-select" >
+      <select id="required-time-select" name="required-time-select" >
         {foreach from=$timeOptions key=k item=time}
           <option value="{$time.time}">{$time.time}</option>
         {/foreach}
