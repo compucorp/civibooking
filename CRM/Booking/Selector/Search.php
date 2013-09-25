@@ -72,6 +72,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     'booking_payment_status',
     'booking_total_amount',
     'booking_event_date',
+    'booking_associated_contact_id',
     'booking_associated_contact_sort_name',
     'booking_created_date',
   );
@@ -324,6 +325,8 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
 
     // process the result of the query
     $rows = array();
+
+
 
     while ($result->fetch()) {
       $row = array();
