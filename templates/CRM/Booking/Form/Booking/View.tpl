@@ -155,7 +155,7 @@
       {/foreach}
     </table>
     {if $sub_slots}
-     <h3>{ts}Sub Resources{/ts}</h3>
+     <h3>{ts}Unlmited Resources{/ts}</h3>
      <table class="selector">
       <thead class="sticky">
         <tr>
@@ -185,7 +185,7 @@
     </table>
     {/if}
     {if $adhoc_charges}
-     <h3>{ts}Adhoc Charges{/ts}</h3>
+     <h3>{ts}Adhoc Charges Items{/ts}</h3>
      <table class="selector">
       <thead class="sticky">
         <tr>
