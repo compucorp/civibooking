@@ -160,7 +160,7 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
     $this->assign($this->_values);
 
     $displayName = CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']);
-    $secondaryContactDisplayName = CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
+    $secondaryContactDisplayName = CRM_Contact_BAO_Contact::displayName( CRM_Utils_Array::value('secondary_contact_id', $this->_values));
 
     $this->assign('displayName', $displayName);
     $this->assign('secondaryContactDisplayName',$secondaryContactDisplayName );
