@@ -73,7 +73,7 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
         $lineItem = CRM_Utils_Array::value($result['id'], $result['values']);
         $slots[$key]['unit_price'] = CRM_Utils_Array::value('unit_price', $lineItem);
         $slots[$key]['total_amount'] = CRM_Utils_Array::value('line_total', $lineItem);
-        $slots['quantity'] = CRM_Utils_Array::value('qty', $lineItem);
+        $slots[$key]['quantity'] = CRM_Utils_Array::value('qty', $lineItem);
       }else{ //calulate manuanlly
         $slots[$key]['total_amount'] = CRM_Booking_BAO_Booking::calulateSlotPrice($slot['config_id'], $slot['quantity']);
         $slots[$key]['unit_price'] = CRM_Core_DAO::getFieldValue(
@@ -119,11 +119,11 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
         $subSlot['parent_resource_label'] =  $label;
         $subSlots[$subSlot['id']] = $subSlot;
       }
-      $adhocCharges = array();
-      $adhocChargesResult = civicrm_api('AdhocCharges', 'get', array('version' => 3, 'booking_id' => $this->_id));
-      $adhocChargesValues = CRM_Utils_Array::value('values', $adhocChargesResult);
-      foreach ($adhocChargesValues as $id => $charges) {
-
+    }
+    $adhocCharges = array();
+    $adhocChargesResult = civicrm_api('AdhocCharges', 'get', array('version' => 3, 'booking_id' => $this->_id));
+    $adhocChargesValues = CRM_Utils_Array::value('values', $adhocChargesResult);
+    foreach ($adhocChargesValues as $id => $charges) {
         $charges['item_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
           $charges['item_id'],
           'label',
@@ -150,10 +150,7 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
           );
         }
         $adhocCharges[$id] = $charges;
-      }
-
     }
-
     $this->_values['slots'] = $slots;
     $this->_values['sub_slots'] = $subSlots;
     $this->_values['adhoc_charges'] = $adhocCharges;
