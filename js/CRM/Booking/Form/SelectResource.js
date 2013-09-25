@@ -152,7 +152,7 @@ cj(function($) {
     var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
     var endTime = $("#end-time-select").val().split(":");
     var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);
-    ev.text = [$("#resource-label").val(), " - ", ts("Provisional")].join("");
+    ev.text = [$("#resource-label").val(), " - ", ts("New")].join("");
     ev.start_date = startDate;
     ev.end_date = endDate;
     ev.price = $("#price-estimate").html();
