@@ -146,7 +146,7 @@ class CRM_Booking_BAO_Query {
         break;
 
       case 'booking_status':
-        $from = " $side JOIN civicrm_option_group option_group_booking_status ON (option_group_booking_status.name = 'booking_booking_status')";
+        $from = " $side JOIN civicrm_option_group option_group_booking_status ON (option_group_booking_status.name = 'booking_status')";
         $from .= " $side JOIN civicrm_option_value booking_status ON (civicrm_booking.status_id = booking_status.value AND option_group_booking_status.id = booking_status.option_group_id ) ";
         break;
       case 'booking_payment_status':
