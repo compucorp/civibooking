@@ -77,11 +77,6 @@
           {$po_number}
         </td>
       </tr>
-       <tr class="crm-bookingview-form-block-price">
-        <td class="label">{ts}Price{/ts}</td><td>
-          {$total_amount}
-        </td>
-      </tr>
       <tr class="crm-bookingview-form-block-booking_status">
         <td class="label">{ts}Booking status{/ts}</td><td>
           {$status}
@@ -118,7 +113,7 @@
       </tr>
       <tr class="crm-bookingview-form-block-discount_amount">
         <td class="label">{ts}Sub Total{/ts}</td><td>
-          {$discount_amount}
+          {$sub_total}
         </td>
       </tr>
          <tr class="crm-bookingview-form-block-discount_amount">
@@ -128,7 +123,7 @@
       </tr>
          <tr class="crm-bookingview-form-block-discount_amount">
         <td class="label">{ts}Total{/ts}</td><td>
-          {$discount_amount}
+          {$total_amount}
         </td>
       </tr>
     </table>
@@ -151,11 +146,11 @@
         <td>{$slot.resource_label}</td>
         <td>{$slot.start}</td>
         <td>{$slot.end}</td>
-       <td>{$slot.config_label}</td>
-        <td>{subSlot.note}</td>
-        <td>{subSlot.unit_price}</td>
-        <td>{subSlot.qty}</td>
-        <td>{subSlot.total_amount}</td>
+        <td>{$slot.config_label}</td>
+        <td>{$slot.note}</td>
+        <td>{$slot.unit_price}</td>
+        <td>{$slot.quantity}</td>
+        <td>{$slot.total_amount}</td>
       </tr>
       {/foreach}
     </table>
@@ -183,7 +178,7 @@
         <td>{$subSlot.config_label}</td>
         <td>{$subSlot.note}</td>
         <td>{$subSlot.unit_price}</td>
-        <td>{$subSlot.qty}</td>
+        <td>{$subSlot.quantity}</td>
         <td>{$subSlot.total_amount}</td>
       </tr>
       {/foreach}
