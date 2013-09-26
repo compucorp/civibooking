@@ -66,7 +66,7 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
    */
   public function buildQuickForm() {
     parent::buildQuickForm();
-    if($this->_values['status_id'] != $this->_cancelStatus){
+    if($this->_action & CRM_Core_Action::UPDATE && $this->_values['status_id'] != $this->_cancelStatus){
       $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
       unset($bookingStatus[$this->_cancelStatus]); //remove cancelled option
       $this->add('select', 'booking_status', ts('Booking status'),
