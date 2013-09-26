@@ -107,6 +107,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
   }
 
+
   static function recordContribution($values){
     $bookingID = CRM_Utils_Array::value('booking_id', $values);
     if(!CRM_Utils_Array::value('booking_id', $values)){
@@ -274,8 +275,15 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
   static function getBookingContactCount($contactId){
     $params = array(1 => array( $contactId, 'Integer'));
-    $query = "SELECT COUNT(DISTINCT(id)) AS count  FROM civicrm_booking WHERE primary_contact_id = %1";
+    $query = "SELECT COUNT(DISTINCT(id)) AS count  FROM civicrm_booking WHERE primary_contact_id = %1 OR secondary_contact_id = %1";
     return CRM_Core_DAO::singleValueQuery($query, $params);
+  }
+
+  static function getContactAssociatedBooking($contactId){
+    $params = array('secondary_contact_id' => $contactId, 'is_deleted' => 0);
+    self::getValues($params, $bookings, $ids);
+    return $bookings;
+
   }
 
   static function getPaymentStatus($id){
@@ -284,8 +292,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
               FROM civicrm_booking
               LEFT JOIN civicrm_booking_payment ON civicrm_booking_payment.booking_id = civicrm_booking.id
               LEFT JOIN civicrm_contribution ON civicrm_contribution.id = civicrm_booking_payment.contribution_id
-              LEFT JOIN civicrm_option_value ON civicrm_option_value.value = civicrm_contribution.contribution_status_id
               LEFT JOIN civicrm_option_group ON civicrm_option_group.name = 'contribution_status'
+              LEFT JOIN civicrm_option_value ON civicrm_option_value.value = civicrm_contribution.contribution_status_id
                                              AND civicrm_option_group.id = civicrm_option_value.option_group_id
               WHERE civicrm_booking.id = %1";
     return CRM_Core_DAO::singleValueQuery($query, $params);
