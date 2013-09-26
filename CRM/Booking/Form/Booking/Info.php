@@ -77,14 +77,13 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
   }
 
-  static function formRule($params, $files, $self) {
-    $errors = parent::rules($params, $files, $self);
+  static function formRule($params, $files, $context) {
+    $errors = parent::rules($params, $files, $context);
     //make sure primary contact is selected
     $contactId = CRM_Utils_Array::value('primary_contact_select_id', $params);
     if(!$contactId){
       $errors['primary_contact_id'] = ts('This field is required.');
     }
-    $secondaryContactId = CRM_Utils_Array::value('secondary_contact_select_id', $params);
     return empty($errors) ? TRUE : $errors;
   }
 
