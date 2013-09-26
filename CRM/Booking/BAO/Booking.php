@@ -299,10 +299,47 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
   }
 
   static function getContactAssociatedBooking($contactId){
-    $params = array('secondary_contact_id' => $contactId, 'is_deleted' => 0);
-    self::getValues($params, $bookings, $ids);
-    return $bookings;
 
+    $params = array(1 => array( $contactId, 'Integer'));
+
+    $query = "SELECT civicrm_booking.id as id,
+                     civicrm_booking.primary_contact_id,
+                     civicrm_contact.display_name as parimary_contact_name,
+                     civicrm_booking.title as title,
+                     civicrm_booking.created_date as created_date,
+                     civicrm_booking.event_date as event_date,
+                     civicrm_booking.total_amount as total_amount,
+                     payment_status_value.label as payment_status,
+                     booking_status_value.label as booking_status
+              FROM civicrm_booking
+              INNER JOIN civicrm_contact ON civicrm_contact.id = civicrm_booking.primary_contact_id
+              INNER JOIN civicrm_option_group booking_status_group ON booking_status_group.name = 'booking_status'
+              INNER JOIN civicrm_option_value booking_status_value ON booking_status_value.value = civicrm_booking.status_id
+                                             AND booking_status_group.id = booking_status_value.option_group_id
+              LEFT JOIN civicrm_booking_payment ON civicrm_booking_payment.booking_id = civicrm_booking.id
+              LEFT JOIN civicrm_contribution ON civicrm_contribution.id = civicrm_booking_payment.contribution_id
+              LEFT JOIN civicrm_option_group payment_status_group ON payment_status_group.name = 'contribution_status'
+              LEFT JOIN civicrm_option_value payment_status_value ON payment_status_value.value = civicrm_contribution.contribution_status_id
+                                             AND payment_status_group.id = payment_status_value.option_group_id
+              WHERE civicrm_booking.secondary_contact_id = %1
+              AND civicrm_booking.is_deleted = 0";
+
+    $bookings = array();
+    $dao = CRM_Core_DAO::executeQuery($query, $params);
+    while ($dao->fetch()) {
+      $bookings[$dao->id] = array(
+        'id' => $dao->id,
+        'primary_contact_id' => $dao->primary_contact_id,
+        'primary_contact_name' => $dao->parimary_contact_name,
+        'title' => $dao->title,
+        'created_date' => $dao->created_date,
+        'event_date' => $dao->event_date,
+        'total_amount' => $dao->total_amount,
+        'booking_payment_status' => $dao->payment_status,
+        'booking_status' => $dao->booking_status
+      );
+    }
+    return $bookings;
   }
 
   static function getPaymentStatus($id){
