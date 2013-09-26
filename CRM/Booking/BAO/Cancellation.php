@@ -60,7 +60,16 @@ class CRM_Booking_BAO_Cancellation extends CRM_Booking_DAO_Cancellation {
 
         $params['cancellation_fee'] = $cancellationFee;
 
-        $cancel = self::add($params);
+        self::add($params);
+
+        $slots = CRM_Booking_BAO_Slot::getBookingSlot($bookingID);
+        foreach ($slots as $slotId => $slots) {
+          $subSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($slotId);
+          foreach ($subSlots as $subSlotId => $subSlot) {
+           CRM_Booking_BAO_SubSlot::cancel($subSlotId);
+          }
+          CRM_Booking_BAO_Slot::cancel($slotId);
+        }
       }catch (Exception $e) {
           $transaction->rollback();
           CRM_Core_Error::fatal($e->getMessage());
