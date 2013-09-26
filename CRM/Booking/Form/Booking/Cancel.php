@@ -47,7 +47,7 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
    */
   public function preProcess() {
     parent::preProcess();
-
+    self::registerScripts();
   }
 
   /**
@@ -83,7 +83,7 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     );
 
     $this->add('text', 'cancellation_charge', ts('Cancellation Charge'), array('disabled' => 'disabled'));
-    $this->add('text', 'adjustment', ts('Additional Charges/Adjectments'));
+    $this->add('text', 'adjustment', ts('Additional Charges'));
     $this->add('textarea', 'comment', ts('Charge Comment'));
 
     $this->add('text', 'charge_amount', ts('Amount to Pay'), array('disabled' => 'disabled'));
@@ -108,5 +108,15 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     return $defaults;
   }
 
+  static function registerScripts() {
+    static $loaded = FALSE;
+    if ($loaded) {
+      return;
+    }
+    $loaded = TRUE;
+
+    CRM_Core_Resources::singleton()
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'templates/CRM/Booking/Form/Booking/Cancel.js', 170, 'html-header');
+  }
 }
 
