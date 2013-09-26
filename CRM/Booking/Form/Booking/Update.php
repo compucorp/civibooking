@@ -39,6 +39,7 @@
  */
 class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
 
+  protected $_cancelStatus;
   /**
    * Function to set variables up before form is built
    *
@@ -48,6 +49,13 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
   public function preProcess() {
     parent::preProcess();
     $this->assign('booking', $this->_values);
+    $params = array(
+     'version' => 3,
+      'option_group_name' => 'booking_status',
+      'name' => 'cancelled',
+    );
+    $result = civicrm_api('OptionValue', 'get', $params);
+    $this->_cancelStatus = CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
   }
 
   /**
@@ -58,14 +66,15 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
    */
   public function buildQuickForm() {
     parent::buildQuickForm();
-
-    $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
-    $this->add('select', 'booking_status', ts('Booking status'),
-      array('' => ts('- select -')) + $bookingStatus,
-      TRUE,
-      array()
-    );
-
+    if($this->_values['status_id'] != $this->_cancelStatus){
+      $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
+      unset($bookingStatus[$this->_cancelStatus]); //remove cancelled option
+      $this->add('select', 'booking_status', ts('Booking status'),
+        array('' => ts('- select -')) + $bookingStatus,
+        TRUE,
+        array()
+      );
+    }
     $this->addFormRule( array( 'CRM_Booking_Form_Booking_Update', 'formRule' ), $this );
 
   }
@@ -78,7 +87,9 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
 
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
-    $defaults['booking_status'] = $this->_values['status_id'];
+    if($this->_values['status_id'] != $this->_cancelStatus){
+      $defaults['booking_status'] = $this->_values['status_id'];
+    }
     return $defaults;
   }
 
