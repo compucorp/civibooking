@@ -159,7 +159,10 @@ class CRM_Booking_BAO_BookingContactQuery extends CRM_Contact_BAO_Query{
     $this->selectClause();
     $this->_whereClause = $this->whereClause();
 
-    $this->_fromClause = self::fromClause($this->_tables, NULL, NULL, $this->_primaryLocation, $this->_mode);
+    //inner join for civicrm_booking table
+    $inner = array('civicrm_booking' => 'INNER');
+
+    $this->_fromClause = self::fromClause($this->_tables, $inner, NULL, $this->_primaryLocation, $this->_mode);
 
     $this->_simpleFromClause = self::fromClause($this->_whereTables, NULL, NULL, $this->_primaryLocation, $this->_mode);
 
@@ -194,7 +197,7 @@ class CRM_Booking_BAO_BookingContactQuery extends CRM_Contact_BAO_Query{
     //fix for CRM-951
     //CRM_Core_Component::alterQuery($this, 'select');
 
-    //CRM_Contact_BAO_Query_Hook::singleton()->alterSearchQuery($this, 'select');
+    CRM_Contact_BAO_Query_Hook::singleton()->alterSearchQuery($this, 'select');
 
     /*
     if (!empty($this->_cfIDs)) {
@@ -265,7 +268,6 @@ class CRM_Booking_BAO_BookingContactQuery extends CRM_Contact_BAO_Query{
       if (!$value) {
         continue;
       }
-
       if (CRM_Utils_Array::value($name, $inner)) {
         $side = 'INNER';
       }
@@ -275,7 +277,6 @@ class CRM_Booking_BAO_BookingContactQuery extends CRM_Contact_BAO_Query{
       else {
         $side = 'LEFT';
       }
-
       if ($value != 1) {
         // if there is already a join statement in value, use value itself
         if (strpos($value, 'JOIN')) {

@@ -142,7 +142,7 @@ class CRM_Booking_BAO_Query {
 
     switch ($name) {
       case 'civicrm_booking':
-        $from = " $side JOIN civicrm_booking ON civicrm_booking.primary_contact_id = contact_a.id ";
+        $from = " $side JOIN civicrm_booking ON civicrm_booking.primary_contact_id = contact_a.id AND civicrm_booking.is_deleted = 0";
         break;
 
       case 'booking_status':
