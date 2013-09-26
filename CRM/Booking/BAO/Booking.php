@@ -239,10 +239,25 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
    * @static
    */
   static function del($id) {
-    $dao = new CRM_Booking_DAO_Booking();
-    $dao->id = $id;
-    $dao->is_deleted = 1;
-    return $dao->save();
+    $transaction = new CRM_Core_Transaction();
+    try{
+      $slots = CRM_Booking_BAO_Slot::getBookingSlot($id);
+        foreach ($slots as $slotId => $slots) {
+          $subSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($slotId);
+          foreach ($subSlots as $subSlotId => $subSlot) {
+          CRM_Booking_BAO_SubSlot::del($subSlotId);
+        }
+        CRM_Booking_BAO_Slot::del($slotId);
+      }
+      $dao = new CRM_Booking_DAO_Booking();
+      $dao->id = $id;
+      $dao->is_deleted = 1;
+      return $dao->save();
+
+    }catch (Exception $e) {
+          $transaction->rollback();
+          CRM_Core_Error::fatal($e->getMessage());
+    }
   }
 
 
