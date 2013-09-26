@@ -39,7 +39,6 @@
  */
 class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
 
-  protected $_cancelStatus;
   /**
    * Function to set variables up before form is built
    *
@@ -49,13 +48,6 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
   public function preProcess() {
     parent::preProcess();
     $this->assign('booking', $this->_values);
-    $params = array(
-     'version' => 3,
-      'option_group_name' => 'booking_status',
-      'name' => 'cancelled',
-    );
-    $result = civicrm_api('OptionValue', 'get', $params);
-    $this->_cancelStatus = CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
   }
 
   /**
@@ -66,9 +58,9 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
    */
   public function buildQuickForm() {
     parent::buildQuickForm();
-    if($this->_action & CRM_Core_Action::UPDATE && $this->_values['status_id'] != $this->_cancelStatus){
+    if($this->_action & CRM_Core_Action::UPDATE){
       $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
-      unset($bookingStatus[$this->_cancelStatus]); //remove cancelled option
+      unset($bookingStatus[$this->_cancelStatusId]); //remove cancelled option
       $this->add('select', 'booking_status', ts('Booking status'),
         array('' => ts('- select -')) + $bookingStatus,
         TRUE,
@@ -87,7 +79,7 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
 
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
-    if($this->_values['status_id'] != $this->_cancelStatus){
+    if ($this->_action & CRM_Core_Action::UPDATE) {
       $defaults['booking_status'] = $this->_values['status_id'];
     }
     return $defaults;
@@ -101,12 +93,10 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
       CRM_Core_Session::setStatus(ts('Selected booking has been deleted.'), ts('Record Deleted'), 'success');
     }
     else {
-      if($this->_values['status_id'] != $this->_cancelStatus){ //nothing to update
-        $values = $this->exportValues();
-        $params['id'] = $this->_id;
-        $params['status_id'] = $values['booking_status'];
-        $booking = CRM_Booking_BAO_Booking::add($params);
-      }
+      $values = $this->exportValues();
+      $params['id'] = $this->_id;
+      $params['status_id'] = $values['booking_status'];
+      $booking = CRM_Booking_BAO_Booking::add($params);
       parent::postProcess();
       CRM_Core_Session::setStatus(ts('The booking \'%1\' has been saved.', array(1 => $booking->id)), ts('Saved'), 'success');
 
