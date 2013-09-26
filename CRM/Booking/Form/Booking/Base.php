@@ -120,7 +120,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     if (($this->_action & CRM_Core_Action::DELETE) || ($this->_action & CRM_Core_Action::VIEW)) {
       return;
     }else{
-      $this->addElement('checkbox', 'send_confirmation', ts('Send booking confirmation email?'));
+      $this->addElement('checkbox', 'send_confirmation', ts('Send email?'));
 
       $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address');
       if (empty($fromEmailAddress)) {
@@ -144,7 +144,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $contactDropdown =  array('' => ts('- select -'),
                                 $this->_values['primary_contact_id'] => CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']));
         if(isset($this->_values['secondary_contact_id'])){
-          $paymentContacts[$this->_values['secondary_contact_id']] =  CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
+          $contactDropdown[$this->_values['secondary_contact_id']] =  CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
         }
 
       }else{
@@ -152,7 +152,8 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           '' => ts('- select -'),
           '1' => ts('Primary contact'),
           '2' => ts('Secondary contact'),
-          '3' => ts('Both'));
+          //'3' => ts('Both')
+        );
 
       }
       $this->add('select', 'email_to', ts('Email to'),
@@ -204,32 +205,36 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
 
   protected static function rules($params, $files, $self) {
     $errors = array();
-
+    $secondaryContactId = CRM_Utils_Array::value('secondary_contact_select_id', $params);
     $sendConfirmation = CRM_Utils_Array::value('send_confirmation', $params);
     if($sendConfirmation){
-        $emailTo = CRM_Utils_Array::value('email_to', $params);
-        if(!$emailTo){
-          $errors['email_to'] = ts('Please select a contact(s) to send email to.');
-        }else if($emailTo == 2 && !$secondaryContactId || $emailTo == 3 && !$secondaryContactId ){
-          $errors['email_to'] = ts('Please select add secondary contact.');
+       $emailTo = CRM_Utils_Array::value('email_to', $params);
+       if(!$emailTo){
+        $errors['email_to'] = ts('Please select a contact(s) to send email to.');
+       }
+      if(!$self->_id){
+        if($emailTo == 2 && !$secondaryContactId || $emailTo == 3 && !$secondaryContactId ){
+          $errors['email_to'] = ts('Please select a secondary contact.');
         }
-        $fromEmailAddreess = CRM_Utils_Array::value('from_email_address', $params);
+      }
+      $fromEmailAddreess = CRM_Utils_Array::value('from_email_address', $params);
         if(!$fromEmailAddreess){
           $errors['from_email_address'] = ts('Please select a from email address.');
-        }
+      }
      }
 
 
      $recordContribution = CRM_Utils_Array::value('record_contribution', $params);
      if($recordContribution){
-
         $selectPaymentContact = CRM_Utils_Array::value('select_payment_contact', $params);
         if(!$selectPaymentContact){
           $errors['select_payment_contact'] = ts('Please select a contact for recording payment.');
-        }else if($selectPaymentContact == 2 && !$secondaryContactId){
-          $errors['select_payment_contact'] = ts('Please select add secondary contact.');
         }
-
+        if(!$self->_id){
+          if($selectPaymentContact == 2 && !$secondaryContactId){
+            $errors['select_payment_contact'] = ts('Please select add secondary contact.');
+          }
+        }
         $financialTypeId = CRM_Utils_Array::value('financial_type_id', $params);
         if(!$financialTypeId){
          $errors['financial_type_id'] = ts('Please select a financial type.');
