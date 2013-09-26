@@ -15,12 +15,11 @@ function booking_civicrm_tabs(&$tabs, $cid) {
       'id' => 'booking',
       'count' => $count,
       'title' => 'Booking',
-      'weight' => '998',
+      'weight' => 0, //we are at first tab
     );
-    //if ($count > 0) {
     $tab['url'] = CRM_Utils_System::url('civicrm/contact/view/booking', "reset=1&cid={$cid}&snippet=1&force=1", false, null, false);
-    //}
     $tabs[] = $tab;
+
 }
 
 /**
