@@ -68,6 +68,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     'contact_type',
     'sort_name',
     'booking_title',
+    'booking_status_id',
     'booking_status',
     'booking_payment_status',
     'booking_total_amount',
@@ -201,7 +202,6 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
    */
   static function &links($qfKey = NULL, $context = NULL) {
     $extraParams = NULL;
-
     if ($qfKey) {
       $extraParams .= "&key={$qfKey}";
     }
@@ -233,6 +233,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
           'qs' => 'reset=1&action=update&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
           'title' => ts('Edit Booking'),
         ),
+
         CRM_Core_Action::CLOSE => array(
           'name' => ts('Cancel'),
           'url' => 'civicrm/contact/view/booking',
@@ -246,6 +247,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
           'title' => ts('Delete Booking'),
         ),
       );
+
     }
     return self::$_links;
   }
@@ -327,7 +329,13 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     $rows = array();
 
 
-
+    $params = array(
+      'version' => 3,
+      'option_group_name' => 'booking_status',
+      'name' => 'cancelled',
+    );
+    $ov = civicrm_api('OptionValue', 'get', $params);
+    $cancelStatusId = CRM_Utils_Array::value('value', CRM_Utils_Array::value($ov['id'], $ov['values']));
     while ($result->fetch()) {
       $row = array();
 
@@ -339,7 +347,18 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
 
         $row['checkbox'] = CRM_Core_Form::CB_PREFIX . $result->contact_id;
 
-        $row['action'] = CRM_Core_Action::formLink(self::links($this->_key, $this->_context),
+        $isCancelled = FALSE;
+        if($result->booking_status_id == $cancelStatusId){
+          $isCancelled = TRUE;
+        }
+        $links = self::links($this->_key, $this->_context);
+        if($isCancelled){
+          unset($links[CRM_Core_Action::UPDATE]);
+          unset($links[CRM_Core_Action::BASIC]);
+          unset($links[CRM_Core_Action::ADVANCED]);
+          unset($links[CRM_Core_Action::CLOSE]);
+        }
+        $row['action'] = CRM_Core_Action::formLink($links,
           $mask,
           array(
             'id' => $result->booking_id,
@@ -350,7 +369,6 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
       }
       $rows[] = $row;
     }
-
     return $rows;
   }
 
