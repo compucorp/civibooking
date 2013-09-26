@@ -45,6 +45,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
 
   protected $_values;
 
+  protected $_cancelStatusId;
 
   /**
    * Function to set variables up before form is built
@@ -61,6 +62,20 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
 
     if (empty($this->_values)) {
       CRM_Core_Error::statusBounce(ts('The requested booking record does not exist (possibly the record was deleted).'));
+    }
+
+    $this->assign('booking', $this->_values);
+    $params = array(
+     'version' => 3,
+      'option_group_name' => 'booking_status',
+      'name' => 'cancelled',
+    );
+    $result = civicrm_api('OptionValue', 'get', $params);
+    $this->_cancelStatusId =  $cancelStatus = CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
+
+    if ($this->_values['status_id'] == $cancelStatus
+       & ($this->_action != CRM_Core_Action::DELETE & $this->_action != CRM_Core_Action::VIEW)) {
+      CRM_Core_Error::statusBounce(ts('The requested booking record has already been cancelled'));
     }
 
     $this->_values['payment_status'] =  CRM_Booking_BAO_Booking::getPaymentStatus($this->_id);
