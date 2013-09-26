@@ -123,6 +123,6 @@ cj(function($) {
 });
 </script>
 {/literal}
-{crmScript ext=uk.co.compucorp.civicrm.booking file=js/CRM/Booking/Form/SelectResource.js}
+{crmScript ext=uk.co.compucorp.civicrm.booking file=templates/CRM/Booking/Form/SelectResource.js}
 
 
