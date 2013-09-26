@@ -143,7 +143,7 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
         }else{ //calulate manuanlly
           $charges['total_amount'] = CRM_Booking_BAO_Booking::calulateSlotPrice($subSlot['config_id'], $subSlot['quantity']);
           $charges['unit_price'] = CRM_Core_DAO::getFieldValue(
-            'civicrm_booking_adhoc_charges_item',
+            'CRM_Booking_DAO_AdhocChargesItem',
             $charges['item_id'],
             'price',
             'id'
