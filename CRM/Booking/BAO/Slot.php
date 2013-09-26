@@ -162,7 +162,8 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
       AND
       (%1 BETWEEN DATE(civicrm_booking_slot.start) AND DATE(civicrm_booking_slot.end)
         OR
-      %2 BETWEEN DATE(civicrm_booking_slot.start) AND DATE(civicrm_booking_slot.end))";
+      %2 BETWEEN DATE(civicrm_booking_slot.start) AND DATE(civicrm_booking_slot.end))
+      AND civicrm_booking_slot.is_deleted = 0 AND civicrm_booking_slot.is_cancelled = 0";
 
     $slots = array();
     $dao = CRM_Core_DAO::executeQuery($query, $params);
