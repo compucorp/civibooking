@@ -60,7 +60,7 @@ class CRM_Booking_BAO_Query {
         CRM_Utils_Array::value('booking_status_id', $query->_returnProperties)
       ) {
         $query->_select['booking_status'] = "booking_status.label as booking_status";
-        $query->_select['booking_status_id'] = "booking_status.id as booking_status_id";
+        $query->_select['booking_status_id'] = "civicrm_booking.status_id as booking_status_id";
         $query->_element['booking_status_id'] = 1;
         $query->_element['booking_status'] = 1;
         $query->_tables['civicrm_booking'] = 1;
@@ -73,7 +73,7 @@ class CRM_Booking_BAO_Query {
         CRM_Utils_Array::value('booking_payment_status_id', $query->_returnProperties)
       ) {
         $query->_select['booking_payment_status'] = "booking_payment_status.label as booking_payment_status";
-        $query->_select['booking_payment_status_id'] = "booking_payment_status.id as booking_payment_status_id";
+        $query->_select['booking_payment_status_id'] = "booking_payment_status.value as booking_payment_status_id";
         $query->_element['booking_payment_status_id'] = 1;
         $query->_element['booking_payment_status'] = 1;
         $query->_tables['civicrm_booking'] = 1;
