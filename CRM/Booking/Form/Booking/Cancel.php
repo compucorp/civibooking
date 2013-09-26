@@ -108,6 +108,18 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     return $defaults;
   }
 
+  function postProcess(){
+    CRM_Utils_System::flushCache();
+    $values = $this->exportValues();
+    $params['booking_id'] = $this->_id;
+    $params['cancellation_percentage'] = $values['cancellations'];
+    $params['additional_charge'] = $values['adjustment'];
+    $params['cancellation_date'] = $values['cancellation_date'];
+    $params['booking_total'] = $values['booking_total'];
+    $booking = CRM_Booking_BAO_Cancellation::create($params);
+    CRM_Core_Session::setStatus(ts('The booking \'%1\' has been cancelled.', array(1 => $this->_id)), ts('Saved'), 'success');
+  }
+
   static function registerScripts() {
     static $loaded = FALSE;
     if ($loaded) {
