@@ -422,7 +422,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
         $pre = array(
           array('desc' => ts('Contact Type')),
           array(
-            'name' => ts('Primary Contact'),
+            'name' => ts('Booking Contact'),
             'sort' => 'sort_name',
             'direction' => CRM_Utils_Sort::DONTCARE,
           ),
