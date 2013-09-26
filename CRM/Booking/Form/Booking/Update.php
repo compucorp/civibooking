@@ -101,10 +101,12 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
       CRM_Core_Session::setStatus(ts('Selected booking has been deleted.'), ts('Record Deleted'), 'success');
     }
     else {
-      $values = $this->exportValues();
-      $params['id'] = $this->_id;
-      $params['status_id'] = $values['booking_status'];
-      $booking = CRM_Booking_BAO_Booking::add($params);
+      if($this->_values['status_id'] != $this->_cancelStatus){ //nothing to update
+        $values = $this->exportValues();
+        $params['id'] = $this->_id;
+        $params['status_id'] = $values['booking_status'];
+        $booking = CRM_Booking_BAO_Booking::add($params);
+      }
       parent::postProcess();
       CRM_Core_Session::setStatus(ts('The booking \'%1\' has been saved.', array(1 => $booking->id)), ts('Saved'), 'success');
 
