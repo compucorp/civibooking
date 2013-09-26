@@ -31,6 +31,9 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
       $displayName = CRM_Contact_BAO_Contact::displayName($this->_contactId);
       $this->assign('displayName', $displayName);
     }
+
+    $bookings = CRM_Booking_BAO_Booking::getContactAssociatedBooking($this->_contactId);
+    $this->assign('associatedBooking', $bookings);
   }
 
 

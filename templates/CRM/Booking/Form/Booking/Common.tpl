@@ -21,7 +21,7 @@
         {$booking.payment_status}
       {/if}
     </div>
-  </div>
+</div>
 <div class="crm-section">
   <div class="label">{$form.record_contribution.label}</div>
   <div class="content">{$form.record_contribution.html}</div>

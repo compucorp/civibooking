@@ -52,13 +52,13 @@
             </div>
         {/if}
 
-        {if $softCredit}
+        {if $associatedBooking}
             <div class="solid-border-top">
                 <br />
-                <div class="label">{ts}Soft credits{/ts} {help id="id-soft_credit"}</div>
+                <div class="label">{ts}Associated Contact Booking{/ts} </div>
                 <div class="spacer"></div>
             </div>
-            {include file="CRM/Booking/Page/BookingSoft.tpl"}
+            {include file="CRM/Booking/Page/AssociatedBooking.tpl"}
         {/if}
     </div>
 {/if}
