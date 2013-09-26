@@ -108,7 +108,12 @@ class CRM_Booking_DAO_Cancellation extends CRM_Core_DAO
    *
    * @var float
    */
-  public $additional_charge;
+  public $cancellation_fee;
+  /**
+   *
+   * @var float
+   */
+  public $additional_fee;
   /**
    *
    * @var text
@@ -167,11 +172,16 @@ class CRM_Booking_DAO_Cancellation extends CRM_Core_DAO
           'title' => ts('Cancellation Date') ,
           'required' => true,
         ) ,
-        'additional_charge' => array(
-          'name' => 'additional_charge',
+        'cancellation_fee' => array(
+          'name' => 'cancellation_fee',
+          'type' => CRM_Utils_Type::T_MONEY,
+          'title' => ts('Cancellation charge') ,
+          'required' => true,
+        ) ,
+        'additional_fee' => array(
+          'name' => 'additional_fee',
           'type' => CRM_Utils_Type::T_MONEY,
           'title' => ts('Additional charge') ,
-          'required' => true,
         ) ,
         'comment' => array(
           'name' => 'comment',
@@ -196,7 +206,8 @@ class CRM_Booking_DAO_Cancellation extends CRM_Core_DAO
         'id' => 'id',
         'booking_id' => 'booking_id',
         'cancellation_date' => 'cancellation_date',
-        'additional_charge' => 'additional_charge',
+        'cancellation_fee' => 'cancellation_fee',
+        'additional_fee' => 'additional_fee',
         'comment' => 'comment',
       );
     }

@@ -40,11 +40,22 @@
     <add>1.3</add>
     -->
   </field>
+
   <field>
-    <name>additional_charge</name>
-    <title>Additional charge</title>
+    <name>cancellation_fee</name>
+    <title>Cancellation charge</title>
     <type>decimal</type>
     <required>true</required>
+    <!--<default>0</default>
+    <import>true</import>
+    <headerPattern>/non?.?deduct/i</headerPattern>
+    <dataPattern>/^\d+(\.\d{2})?$/</dataPattern>
+    -->
+  </field>
+  <field>
+    <name>additional_fee</name>
+    <title>Additional charge</title>
+    <type>decimal</type>
     <!--<default>0</default>
     <import>true</import>
     <headerPattern>/non?.?deduct/i</headerPattern>

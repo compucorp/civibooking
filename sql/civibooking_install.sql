@@ -101,6 +101,7 @@ CREATE TABLE `civicrm_booking_config` (
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 
+
 -- /*******************************************************
 -- *
 -- * civicrm_booking_cancellation
@@ -112,7 +113,8 @@ CREATE TABLE `civicrm_booking_cancellation` (
      `id` int unsigned NOT NULL AUTO_INCREMENT  ,
      `booking_id` int unsigned    COMMENT 'FK to Booking',
      `cancellation_date` datetime NOT NULL   ,
-     `additional_charge` decimal(20,2) NOT NULL   ,
+     `cancellation_fee` decimal(20,2) NOT NULL   ,
+     `additional_fee` decimal(20,2)    ,
      `comment` text
 ,
     PRIMARY KEY ( `id` )
