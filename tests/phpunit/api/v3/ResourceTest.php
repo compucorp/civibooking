@@ -5,7 +5,7 @@ require_once 'CiviTest/CiviUnitTestCase.php';
 /**
  * FIXME
  */
-class api_v3_BookingResourceTest extends CiviUnitTestCase {
+class api_v3_ResourceTest extends CiviUnitTestCase {
   function setUp() {
     // If your test manipulates any SQL tables, then you should truncate
     // them to ensure a consisting starting point for all tests
