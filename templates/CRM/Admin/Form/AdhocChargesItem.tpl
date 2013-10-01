@@ -23,15 +23,9 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
-<h3>{if $action eq 1}{ts}New Addiitonal Charges Item{/ts}{elseif $action eq 2}{ts}Edit Addiitonal Charges Item{/ts}{else}{ts}Delete Addiitonal Charges Item{/ts}{/if}</h3>
+<h3>{if $action eq 1}{ts}New Additional Charges Item{/ts}{else}{ts}Edit Addiitonal Charges Item{/ts}{/if}</h3>
 <div class="crm-block crm-form-block crm-bookingAdhocChargesItem-form-block">
 <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="top"}</div>
-{if $action eq 8}
-  <div class="messages status no-popup">
-      <div class="icon inform-icon"></div>
-        {ts}WARNING: Deleting this Addiitonal Charges Item  will result in the loss of all records which use the Addiitonal Charges Item. This may mean the loss of a substantial amount of data, and the action cannot be undone.{/ts} {ts}Do you want to continue?{/ts}
-  </div>
-{else}
   <table class="form-layout-compressed">
     <tr class="crm-bookingAdhocChargesItem-form-block-name">
         <td class="label">{$form.name.label}</td><td>{$form.name.html}</td>
@@ -50,5 +44,4 @@
     </tr>
   </table>
  <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
-{/if}
 </div>

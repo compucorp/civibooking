@@ -82,12 +82,6 @@ class CRM_Admin_Page_AdhocChargesItem extends CRM_Core_Page_Basic {
           'ref' => 'enable-action',
           'title' => ts('Enable Adhoc Charges Item'),
         ),
-//        CRM_Core_Action::DELETE => array(
-//          'name' => ts('Delete'),
-//          'url' => 'civicrm/admin/adhoc_charges_item',
-//          'qs' => 'action=delete&id=%%id%%',
-//          'title' => ts('Delete Resource'),
-//        ),
       );
     }
     return self::$_links;
@@ -106,7 +100,7 @@ class CRM_Admin_Page_AdhocChargesItem extends CRM_Core_Page_Basic {
    */
   function run() {
     // set title
-    CRM_Utils_System::setTitle(ts('Settings - Ad-hoc Charges Item '));
+    CRM_Utils_System::setTitle(ts('Settings - Additional Charges Item '));
    
     return parent::run();
   }
