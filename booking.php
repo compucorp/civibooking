@@ -169,14 +169,14 @@ function booking_civicrm_navigationMenu( &$params ) {
   $administerMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Administer', 'id', 'name');
   // skip adding menu if there is no administer menu
   if ($administerMenuId) {
-    // get the maximum key under adminster menu
+    // get the maximum key under administer menu
     $maxAdminMenuKey = max( array_keys($params[$administerMenuId]['child']));
     $nextAdminMenuKey = $maxAdminMenuKey+1;
     $params[$administerMenuId]['child'][$nextAdminMenuKey] =  array(
         'attributes' => array(
           'label' => 'CiviBooking',
           'name' => 'admin_booking',
-          'url' => '#',
+          //'url' => '#',
           'permission' => null,
           'operator' => null,
           'separator' => 1,
@@ -213,7 +213,21 @@ function booking_civicrm_navigationMenu( &$params ) {
           ),
          'child' => null
         ),
-         3 => array(
+        3 => array(
+          'attributes' => array(
+            'label' => 'Additional Charges Item',
+            'name' => 'adhoc_charges_item',
+            'url' => 'civicrm/admin/adhoc_charges_item&reset=1',
+            'permission' => null,
+            'operator' => null,
+            'separator' => 0,
+            'parentID' =>  $nextAdminMenuKey,
+            'navID' => 2,
+            'active' => 1
+          ),
+         'child' => null
+        ),
+         4 => array(
             'attributes' => array(
               'label' => 'Booking Status',
               'name' => 'booking_status',
@@ -227,7 +241,7 @@ function booking_civicrm_navigationMenu( &$params ) {
             ),
            'child' => null
           ),
-          4 => array(
+          5 => array(
             'attributes' => array(
               'label' => 'Resource Type',
               'name' => 'resource_type',
@@ -241,7 +255,7 @@ function booking_civicrm_navigationMenu( &$params ) {
               ),
             'child' => null
           ),
-          5 => array(
+          6 => array(
             'attributes' => array(
               'label' => 'Resource Criteria',
               'name' => 'resource_criteria',
@@ -255,7 +269,7 @@ function booking_civicrm_navigationMenu( &$params ) {
             ),
             'child' => null
           ),
-          6 => array(
+          7 => array(
             'attributes' => array(
               'label' => 'Size Unit',
               'name' => 'size_unit',
@@ -269,7 +283,7 @@ function booking_civicrm_navigationMenu( &$params ) {
             ),
             'child' => null
           ),
-          7 => array(
+          8 => array(
             'attributes' => array(
               'label' => 'Booking Component Settings',
               'name' => 'booking_component_settings',
