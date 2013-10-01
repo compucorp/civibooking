@@ -75,4 +75,10 @@
     <title>Booking Component Settings</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/admin/adhoc_charges_item</path>
+    <page_callback>CRM_Admin_Page_AdhocChargesItem</page_callback>
+    <title>Ad-hoc Charge Item</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
