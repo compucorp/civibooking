@@ -66,7 +66,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       ),
       array(
         'type' => 'submit',
-        'name' => ts('Complate and save'),
+        'name' => ts('Complete and Save'),
       ),
     );
 
