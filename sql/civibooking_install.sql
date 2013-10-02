@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS `civicrm_booking`;
 
 SET FOREIGN_KEY_CHECKS=1;
 
-/*******************************************************
+-- /*******************************************************
 -- *
 -- * civicrm_booking_adhoc_charges_item
 -- *
