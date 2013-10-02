@@ -165,6 +165,15 @@ function booking_civicrm_navigationMenu( &$params ) {
       $sizeUnitGid = $result['id'];
    }
 
+   $result = civicrm_api('OptionGroup', 'getsingle', array(
+    'version' => 3,
+    'sequential' => 1,
+    'name' => 'booking_cancellation_charges')
+   );
+   if($result['id']){
+      $cancellationChargesGid = $result['id'];
+   }
+
   // get the id of Administer Menu
   $administerMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Administer', 'id', 'name');
   // skip adding menu if there is no administer menu
@@ -284,6 +293,20 @@ function booking_civicrm_navigationMenu( &$params ) {
             'child' => null
           ),
           8 => array(
+            'attributes' => array(
+              'label' => 'Cancellation Charges',
+              'name' => 'cancellation_charges',
+              'url' =>'civicrm/admin/optionValue?gid=' . $cancellationChargesGid .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $nextAdminMenuKey,
+              'navID' => 6,
+              'active' => 1
+            ),
+            'child' => null
+          ),
+          9 => array(
             'attributes' => array(
               'label' => 'Booking Component Settings',
               'name' => 'booking_component_settings',
