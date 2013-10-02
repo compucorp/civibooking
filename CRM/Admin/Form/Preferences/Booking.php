@@ -37,13 +37,17 @@
  *
  */
 class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
-  protected $_id = NULL;
+  protected $_config = NULL;
 
   function preProcess() {
     parent::preProcess();
-    CRM_Utils_System::setTitle(ts('Settings - Booking Perferences Configuration'));
+    CRM_Utils_System::setTitle(ts('Settings - Booking Preferences Configuration'));
+    
+	$configValue = CRM_Booking_BAO_BookingConfig::getConfig();
+	$this->_config = $configValue;	
+    
+    // load up javascript, css
     self::registerScripts();
-
   }
 
   /**
@@ -54,20 +58,6 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
    */
   public function buildQuickForm($check = FALSE) {
     parent::buildQuickForm();
-
-    $financialType = CRM_Contribute_PseudoConstant::financialType();
-    $this->add('select', 'financial_type_default', ts('Default Financial type'),
-      array('' => ts('- select -')) + $financialType,
-      TRUE,
-      array()
-    );
-
-    $priceSets = array(); //TODO Get list of price set
-    $this->add('select', 'price_set_default', ts('Default price set'),
-      array('' => ts('- select -')) + $priceSets,
-      FALSE,
-      array()
-    );
 
     $timeRange =  CRM_Booking_Utils_DateTime::createTimeRange("00:00", "24:00");
     $timeOptions = array();
@@ -88,17 +78,12 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
       array()
     );
 
-    $this->add('text', 'selected_email_address', ts('Select from emails'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('text', 'cc_email_address', ts('CC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('text', 'bcc_email_address', ts('BCC'), array('size' => 50, 'maxlength' => 255), FALSE);
-
-
-
-    $this->add('checkbox', 'created_activity', ts('Is Unlimited?'));
-
-    $this->add('text', 'slot_avaliable_colour', ts('Slot avaliable colour'));
-    $this->add('text', 'slot_unavaliable_colour', ts('Slot unavaliable colour'));
-    //$this->add('text', 'slot_owner_colour', ts('Slot unavaliable colour'));
+    $this->add('checkbox', 'log_confirmation_email', ts('Is logged?'));
+    $this->add('text', 'slot_booked_colour', ts('Slot avaliable colour'));
+    $this->add('text', 'slot_provisional_colour', ts('Slot unavaliable colour'));
+    $this->add('text', 'slot_being_edited_colour', ts('Slot editing colour'));
 
 
     $this->addFormRule(array('CRM_Admin_Form_Preferences_Booking', 'formRule'), $this);
@@ -110,7 +95,6 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
           'name' => ts('Save'),
           'isDefault' => TRUE,
         ),
-
       )
     );
   }
@@ -123,10 +107,18 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
     return empty($errors) ? TRUE : $errors;
   }
 
-
-
   function setDefaultValues() {
     $defaults = array();
+
+	$defaults['day_start_at'] = date('G:i', strtotime($this->_config['day_start_at']));
+	$defaults['day_end_at'] = date('G:i', strtotime($this->_config['day_end_at']));
+	$defaults['bcc_email_address'] = $this->_config['bcc_email_address'];
+    $defaults['cc_email_address'] = $this->_config['cc_email_address'];
+    $defaults['log_confirmation_email'] = $this->_config['log_confirmation_email'];
+    $defaults['slot_booked_colour'] = $this->_config['slot_booked_colour'];
+    $defaults['slot_provisional_colour'] = $this->_config['slot_provisional_colour'];
+    $defaults['slot_being_edited_colour'] = $this->_config['slot_being_edited_colour'];
+    
     return $defaults;
   }
 
@@ -141,6 +133,23 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
   public function postProcess() {
     CRM_Utils_System::flushCache();
 
+	// get values from form
+	$params = $this->exportValues();
+	$params['id'] = $this->_config['id'];
+	$params['day_start_at'] = date('His', strtotime($params['day_start_at']));
+	$params['day_end_at'] = date('His', strtotime($params['day_end_at']));
+	if(!isset($params['log_confirmation_email'])){
+      $params['log_confirmation_email'] = 0;
+    }	
+	
+	// submit to BAO for updating
+	$set = CRM_Booking_BAO_BookingConfig::create($params);
+	
+	$url = CRM_Utils_System::url('civicrm/admin/setting/preferences/booking', 'reset=1');
+	// show message
+	CRM_Core_Session::setStatus(ts('The Booking configuration has been saved.'), ts('Saved'), 'success');
+    $session = CRM_Core_Session::singleton();
+    $session->replaceUserContext($url);
   }
 
 
@@ -152,7 +161,9 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
     $loaded = TRUE;
 
     CRM_Core_Resources::singleton()
-      ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header');
+      ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
+      ->addStyleFile('uk.co.compucorp.civicrm.booking', 'js/vendor/bgrins-spectrum/spectrum.css',93,'page-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/bgrins-spectrum/spectrum.js',93,'page-header');
   }
 
 
