@@ -42,10 +42,10 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
   function preProcess() {
     parent::preProcess();
     CRM_Utils_System::setTitle(ts('Settings - Booking Preferences Configuration'));
-    
+
 	$configValue = CRM_Booking_BAO_BookingConfig::getConfig();
-	$this->_config = $configValue;	
-    
+	$this->_config = $configValue;
+
     // load up javascript, css
     self::registerScripts();
   }
@@ -80,7 +80,7 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
 
     $this->add('text', 'cc_email_address', ts('CC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('text', 'bcc_email_address', ts('BCC'), array('size' => 50, 'maxlength' => 255), FALSE);
-    $this->add('checkbox', 'log_confirmation_email', ts('Is logged?'));
+    $this->add('checkbox', 'log_confirmation_email', ts('Log email?'));
     $this->add('text', 'slot_booked_colour', ts('Slot avaliable colour'));
     $this->add('text', 'slot_provisional_colour', ts('Slot unavaliable colour'));
     $this->add('text', 'slot_being_edited_colour', ts('Slot editing colour'));
@@ -118,7 +118,7 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
     $defaults['slot_booked_colour'] = $this->_config['slot_booked_colour'];
     $defaults['slot_provisional_colour'] = $this->_config['slot_provisional_colour'];
     $defaults['slot_being_edited_colour'] = $this->_config['slot_being_edited_colour'];
-    
+
     return $defaults;
   }
 
@@ -140,11 +140,11 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
 	$params['day_end_at'] = date('His', strtotime($params['day_end_at']));
 	if(!isset($params['log_confirmation_email'])){
       $params['log_confirmation_email'] = 0;
-    }	
-	
+    }
+
 	// submit to BAO for updating
 	$set = CRM_Booking_BAO_BookingConfig::create($params);
-	
+
 	$url = CRM_Utils_System::url('civicrm/admin/setting/preferences/booking', 'reset=1');
 	// show message
 	CRM_Core_Session::setStatus(ts('The Booking configuration has been saved.'), ts('Saved'), 'success');
