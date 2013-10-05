@@ -27,7 +27,7 @@ class api_v3_ResourceConfigOptionTest extends CiviUnitTestCase {
    * test create function
    */
   public function testCreate() {
-    $testObject = CRM_Core_DAO::createTestObject('CRM_Civibooking_DAO_ResourceConfigOption')->toArray();
+    $testObject = CRM_Core_DAO::createTestObject('CRM_Booking_DAO_ResourceConfigOption')->toArray();
     $result = $this->callAPIAndDocument('ResourceConfigOption', 'create', $testObject, __FUNCTION__, __FILE__);
     $this->assertEquals(1, $result['count']);
     $this->assertEquals($testObject['id'], $result['id']);
@@ -37,7 +37,7 @@ class api_v3_ResourceConfigOptionTest extends CiviUnitTestCase {
 
 
   public function testGet(){
-    $testObject = CRM_Core_DAO::createTestObject('CRM_Civibooking_DAO_ResourceConfigOption')->toArray();
+    $testObject = CRM_Core_DAO::createTestObject('CRM_Booking_DAO_ResourceConfigOption')->toArray();
     $configOption = $this->callAPISuccess('ResourceConfigOption', 'Create', $testObject);
     $result = $this->callAPISuccess('ResourceConfigOption', 'Get', array(
       'id' => $configOption['id'],

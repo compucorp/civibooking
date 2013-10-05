@@ -22,7 +22,7 @@ class api_v3_ResourceTest extends CiviUnitTestCase {
 
   public function testCreate() {
     // create an example resource
-    $resource = CRM_Core_DAO::createTestObject('CRM_Civibooking_DAO_Resource')->toArray();
+    $resource = CRM_Core_DAO::createTestObject('CRM_Booking_DAO_Resource')->toArray();
     $result = $this->callAPIAndDocument('ResourceConfigSet', 'create', $resource, __FUNCTION__, __FILE__);
     $this->assertEquals(1, $result['count']);
     $this->assertGreaterThan(0, $result['id']);
@@ -57,7 +57,7 @@ class api_v3_ResourceTest extends CiviUnitTestCase {
       "is_enabled"=> 1)
     );
 
-    $testObject = CRM_Core_DAO::createTestObject('CRM_Civibooking_DAO_Resource')->toArray();
+    $testObject = CRM_Core_DAO::createTestObject('CRM_Booking_DAO_Resource')->toArray();
     $params = array(
       'set_id' => $set['id'],
       'label' => $testObject['label'],
@@ -71,8 +71,8 @@ class api_v3_ResourceTest extends CiviUnitTestCase {
     );
 
 
-    $resource =  $this->callAPISuccess('BookingResource', 'Create', $params);
-    $result = $this->callAPISuccess('BookingResource', 'Get', array(
+    $resource =  $this->callAPISuccess('Resource', 'Create', $params);
+    $result = $this->callAPISuccess('Resource', 'Get', array(
       'id' => $resource['id'],
       'sequential' => 1,
       'api.resource_config_set.get' => array(

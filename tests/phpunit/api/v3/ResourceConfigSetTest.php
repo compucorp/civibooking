@@ -42,7 +42,7 @@ class api_v3_ResourceConfigSetTest extends CiviUnitTestCase {
 
 
   public function testGet(){
-    $testObject = CRM_Core_DAO::createTestObject('CRM_Civibooking_DAO_ResourceConfigSet')->toArray();
+    $testObject = CRM_Core_DAO::createTestObject('CRM_Booking_DAO_ResourceConfigSet')->toArray();
     $configSet = $this->callAPISuccess('ResourceConfigSet', 'Create', $testObject);
     $result = $this->callAPISuccess('ResourceConfigSet', 'Get', array(
       'id' => $configSet['id'],
