@@ -110,9 +110,9 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
   function setDefaultValues() {
     $defaults = array();
 
-	$defaults['day_start_at'] = date('G:i', strtotime($this->_config['day_start_at']));
-	$defaults['day_end_at'] = date('G:i', strtotime($this->_config['day_end_at']));
-	$defaults['bcc_email_address'] = $this->_config['bcc_email_address'];
+	  $defaults['day_start_at'] = date('G:i', strtotime($this->_config['day_start_at']));
+	  $defaults['day_end_at'] = date('G:i', strtotime($this->_config['day_end_at']));
+	  $defaults['bcc_email_address'] = $this->_config['bcc_email_address'];
     $defaults['cc_email_address'] = $this->_config['cc_email_address'];
     $defaults['log_confirmation_email'] = $this->_config['log_confirmation_email'];
     $defaults['slot_booked_colour'] = $this->_config['slot_booked_colour'];
@@ -133,21 +133,21 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
   public function postProcess() {
     CRM_Utils_System::flushCache();
 
-	// get values from form
-	$params = $this->exportValues();
-	$params['id'] = $this->_config['id'];
-	$params['day_start_at'] = date('His', strtotime($params['day_start_at']));
-	$params['day_end_at'] = date('His', strtotime($params['day_end_at']));
-	if(!isset($params['log_confirmation_email'])){
+	  // get values from form
+	  $params = $this->exportValues();
+	  $params['id'] = $this->_config['id'];
+	  $params['day_start_at'] = date('His', strtotime($params['day_start_at']));
+	  $params['day_end_at'] = date('His', strtotime($params['day_end_at']));
+	  if(!isset($params['log_confirmation_email'])){
       $params['log_confirmation_email'] = 0;
     }
 
-	// submit to BAO for updating
-	$set = CRM_Booking_BAO_BookingConfig::create($params);
+	  // submit to BAO for updating
+	  $set = CRM_Booking_BAO_BookingConfig::create($params);
 
-	$url = CRM_Utils_System::url('civicrm/admin/setting/preferences/booking', 'reset=1');
-	// show message
-	CRM_Core_Session::setStatus(ts('The Booking configuration has been saved.'), ts('Saved'), 'success');
+	  $url = CRM_Utils_System::url('civicrm/admin/setting/preferences/booking', 'reset=1');
+	  // show message
+	  CRM_Core_Session::setStatus(ts('The Booking configuration has been saved.'), ts('Saved'), 'success');
     $session = CRM_Core_Session::singleton();
     $session->replaceUserContext($url);
   }
