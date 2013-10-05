@@ -55,7 +55,7 @@
         {if $associatedBooking}
             <div class="solid-border-top">
                 <br />
-                <div class="label">{ts}Associated Contact Booking{/ts} </div>
+                <div class="label"><strong>{ts}Associated Contact Booking{/ts}</strong></div>
                 <div class="spacer"></div>
             </div>
             {include file="CRM/Booking/Page/AssociatedBooking.tpl"}
