@@ -111,6 +111,16 @@ class CRM_Booking_DAO_AdhocCharges extends CRM_Core_DAO
    */
   public $quantity;
   /**
+   *
+   * @var boolean
+   */
+  public $is_cancelled;
+  /**
+   *
+   * @var boolean
+   */
+  public $is_deleted;
+  /**
    * class constructor
    *
    * @access public
@@ -171,6 +181,26 @@ class CRM_Booking_DAO_AdhocCharges extends CRM_Core_DAO
           'title' => ts('Quantity') ,
           'required' => true,
         ) ,
+        'is_cancelled' => array(
+          'name' => 'is_cancelled',
+          'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => ts('Slot is cancelled') ,
+          'import' => true,
+          'where' => 'civicrm_booking_adhoc_charges.is_cancelled',
+          'headerPattern' => '',
+          'dataPattern' => '',
+          'export' => true,
+        ) ,
+        'is_deleted' => array(
+          'name' => 'is_deleted',
+          'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => ts('Slot is in the Trash') ,
+          'import' => true,
+          'where' => 'civicrm_booking_adhoc_charges.is_deleted',
+          'headerPattern' => '',
+          'dataPattern' => '',
+          'export' => true,
+        ) ,
       );
     }
     return self::$_fields;
@@ -190,6 +220,8 @@ class CRM_Booking_DAO_AdhocCharges extends CRM_Core_DAO
         'booking_id' => 'booking_id',
         'item_id' => 'item_id',
         'quantity' => 'quantity',
+        'is_cancelled' => 'is_cancelled',
+        'is_deleted' => 'is_deleted',
       );
     }
     return self::$_fieldKeys;

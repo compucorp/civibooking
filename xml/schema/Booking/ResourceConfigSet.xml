@@ -18,7 +18,6 @@
     <autoincrement>true</autoincrement>
   </primaryKey>
 
-
   <field>
     <name>title</name>
     <type>varchar</type>
@@ -26,15 +25,7 @@
     <comment></comment>
     <title>Title</title>
     <required>true</required>
-    <!-- <export>true</export> -->
   </field>
-  <!--
-  <field>
-    <name>value</name>
-    <type>varchar</type>
-    <length>255</length>
-  </field>
-  -->
 
   <field>
     <name>weight</name>
@@ -43,18 +34,32 @@
     <required>true</required>
    </field>
 
-   <field>
+  <field>
     <name>is_active</name>
+    <title>Slot is cancelled</title>
     <type>boolean</type>
-    <required>true</required>
-   </field>
+    <default>1</default>
+    <import>true</import>
+    <add>4.4</add>
+  </field>
+  <index>
+    <name>index_is_active</name>
+    <fieldName>is_active</fieldName>
+    <add>4.4</add>
+  </index>
 
-    <field>
+  <field>
     <name>is_deleted</name>
-    <default>0</default>
+    <title>Slot is in the Trash</title>
     <type>boolean</type>
-    <required>true</required>
-   </field>
-
+    <default>0</default>
+    <import>true</import>
+    <add>4.4</add>
+  </field>
+  <index>
+    <name>index_is_deleted</name>
+    <fieldName>is_deleted</fieldName>
+    <add>4.4</add>
+  </index>
 
 </table>

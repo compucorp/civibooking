@@ -17,7 +17,6 @@
     <autoincrement>false</autoincrement>
   </primaryKey>
 
-
   <field>
     <name>domain_id</name>
     <type>int unsigned</type>
@@ -62,6 +61,18 @@
   </field>
 
   <field>
+    <name>slot_being_edited_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+
+  <field>
+    <name>slot_being_edited_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+
+  <field>
     <name>slot_booked_colour</name>
     <type>varchar</type>
     <length>10</length>
@@ -73,12 +84,9 @@
     <length>10</length>
   </field>
 
- <field>
-    <name>slot_being_edited_colour</name>
+  <field>
+    <name>slot_unavailable_colour</name>
     <type>varchar</type>
     <length>10</length>
   </field>
-
-
-
 </table>

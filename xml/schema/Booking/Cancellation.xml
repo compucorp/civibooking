@@ -34,11 +34,6 @@
     <name>cancellation_date</name>
     <type>datetime</type>
     <required>true</required>
-    <!--<import>true</import>
-    <headerPattern>/receive(.?date)?/i</headerPattern>
-    <dataPattern>/^\d{4}-?\d{2}-?\d{2} ?(\d{2}:?\d{2}:?(\d{2})?)?$/</dataPattern>
-    <add>1.3</add>
-    -->
   </field>
 
   <field>
@@ -46,21 +41,11 @@
     <title>Cancellation charge</title>
     <type>decimal</type>
     <required>true</required>
-    <!--<default>0</default>
-    <import>true</import>
-    <headerPattern>/non?.?deduct/i</headerPattern>
-    <dataPattern>/^\d+(\.\d{2})?$/</dataPattern>
-    -->
   </field>
   <field>
     <name>additional_fee</name>
     <title>Additional charge</title>
     <type>decimal</type>
-    <!--<default>0</default>
-    <import>true</import>
-    <headerPattern>/non?.?deduct/i</headerPattern>
-    <dataPattern>/^\d+(\.\d{2})?$/</dataPattern>
-    -->
   </field>
 
    <field>

@@ -83,26 +83,44 @@
     <required>true</required>
   </field>
 
-   <field>
+  <field>
     <name>is_unlimited</name>
     <type>boolean</type>
     <default>0</default>
     <required>true</required>
+  </field>
+  <index>
+    <name>index_is_unlimited</name>
+    <fieldName>is_unlimited</fieldName>
+    <add>4.4</add>
+  </index>
 
-   </field>
-
-   <field>
+  <field>
     <name>is_active</name>
+    <title>Slot is cancelled</title>
     <type>boolean</type>
-    <required>true</required>
-   </field>
+    <default>1</default>
+    <import>true</import>
+    <add>4.4</add>
+  </field>
+  <index>
+    <name>index_is_active</name>
+    <fieldName>is_active</fieldName>
+    <add>4.4</add>
+  </index>
 
-   <field>
+  <field>
     <name>is_deleted</name>
-    <default>0</default>
+    <title>Slot is in the Trash</title>
     <type>boolean</type>
-    <required>true</required>
-   </field>
-
+    <default>0</default>
+    <import>true</import>
+    <add>4.4</add>
+  </field>
+  <index>
+    <name>index_is_deleted</name>
+    <fieldName>is_deleted</fieldName>
+    <add>4.4</add>
+  </index>
 
 </table>

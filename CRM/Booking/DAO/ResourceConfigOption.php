@@ -131,6 +131,11 @@ class CRM_Booking_DAO_ResourceConfigOption extends CRM_Core_DAO
    */
   public $is_active;
   /**
+   *
+   * @var boolean
+   */
+  public $is_deleted;
+  /**
    * class constructor
    *
    * @access public
@@ -220,7 +225,23 @@ class CRM_Booking_DAO_ResourceConfigOption extends CRM_Core_DAO
         'is_active' => array(
           'name' => 'is_active',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'required' => true,
+          'title' => ts('Slot is cancelled') ,
+          'import' => true,
+          'where' => 'civicrm_booking_resource_config_option.is_active',
+          'headerPattern' => '',
+          'dataPattern' => '',
+          'export' => true,
+          'default' => '1',
+        ) ,
+        'is_deleted' => array(
+          'name' => 'is_deleted',
+          'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => ts('Slot is in the Trash') ,
+          'import' => true,
+          'where' => 'civicrm_booking_resource_config_option.is_deleted',
+          'headerPattern' => '',
+          'dataPattern' => '',
+          'export' => true,
         ) ,
       );
     }
@@ -245,6 +266,7 @@ class CRM_Booking_DAO_ResourceConfigOption extends CRM_Core_DAO
         'unit_id' => 'unit_id',
         'weight' => 'weight',
         'is_active' => 'is_active',
+        'is_deleted' => 'is_deleted',
       );
     }
     return self::$_fieldKeys;

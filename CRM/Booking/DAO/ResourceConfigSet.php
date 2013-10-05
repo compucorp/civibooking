@@ -157,12 +157,23 @@ class CRM_Booking_DAO_ResourceConfigSet extends CRM_Core_DAO
         'is_active' => array(
           'name' => 'is_active',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'required' => true,
+          'title' => ts('Slot is cancelled') ,
+          'import' => true,
+          'where' => 'civicrm_booking_resource_config_set.is_active',
+          'headerPattern' => '',
+          'dataPattern' => '',
+          'export' => true,
+          'default' => '1',
         ) ,
         'is_deleted' => array(
           'name' => 'is_deleted',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'required' => true,
+          'title' => ts('Slot is in the Trash') ,
+          'import' => true,
+          'where' => 'civicrm_booking_resource_config_set.is_deleted',
+          'headerPattern' => '',
+          'dataPattern' => '',
+          'export' => true,
         ) ,
       );
     }
