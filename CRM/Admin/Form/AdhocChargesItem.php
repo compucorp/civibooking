@@ -68,7 +68,7 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
     $this->addFormRule(array('CRM_Admin_Form_AdhocChargesItem', 'formRule'), $this);
     $cancelURL = CRM_Utils_System::url('civicrm/admin/adhoc_charges_item', "&reset=1");
     $cancelURL = str_replace('&amp;', '&', $cancelURL);
-    
+
     // add button
     $this->addButtons(
       array(
@@ -90,7 +90,7 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
   static function formRule($fields) {
   	// get price value
 	$price = CRM_Utils_Array::value('price', $fields);
-	// put validation 
+	// put validation
 	if(!is_numeric($price)){
 		// set error msg
 		$errors['price'] = ts('This fields should be numeric.');
@@ -125,8 +125,9 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
    public function postProcess() {
     CRM_Utils_System::flushCache();
     $params = $this->exportValues();
-    
+
     // delete action
+    // TODO::Implement delete action on the screen
     if ($this->_action & CRM_Core_Action::DELETE) {
       CRM_Booking_BAO_AdhocChargesItem::del($this->_id);
       CRM_Core_Session::setStatus(ts('Selected additional charges item has been deleted.'), ts('Record Deleted'), 'success');
@@ -154,7 +155,5 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
       }
     }
   }
-
-
 
 }
