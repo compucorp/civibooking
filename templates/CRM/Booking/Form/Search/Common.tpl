@@ -34,16 +34,16 @@
    </td>
 </tr>
 
-{*
 <tr>
   <td>
   <label>{ts}Booking Event Dates{/ts}</label> <br/>
   </td>
 </tr>
 <tr>
-  include file="CRM/Core/DateRange.tpl" fieldName="event_start_date" from='_low' to='_high'
+  {include file="CRM/Core/DateRange.tpl" fieldName="event_start_date" from='_start_date_low' to='_end_date_high'}
+
+  {*include file="CRM/Core/DateRange.tpl" fieldName="event_start_date" from='_low' to='_high'*}
 </tr>
-*}
 
 <tr>
   <td>
