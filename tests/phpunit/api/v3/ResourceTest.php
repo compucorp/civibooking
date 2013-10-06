@@ -23,7 +23,7 @@ class api_v3_ResourceTest extends CiviUnitTestCase {
   public function testCreate() {
     // create an example resource
     $resource = CRM_Core_DAO::createTestObject('CRM_Booking_DAO_Resource')->toArray();
-    $result = $this->callAPIAndDocument('ResourceConfigSet', 'create', $resource, __FUNCTION__, __FILE__);
+    $result = $this->callAPIAndDocument('Resource', 'create', $resource, __FUNCTION__, __FILE__);
     $this->assertEquals(1, $result['count']);
     $this->assertGreaterThan(0, $result['id']);
 
