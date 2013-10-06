@@ -62,7 +62,7 @@
 {elseif $action ne 1}
     <div class="messages status no-popup">
       <div class="icon inform-icon"></div>
-        {ts}There are no resources.{/ts}
+        {ts}There are no aditional charges.{/ts}
      </div>
      <div class="action-link">
        <a href="{crmURL p='civicrm/admin/adhoc_charges_item' q="action=add&reset=1"}" id="newAdhocChargesItem" class="button"><span><div class="icon add-icon"></div>{ts}Add Additional Charges{/ts}</span></a>
