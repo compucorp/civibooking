@@ -23,106 +23,114 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
+ <div class="crm-container">
+
 {* WizardHeader.tpl provides visual display of steps thru the wizard as well as title for current step *}
 {include file="CRM/common/WizardHeader.tpl"}
-<div id="brs-container">
- <div id="scheduler">
-      <div id="resource_scheduler" class="dhx_cal_container" style='width:100%; height:500px;'>
-        <div class="dhx_cal_navline">
-          <div class="dhx_cal_prev_button">&nbsp;</div>
-          <div class="dhx_cal_next_button">&nbsp;</div>
-          <div class="dhx_cal_today_button"></div>
-          <div class="dhx_cal_date"></div>
-          {* <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
-          <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
-          <div class="dhx_cal_tab" name="timeline_tab" style="right:204;"></div>
-          <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div> *}
-          <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="show_minical()">&nbsp;</div>
+{if $resources}
+  <div id="brs-container">
+   <div id="scheduler">
+        <div id="resource_scheduler" class="dhx_cal_container" style='width:100%; height:500px;'>
+          <div class="dhx_cal_navline">
+            <div class="dhx_cal_prev_button">&nbsp;</div>
+            <div class="dhx_cal_next_button">&nbsp;</div>
+            <div class="dhx_cal_today_button"></div>
+            <div class="dhx_cal_date"></div>
+            {* <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+            <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+            <div class="dhx_cal_tab" name="timeline_tab" style="right:204;"></div>
+            <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div> *}
+            <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="show_minical()">&nbsp;</div>
+          </div>
+          <div class="dhx_cal_header">
+          </div>
+          <div class="dhx_cal_data">
+          </div>
         </div>
-        <div class="dhx_cal_header">
-        </div>
-        <div class="dhx_cal_data">
-        </div>
+       </div>
+
+    <div id="basket-region"class="crm-container crm-form-block hiddenElement">
+        <div class="hiddenElement">{$form.resources.html}</div>
+        <div class="crm-section" >
+          <h4>Currently in basket</h4>
+          <table id="basket-table" >
+            <tr>
+                <th>Resource</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Price</th>
+                <th></th>
+             </tr>
+            <tbody>
+
+            </tbody>
+
+            <tfoot>
+              <tr >
+                <td colspan="5"></td>
+              </tr>
+              <tr >
+                <td colspan="3" style="text-align:right">Sub total</td>
+                <td >{$currencySymbols}<span id="subTotal"><span></td>
+              </tr>
+            </tfoot>
+        </table>
       </div>
-     </div>
-
-  <div id="basket-region"class="crm-container crm-form-block hiddenElement">
-      <div class="hiddenElement">{$form.resources.html}</div>
-      <div class="crm-section" >
-        <h4>Currently in basket</h4>
-        <table id="basket-table" >
-          <tr>
-              <th>Resource</th>
-              <th>From</th>
-              <th>To</th>
-              <th>Price</th>
-              <th></th>
-           </tr>
-          <tbody>
-
-          </tbody>
-
-          <tfoot>
-            <tr >
-              <td colspan="5"></td>
-            </tr>
-            <tr >
-              <td colspan="3" style="text-align:right">Sub total</td>
-              <td >{$currencySymbols}<span id="subTotal"><span></td>
-            </tr>
-          </tfoot>
-      </table>
+      <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl"}</div>
     </div>
-    <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl"}</div>
   </div>
-</div>
-<div id="crm-booking-new-slot" class="crm-container hiddenElement">
+  <div id="crm-booking-new-slot" class="crm-container hiddenElement">
 
-</div>
-{literal}
-<script type="text/javascript">
-var crmDateFormat = "{/literal}{$dateformat}{literal}";
-var bookingId = "{/literal}{$bookingId}{literal}";
+  </div>
+  {literal}
+  <script type="text/javascript">
+  var crmDateFormat = "{/literal}{$dateformat}{literal}";
+  var bookingId = "{/literal}{$bookingId}{literal}";
 
-cj(function($) {
-  var elements = [// original hierarhical array to display
-      {/literal}
-        {foreach from=$resources key=key item=resourceType}
-         {literal}
-            {key:"{/literal}{$key}{literal}",label:"{/literal}{$resourceType.label}{literal}", open: true, children: [
-              {/literal}
-                {foreach from=$resourceType.child item=resource}
-                 {literal}
-                  {key:{/literal}{$resource.id}{literal}, label:"{/literal}{$resource.label}{literal}"},
-                 {/literal}
-                {/foreach}
-                {literal}
-             ]},
-          {/literal}
-        {/foreach}
-      {literal}
-  ];
+  cj(function($) {
+    var elements = [// original hierarhical array to display
+        {/literal}
+          {foreach from=$resources key=key item=resourceType}
+           {literal}
+              {key:"{/literal}{$key}{literal}",label:"{/literal}{$resourceType.label}{literal}", open: true, children: [
+                {/literal}
+                  {foreach from=$resourceType.child item=resource}
+                   {literal}
+                    {key:{/literal}{$resource.id}{literal}, label:"{/literal}{$resource.label}{literal}"},
+                   {/literal}
+                  {/foreach}
+                  {literal}
+               ]},
+            {/literal}
+          {/foreach}
+        {literal}
+    ];
 
-  scheduler.createTimelineView({
-    section_autoheight: false,
-    name: "timeline",
-    x_unit: "minute",
-    x_date: "%H:%i",
-    x_step: 30,
-    x_size: 24,
-    x_start: 16,
-    x_length: 48,
-    y_unit: elements,
-    y_property: "resource_id",
-    render: "tree",
-    folder_dy:20,
-    dy:60
+    scheduler.createTimelineView({
+      section_autoheight: false,
+      name: "timeline",
+      x_unit: "minute",
+      x_date: "%H:%i",
+      x_step: 30,
+      x_size: 24,
+      x_start: 16,
+      x_length: 48,
+      y_unit: elements,
+      y_property: "resource_id",
+      render: "tree",
+      folder_dy:20,
+      dy:60
+    });
+
+
   });
+  </script>
+  {/literal}
+  {crmScript ext=uk.co.compucorp.civicrm.booking file=templates/CRM/Booking/Form/SelectResource.js}
+{else}
+  {capture assign=ftUrl}{crmURL p='civicrm/admin/resource' q="reset=1&action=add"}{/capture}
+  {ts 1=$ftUrl}There are no resoruces to display. <a href='%1'>Click here</a> if you want to add new resources your site.{/ts}
+{/if}
 
-
-});
-</script>
-{/literal}
-{crmScript ext=uk.co.compucorp.civicrm.booking file=templates/CRM/Booking/Form/SelectResource.js}
-
+</div>
 
