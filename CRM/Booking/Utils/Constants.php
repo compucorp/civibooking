@@ -36,7 +36,7 @@
 
 class CRM_Booking_Utils_Constants{
 
-  const CUSTOM_ACTIVITY_TYPE = 'booking_acivity_booking';
+  const ACTIVITY_TYPE = 'booking_acivity_booking';
   const OPTION_BOOKING_STATUS = 'booking_status';
   const OPTION_RESOURCE_TYPE = 'booking_resource_type';
   const OPTION_RESOURCE_LOCATION = 'booking_resource_location';
@@ -44,4 +44,6 @@ class CRM_Booking_Utils_Constants{
   const OPTION_SIZE_UNIT = 'booking_size_unit';
   const OPTION_CANCELLATION_CHARGES = 'booking_cancellation_charges';
   const OPTION_MSG_TPL_WORKFLOW_BOOKING = 'msg_tpl_workflow_booking';
+  const OPTION_VALUE_CANCELLED = 'cancelled';
+
 }
