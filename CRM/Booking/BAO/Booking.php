@@ -32,8 +32,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
    * @static
    */
   static function create(&$params) {
-
-
     $resources = $params['resources'];
     $adhocCharges = $params['adhoc_charges'];
 
@@ -57,11 +55,10 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     );
     try{
       $booking = self::add($params);
-      $bookingID = $booking->id;
 
+      $bookingID = $booking->id;
       foreach ($resources as $key => $resource) {
         $slot = array(
-          'version' => 3,
           'booking_id' => $bookingID,
           'config_id' => CRM_Utils_Array::value('configuration_id', $resource),
           'start' => CRM_Utils_Date::processDate(CRM_Utils_Array::value('start_date', $resource)),
@@ -70,13 +67,13 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           'quantity' => CRM_Utils_Array::value('quantity', $resource),
           'note' => CRM_Utils_Array::value('note', $resource),
         );
-        $slotResult = civicrm_api('Slot', 'Create', $slot);
+        $slotResult = civicrm_api3('Slot', 'Create', $slot);
+        dpr($slotResult);
         $slotID =  CRM_Utils_Array::value('id', $slotResult);
 
         $subResources = $resource['sub_resources'];
         foreach($subResources as $subKey => $subResource){
           $subSlot = array(
-            'version' => 3,
             'resource_id' =>  CRM_Utils_Array::value('resource_id', $subResource),
             'slot_id' => $slotID,
             'config_id' => CRM_Utils_Array::value('configuration_id', $subResource),
@@ -84,23 +81,27 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             'quantity' => CRM_Utils_Array::value('quantity', $subResource),
             'note' => CRM_Utils_Array::value('note', $subResource),
           );
-          $subSlotResult = civicrm_api('SubSlot', 'Create', $subSlot);
+          $subSlotResult = civicrm_api3('SubSlot', 'Create', $subSlot);
         }
       }
       if($adhocCharges){
         $items = CRM_Utils_Array::value('items', $adhocCharges);
         foreach ($items as $key => $item) {
           $params = array(
-            'version' => 3,
             'booking_id' =>  $bookingID,
             'item_id' => CRM_Utils_Array::value('id', $item),
             'quantity' => CRM_Utils_Array::value('quantity', $item),
           );
-          civicrm_api('AdhocCharges', 'create', $params);
+          civicrm_api3('AdhocCharges', 'create', $params);
         }
       }
       return $booking;
-    }catch (Exception $e) {
+    }
+    catch (CiviCRM_API3_Exception $e) {
+      $transaction->rollback();
+      CRM_Core_Error::fatal($e->getMessage());
+    }
+    catch (Exception $e) {
       $transaction->rollback();
       CRM_Core_Error::fatal($e->getMessage());
     }
@@ -526,27 +527,25 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
   }
 
   static function createActivity($params){
-    //$session =& CRM_Core_Session::singleton( );
-    //$userId = $session->get( 'userID' ); // which is contact id of the user
-    //self::retrieve($params = array('id' => $bookingID), $booking);
-    $params = array(
-      'version' => 3,
-      'option_group_name' => 'activity_type',
-      'name' => 'booking_acivity_booking',
+    $session =& CRM_Core_Session::singleton( );
+    $userId = $session->get( 'userID' ); // which is contact id of the user
+    $optionValue = civicrm_api3('OptionValue', 'get',
+      array(
+       'option_group_name' => 'activity_type',
+       'name' => CRM_Booking_Utils_Constants::ACTIVITY_TYPE
+      )
     );
-    $optionValue = civicrm_api('OptionValue', 'get', $params);
     $activityTypeId = $optionValue['values'][$optionValue['id']]['value'];
     $params = array(
-      'version' => 3,
-      /*'source_contact_id' => $userId,*/ //api should pick the loggin id automatically
+      'source_contact_id' => $userId,
       'activity_type_id' => $activityTypeId,
-      'subject' =>  CRM_Utils_Array::value('title', $params),
+      'subject' =>  CRM_Utils_Array::value('subject', $params),
       'activity_date_time' => date('YmdHis'),
       'target_contact_id' => CRM_Utils_Array::value('target_contact_id', $params),
       'status_id' => 2,
       'priority_id' => 1,
     );
-    $result = civicrm_api('Activity', 'create', $params);
+    $result = civicrm_api3('Activity', 'create', $params);
   }
 
 
