@@ -66,15 +66,13 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
 
     $this->assign('booking', $this->_values);
     $params = array(
-     'version' => 3,
-      'option_group_name' => 'booking_status',
-      'name' => 'cancelled',
+      'option_group_name' => CRM_Booking_Utils_Constants::OPTION_BOOKING_STATUS,
+      'name' => CRM_Booking_Utils_Constants::OPTION_VALUE_CANCELLED,
     );
-    $result = civicrm_api('OptionValue', 'get', $params);
+    $result = civicrm_api3('OptionValue', 'get', $params);
     $this->_cancelStatusId =  $cancelStatus = CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
 
-    if ($this->_values['status_id'] == $cancelStatus
-       & ($this->_action != CRM_Core_Action::DELETE & $this->_action != CRM_Core_Action::VIEW)) {
+    if ($this->_values['status_id'] == $cancelStatus & ($this->_action != CRM_Core_Action::DELETE & $this->_action != CRM_Core_Action::VIEW)) {
       CRM_Core_Error::statusBounce(ts('The requested booking record has already been cancelled'));
     }
 
@@ -278,8 +276,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         }
 
      }
-
-    return empty($errors) ? TRUE : $errors;
+    return $errors;
   }
 
 

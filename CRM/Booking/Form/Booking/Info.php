@@ -45,6 +45,16 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $this->add('text', 'po_no', ts('Purchase order number'));
 
     $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
+    $result = civicrm_api3(
+      'OptionValue',
+      'get',
+      array(
+        'option_group_name' => CRM_Booking_Utils_Constants::OPTION_BOOKING_STATUS,
+        'name' => CRM_Booking_Utils_Constants::OPTION_VALUE_CANCELLED,
+      )
+    );
+    $this->_cancelStatusId = CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
+    unset($bookingStatus[$this->_cancelStatusId]);
     $this->add('select', 'booking_status', ts('Booking status'),
       array('' => ts('- select -')) + $bookingStatus,
       TRUE,
