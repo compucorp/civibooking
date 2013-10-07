@@ -43,7 +43,9 @@ function civicrm_api3_booking_create($params) {
  * @throws API_Exception
  */
 function civicrm_api3_booking_get($params) {
-  return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  //return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  return _civicrm_api3_basic_get('CRM_Booking_BAO_Booking', $params);
+
 }
 
 
