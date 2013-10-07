@@ -222,7 +222,7 @@ cj(function($) {
 
   function updateBasket(item){
     subTotal =  parseFloat(subTotal) + parseFloat(item.price);
-    if(subTotal > 0){
+    if(!isNaN(subTotal)){
       var template = _.template(cj('#selected-resource-row-tpl').html());
       $('#basket-table > tbody:last').append(template({data: item}));
       $("#resources").val(JSON.stringify(basket)); //ADD JSON object to basket
