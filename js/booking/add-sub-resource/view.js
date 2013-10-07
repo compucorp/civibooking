@@ -157,10 +157,10 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       this.$el.find('#loading').show();
       var initsdate = moment(new Date(this.startDate));
       var sTime = [initsdate.hours(), ":", initsdate.minute() <10?'0' + initsdate.minute() : initsdate.minute()].join("");
-      this.$el.find("#start-time-select").val(sTime);
-      this.$el.find("#start-day-select").val(initsdate.format("D"));
-      this.$el.find("#start-month-select").val(initsdate.months() + 1);
-      this.$el.find("#start-year-select").val(initsdate.years());
+      this.$el.find("#required-time-select").val(sTime);
+      this.$el.find("#required-day-select").val(initsdate.format("D"));
+      this.$el.find("#required-month-select").val(initsdate.months() + 1);
+      this.$el.find("#required-year-select").val(initsdate.years());
 
        CRM.api('Resource', 'get', {'sequential': 1, 'is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
         {success: function(data) {
