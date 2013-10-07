@@ -296,7 +296,14 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       return;
     }else{
       $defaults = array();
-      CRM_Booking_BAO_Payment::retrieve($params = array('booking_id' => $this->_id), $payment);
+      try{
+        $bookingPayment = civicrm_api3('BookingPayment', 'get', array('booking_id' => $this->_id));
+        $payment = CRM_Utils_Array::value($this->_id, $bookingPayment['values']);
+      }
+      catch (CiviCRM_API3_Exception $e) {
+        //display error message?
+        CRM_Core_Session::setStatus( $e->getMessage(), ts('Error'), 'error');
+      }
       if(!empty($payment) && isset($payment['contribution_id'])){ //payment exist
         $defaults['record_contribution'] = 1;
         $params = array(
