@@ -88,9 +88,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
         $configSets[$key] = $set['title'];
       }
     }
-    catch (CiviCRM_API3_Exception $e) {
-      $error = $e->getMessage();
-    }
+    catch (CiviCRM_API3_Exception $e) {}
 
     $this->add('select', 'set_id', ts('Resource configuration set'), $configSets, TRUE);
 
@@ -121,10 +119,15 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
   }
 
   static function formRule($fields) {
-    if (!empty($errors)) {
-      return $errors;
+   $errors = array();
+   try{
+      $options = civicrm_api3('ResourceConfigOption', 'get', array('set_id' => $fields['set_id']));
+      $count = CRM_Utils_Array::value('count', $options);
+      if($count == 0){
+        $errors['set_id'] = ts('The selected set does not contain any options, please select another');
+      }
     }
-
+    catch (CiviCRM_API3_Exception $e) {}
     return empty($errors) ? TRUE : $errors;
   }
 
