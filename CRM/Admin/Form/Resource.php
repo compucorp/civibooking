@@ -82,10 +82,16 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
 
     $configSets =  array('' => ts('- select -'));
-    $activeSets = CRM_Booking_BAO_ResourceConfigSet::getActiveSet();
-    foreach ($activeSets as $key => $set) {
-      $configSets[$key] = $set['title'];
+    try{
+      $activeSets = civicrm_api3('ResourceConfigSet', 'get', array('is_active' => 1, 'is_deleted' => 0));
+      foreach ($activeSets['values'] as $key => $set) {
+        $configSets[$key] = $set['title'];
+      }
     }
+    catch (CiviCRM_API3_Exception $e) {
+      $error = $e->getMessage();
+    }
+
     $this->add('select', 'set_id', ts('Resource configuration set'), $configSets, TRUE);
 
     $locations =  CRM_Booking_BAO_Resource::buildOptions('location_id', 'create');
@@ -94,11 +100,6 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       FALSE,
       array()
     );
-
-    /*
-    if ($this->_action & CRM_Core_Action::UPDATE && $isReserved) {
-      $this->freeze(array('name', 'description', 'is_active'));
-    }*/
 
     $this->addFormRule(array('CRM_Admin_Form_Resource', 'formRule'), $this);
     $cancelURL = CRM_Utils_System::url('civicrm/admin/resource', "&reset=1");

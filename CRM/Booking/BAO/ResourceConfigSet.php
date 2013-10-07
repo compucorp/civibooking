@@ -63,21 +63,6 @@ class CRM_Booking_BAO_ResourceConfigSet extends CRM_Booking_DAO_ResourceConfigSe
     return NULL;
   }
 
-  static function getActiveSet(){
-    $configSetDAO = new CRM_Booking_DAO_ResourceConfigSet();
-    $configSetDAO->orderBy('weight');
-    $configSetDAO->is_active = 1;
-    $configSetDAO->is_deleted = 0;
-    $configSetDAO->find();
-    $configSets = array();
-    while ($configSetDAO->fetch()) {
-      $configSets[$configSetDAO->id] = array();
-      CRM_Core_DAO::storeValues($configSetDAO, $configSets[$configSetDAO->id]);
-    }
-    return $configSets;
-  }
-
-
   /**
    * update the is_active flag in the db
    *
