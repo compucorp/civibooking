@@ -62,14 +62,6 @@ class CRM_Booking_BAO_ResourceConfigOption extends CRM_Booking_DAO_ResourceConfi
     return NULL;
   }
 
-  static function getFieldValue($field, $id){
-    return CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
-      $id,
-      $field,
-      'id'
-    );
-  }
-
     /**
    * update the is_active flag in the db
    *
