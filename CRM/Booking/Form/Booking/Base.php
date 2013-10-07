@@ -329,7 +329,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
   }
 
   function postProcess(){
-    CRM_Utils_System::flushCache();
+    //CRM_Utils_System::flushCache();
     if ($this->_action & CRM_Core_Action::ADD || $this->_action & CRM_Core_Action::UPDATE) {
       $bookingInfo = $this->exportValues();
 
@@ -381,18 +381,18 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         }
         $values['include_payment_info'] = CRM_Utils_Array::value('include_payment_information', $bookingInfo);
         foreach ($contactIds as $key => $cid) {
-          $resturn = CRM_Booking_BAO_Booking::sendMail($cid, $values);
+          $return = CRM_Booking_BAO_Booking::sendMail($cid, $values);
         }
 
 
       }
       $params = array(
           'id' => $this->_id,
-          'target_contact_id' => CRM_Utils_Array::value('primary_contact_select_id', $this->_values),
-          'subject' => ts("Booking $this->_id")
+          'target_contact_id' => CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo),
+          'subject' => ts("Booking ID: $this->_id")
       );
       //Finally add booking activity
-      CRM_Booking_BAO_Booking::createActivity($params);
+     CRM_Booking_BAO_Booking::createActivity($params);
     }
   }
 
