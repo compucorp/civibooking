@@ -176,25 +176,25 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['updated_by'] = $session->get( 'userID' );
     $booking['updated_date'] = $now;
 
-    $booking['version'] = 3; //Add version 3 before calling APIs
     $booking['validate'] = FALSE; //Make sure we ignore slot validation
-
-    $result = civicrm_api('Booking', 'Create', $booking);
-    $bookingID = CRM_Utils_Array::value('id', $result);
-    $booking =  CRM_Utils_Array::value($bookingID, CRM_Utils_Array::value('values', $result));
-    if($bookingID){
+    try{
+      $result = civicrm_api3('Booking', 'Create', $booking);
+      $bookingID = CRM_Utils_Array::value('id', $result);
+      $booking =  CRM_Utils_Array::value($bookingID, CRM_Utils_Array::value('values', $result));
       $this->_id = $bookingID;
       $this->_values = $booking;
       parent::postProcess();
+
       $cid = CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
       // user context
       $url = CRM_Utils_System::url('civicrm/contact/view/booking',
-        "reset=1&id=$bookingID&cid=$cid&action=view"
+         "reset=1&id=$bookingID&cid=$cid&action=view"
       );
       CRM_Core_Session::setStatus($booking['title'], ts('Saved'), 'success');
       CRM_Utils_System::redirect( $url);
-    }else{
-       CRM_Core_Error::fatal(ts("Cannot create booking"));
+    }
+    catch (CiviCRM_API3_Exception $e) {
+      CRM_Core_Error::fatal($e->getMessage());
     }
   }
 
