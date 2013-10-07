@@ -168,7 +168,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           '' => ts('- select -'),
           '1' => ts('Primary contact'),
           '2' => ts('Secondary contact'),
-          //'3' => ts('Both')
+          '3' => ts('Both')
         );
 
       }
