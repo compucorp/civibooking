@@ -5,9 +5,6 @@
  */
 class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
 
-  // By convention, functions that look like "function upgrade_NNNN()" are
-  // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
-
   /**
    * Example: Run an external SQL script when the module is installed
    */
@@ -73,9 +70,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
   /**
    * Example: Run an external SQL script when the module is uninstalled
    */
-  public function uninstall() {
-   //$this->executeSqlFile('sql/civibooking.uninstall.sql');
-  }
+  public function uninstall() {}
 
   /**
    * Example: Run a simple query when a module is enabled
@@ -93,6 +88,9 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
    //TODO:: Disable the message template
    $this->executeSqlFile('sql/civibooking_disable.sql');
   }
+
+  // By convention, functions that look like "function upgrade_NNNN()" are
+  // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
   /**
    * Example: Run a couple simple queries
