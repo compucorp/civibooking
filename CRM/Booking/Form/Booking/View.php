@@ -121,7 +121,7 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
       }
     }
     $adhocCharges = array();
-    $adhocChargesResult = civicrm_api('AdhocCharges', 'get', array('version' => 3, 'booking_id' => $this->_id));
+    $adhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $this->_id));
     $adhocChargesValues = CRM_Utils_Array::value('values', $adhocChargesResult);
     foreach ($adhocChargesValues as $id => $charges) {
         $charges['item_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
@@ -135,6 +135,7 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
           'entity_table' => 'civicrm_booking_adhoc_charges',
         );
         $result = civicrm_api('LineItem', 'get', $params);
+
         if(!empty($result['values'])){
           $chargesLineItem = CRM_Utils_Array::value($result['id'], $result['values']);
           $charges['unit_price'] = CRM_Utils_Array::value('unit_price', $chargesLineItem);
@@ -168,8 +169,25 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
     // omitting contactImage from title for now since the summary overlay css doesn't work outside of our crm-container
     CRM_Utils_System::setTitle(ts('View Booking for') .  ' ' . $displayName);
 
+    self::registerScripts($this);
 
   }
 
+  static function registerScripts($ctx) {
+    static $loaded = FALSE;
+    if ($loaded) {
+      return;
+    }
+    $loaded = TRUE;
+
+    $snippet = CRM_Utils_Request::retrieve('snippet', 'Positive',
+      $ctx, FALSE, 0
+    );
+    if($snippet == 2){
+      CRM_Core_Resources::singleton()
+        ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.print.css', 10, 'page-header');
+    }
+
+  }
 }
 
