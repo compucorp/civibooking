@@ -369,7 +369,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
    * @static
    */
   static function resolveDefaults(&$defaults, $reverse = FALSE) {
-    self::lookupValue($defaults, 'status', CRM_Booking_BAO_Booking::buildOptions('status_id', 'create'), $reverse);
+    $statusIds =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
+    self::lookupValue($defaults, 'status', $statusIds, $reverse);
   }
 
   /**
