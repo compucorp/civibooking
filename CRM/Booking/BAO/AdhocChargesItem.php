@@ -58,4 +58,19 @@ class CRM_Booking_BAO_AdhocChargesItem extends CRM_Booking_DAO_AdhocChargesItem 
     return CRM_Core_DAO::setFieldValue('CRM_Booking_DAO_AdhocChargesItem', $id, 'is_active', $is_active);
   }
 
+
+  /**
+   * Function to delete adhoc charges item
+   *
+   * @param  int  $id     Id of the Adhoc Charges Item to be deleted.
+   *
+   * @return boolean
+   *
+   * @access public
+   * @static
+   */
+  static function del($id){
+  	return CRM_Core_DAO::setFieldValue('CRM_Booking_DAO_AdhocChargesItem', $id, 'is_deleted', 1); 
+  }
+
 }
