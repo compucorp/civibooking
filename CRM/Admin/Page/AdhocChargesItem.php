@@ -68,20 +68,28 @@ class CRM_Admin_Page_AdhocChargesItem extends CRM_Core_Page_Basic {
           'name' => ts('Edit'),
           'url' => 'civicrm/admin/adhoc_charges_item',
           'qs' => 'action=update&id=%%id%%&reset=1',
-          'title' => ts('Edit Adhoc Charges Item'),
+          'title' => ts('Edit Additional Charges Item'),
         ),
         CRM_Core_Action::DISABLE => array(
           'name' => ts('Disable'),
           'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_AdhocChargesItem' . '\',\'' . 'enable-disable' . '\' );"',
           'ref' => 'disable-action',
-          'title' => ts('Disable Adhoc Charges Item'),
+          'title' => ts('Disable Additional Charges Item'),
         ),
         CRM_Core_Action::ENABLE => array(
           'name' => ts('Enable'),
           'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_AdhocChargesItem' . '\',\'' . 'disable-enable' . '\' );"',
           'ref' => 'enable-action',
-          'title' => ts('Enable Adhoc Charges Item'),
+          'title' => ts('Enable Additional Charges Item'),
         ),
+                
+        CRM_Core_Action::DELETE => array(
+          'name' => ts('Delete'),
+          'url' => 'civicrm/admin/adhoc_charges_item',
+          'qs' => 'action=delete&id=%%id%%',
+          'title' => ts('Delete Additional Charges Item'),
+        ),
+        
       );
     }
     return self::$_links;
@@ -115,17 +123,15 @@ class CRM_Admin_Page_AdhocChargesItem extends CRM_Core_Page_Basic {
   function browse($action = NULL) {
   	 
     // get all custom groups sorted by weight
-    $resources = array();
+    $adhoc_charges_item = array();
     $dao = new CRM_Booking_DAO_AdhocChargesItem();
     $dao->orderBy('weight');
     $dao->is_deleted = FALSE;
     $dao->find();
 
-	
     while ($dao->fetch()) {
-
-      $resources[$dao->id] = array();
-      CRM_Core_DAO::storeValues($dao, $resources[$dao->id]);
+      $adhoc_charges_item[$dao->id] = array();
+      CRM_Core_DAO::storeValues($dao, $adhoc_charges_item[$dao->id]);
       
       // form all action links
       $action = array_sum(array_keys($this->links()));
@@ -138,12 +144,12 @@ class CRM_Admin_Page_AdhocChargesItem extends CRM_Core_Page_Basic {
         $action -= CRM_Core_Action::DISABLE;
       }
 
-      $resources[$dao->id]['action'] = CRM_Core_Action::formLink(self::links(), $action,
+      $adhoc_charges_item[$dao->id]['action'] = CRM_Core_Action::formLink(self::links(), $action,
         array('id' => $dao->id)
       );
 
     }
-    $this->assign('rows', $resources);
+    $this->assign('rows', $adhoc_charges_item);
   }
 
   /**
