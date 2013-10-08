@@ -68,26 +68,26 @@ class CRM_Admin_Page_AdhocChargesItem extends CRM_Core_Page_Basic {
           'name' => ts('Edit'),
           'url' => 'civicrm/admin/adhoc_charges_item',
           'qs' => 'action=update&id=%%id%%&reset=1',
-          'title' => ts('Edit Adhoc Charges Item'),
+          'title' => ts('Edit Additional Charges Item'),
         ),
         CRM_Core_Action::DISABLE => array(
           'name' => ts('Disable'),
           'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_AdhocChargesItem' . '\',\'' . 'enable-disable' . '\' );"',
           'ref' => 'disable-action',
-          'title' => ts('Disable Adhoc Charges Item'),
+          'title' => ts('Disable Additional Charges Item'),
         ),
         CRM_Core_Action::ENABLE => array(
           'name' => ts('Enable'),
           'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_AdhocChargesItem' . '\',\'' . 'disable-enable' . '\' );"',
           'ref' => 'enable-action',
-          'title' => ts('Enable Adhoc Charges Item'),
+          'title' => ts('Enable Additional Charges Item'),
         ),
                 
         CRM_Core_Action::DELETE => array(
           'name' => ts('Delete'),
           'url' => 'civicrm/admin/adhoc_charges_item',
           'qs' => 'action=delete&id=%%id%%',
-          'title' => ts('Delete Resource'),
+          'title' => ts('Delete Additional Charges Item'),
         ),
         
       );
