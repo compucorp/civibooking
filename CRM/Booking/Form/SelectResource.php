@@ -132,16 +132,9 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
 
   public function postProcess() {
-    //dprint_r($this->_action);
-
-    //$params = $ids = array();
-
 
     $params = $this->exportValues();
-   // dprint_r($params);
     $resources = explode(PHP_EOL, $params['resources']);
-    //dprint_r($resources);
-    //exit;
 
     $session = CRM_Core_Session::singleton();
     $params['created_id'] = $session->get('userID');

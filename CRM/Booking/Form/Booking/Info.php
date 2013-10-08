@@ -228,9 +228,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       ));
     }
 
-
-
-
   }
 
 

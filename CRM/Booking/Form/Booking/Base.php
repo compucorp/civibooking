@@ -70,6 +70,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       'name' => CRM_Booking_Utils_Constants::OPTION_VALUE_CANCELLED,
     );
     $result = civicrm_api3('OptionValue', 'get', $params);
+
     $this->_cancelStatusId =  $cancelStatus = CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
 
     if ($this->_values['status_id'] == $cancelStatus & ($this->_action != CRM_Core_Action::DELETE & $this->_action != CRM_Core_Action::VIEW)) {
