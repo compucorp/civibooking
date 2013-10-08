@@ -111,6 +111,56 @@ function booking_civicrm_managed(&$entities) {
   return _booking_civix_civicrm_managed($entities);
 }
 
+/**
+ * Implementation of hook_civicrm_entityTypes
+ */
+function booking_civicrm_entityTypes(&$entityTypes) {
+  $entityTypes[] = array(
+    'name' => 'AdhocCharges',
+    'class' => 'CRM_Booking_DAO_AdhocCharges',
+    'table' => 'civicrm_booking_adhoc_charges',
+  );
+  $entityTypes[] = array(
+    'name' => 'AdhocChargesItem',
+    'class' => 'CRM_Booking_DAO_AdhocChargesItem',
+    'table' => 'civicrm_booking_adhoc_charges_item',
+  );
+  $entityTypes[] = array(
+    'name' => 'Booking',
+    'class' => 'CRM_Booking_DAO_Booking',
+    'table' => 'civicrm_booking',
+  );
+  $entityTypes[] = array(
+    'name' => 'BookingPayment',
+    'class' => 'CRM_Booking_DAO_Payment',
+    'table' => 'civicrm_booking_payment',
+  );
+  $entityTypes[] = array(
+    'name' => 'Resource',
+    'class' => 'CRM_Booking_DAO_Resource',
+    'table' => 'civicrm_booking_resource',
+  );
+  $entityTypes[] = array(
+    'name' => 'ResourceConfigOption',
+    'class' => 'CRM_Booking_DAO_ResourceConfigOption',
+    'table' => 'civicrm_booking_resource_config_option',
+  );
+  $entityTypes[] = array(
+    'name' => 'ResourceConfigSet',
+    'class' => 'CRM_Booking_DAO_ResourceConfigSet',
+    'table' => 'civicrm_booking_resource_config_set',
+  );
+   $entityTypes[] = array(
+    'name' => 'Slot',
+    'class' => 'CRM_Booking_DAO_Slot',
+    'table' => 'civicrm_booking_slot',
+  );
+   $entityTypes[] = array(
+    'name' => 'SubSlot',
+    'class' => 'CRM_Booking_DAO_SubSlot',
+    'table' => 'civicrm_booking_sub_slot',
+  );
+}
 
 /**
  * Add navigation for booking under "Administer" menu
