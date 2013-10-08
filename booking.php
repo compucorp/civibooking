@@ -119,57 +119,33 @@ function booking_civicrm_managed(&$entities) {
  */
 function booking_civicrm_navigationMenu( &$params ) {
 
-   $result = civicrm_api('OptionGroup', 'getsingle', array(
-    'version' => 3,
-    'sequential' => 1,
-    'name' => 'booking_status')
-   );
+   $result = civicrm_api3('OptionGroup', 'getsingle', array('name' => CRM_Booking_Utils_Constants::OPTION_BOOKING_STATUS));
    if($result['id']){
       $bookingStatusGid = $result['id'];
    }
 
-   $result = civicrm_api('OptionGroup', 'getsingle', array(
-    'version' => 3,
-    'sequential' => 1,
-    'name' => 'booking_resource_type')
-   );
+   $result = civicrm_api3('OptionGroup', 'getsingle', array('name' => CRM_Booking_Utils_Constants::OPTION_RESOURCE_TYPE));
    if($result['id']){
       $resourceTypeGid = $result['id'];
    }
 
-   $result = civicrm_api('OptionGroup', 'getsingle', array(
-    'version' => 3,
-    'sequential' => 1,
-    'name' => 'booking_resource_location')
-   );
+   $result = civicrm_api3('OptionGroup', 'getsingle', array('name' => CRM_Booking_Utils_Constants::OPTION_RESOURCE_LOCATION));
    if($result['id']){
       $resourceLocationGId = $result['id'];
    }
 
-   $result = civicrm_api('OptionGroup', 'getsingle', array(
-    'version' => 3,
-    'sequential' => 1,
-    'name' => 'booking_resource_criteria')
-   );
+   $result = civicrm_api3('OptionGroup', 'getsingle', array('name' => CRM_Booking_Utils_Constants::OPTION_RESOURCE_CRITERIA));
 
    if($result['id']){
       $resourceCriteriaGId = $result['id'];
    }
 
-   $result = civicrm_api('OptionGroup', 'getsingle', array(
-    'version' => 3,
-    'sequential' => 1,
-    'name' => 'booking_size_unit')
-   );
+   $result = civicrm_api3('OptionGroup', 'getsingle', array('name' => CRM_Booking_Utils_Constants::OPTION_SIZE_UNIT));
    if($result['id']){
       $sizeUnitGid = $result['id'];
    }
 
-   $result = civicrm_api('OptionGroup', 'getsingle', array(
-    'version' => 3,
-    'sequential' => 1,
-    'name' => 'booking_cancellation_charges')
-   );
+   $result = civicrm_api3('OptionGroup', 'getsingle', array('name' => CRM_Booking_Utils_Constants::OPTION_CANCELLATION_CHARGES));
    if($result['id']){
       $cancellationChargesGid = $result['id'];
    }
@@ -337,21 +313,7 @@ function booking_civicrm_navigationMenu( &$params ) {
       'active' => 1
     ),
     'child' => array(
-      /*1 => array(
-        'attributes' => array(
-          'label' => 'Dashboard',
-          'name' => 'booking_dashboard',
-          'url' => 'civicrm/booking/dashboard&reset=1',
-          'permission' => null,
-          'operator' => null,
-          'separator' => 1,
-          'parentID' => null,
-          'navID' => 1,
-          'active' => 1
-        ),
-        'child' => null
-      ),*/
-      2 => array(
+      1 => array(
         'attributes' => array(
           'label' => 'New Booking',
           'name' => 'new_booking',
@@ -365,7 +327,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         ),
       'child' => null
       ),
-      3 => array(
+      2 => array(
         'attributes' => array(
           'label' => 'Find Booking',
           'name' => 'find_booking',
@@ -379,21 +341,6 @@ function booking_civicrm_navigationMenu( &$params ) {
         ),
        'child' => null
       ),
-      /*
-      4 => array(
-        'attributes' => array(
-          'label' => 'Diary View',
-          'name' => 'diary_view',
-          'url' => 'civicrm/booking/diary&reset=1',
-          'permission' => null,
-          'operator' => null,
-          'separator' => 1,
-          'parentID' => null,
-          'navID' => 4 ,
-          'active' => 1
-          ),
-        'child' => null
-      ),*/
     )
   );
    array_unshift($params, $bookingMenu);
