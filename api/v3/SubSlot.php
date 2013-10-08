@@ -23,7 +23,8 @@ function _civicrm_api3_sub_slot_create_spec(&$spec) {
  */
 function civicrm_api3_sub_slot_create($params) {
   //TODO:: Validate slot if it can be created
-  return _civicrm_api3_basic_create('CRM_Booking_BAO_SubSlot', $params);
+  return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+
 }
 
 
@@ -37,7 +38,7 @@ function civicrm_api3_sub_slot_create($params) {
  * @throws API_Exception
  */
 function civicrm_api3_sub_slot_get($params) {
-  return _civicrm_api3_basic_get('CRM_Booking_BAO_SubSlot', $params);
+  return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
 
 

@@ -10,7 +10,7 @@
  * @throws API_Exception
  */
 function civicrm_api3_booking_payment_get($params) {
-  return _civicrm_api3_basic_get('CRM_Booking_BAO_Payment', $params);
+  return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
 
 
