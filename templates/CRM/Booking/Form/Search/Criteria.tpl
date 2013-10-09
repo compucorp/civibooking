@@ -23,14 +23,17 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
+
+<table class="form-layout">
+
 <tr>
   <td>
-    <label>{$form.id.label}</label> <br />
-    {$form.id.html}
+    <label>{$form.booking_id.label}</label> <br />
+    {$form.booking_id.html}
   </td>
   <td>
-    {$form.title.label}<br />
-    {$form.title.html}
+    {$form.booking_title.label}<br />
+    {$form.booking_title.html}
    </td>
 </tr>
 
@@ -40,17 +43,17 @@
   </td>
 </tr>
 <tr>
-  {include file="CRM/Core/DateRange.tpl" fieldName="event_start_date" from='_start_date_low' to='_end_date_high'}
+  {include file="CRM/Core/DateRange.tpl" fieldName="booking_event_date" from='_low' to='_high'}
 </tr>
 
 <tr>
   <td>
-    <label>{$form.resource_id.label}</label> <br />
-    {$form.resource_id.html}
+    <label>{$form.booking_resource_id.label}</label> <br />
+    {$form.booking_resource_id.html}
   </td>
   <td>
-    {$form.po_no.label}<br />
-    {$form.po_no.html}
+    {$form.booking_po_no.label}<br />
+    {$form.booking_po_no.html}
    </td>
 </tr>
 
@@ -68,7 +71,7 @@
   <td class="crm-booking-form-block-payment_status_id"><label>{ts}Payment Status{/ts}</label>
     <br />
     <div class="listing-box" style="width: auto; height: 120px">
-    {foreach from=$form.payment_status_id item="payment_status_id_val"}
+    {foreach from=$form.booking_payment_status_id item="payment_status_id_val"}
       <div class="{cycle values="odd-row,even-row"}">
         {$payment_status_id_val.html}
       </div>
@@ -76,10 +79,4 @@
     </div><br />
   </td>
 </tr>
-
-
-
-
-
-
-
+</table>
