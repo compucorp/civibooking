@@ -220,7 +220,7 @@ function booking_civicrm_navigationMenu( &$params ) {
     $nextAdminMenuKey = $maxAdminMenuKey+1;
     $params[$administerMenuId]['child'][$nextAdminMenuKey] =  array(
         'attributes' => array(
-          'label' => 'CiviBooking',
+          'label' => ts('CiviBooking'),
           'name' => 'admin_booking',
           //'url' => '#',
           'permission' => null,
@@ -233,7 +233,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'child' =>  array(
         1 => array(
           'attributes' => array(
-            'label' => 'Manage Resources',
+            'label' => ts('Manage Resources'),
             'name' => 'manage_resources',
             'url' => 'civicrm/admin/resource&reset=1',
             'permission' => null,
@@ -247,7 +247,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         ),
         2 => array(
           'attributes' => array(
-            'label' => 'Resource Configuration Set',
+            'label' => ts('Resource Configuration Set'),
             'name' => 'resource_config_set',
             'url' => 'civicrm/admin/resource/config_set&reset=1',
             'permission' => null,
@@ -261,7 +261,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         ),
         3 => array(
           'attributes' => array(
-            'label' => 'Additional Charges Item',
+            'label' => ts('Additional Charges Item'),
             'name' => 'adhoc_charges_item',
             'url' => 'civicrm/admin/adhoc_charges_item&reset=1',
             'permission' => null,
@@ -275,7 +275,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         ),
          4 => array(
             'attributes' => array(
-              'label' => 'Booking Status',
+              'label' => ts('Booking Status'),
               'name' => 'booking_status',
               'url' => 'civicrm/admin/optionValue?gid=' . $bookingStatusGid .'&reset=1',
               'permission' => null,
@@ -289,7 +289,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           ),
           5 => array(
             'attributes' => array(
-              'label' => 'Resource Type',
+              'label' => ts('Resource Type'),
               'name' => 'resource_type',
               'url' => 'civicrm/admin/optionValue?gid=' . $resourceTypeGid .'&reset=1',
               'permission' => null,
@@ -303,7 +303,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           ),
           6 => array(
             'attributes' => array(
-              'label' => 'Resource Criteria',
+              'label' => ts('Resource Criteria'),
               'name' => 'resource_criteria',
               'url' => 'civicrm/admin/optionValue?gid=' . $resourceCriteriaGId .'&reset=1',
               'permission' => null,
@@ -317,7 +317,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           ),
           7 => array(
             'attributes' => array(
-              'label' => 'Size Unit',
+              'label' => ts('Size Unit'),
               'name' => 'size_unit',
               'url' =>'civicrm/admin/optionValue?gid=' . $sizeUnitGid .'&reset=1',
               'permission' => null,
@@ -331,7 +331,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           ),
           8 => array(
             'attributes' => array(
-              'label' => 'Cancellation Charges',
+              'label' => ts('Cancellation Charges'),
               'name' => 'cancellation_charges',
               'url' =>'civicrm/admin/optionValue?gid=' . $cancellationChargesGid .'&reset=1',
               'permission' => null,
@@ -345,7 +345,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           ),
           9 => array(
             'attributes' => array(
-              'label' => 'Booking Component Settings',
+              'label' => ts('Booking Component Settings'),
               'name' => 'booking_component_settings',
               'url' =>'civicrm/admin/setting/preferences/booking?reset=1',
               'permission' => null,
@@ -363,7 +363,7 @@ function booking_civicrm_navigationMenu( &$params ) {
 
    $findBooking =  array(
         'attributes' => array(
-          'label' => 'Find Booking',
+          'label' => ts('Find Bookings'),
           'name' => 'find_booking',
           'url' => 'civicrm/booking/search&reset=1',
           'permission' => null,
@@ -378,7 +378,7 @@ function booking_civicrm_navigationMenu( &$params ) {
 
    $bookingMenu = array(
     'attributes' => array(
-      'label' => 'Booking',
+      'label' => ts('Booking'),
       'name' => 'booking',
       'url' => null,
       'permission' => null,
@@ -391,7 +391,7 @@ function booking_civicrm_navigationMenu( &$params ) {
     'child' => array(
       1 => array(
         'attributes' => array(
-          'label' => 'New Booking',
+          'label' => ts('New Booking'),
           'name' => 'new_booking',
           'url' => 'civicrm/booking/add&reset=1',
           'permission' => null,
