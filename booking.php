@@ -361,6 +361,21 @@ function booking_civicrm_navigationMenu( &$params ) {
       );
    }
 
+   $findBooking =  array(
+        'attributes' => array(
+          'label' => 'Find Booking',
+          'name' => 'find_booking',
+          'url' => 'civicrm/booking/search&reset=1',
+          'permission' => null,
+          'operator' => null,
+          'separator' => 0,
+          'parentID' => null,
+          'navID' => 3,
+          'active' => 1
+        ),
+       'child' => null
+      );
+
    $bookingMenu = array(
     'attributes' => array(
       'label' => 'Booking',
@@ -388,22 +403,29 @@ function booking_civicrm_navigationMenu( &$params ) {
         ),
       'child' => null
       ),
-      2 => array(
-        'attributes' => array(
-          'label' => 'Find Booking',
-          'name' => 'find_booking',
-          'url' => 'civicrm/booking/search&reset=1',
-          'permission' => null,
-          'operator' => null,
-          'separator' => 0,
-          'parentID' => null,
-          'navID' => 3,
-          'active' => 1
-        ),
-       'child' => null
-      ),
+      2 => $findBooking
     )
   );
-   array_unshift($params, $bookingMenu);
+  array_unshift($params, $bookingMenu);
+  $searchMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Search...', 'id', 'name');
+  if ($searchMenuId) {
+    $maxSearchMenuKey = max( array_keys($params[$searchMenuId]['child']));
+    $nextSearchMenuKey = $maxSearchMenuKey + 1;
+    $beforeMaxSearchMenuKey = $maxSearchMenuKey - 1;
+    //remove lasted seperator for lasted Find
+    $params[$searchMenuId]['child'][$beforeMaxSearchMenuKey]['attributes']['separator'] = 0;
+
+    $lastSearchMenu = $params[$searchMenuId]['child'][$maxSearchMenuKey];
+    unset($params[$searchMenuId]['child'][$maxSearchMenuKey]);
+    $findBooking['attributes']['separator'] = 1;
+    $params[$searchMenuId]['child'][$maxSearchMenuKey] = $findBooking;
+    $params[$searchMenuId]['child'][$nextSearchMenuKey] = $lastSearchMenu;
+
+    //move search menu to be at the first of the array
+    $searchMenuTemp =  $params[$searchMenuId];
+    unset($params[$searchMenuId]);
+    array_unshift($params, $searchMenuTemp);
+
+  }
 
 }
