@@ -81,9 +81,9 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
     $this->add('text', 'cc_email_address', ts('CC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('text', 'bcc_email_address', ts('BCC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('checkbox', 'log_confirmation_email', ts('Log email?'));
-    $this->add('text', 'slot_booked_colour', ts('Slot avaliable colour'));
-    $this->add('text', 'slot_provisional_colour', ts('Slot unavaliable colour'));
-    $this->add('text', 'slot_being_edited_colour', ts('Slot editing colour'));
+    $this->add('text', 'slot_booked_colour', ts('Booked Slot Colour'));
+    $this->add('text', 'slot_provisional_colour', ts('Provisional Slot Colour'));
+    $this->add('text', 'slot_being_edited_colour', ts('New Slot/Editing Colour'));
 
 
     $this->addFormRule(array('CRM_Admin_Form_Preferences_Booking', 'formRule'), $this);
@@ -112,8 +112,8 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
 
 	  $defaults['day_start_at'] = date('G:i', strtotime($this->_config['day_start_at']));
 	  $defaults['day_end_at'] = date('G:i', strtotime($this->_config['day_end_at']));
-	  $defaults['bcc_email_address'] = $this->_config['bcc_email_address'];
-    $defaults['cc_email_address'] = $this->_config['cc_email_address'];
+    $defaults['cc_email_address'] = CRM_Utils_Array::value('cc_email_address', $this->_config);
+	  $defaults['bcc_email_address'] = CRM_Utils_Array::value('bcc_email_address', $this->_config);
     $defaults['log_confirmation_email'] = $this->_config['log_confirmation_email'];
     $defaults['slot_booked_colour'] = $this->_config['slot_booked_colour'];
     $defaults['slot_provisional_colour'] = $this->_config['slot_provisional_colour'];
