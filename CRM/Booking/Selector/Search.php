@@ -317,7 +317,6 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
    * @return int   the total number of rows for this action
    */
   function &getRows($action, $offset, $rowCount, $sort, $output = NULL) {
-    dpr($rowCount);
     $result = $this->_query->searchQuery($offset, $rowCount, $sort,
       FALSE, FALSE,
       FALSE, FALSE,

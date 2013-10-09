@@ -64,12 +64,12 @@
       </tr>
       <tr class="crm-bookingview-form-block-date-made">
         <td class="label">{ts}Date Made{/ts}</td><td>
-          {$created_date}
+          {$created_date|crmDate}
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-event-date">
         <td class="label">{ts}Event Date{/ts}</td><td>
-          {$event_date}
+          {$event_date|crmDate}
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-po-no">
@@ -144,8 +144,8 @@
       {foreach from=$slots item=slot}
       <tr class="{cycle values="odd-row,even-row"}">
         <td>{$slot.resource_label}</td>
-        <td>{$slot.start}</td>
-        <td>{$slot.end}</td>
+        <td>{$slot.start|crmDate}</td>
+        <td>{$slot.end|crmDate}</td>
         <td>{$slot.config_label}</td>
         <td>{$slot.note}</td>
         <td>{$slot.unit_price}</td>
@@ -174,7 +174,7 @@
       <tr class="{cycle values="odd-row,even-row"}">
         <td>{$subSlot.resource_label}</td>
         <td>{$subSlot.parent_resource_label}</td>
-        <td>{$subSlot.time_required}</td>
+        <td>{$subSlot.time_required|crmDate}</td>
         <td>{$subSlot.config_label}</td>
         <td>{$subSlot.note}</td>
         <td>{$subSlot.unit_price}</td>
