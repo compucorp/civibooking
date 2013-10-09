@@ -25,6 +25,7 @@
     <type>int unsigned</type>
     <required>true</required>
     <import>true</import>
+    <export>true</export>
     <headerPattern>/contact(.?id)?/i</headerPattern>
     <dataPattern>/^\d+$/</dataPattern>
     <comment>FK to Contact ID</comment>
@@ -46,6 +47,7 @@
     <type>int unsigned</type>
     <required>false</required>
     <import>true</import>
+    <export>true</export>
     <headerPattern>/contact(.?id)?/i</headerPattern>
     <dataPattern>/^\d+$/</dataPattern>
     <comment>FK to Contact ID</comment>
@@ -67,6 +69,7 @@
     <comment></comment>
     <title>Title</title>
     <required>true</required>
+    <export>true</export>
     <uniqueName>booking_title</uniqueName>
   </field>
 
@@ -78,6 +81,8 @@
     <required>true</required>
     <comment>The status associated with this booking. Implicit FK to option_value row in booking status option_group.</comment>
     <add>4.4</add>
+    <export>true</export>
+    <uniqueName>booking_status_id</uniqueName>
     <pseudoconstant>
       <optionGroupName>booking_status</optionGroupName>
     </pseudoconstant>
@@ -88,6 +93,7 @@
     <type>datetime</type>
     <required>true</required>
     <title>Event Date</title>
+    <export>true</export>
     <uniqueName>booking_event_date</uniqueName>
   </field>
 
