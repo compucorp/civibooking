@@ -39,7 +39,7 @@
 
 <tr>
   <td>
-  <label>{ts}Booking Event Dates{/ts}</label> <br/>
+  <label>{ts}Event Dates{/ts}</label> <br/>
   </td>
 </tr>
 <tr>
@@ -58,7 +58,7 @@
 </tr>
 
 <tr>
-  <td class="crm-booking-form-block-booking_status_id"><label>{ts}Booking Status{/ts}</label>
+  <td class="crm-booking-form-block-booking_status_id"><label>{ts}Status{/ts}</label>
     <br />
     <div class="listing-box" style="width: auto; height: 120px">
     {foreach from=$form.booking_status_id item="booking_status_id_val"}
