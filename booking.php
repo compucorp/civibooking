@@ -112,6 +112,17 @@ function booking_civicrm_managed(&$entities) {
 }
 
 /**
+ * Implementation of hook_civicrm_queryObjects
+ */
+function booking_civicrm_queryObjects(&$queryObjects, $type) {
+  if ($type == 'Contact') {
+    $queryObjects[] = new CRM_Booking_BAO_Query();
+  }
+  elseif ($type == 'Report') {}
+}
+
+
+/**
  * Implementation of hook_civicrm_entityTypes
  */
 function booking_civicrm_entityTypes(&$entityTypes) {

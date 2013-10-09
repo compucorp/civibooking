@@ -152,7 +152,10 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
       );
     }
 
-    $this->_queryParams = CRM_Booking_BAO_BookingContactQuery::convertFormValues($this->_formValues);
+    //$this->_queryParams = CRM_Booking_BAO_BookingContactQuery::convertFormValues($this->_formValues);
+   // $this->_queryParams = CRM_Booking_BAO_Query::convertFormValues($this->_formValues);
+    $this->_queryParams = CRM_Contact_BAO_Query::convertFormValues($this->_formValues);
+
 
     $selector = new CRM_Booking_Selector_Search($this->_queryParams,
       $this->_action,
@@ -217,7 +220,6 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
         'sort_name'
       )
     );
-
 
     CRM_Booking_BAO_Query::buildSearchForm($this);
 
@@ -311,7 +313,7 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
     $this->fixFormValues();
 
 
-    $this->_queryParams = CRM_Booking_BAO_BookingContactQuery::convertFormValues($this->_formValues);
+    $this->_queryParams = CRM_Contact_BAO_Query::convertFormValues($this->_formValues);
 
 
     $this->set('formValues', $this->_formValues);
@@ -337,7 +339,7 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
       );
     }
 
-    $this->_queryParams = CRM_Booking_BAO_BookingContactQuery::convertFormValues($this->_formValues);
+    $this->_queryParams = CRM_Contact_BAO_Query::convertFormValues($this->_formValues);
 
     $selector = new CRM_Booking_Selector_Search($this->_queryParams,
       $this->_action,

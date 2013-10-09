@@ -261,12 +261,20 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'required' => true,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
+          'export' => true,
+          'where' => 'civicrm_booking.title',
+          'headerPattern' => '',
+          'dataPattern' => '',
         ) ,
-        'status_id' => array(
+        'booking_status_id' => array(
           'name' => 'status_id',
           'type' => CRM_Utils_Type::T_INT,
           'title' => ts('Status ID') ,
           'required' => true,
+          'export' => true,
+          'where' => 'civicrm_booking.status_id',
+          'headerPattern' => '',
+          'dataPattern' => '',
           'pseudoconstant' => array(
             'optionGroupName' => 'booking_status',
           )
@@ -276,6 +284,10 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
           'title' => ts('Event Date') ,
           'required' => true,
+          'export' => true,
+          'where' => 'civicrm_booking.event_date',
+          'headerPattern' => '',
+          'dataPattern' => '',
         ) ,
         'booking_po_number' => array(
           'name' => 'po_number',
@@ -389,7 +401,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'primary_contact_id' => 'primary_contact_id',
         'secondary_contact_id' => 'secondary_contact_id',
         'title' => 'booking_title',
-        'status_id' => 'status_id',
+        'status_id' => 'booking_status_id',
         'event_date' => 'booking_event_date',
         'po_number' => 'booking_po_number',
         'total_amount' => 'total_amount',

@@ -38,7 +38,7 @@
               <td class="font-size12pt" colspan="2">{$form.sort_name.label}&nbsp;&nbsp;{$form.sort_name.html|crmAddClass:'twenty'}&nbsp;&nbsp;&nbsp;{$form.buttons.html}
               </td>
             </tr>
-              {include file="CRM/Booking/Form/Search/Common.tpl"}
+              {include file="CRM/Booking/Form/Search/Criteria.tpl"}
             <tr>
                <td colspan="2">{$form.buttons.html}</td>
             </tr>

@@ -165,7 +165,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     // type of selector
     $this->_action = $action;
 
-
+    /*
     $bookingQuery = CRM_Booking_BAO_Query::defaultReturnProperties(
       CRM_Booking_BAO_BookingContactQuery::MODE_BOOKING,
       FALSE
@@ -178,6 +178,18 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
       FALSE,
       FALSE,
       CRM_Booking_BAO_BookingContactQuery::MODE_BOOKING
+    );*/
+
+
+    $defaultReturnProperties = CRM_Booking_BAO_Query::defaultReturnProperties();
+
+    $this->_query = new CRM_Contact_BAO_Query(
+      $this->_queryParams,
+      $defaultReturnProperties,
+      NULL,
+      FALSE,
+      FALSE,
+      CRM_Contact_BAO_Query::MODE_CONTACTS
     );
 
 
@@ -305,7 +317,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
    * @return int   the total number of rows for this action
    */
   function &getRows($action, $offset, $rowCount, $sort, $output = NULL) {
-
+    dpr($rowCount);
     $result = $this->_query->searchQuery($offset, $rowCount, $sort,
       FALSE, FALSE,
       FALSE, FALSE,
@@ -330,11 +342,10 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
 
 
     $params = array(
-      'version' => 3,
-      'option_group_name' => 'booking_status',
-      'name' => 'cancelled',
+      'option_group_name' => CRM_Booking_Utils_Constants::OPTION_BOOKING_STATUS,
+      'name' => CRM_Booking_Utils_Constants::OPTION_VALUE_CANCELLED,
     );
-    $ov = civicrm_api('OptionValue', 'get', $params);
+    $ov = civicrm_api3('OptionValue', 'get', $params);
     $cancelStatusId = CRM_Utils_Array::value('value', CRM_Utils_Array::value($ov['id'], $ov['values']));
     while ($result->fetch()) {
       $row = array();
