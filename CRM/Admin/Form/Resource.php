@@ -120,14 +120,17 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
   static function formRule($fields) {
    $errors = array();
-   try{
-      $options = civicrm_api3('ResourceConfigOption', 'get', array('set_id' => $fields['set_id']));
-      $count = CRM_Utils_Array::value('count', $options);
-      if($count == 0){
-        $errors['set_id'] = ts('The selected set does not contain any options, please select another');
+   $setId =  CRM_Utils_Array::value('set_id', $fields);
+   if($setId){
+     try{
+        $options = civicrm_api3('ResourceConfigOption', 'get', array('set_id' => $setId));
+        $count = CRM_Utils_Array::value('count', $options);
+        if($count == 0){
+          $errors['set_id'] = ts('The selected set does not contain any options, please select another');
+        }
       }
-    }
-    catch (CiviCRM_API3_Exception $e) {}
+      catch (CiviCRM_API3_Exception $e) {}
+   }
     return empty($errors) ? TRUE : $errors;
   }
 
