@@ -194,15 +194,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
         }
         if ($name == 'booking_payment_status_id'){
           $query->_qill[$grouping][] = ts('Payment Status %1', array(1 => $op)) . ' ' . implode(' ' . ts('or') . ' ', $names);
-          $query->_where[$grouping][] = CRM_Contact_BAO_Query::buildClause("civicrm_booking.status_id",
-            $op,
-            $status,
-            "Integer"
-          );
-          $query->_tables['civicrm_booking'] = $query->_whereTables['civicrm_booking'] = 1;
-        }else {
-           $query->_qill[$grouping][] = ts('Status %1', array(1 => $op)) . ' ' . implode(' ' . ts('or') . ' ', $names);
-           $query->_where[$grouping][] = CRM_Contact_BAO_Query::buildClause("civicrm_contribution.contribution_status_id",
+          $query->_where[$grouping][] = CRM_Contact_BAO_Query::buildClause("civicrm_contribution.contribution_status_id",
             $op,
             $status,
             "Integer"
@@ -211,6 +203,14 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
           $query->_tables['civicrm_booking_payment'] = $query->_whereTables['civicrm_booking_payment'] = 1;
           $query->_tables['civicrm_contribution'] = $query->_whereTables['civicrm_contribution'] = 1;
 
+        }else {
+          $query->_qill[$grouping][] = ts('Status %1', array(1 => $op)) . ' ' . implode(' ' . ts('or') . ' ', $names);
+          $query->_where[$grouping][] = CRM_Contact_BAO_Query::buildClause("civicrm_booking.status_id",
+            $op,
+            $status,
+            "Integer"
+          );
+          $query->_tables['civicrm_booking'] = $query->_whereTables['civicrm_booking'] = 1;
         }
         return;
       case 'booking_event_date':
