@@ -229,6 +229,125 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     return NULL;
   }
 
+
+  static function getBookingDetails($id){
+    $slots = CRM_Booking_BAO_Slot::getBookingSlot($id);
+    $subSlots = array();
+    foreach ($slots as $key => $slot) {
+      $label =  CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource',
+        $slot['resource_id'],
+        'label',
+        'id'
+      );
+      //Quite expensive
+      $slots[$key]['resource_label'] = $label;
+      $slots[$key]['config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
+        $slot['config_id'],
+        'label',
+        'id'
+      );
+      $params = array(
+          'version' => 3,
+          'entity_id' => $slot['id'],
+          'entity_table' => 'civicrm_booking_slot',
+        );
+      $result = civicrm_api('LineItem', 'get', $params);
+      if(!empty($result['values'])){
+        $lineItem = CRM_Utils_Array::value($result['id'], $result['values']);
+        $slots[$key]['unit_price'] = CRM_Utils_Array::value('unit_price', $lineItem);
+        $slots[$key]['total_amount'] = CRM_Utils_Array::value('line_total', $lineItem);
+        $slots[$key]['quantity'] = CRM_Utils_Array::value('qty', $lineItem);
+      }else{ //calulate manuanlly
+        $slots[$key]['total_amount'] = CRM_Booking_BAO_Booking::calulateSlotPrice($slot['config_id'], $slot['quantity']);
+        $slots[$key]['unit_price'] = CRM_Core_DAO::getFieldValue(
+            'CRM_Booking_DAO_ResourceConfigOption',
+            $slot['config_id'],
+            'price',
+            'id'
+        );
+      }
+      $childSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($key);
+      foreach ($childSlots as $key => $subSlot) {
+        $subSlot['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource',
+          $subSlot['resource_id'],
+          'label',
+          'id'
+        );
+        $subSlot['config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
+          $subSlot['config_id'],
+          'label',
+          'id'
+        );
+        $params = array(
+          'version' => 3,
+          'entity_id' => $subSlot['id'],
+          'entity_table' => 'civicrm_booking_sub_slot',
+        );
+        $result = civicrm_api('LineItem', 'get', $params);
+        if(!empty($result['values'])){
+          $subSlotlineItem = CRM_Utils_Array::value($result['id'], $result['values']);
+          $subSlot['unit_price'] = CRM_Utils_Array::value('unit_price', $subSlotlineItem);
+          $subSlot['total_amount'] = CRM_Utils_Array::value('line_total', $subSlotlineItem);
+          $subSlot['quantity'] = CRM_Utils_Array::value('qty', $subSlotlineItem);
+        }else{ //calulate manuanlly
+          $subSlot['total_amount'] = CRM_Booking_BAO_Booking::calulateSlotPrice($subSlot['config_id'], $subSlot['quantity']);
+          $subSlot['unit_price'] = CRM_Core_DAO::getFieldValue(
+            'CRM_Booking_DAO_ResourceConfigOption',
+            $subSlot['config_id'],
+            'price',
+            'id'
+          );
+        }
+
+        $subSlot['parent_resource_label'] =  $label;
+        $subSlots[$subSlot['id']] = $subSlot;
+      }
+    }
+    $adhocCharges = array();
+    $adhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $id));
+    $adhocChargesValues = CRM_Utils_Array::value('values', $adhocChargesResult);
+    foreach ($adhocChargesValues as $id => $charges) {
+        $charges['item_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
+          $charges['item_id'],
+          'label',
+          'id'
+        );
+        $params = array(
+          'version' => 3,
+          'entity_id' => $charges['id'],
+          'entity_table' => 'civicrm_booking_adhoc_charges',
+        );
+        $result = civicrm_api('LineItem', 'get', $params);
+
+        if(!empty($result['values'])){
+          $chargesLineItem = CRM_Utils_Array::value($result['id'], $result['values']);
+          $charges['unit_price'] = CRM_Utils_Array::value('unit_price', $chargesLineItem);
+          $charges['total_amount'] = CRM_Utils_Array::value('line_total', $chargesLineItem);
+          $charges['quantity'] = CRM_Utils_Array::value('qty', $chargesLineItem);
+        }else{ //calulate manuanlly
+          $charges['total_amount'] = CRM_Booking_BAO_Booking::calulateSlotPrice($subSlot['config_id'], $subSlot['quantity']);
+          $charges['unit_price'] = CRM_Core_DAO::getFieldValue(
+            'CRM_Booking_DAO_AdhocChargesItem',
+            $charges['item_id'],
+            'price',
+            'id'
+          );
+        }
+        $adhocCharges[$id] = $charges;
+    }
+
+    //TODO:: Implement getting cancellation charges, contribution
+    $cancellationCharges = array();
+    $contribution = NULL;
+
+    return array(
+      'slots' => $slots,
+      'sub_slots' => $subSlots,
+      'adhoc_charges' => $adhocCharges,
+      'cancellation_charges' =>$cancellationCharges,
+      'contribution' => $contribution);
+  }
+
   /**
    * Function to delete Booking
    *
