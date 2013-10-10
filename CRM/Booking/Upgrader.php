@@ -65,7 +65,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
         }
       }
     }
-    $this->executeSqlFile('sql/civibooking_default.sqll');
+    $this->executeSqlFile('sql/civibooking_default.sql');
   }
 
   /**
