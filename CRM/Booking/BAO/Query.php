@@ -338,6 +338,11 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
     $tables = array_merge(array('civicrm_booking' => 1), $tables);
   }
 
+  public function getPanesMapper(&$panes) {
+    if (!CRM_Core_Permission::check('access Booking')) return;
+    $panes['Bookings'] = 'civicrm_booking';
+  }
+
   public function registerAdvancedSearchPane(&$panes) {
     if (!CRM_Core_Permission::check('access Booking')) return;
     $panes['Bookings'] = 'booking';
