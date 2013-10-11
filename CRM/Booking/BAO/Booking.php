@@ -388,7 +388,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
    * @param array $params input parameters to find object
    * @param array $values output values of the object
    *
-   * @return CRM_Event_BAO_ฺBooking|null the found object or null
+   * @return CRM_Event_BAO_���Booking|null the found object or null
    * @access public
    * @static
    */
@@ -686,8 +686,18 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     //send email only when email is present
     if ($email) {
 
+    	//retrive booking detail
+    	$booking_detail = CRM_Booking_BAO_Booking::getBookingDetails($values['booking_id']);
+    	$slots = CRM_Utils_Array::value('slots', $booking_detail);
+    	
+    	//debug
+    	dpr($booking_detail);
+    	dpr($slots);
+    	exit;
+    	
       $tplParams = array(
         'email' => $email,
+        'booking_id' => $values['booking_id'],
         //TODO:: build the booking tpl
       );
 
@@ -711,7 +721,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         $sendTemplateParams['tplParams']['address'] = $displayAddress;
       }
 
-      //TODO:: add line titem tpl params
+      //TODO:: add line item tpl params
       if ($lineItem = CRM_Utils_Array::value('lineItem', $values)) {
         $sendTemplateParams['tplParams']['lineItem'] = $lineItem;
       }
@@ -728,7 +738,14 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       if($bcc){
         $sendTemplateParams['bcc'] = $bcc;
       }
+
+      //debugging
+      dpr($sendTemplateParams);
+      exit;
+      //debugging
+      
       list($sent, $subject, $message, $html)  = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
+      
       if($sent & CRM_Utils_Array::value('log_confirmation_email', $config)){
           $params = array(
             'version' => 3,

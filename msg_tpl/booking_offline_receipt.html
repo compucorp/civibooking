@@ -10,6 +10,150 @@
 {capture assign=labelStyle }style="padding: 4px; border-bottom: 1px solid #999; background-color: #f7f7f7;"{/capture}
 {capture assign=valueStyle }style="padding: 4px; border-bottom: 1px solid #999;"{/capture}
 
-Hello {contact.first_name}
+
+<fieldset>
+<legend style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold;">Header</legend>
+User content  
+</fieldset>
+<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold;">
+<legend>Booking Information</legend>
+  <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px;">
+        <tbody>
+        <tr>
+          <th style="text-align: left;">Primary Contact</th>
+          <td>
+            {contact.first_name} {contact.last_name}
+          </td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Booking</th>
+          <td>
+            Booking Tittle
+          </td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Associated Contact</th>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Date Made</th><td>
+            October 10th, 2013  8:47 AM
+          </td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Event Date</th><td>
+            October 14th, 2013 12:00 AM
+          </td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">PO NO</th>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Booking status</th><td>
+            Provisional
+          </td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Payment status</th>
+          <td>Unpaid</td>
+        </tr>
+       <tr>
+          <th style="text-align: left;">Description</th>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Note</th>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Participant estimated</th>
+          <td></td>
+        </tr>
+         <tr>
+          <th style="text-align: left;">Participant actual</th>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Sub Total</th>
+          <td>200</td>
+        </tr>
+           <tr>
+          <th style="text-align: left;">Discount amount</th>
+          <td>
+            0.00
+          </td>
+        </tr>
+           <tr>
+          <th style="text-align: left;">Total</th>
+          <td>
+            200.00
+          </td>
+        </tr>
+      </tbody>
+  </table>	
+</fieldset>
+
+<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold;">
+  <legend>Booking Resource</legend>
+  <span style="background-color: #CDE8FE; padding: 4px 6px; margin: 0 0 0.3em;">
+    Resources
+  </span>
+  <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
+    <tbody>
+      <tr>
+        <th>Resource</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Configuration</th>
+        <th>Note</th>
+        <th>Price Per Unit</th>
+        <th>Total Amount</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+    </tbody> 
+  </table>
+
+  <span style="background-color: #CDE8FE; padding: 4px 6px; margin: 0 0 0.3em;">
+    Unlimited Resources
+  </span>
+  <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
+    <tbody>
+      <tr>
+        <th>Resource</th>
+        <th>Parent Resource</th>
+        <th>Time Required</th>
+        <th>Configuration</th>
+        <th>Note</th>
+        <th>Price Per Unit</th>
+        <th>Quantity</th>
+        <th>Total Amount</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+    </tbody> 
+  </table>
+  </fieldset>
+<fieldset>
+<legend style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold;">Footer</legend>  
+User content
+</fieldset>
 
 </html>
