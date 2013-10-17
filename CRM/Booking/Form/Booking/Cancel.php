@@ -112,12 +112,35 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     CRM_Utils_System::flushCache();
     $values = $this->exportValues();
     $params['booking_id'] = $this->_id;
-    $params['cancellation_percentage'] = $values['cancellations'];
-    $params['additional_charge'] = $values['adjustment'];
     $params['cancellation_date'] = $values['cancellation_date'];
+    $params['cancellation_percentage'] = $values['cancellations'];
     $params['booking_total'] = $values['booking_total'];
+    $params['cancellation_fee'] = ($params['cancellation_percentage'] / 100) * $params['booking_total'];
+    $params['additional_charge'] = $values['adjustment'];
+    $params['comment'] = $values['comment'];
+    
+    
+    //calculate the total amunt of cancellation charge
+    $params['cancellation_total_fee'] = $params['cancellation_subtotal_fee'] + $params['additional_fee'];
+    
+    //calculate how many days before event date
+    $cancellation_date = new DateTime($params['cancellation_date']);
+    $event_date = new DateTime($values['event_date']);
+    $interval = $cancellation_date->diff($event_date);
+    $params['prior_days'] = $interval->days;
+    
+    //DEBUG
+    // dpr('Cancel.php : $params');
+    // dpr($params);
+    // dpr('Cancel.php : $values');
+    // dpr($values);
+    //exit;
+    
     $booking = CRM_Booking_BAO_Cancellation::create($params);
+    parent::postProcess();      
     CRM_Core_Session::setStatus(ts('The booking \'%1\' has been cancelled.', array(1 => $this->_id)), ts('Saved'), 'success');
+	
+	//TODO: call
   }
 
   static function registerScripts() {
