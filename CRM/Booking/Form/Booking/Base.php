@@ -361,12 +361,6 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
 
       $sendConfirmation = CRM_Utils_Array::value('send_confirmation', $bookingInfo);
       if($sendConfirmation){ //check sending email parameter
-      	
-      	//DEBUG
-      	// dpr('Base.php : $values');
-      	dpr($this->exportValues());
-      	//exit;
-        
         $values = array();
         $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address');
         $values['from_email_address'] = CRM_Utils_Array::value(CRM_Utils_Array::value('from_email_address', $bookingInfo), $fromEmailAddress);

@@ -41,7 +41,6 @@ class CRM_Booking_BAO_Cancellation extends CRM_Booking_DAO_Cancellation {
         $params = array();
         $params['id'] = $bookingID;
         $params['status_id'] =  CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
-        dpr($params);
         $booking = CRM_Booking_BAO_Booking::add($params);
 
         $params = array();

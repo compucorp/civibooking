@@ -68,7 +68,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           'note' => CRM_Utils_Array::value('note', $resource),
         );
         $slotResult = civicrm_api3('Slot', 'Create', $slot);
-        dpr($slotResult);
         $slotID =  CRM_Utils_Array::value('id', $slotResult);
 
         $subResources = $resource['sub_resources'];
@@ -303,6 +302,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         $subSlots[$subSlot['id']] = $subSlot;
       }
     }
+    //get adhoc charges
     $adhocCharges = array();
     $adhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $id));
     $adhocChargesValues = CRM_Utils_Array::value('values', $adhocChargesResult);
@@ -333,7 +333,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         }
         $adhocCharges[$id] = $charges;
     }
-
     //get cancellation charges
     $cancellationCharges = array();
 	$cancellationsResult = civicrm_api3('Cancellation','get',array('booking_id' => $id));
@@ -373,10 +372,18 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         
         $cancellationCharges[$key] = $cancels;
 	}
-	
-	//TODO:: Implement getting contribution
-    $contribution = NULL;
-
+	//get contribution
+    $contribution = array();
+    $bookingPaymentResult = civicrm_api3('BookingPayment','get',array('booking_id' => $id));
+    $bookingPaymentValues = CRM_Utils_Array::value('values',$bookingPaymentResult); //get contribution id from booking_payment
+    foreach ($bookingPaymentValues as $key => $bpValues) {
+        $contributionResult = civicrm_api3('Contribution','get',array('id' => $bpValues['contribution_id']));   //get contribution record
+        $contributionValues = CRM_Utils_Array::value('values',$contributionResult);
+        foreach ($contributionValues as $k => $conValues) {
+            $contribution[$k] = $conValues;
+        }
+    }
+    
     return array(
       'slots' => $slots,
       'sub_slots' => $subSlots,
@@ -730,11 +737,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     	$adhocCharges = CRM_Utils_Array::value('adhoc_charges', $bookingDetail);
     	$cancellationCharges = CRM_Utils_Array::value('cancellation_charges', $bookingDetail);
 
-    	//DEBUG
-    	//dpr('Booking.php : $bookingDetail');
-    	//dpr($bookingDetail);
-    	//exit;
-    	
       $tplParams = array(
         'email' => $email,
         'today_date' => date('d.m.Y'),
@@ -752,10 +754,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       	
         //TODO:: build the booking tpl
       );
-    	//DEBUG
-    	// dpr($tplParams);
-    	// exit;
-
       $sendTemplateParams = array(
         'groupName' => 'msg_tpl_workflow_booking',
         'valueName' => 'booking_offline_receipt',

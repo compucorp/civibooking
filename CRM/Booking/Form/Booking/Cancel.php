@@ -119,23 +119,6 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     $params['additional_charge'] = $values['adjustment'];
     $params['comment'] = $values['comment'];
     
-    
-    //calculate the total amunt of cancellation charge
-    $params['cancellation_total_fee'] = $params['cancellation_subtotal_fee'] + $params['additional_fee'];
-    
-    //calculate how many days before event date
-    $cancellation_date = new DateTime($params['cancellation_date']);
-    $event_date = new DateTime($values['event_date']);
-    $interval = $cancellation_date->diff($event_date);
-    $params['prior_days'] = $interval->days;
-    
-    //DEBUG
-    // dpr('Cancel.php : $params');
-    // dpr($params);
-    // dpr('Cancel.php : $values');
-    // dpr($values);
-    //exit;
-    
     $booking = CRM_Booking_BAO_Cancellation::create($params);
     parent::postProcess();      
     CRM_Core_Session::setStatus(ts('The booking \'%1\' has been cancelled.', array(1 => $this->_id)), ts('Saved'), 'success');
