@@ -171,6 +171,11 @@ function booking_civicrm_entityTypes(&$entityTypes) {
     'class' => 'CRM_Booking_DAO_SubSlot',
     'table' => 'civicrm_booking_sub_slot',
   );
+   $entityTypes[] = array(
+    'name' => 'Cancellation',
+    'class' => 'CRM_Booking_DAO_Cancellation',
+    'table' => 'civicrm_booking_cancellation'
+     );
 }
 
 /**

@@ -205,6 +205,81 @@
       {/foreach}
     </table>
     {/if}
+    
+    {if $cancellation_charges}
+     <h3>{ts}Cancellation{/ts}</h3>
+     <table class="crm-info-panel">
+     	{foreach from=$cancellation_charges item=cancellation}
+      <tr class="crm-bookingview-form-block-displayName">
+        <td class="label">{ts}Date Cancelled{/ts}</td>
+        <td class="bold">
+          {$cancellation.cancellation_date|crmDate}
+        </td>
+      </tr>
+      <tr class="crm-bookingview-form-block-booking">
+        <td class="label">{ts}Booking Price{/ts}</td><td>
+          {$cancellation.booking_price}
+        </td>
+      </tr>
+      <tr class="crm-bookingview-form-block-associated-contact">
+        <td class="label">{ts}This booking was cancelled{/ts}</td><td>
+          {$cancellation.prior_days}
+        </td>
+      </tr>
+      <tr class="crm-bookingview-form-block-date-made">
+        <td class="label">{ts}Cancellation Subtotal{/ts}</td><td>
+          {$cancellation.cancellation_fee}
+        </td>
+      </tr>
+      <tr class="crm-bookingview-form-block-event-date">
+        <td class="label">{ts}Other Cancellation Charges{/ts}</td><td>
+          {$cancellation.additional_fee}
+        </td>
+      </tr>
+      <tr class="crm-bookingview-form-block-event-date">
+        <td class="label">{ts}Description{/ts}</td><td>
+          {$cancellation.comment}
+        </td>
+      </tr>
+      <tr class="crm-bookingview-form-block-event-date">
+        <td class="label">{ts}Cancellation Fee{/ts}</td><td>
+          {$cancellation.cancellation_total_fee}
+        </td>
+      </tr>
+      {/foreach}
+    </table>
+    {/if}
+    
+    {if $contribution}
+     <h3>{ts}Contribution{/ts}</h3>
+     <table class="selector">
+      <thead class="sticky">
+        <tr>
+          <th scope="col">{ts}Name{/ts}</th>
+          <th scope="col">{ts}Amount{/ts}</th>
+          <th scope="col">{ts}Type{/ts}</th>
+          <th scope="col">{ts}Source{/ts}</th>
+          <th scope="col">{ts}Received Date{/ts}</th>
+          <th scope="col">{ts}Thank-you sent{/ts}</th>
+          <th scope="col">{ts}Status{/ts}</th>
+          <th scope="col">{ts}Premium{/ts}</th>
+        </tr>
+      </thead>
+ 	{foreach from=$contribution item=contributionItem}
+      <tr class="{cycle values="odd-row,even-row"}">
+        <td>{$contributionItem.sort_name}</td>
+        <td>{$contributionItem.total_amount}</td>
+        <td>{$contributionItem.financial_type}</td>
+        <td>{$contributionItem.contribution_source}</td>
+        <td>{$contributionItem.receive_date|crmDate}</td>
+        <td>{$contributionItem.thankyou_date}</td>
+        <td>{$contributionItem.contribution_status}</td>
+        <td>{$contributionItem.product_name}</td>
+      </tr>
+      {/foreach}
+    </table>
+    {/if}
+    
     <div class="crm-submit-buttons">
           {if call_user_func(array('CRM_Core_Permission','check'), 'edit booking')}
             {assign var='urlParams' value="reset=1&id=$id&cid=$contact_id&action=update&context=$context&selectedChild=booking"}

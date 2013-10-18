@@ -10,6 +10,313 @@
 {capture assign=labelStyle }style="padding: 4px; border-bottom: 1px solid #999; background-color: #f7f7f7;"{/capture}
 {capture assign=valueStyle }style="padding: 4px; border-bottom: 1px solid #999;"{/capture}
 
-Hello {contact.first_name}
+
+<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
+<legend>Header</legend>
+User content  
+</fieldset>
+<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
+<legend>Booking Information</legend>
+  <table cellspacing="3" style="font-family: Arial, Verdana, sans-serif; font-size: 12px;">
+        <tbody>
+        <tr>
+          <th style="text-align: left;">Booking ID:</th>
+          <td>&nbsp;</td>
+          <th style="text-align: left;">Today's date</th>
+          <td>14.10.2013</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">&nbsp;</th>
+          <td>&nbsp;</td>
+          <td style="text-align: left;">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Contact</th>
+          <td> {contact.first_name} {contact.last_name} </td>
+          <td style="text-align: left;"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Organisation:</th>
+          <td>&nbsp;</td>
+          <td style="text-align: left;">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Organisation Address:</th>
+          <td></td>
+          <td style="text-align: left;"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Town:</th>
+          <td>&nbsp;</td>
+          <td style="text-align: left;">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">County:</th>
+          <td>&nbsp;</td>
+          <td style="text-align: left;">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Fax:</th>
+          <td></td>
+          <td style="text-align: left;"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Email:</th>
+          <td></td>
+          <td style="text-align: left;"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Post code</th>
+          <td></td>
+          <td style="text-align: left;"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">&nbsp;</th>
+          <td></td>
+          <td style="text-align: left;"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Day of Function:</th>
+          <td>Tuesday</td>
+          <th style="text-align: left;">Date of Function:</th>
+          <td>28/09/2013</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Function title:</th>
+          <td>Interviews</td>
+          <th style="text-align: left;">Function status:</th>
+          <td>Booked</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Estimated Number:</th>
+          <td>4</td>
+          <th style="text-align: left;">Final Max Number:</th>
+          <td>4</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">&nbsp;</th>
+           
+          Address
+          <td>&nbsp;</td>
+          <td style="text-align: left;">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </tbody>
+  </table>	
+</fieldset>
+
+<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
+  <legend>Booking Resource</legend>
+  <span style="background-color: #CDE8FE; padding: 4px 6px; margin: 0 0 0.3em;">
+    Resources
+  </span>
+  <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
+    <tbody>
+      <tr>
+        <th align="left">Resource</th>
+        <th align="left">From</th>
+        <th align="left">T</th>
+        <th align="left">Configuration</th>
+        <th align="left">Price Per unit</th>
+        <th align="left">Quantity</th>
+        <th align="left">Total price</th>
+      </tr>
+      <tr>
+        <td>Board room</td>
+        <td>9.00 18/5/2013</td>
+        <td>17.00 18/5/2013</td>
+        <td>Board room style</td>
+        <td>300.00</td>
+        <td>1</td>
+        <td>300.00</td>
+      </tr>
+      <tr>
+        <td>Board room</td>
+        <td>9.00 18/5/2013</td>
+        <td>17.00 18/5/2013</td>
+        <td>Board room style</td>
+        <td>300.00</td>
+        <td>1</td>
+        <td>300.00</td>
+      </tr>
+
+      {foreach from=$slots item=slot}
+      <tr>
+        <td>{$slot.resource_label}</td>
+        <td>{$slot.start|crmDate}</td>
+        <td>{$slot.end|crmDate}</td>
+        <td>{$slot.config_label}</td>
+        <td>{$slot.unit_price}</td>
+        <td>{$slot.quantity}</td>
+        <td>{$slot.total_amount}</td>
+      </tr>
+      {/foreach}
+
+    </tbody> 
+  </table>
+
+  <span style="background-color: #CDE8FE; padding: 4px 6px; margin: 0 0 0.3em;">
+  Other items
+</span>
+  <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
+    <tbody>
+      <tr>
+        <th align="left">Resource</th>
+        <th align="left">Parent Resource</th>
+        <th align="left">Time</th>
+        <th align="left">Configuration</th>
+        <th align="left">Price Per unit</th>
+        <th align="left">Quantity</th>
+        <th align="left">Total price</th>
+      </tr>
+      <tr>
+        <td>Tea and coffee</td>
+        <td>Board room</td>
+        <td>9.00 18/5/2013</td>
+        <td>Standard tea and coffee</td>
+        <td>5.00</td>
+        <td>35</td>
+        <td>175.00</td>
+      </tr>
+      <tr>
+        <td>Tea and coffee</td>
+        <td>Board room</td>
+        <td>9.00 18/5/2013</td>
+        <td>Standard tea and coffee</td>
+        <td>5.00</td>
+        <td>35</td>
+        <td>175.00</td>
+      </tr>
+
+      {foreach from=$sub_slots item=subSlot}
+      <tr class="{cycle values="odd-row,even-row"}">
+        <td>{$subSlot.resource_label}</td>
+        <td>{$subSlot.parent_resource_label}</td>
+        <td>{$subSlot.time_required|crmDate}</td>
+        <td>{$subSlot.config_label}</td>
+        <td>{$subSlot.unit_price}</td>
+        <td>{$subSlot.quantity}</td>
+        <td>{$subSlot.total_amount}</td>
+      </tr>
+      {/foreach}
+
+    </tbody> 
+  </table>
+  <span style="background-color: #CDE8FE; padding: 4px 6px; margin: 0 0 0.3em;">Additional charges </span>
+  <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
+    <tbody>
+      <tr>
+        <th align="left">Item</th>
+        <th align="left">Price Per unit</th>
+        <th align="left">Quantity</th>
+        <th align="left">Total price</th>
+      </tr>
+      <tr>
+        <td>Photocopys (black)</td>
+        <td>0.12</td>
+        <td>50</td>
+        <td>6.00</td>
+      </tr>
+      <tr>
+        <td>Photocopy (white)</td>
+        <td>0.12</td>
+        <td>50</td>
+        <td>6.00</td>
+      </tr>
+
+      {foreach from=$adhoc_charges item=adhocCharge}
+      <tr>
+          <td>{$adhocCharge.item_label}</td>
+          <td>{$adhocCharge.unit_price}</td>
+          <td>{$adhocCharge.quantity}</td>
+          <td>{$adhocCharge.total_amount}</td>
+      </tr>
+      {/foreach}
+    </tbody>
+  </table>
+</fieldset>
+<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
+<legend>Price</legend>  
+<table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
+    <tbody>
+      <tr>
+        <th align="left">Sub total</th>
+        <td>200</td>
+      </tr>
+      <tr>
+        <th align="left">Discounts</th>
+        <td>100</td>
+      </tr>
+      <tr>
+        <th align="left">Total</th>
+        <td>50</td>
+      </tr>
+    </tbody>
+  </table>
+</fieldset>
+<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
+<legend>Booking cancellation</legend>  
+ {foreach from=$cancellation_charges item=cancellationCharges}
+  <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px; border-spacing: 3px;">
+    <tbody>
+      <tr>
+        <th align="left">Date cancelled:</th>
+        <td>{$cancellationCharges.cancellation_date}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <th align="left">Booking price</th>
+        <td>{$cancellationCharges.booking_price}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <th align="left">This booking was cancelled</th>
+        <td>{$cancellationCharges.prior_days} days</td>
+        <td>before the event was intended to take place</td>
+      </tr>
+      <tr>
+        <th align="left">Cancellation subtotal:</th>
+        <td>{$cancellationCharges.cancellation_fee}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <th align="left">Other cancellation charges:</th>
+        <td>{$cancellationCharges.additional_fee}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <th align="left" cospan"3">Description:</th>
+      </tr>
+      <tr>
+        <td>
+          <table style="border: 1px solid #056085; font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px;">
+            <tr><td>{$cancellationCharges.comment}</td></tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <th align="left">Cancellation fee:</th>
+        <td>{$cancellationCharges.total_fee}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+   {/foreach}
+</fieldset>
+<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
+<legend>Footer</legend>  
+User content
+</fieldset>
+
 
 </html>
