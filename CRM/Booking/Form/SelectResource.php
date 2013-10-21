@@ -90,15 +90,32 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
           'resource_id' => CRM_Utils_Array::value('resource_id', $value),
           'start_date' =>CRM_Utils_Array::value('start', $value) ,
           'end_date' => CRM_Utils_Array::value('end', $value),
-          'label' => CRM_Booking_BAO_Resource::getFieldValue('label', CRM_Utils_Array::value('resource_id', $value)), // resource label
+          'label' => CRM_Core_DAO::getFieldValue(
+            'CRM_Booking_BAO_Resource',
+            CRM_Utils_Array::value('resource_id', $value),
+            'label',
+            'id'
+          ),
           'text' =>  CRM_Utils_Array::value('booking_id', $value) . ' : ' . $displayName,
           'configuration_id' => CRM_Utils_Array::value('config_id', $value),
           'quantity' => CRM_Utils_Array::value('quantity', $value),
-          'price' => CRM_Booking_BAO_ResourceConfigOption::getFieldValue('price', CRM_Utils_Array::value('config_id', $value)), // resource price,
+          'price' => CRM_Core_DAO::getFieldValue(
+            'CRM_Booking_BAO_ResourceConfigOption',
+            CRM_Utils_Array::value('config_id', $value),
+            'price',
+            'id'
+          ),
           'note' => CRM_Utils_Array::value('note', $value),
           'color' =>  CRM_Utils_Array::value('slot_being_edited_colour', $config),
         );
       }
+      $firstSlot = reset($slots);
+      if($firstSlot){
+        $slotStartDate = $firstSlot['start_date'];
+        $this->assign('bookingSlotDate', $slotStartDate);
+        dpr($slotStartDate);
+      }
+      $this->assign('bookingId', $this->_id);
       $defaults['resources'] = json_encode($slots);
     }
     return $defaults;

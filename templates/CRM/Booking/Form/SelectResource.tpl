@@ -86,6 +86,7 @@
   <script type="text/javascript">
   var crmDateFormat = "{/literal}{$dateformat}{literal}";
   var bookingId = "{/literal}{$bookingId}{literal}";
+  var bookingSlotDate  = "{/literal}{$bookingSlotDate}{literal}"
 
   cj(function($) {
     var elements = [// original hierarhical array to display
