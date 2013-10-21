@@ -26,6 +26,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     $this->_id = CRM_Utils_Request::retrieve('id', 'Positive',
       $this, FALSE, 0
     );
+
     $this->assign('bookingId', $this->_id);
 
     $days = CRM_Booking_Utils_DateTime::getDays();
@@ -75,15 +76,14 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
     $defaults = array();
     if($this->_id){
-      $params = array(
-        'version' => 3,
-        'booking_id' => $this->_id,
+      $params =   array(
+        'id' => $this->_id,
       );
-      $result = civicrm_api('Slot', 'get', $params);
+      CRM_Booking_BAO_Booking::retrieve($params, $booking);
+      $result = civicrm_api3('Slot', 'get', array('booking_id' => $this->_id));
       $config = CRM_Booking_BAO_BookingConfig::getConfig();
       $slots = array();
       foreach ($result['values'] as $key => $value) {
-        CRM_Booking_BAO_Booking::retrieve($params, $booking );
         $displayName = CRM_Contact_BAO_Contact::displayName(CRM_Utils_Array::value('primary_contact_id', $booking));
         $slots[$key] = array(
           'id' => CRM_Utils_Array::value('id', $value),
@@ -113,11 +113,11 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
       if($firstSlot){
         $slotStartDate = $firstSlot['start_date'];
         $this->assign('bookingSlotDate', $slotStartDate);
-        dpr($slotStartDate);
       }
       $this->assign('bookingId', $this->_id);
       $defaults['resources'] = json_encode($slots);
     }
+
     return $defaults;
   }
 
