@@ -125,12 +125,28 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       foreach ($subResources['resources'] as $price) {
         $subTotal += $price;
       }
+      $addhocCharges = array("items" => array(), "note" => CRM_Utils_Array::value('adhoc_charges_note', $booking), "total" => 0);
+      $addhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $this->_id));
+      foreach ($addhocChargesResult['values'] as $key => $charge) {
+        $itemResult = civicrm_api3('AdhocChargesItem', 'get', array('id' => $charge['item_id']));
+        $item = $itemResult['values'][$charge['item_id']];
+        $totalPrice = $item['price'] * $charge['quantity'];
+        $addhocCharges['items'][$charge['id']] = array(
+          "id" => $charge['id'],
+          "name" => $item['name'],
+          "price" => $totalPrice,
+          "quantity" => $charge['quantity'],
+          "item_price" => $item['price']
+        );
+         $addhocCharges['total'] +=  $totalPrice;
+      }
       $subResources['sub_total'] = $subTotal;
-      $subResources['adhoc_charges'] = array("total" => 0);
-      $subResources['total_price'] = $subTotal - CRM_Utils_Array::value('discount_amount', $booking);
+      $subResources['adhoc_charges'] = $addhocCharges;
+      $subResources['total_price'] = $subTotal - CRM_Utils_Array::value('discount_amount', $booking) -  $addhocCharges['total'];
       $defaults['sub_resources'] =  json_encode($subResources);
       $defaults['sub_total'] = $subTotal;
-
+      $defaults['adhoc_charge'] = $addhocCharges['total'];
+      $defaults['discount_amount']= CRM_Utils_Array::value('discount_amount', $booking);;
     }else{
       $defaults['sub_total'] = $this->_subTotal;
       $defaults['adhoc_charge'] = 0;
