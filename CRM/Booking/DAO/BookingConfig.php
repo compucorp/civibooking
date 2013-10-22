@@ -109,6 +109,11 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    */
   public $day_end_at;
   /**
+   *
+   * @var int
+   */
+  public $time_period;
+  /**
    * Create an activity record againt contact for conformation emails
    *
    * @var boolean
@@ -191,6 +196,12 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'title' => ts('Day End At') ,
           'required' => true,
         ) ,
+        'time_period' => array(
+          'name' => 'time_period',
+          'type' => CRM_Utils_Type::T_INT,
+          'title' => ts('Time Period') ,
+          'required' => true,
+        ) ,
         'log_confirmation_email' => array(
           'name' => 'log_confirmation_email',
           'type' => CRM_Utils_Type::T_BOOLEAN,
@@ -265,6 +276,7 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
         'domain_id' => 'domain_id',
         'day_start_at' => 'day_start_at',
         'day_end_at' => 'day_end_at',
+        'time_period' => 'time_period',
         'log_confirmation_email' => 'log_confirmation_email',
         'cc_email_address' => 'cc_email_address',
         'bcc_email_address' => 'bcc_email_address',

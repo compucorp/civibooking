@@ -35,6 +35,12 @@
   </field>
 
   <field>
+    <name>time_period</name>
+    <type>int</type>
+    <required>true</required>
+  </field>
+
+  <field>
     <name>log_confirmation_email</name>
     <type>boolean</type>
     <required>true</required>

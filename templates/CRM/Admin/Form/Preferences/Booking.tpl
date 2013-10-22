@@ -40,6 +40,12 @@
          {$form.day_end_at.html}
       </td>
     </tr>
+    <tr class="crm-booking-system-config-form-block-time_period">
+      <td class="label">{$form.time_period.label}</td>
+      <td>
+         {$form.time_period.html}
+      </td>
+    </tr>
   </table>
   </fieldset>
 

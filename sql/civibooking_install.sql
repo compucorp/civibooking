@@ -94,6 +94,7 @@ CREATE TABLE `civicrm_booking_config` (
      `domain_id` int unsigned    ,
      `day_start_at` time NOT NULL   ,
      `day_end_at` time NOT NULL   ,
+     `time_period` int NOT NULL   ,
      `log_confirmation_email` tinyint NOT NULL  DEFAULT 0 COMMENT 'Create an activity record againt contact for conformation emails',
      `cc_email_address` varchar(255)    ,
      `bcc_email_address` varchar(255)    ,
