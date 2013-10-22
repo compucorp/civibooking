@@ -12,8 +12,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     protected $_subTotal;
     protected $_total;
     protected $_discountAmount;
-    protected $_bookingId;
-
+    protected $_resourcesPrice;
 
     /**
    * Return a descriptive name for the page, used in wizard header
@@ -27,6 +26,8 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
   function preProcess(){
 
+    $this->_id = $this->get('id');
+
     $config = CRM_Core_Config::singleton();
     $currencySymbols = "";
     if(!empty($config->currencySymbols)){
@@ -37,11 +38,13 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     $this->assign('currencySymbols', $currencySymbols);
 
     $selectResourcePage = $this->controller->exportValues('SelectResource');
+
     $selectedResources = json_decode($selectResourcePage['resources'], true);
     $this->assign('resources', $selectedResources);
 
     foreach ($selectedResources as $key => $resource) {
       $this->_subTotal += $resource['price'];
+      $this->_resourcesPrice[$key] = $resource['price'];
     }
     $this->_total = $this->_subTotal;
 
@@ -53,6 +56,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     $bao = new CRM_Booking_BAO_AdhocChargesItem();
     $bao->orderBy('weight');
     $bao->is_active = 1;
+    $bao->is_deleted = 0;
     $bao->find();
     while ($bao->fetch()) {
       $items[$bao->id] = array();
@@ -81,12 +85,58 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
    */
   function setDefaultValues() {
     $defaults = array( );
-    $defaults['sub_total'] = $this->_subTotal;
-    $defaults['adhoc_charge'] = 0;
-    $defaults['discount_amount']=0;
-    $defaults['total_price'] = $this->_total;
+    if($this->_id){
+      $result = civicrm_api3('Booking', 'get', array('id' => $this->_id));
+      $booking = $result['values'][$result['id']];
+      $subResources['sub_resources'] = array();
+      $subResources['resources'] = $this->_resourcesPrice;
+      $slots = civicrm_api3('Slot', 'get', array('booking_id' => $this->_id));
+      foreach ($slots['values'] as $key => $slot) {
+        $subSlots = civicrm_api3('SubSlot', 'get', array('slot_id' => $slot['id']));
+        foreach ($subSlots['values'] as $subSlot) {
+          $subResources['sub_resources'][$subSlot['id']] = array(
+            "parent_ref_id" => $slot['id'],
+            "ref_id" => $subSlot['id'],
+            "quantity" => CRM_Utils_Array::value('quantity', $subSlot),
+            "time_required" => "2013-10-21 09:50",
+            "time_required" =>  CRM_Utils_Array::value('time_required', $subSlot),
+            "note" =>  CRM_Utils_Array::value('note', $subSlot),
+          );
+          $resourceResult = civicrm_api3('Resource', 'get', array('id' => $subSlot['resource_id']));
+          $resource = $resourceResult['values'][ $resourceResult['id']];
+          $subResources['sub_resources'][$subSlot['id']]['resource'] = array(
+            "id" => $resource['id'],
+            "label" => $resource['label']
+          );
+          $configOptionResult = civicrm_api3('ResourceConfigOption', 'get', array('id' => $subSlot['config_id']));
+          $configOption = $configOptionResult['values'][$configOptionResult['id']];
+          $subResources['sub_resources'][$subSlot['id']]['configuration'] = array(
+            "id" => $configOption['id'],
+            "label" => $configOption['label'] . ' - ' . $configOption['price'] . ' / ', //TODO get unit
+            "price" => $configOption['price'],
+          );
+          $priceEstimate =  $configOption['price'] *  CRM_Utils_Array::value('quantity', $subSlot);
+          $subResources['sub_resources'][$subSlot['id']]['price_estimate'] =  $priceEstimate;
+          $resourceTotalPrice =  $subResources['resources'][$slot['id']] + $priceEstimate;
+          $subResources['resources'][$slot['id']] = $resourceTotalPrice;
+        }
+      }
+      $subTotal = 0;
+      foreach ($subResources['resources'] as $price) {
+        $subTotal += $price;
+      }
+      $subResources['sub_total'] = $subTotal;
+      $subResources['adhoc_charges'] = array("total" => 0);
+      $subResources['total_price'] = $subTotal - CRM_Utils_Array::value('discount_amount', $booking);
+      $defaults['sub_resources'] =  json_encode($subResources);
+      $defaults['sub_total'] = $subTotal;
 
-    //{"sub_resources":{"1380046945":{"parent_ref_id":408,"ref_id":1380046945,"resource":{"id":"4","label":"Tea and coffee"},"configuration":{"id":"1","label":"Full tea and coffee set - $300.00 / Head","price":"300.00"},"quantity":"20","time_required":"8:00","note":"","price_estimate":6000}},"resources":{"408":6300},"sub_total":6300,"adhoc_charges":{"total":0},"total_price":6300}
+    }else{
+      $defaults['sub_total'] = $this->_subTotal;
+      $defaults['adhoc_charge'] = 0;
+      $defaults['discount_amount']= 0;
+      $defaults['total_price'] = $this->_total;
+    }
 
     return $defaults;
   }
