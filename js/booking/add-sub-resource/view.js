@@ -50,7 +50,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
           var el = $(this);
           var resourceTotalPrice = null;
           _.find(items, function (item) {
-            if(item.parent_ref_id === el.data('ref')){
+            if(parseInt(item.parent_ref_id) === parseInt(el.data('ref'))){
               resourceTotalPrice += parseFloat(item.price_estimate);
             }
           });
