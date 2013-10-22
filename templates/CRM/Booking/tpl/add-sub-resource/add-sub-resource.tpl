@@ -20,7 +20,7 @@
             <td class="crm-booking-resource-to ">{$resource.start_date} </td>
             <td class="crm-booking-resource-from ">{$resource.end_date}</td>
             <td class="crm-booking-resource-price ">{$currencySymbols}<span data-ref="{$key}" id="resource-price-{$key}">{$resource.price}</span></td>
-            <td class="crm-booking-resource-total-price ">{$currencySymbols}<span data-ref="{$key}" id="resource-total-price-{$key}">{$resource.price}<span></td>
+            <td class="crm-booking-resource-total-price ">{$currencySymbols}<span data-ref="{$key}" data-price="{$resource.price}" id="resource-total-price-{$key}">{$resource.price}<span></td>
             <td >
               <span><a href="#" data-ref="{$key}" data-sdate="{$resource.start_date}" class="add-sub-resource action-item action-item-first" title="Add sub resource">{ts}Add sub resource{/ts}</a></span></td>
           </tr>
