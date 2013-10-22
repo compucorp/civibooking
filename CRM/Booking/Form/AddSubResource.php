@@ -142,11 +142,13 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       }
       $subResources['sub_total'] = $subTotal;
       $subResources['adhoc_charges'] = $addhocCharges;
-      $subResources['total_price'] = $subTotal - CRM_Utils_Array::value('discount_amount', $booking) -  $addhocCharges['total'];
+      $total = ($subTotal - $this->_discountAmount) +  $addhocCharges['total'];
+      $subResources['total_price'] = $total;
       $defaults['sub_resources'] =  json_encode($subResources);
       $defaults['sub_total'] = $subTotal;
       $defaults['adhoc_charge'] = $addhocCharges['total'];
-      $defaults['discount_amount']= CRM_Utils_Array::value('discount_amount', $booking);;
+      $defaults['discount_amount']= CRM_Utils_Array::value('discount_amount', $booking);
+      $defaults['total_price'] = $total;
     }else{
       $defaults['sub_total'] = $this->_subTotal;
       $defaults['adhoc_charge'] = 0;
