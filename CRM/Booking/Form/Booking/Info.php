@@ -21,6 +21,10 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
 
   function preProcess(){
+    $this->_id = $this->get('id');
+    if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
+      parent::preProcess();
+    }
     $config = CRM_Core_Config::singleton();
     $currencySymbols = "";
     if(!empty($config->currencySymbols)){
@@ -100,6 +104,20 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
+    if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
+      $defaults['primary_contact_select_id'] = CRM_Utils_Array::value('primary_contact_id', $this->_values);
+      $displayName = CRM_Contact_BAO_Contact::displayName(CRM_Utils_Array::value('primary_contact_id', $this->_values));
+      $defaults['primary_contact_id'] =  CRM_Utils_Array::value('primary_contact_id', $this->_values) . "::" . $displayName;
+      $defaults['title'] = CRM_Utils_Array::value('title', $this->_values);
+      $defaults['po_no'] = CRM_Utils_Array::value('po_no', $this->_values);
+      $defaults['booking_status'] =  CRM_Utils_Array::value('booking_status_id', $this->_values);
+      //TODO:: fixed event
+     // $defaults['event_start_date'] = CRM_Utils_Array::value('event_date', $this->_values);
+      $defaults['description'] =  CRM_Utils_Array::value('description', $this->_values);
+      $defaults['note'] =  CRM_Utils_Array::value('note', $this->_values);
+      $defaults['enp'] = CRM_Utils_Array::value('participants_estimate', $this->_values);
+      $defaults['fnp'] =  CRM_Utils_Array::value('participants_actual', $this->_values);
+    }
     $addSubResourcePage = $this->controller->exportValues('AddSubResource');
     $defaults['total_amount'] = $addSubResourcePage['total_price']; //use the amount that passing from the form
     return $defaults;
