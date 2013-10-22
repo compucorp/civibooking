@@ -104,7 +104,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         total: this.model.get('adhoc_charges').total
       });
       var view = new AddSubResource.EditAdhocChargesModal({model: model});
-      view.title = ts('Edit ad-hoc charges');
+      view.title = ts('Edit Additional Charges');
       CRM.BookingApp.modal.show(view);
     },
     toggleHiddenElement: function(e){
@@ -343,7 +343,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     template: "#edit-adhoc-charges-template",
     className: "modal-dialog",
     onRender: function(){
-      console.log(this.model);
       var thisView = this;
       _.each(this.model.get('items'), function(item){
         thisView.$el.find('#' + item.name).html(item.item_price);
