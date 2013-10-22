@@ -18,6 +18,7 @@ class CRM_Booking_BAO_AdhocChargesItem extends CRM_Booking_DAO_AdhocChargesItem 
    * @static
    */
   static function create(&$params) {
+    $params['name'] = str_replace(' ', '_', $params['label']);
     $dao = new CRM_Booking_DAO_AdhocChargesItem();
     $dao->copyValues($params);
     return $dao->save();
@@ -70,7 +71,7 @@ class CRM_Booking_BAO_AdhocChargesItem extends CRM_Booking_DAO_AdhocChargesItem 
    * @static
    */
   static function del($id){
-  	return CRM_Core_DAO::setFieldValue('CRM_Booking_DAO_AdhocChargesItem', $id, 'is_deleted', 1); 
+  	return CRM_Core_DAO::setFieldValue('CRM_Booking_DAO_AdhocChargesItem', $id, 'is_deleted', 1);
   }
 
 }
