@@ -23,7 +23,7 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
-	
+
 <h3>{ts}Booking System Configuration{/ts}</h3>
 <div class="crm-block crm-form-block crm-booking-system-config-form-block">
   <fieldset><legend>{ts}Time{/ts}</legend>
@@ -38,6 +38,12 @@
       <td class="label">{$form.day_end_at.label}</td>
       <td>
          {$form.day_end_at.html}
+      </td>
+    </tr>
+    <tr class="crm-booking-system-config-form-block-time_period">
+      <td class="label">{$form.time_period.label}</td>
+      <td>
+         {$form.time_period.html}
       </td>
     </tr>
   </table>
@@ -61,7 +67,9 @@
 
   <fieldset><legend>{ts}Slot colour scheme{/ts}</legend>
   <table class="form-layout-compressed">
-
+    <tr class="crm-booking-system-config-form-block-slot_unavaliable_colour">
+        <td class="label">{$form.slot_new_colour.label}</td><td>{$form.slot_new_colour.html}</td>
+    </tr>
     <tr class="crm-booking-system-config-form-block-slot_unavaliable_colour">
         <td class="label">{$form.slot_booked_colour.label}</td><td>{$form.slot_booked_colour.html}</td>
     </tr>
@@ -71,11 +79,11 @@
     <tr class="crm-booking-system-config-form-block-slot_editing_colour">
         <td class="label">{$form.slot_being_edited_colour.label}</td><td>{$form.slot_being_edited_colour.html}</td>
     </tr>
-	
+
   </table>
   </fieldset>
  <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 </div>
 
-{crmScript ext=uk.co.compucorp.civicrm.booking file=templates/CRM/Admin/Form/Preferences/ColorSelection.js}
-	
+{crmScript ext=uk.co.compucorp.civicrm.booking file=templates/CRM/Admin/Form/Preferences/Booking.js}
+

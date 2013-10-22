@@ -165,6 +165,7 @@ cj(function($) {
     ev.quantity = $('input[name="quantity"]').val();
     ev.configuration_id = $('#configSelect').val();
     ev.note = $("#resource-note").val();
+    ev.color = newSlotcolour;
     ev.readonly = true;
     var item = {
       id: ev.id,

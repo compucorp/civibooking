@@ -56,6 +56,8 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
     $this->assign('resources', $resources);;
     $this->assign('currencySymbols', $currencySymbols);
+    $config = CRM_Booking_BAO_BookingConfig::getConfig();
+    $this->assign('colour', CRM_Utils_Array::value('slot_new_colour', $config));
 
     $this->assign('timeOptions', CRM_Booking_Utils_DateTime::getTimeRange());
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
