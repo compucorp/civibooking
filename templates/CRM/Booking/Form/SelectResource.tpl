@@ -38,8 +38,8 @@
             <div class="dhx_cal_date"></div>
             {* <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
             <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
-            <div class="dhx_cal_tab" name="timeline_tab" style="right:204;"></div>
-            <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div> *}
+            <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+            <div class="dhx_cal_tab" name="timeline_tab" style="right:204;"></div> *}
             <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="show_minical()">&nbsp;</div>
           </div>
           <div class="dhx_cal_header">
@@ -86,7 +86,8 @@
   <script type="text/javascript">
   var crmDateFormat = "{/literal}{$dateformat}{literal}";
   var bookingId = "{/literal}{$bookingId}{literal}";
-  var bookingSlotDate  = "{/literal}{$bookingSlotDate}{literal}"
+  var bookingSlotDate  = "{/literal}{$bookingSlotDate}{literal}";
+  var colour = "{/literal}{$colour}{literal}";
 
   cj(function($) {
     var elements = [// original hierarhical array to display
