@@ -57,8 +57,8 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
       return;
     }
 
-	// create form elements
-    $this->add('text', 'name', ts('Name'), array('size' => 50, 'maxlength' => 255), TRUE);
+	  // create form elements
+    //$this->add('text', 'name', ts('Name'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'label', ts('Label'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'price', ts('Price'), array('size' => 10, 'maxlength' => 255), TRUE);
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_AdhocChargesItem', 'weight'), TRUE);
