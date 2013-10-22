@@ -13,7 +13,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    *
    * @var integer
    */
-  protected $_id;
+  //protected $_id;
 
   /**
    * Function to set variables up before form is built
@@ -58,10 +58,13 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     $this->assign('currencySymbols', $currencySymbols);
 
     $this->assign('timeOptions', CRM_Booking_Utils_DateTime::getTimeRange());
-
+    if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
+      $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');
+      CRM_Utils_System::setTitle(ts('Edit Booking') . " - $title");
+    }else{
+      CRM_Utils_System::setTitle(ts('New Booking') );
+    }
     self::registerScripts();
-
-
   }
 
   /**

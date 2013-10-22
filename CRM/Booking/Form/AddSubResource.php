@@ -72,6 +72,12 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     $this->assign('years', $years);
 
     $this->assign('items', $items);
+    if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
+      $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');
+      CRM_Utils_System::setTitle(ts('Edit Booking') . " - $title");
+    }else{
+      CRM_Utils_System::setTitle(ts('New Booking') );
+    }
     self::registerScripts();
 
   }
