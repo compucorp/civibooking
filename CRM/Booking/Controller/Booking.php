@@ -40,6 +40,17 @@ class CRM_Booking_Controller_Booking extends CRM_Core_Controller {
 
     parent::__construct($title, $modal, NULL, FALSE, TRUE);
 
+    $bookingID = CRM_Utils_Request::retrieve('id', 'Positive',
+      $this, FALSE, 0
+    );
+
+    //if booking id exist assume so we entering edit mode
+    if ($bookingID){
+      $action = CRM_Core_Action::UPDATE;
+    }else {  //force action to add
+      $action = CRM_Core_Action::ADD;
+    }
+
     $this->_stateMachine = new CRM_Booking_StateMachine_Booking($this, $action);
 
     // create and instantiate the pages

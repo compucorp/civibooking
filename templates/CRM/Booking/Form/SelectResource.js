@@ -27,8 +27,14 @@ cj(function($) {
   scheduler.config.details_on_dblclick=false;
   scheduler.config.collision_limit = 1; //allows creating 1 events per time slot
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
-
-  scheduler.init("resource_scheduler", new Date() ,"timeline");
+  if(bookingSlotDate){
+    console.log(bookingSlotDate);
+    var date = new Date(bookingSlotDate);
+    console.log(date);
+  }else{
+    var date = new Date();
+  }
+  scheduler.init("resource_scheduler", date ,"timeline");
   scheduler.setLoadMode("day");
   if(bookingId){
     var url = [CRM.url('civicrm/booking/ajax/slots'), '?booking_id=',bookingId].join('');
@@ -221,7 +227,9 @@ cj(function($) {
 
 
   function updateBasket(item){
+    console.log(item);
     subTotal =  parseFloat(subTotal) + parseFloat(item.price);
+    console.log(subTotal);
     if(!isNaN(subTotal)){
       var template = _.template(cj('#selected-resource-row-tpl').html());
       $('#basket-table > tbody:last').append(template({data: item}));

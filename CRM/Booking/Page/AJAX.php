@@ -115,7 +115,6 @@ class CRM_Booking_Page_AJAX {
     $results = CRM_Booking_BAO_Slot::getSlotBetweenDate($from, $to);
     foreach ($results as $key => $slot) {
       if($bookingId != CRM_Utils_Array::value('booking_id', $slot)){ //do not thing
-      //}else{
         $params  = array('id' => CRM_Utils_Array::value('booking_id', $slot));
         CRM_Booking_BAO_Booking::retrieve($params, $booking );
         $bookingStatus = CRM_Utils_Array::value('status_id', $booking);

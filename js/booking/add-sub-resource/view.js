@@ -48,9 +48,10 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       if($.trim($("#sub_resources").val())) {
         this.$el.find("span[id^='resource-total-price-']").each(function(){
           var el = $(this);
-          var resourceTotalPrice = null;
+          var resourceTotalPrice = parseFloat(el.data('price'));
           _.find(items, function (item) {
-            if(item.parent_ref_id === el.data('ref')){
+
+            if(parseInt(item.parent_ref_id) === parseInt(el.data('ref'))){
               resourceTotalPrice += parseFloat(item.price_estimate);
             }
           });
@@ -104,7 +105,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         total: this.model.get('adhoc_charges').total
       });
       var view = new AddSubResource.EditAdhocChargesModal({model: model});
-      view.title = ts('Edit ad-hoc charges');
+      view.title = ts('Edit Additional Charges');
       CRM.BookingApp.modal.show(view);
     },
     toggleHiddenElement: function(e){
@@ -343,7 +344,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     template: "#edit-adhoc-charges-template",
     className: "modal-dialog",
     onRender: function(){
-      console.log(this.model);
       var thisView = this;
       _.each(this.model.get('items'), function(item){
         thisView.$el.find('#' + item.name).html(item.item_price);

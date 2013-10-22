@@ -20,7 +20,7 @@
             <td class="crm-booking-resource-to ">{$resource.start_date} </td>
             <td class="crm-booking-resource-from ">{$resource.end_date}</td>
             <td class="crm-booking-resource-price ">{$currencySymbols}<span data-ref="{$key}" id="resource-price-{$key}">{$resource.price}</span></td>
-            <td class="crm-booking-resource-total-price ">{$currencySymbols}<span data-ref="{$key}" id="resource-total-price-{$key}">{$resource.price}<span></td>
+            <td class="crm-booking-resource-total-price ">{$currencySymbols}<span data-ref="{$key}" data-price="{$resource.price}" id="resource-total-price-{$key}">{$resource.price}<span></td>
             <td >
               <span><a href="#" data-ref="{$key}" data-sdate="{$resource.start_date}" class="add-sub-resource action-item action-item-first" title="Add sub resource">{ts}Add sub resource{/ts}</a></span></td>
           </tr>
@@ -51,9 +51,9 @@
             <td></td>
           </tr>
           <tr >
-            <td class="text-right"colspan="4"><span>{ts}Ad-hoc charges{/ts}: </span></td>
+            <td class="text-right"colspan="4"><span>{ts}Additional charges{/ts}: </span></td>
             <td>{$currencySymbols}<span id="ad-hoc-charge-summary">0</span></td>
-            <td><span><a href="#" class="edit-adhoc-charge " title="{ts}Add ad-hoc charge{/ts}">{ts}Edit ad-hoc charges{/ts}</a></span></td>
+            <td><span><a href="#" class="edit-adhoc-charge " title="{ts}Edit additional charges{/ts}">{ts}Edit additional charges{/ts}</a></span></td>
           </tr>
           <tr >
             <td class="text-right" colspan="4"><span>{$form.discount_amount.label}:</span></td>

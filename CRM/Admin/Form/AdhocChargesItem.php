@@ -57,8 +57,8 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
       return;
     }
 
-	// create form elements
-    $this->add('text', 'name', ts('Name'), array('size' => 50, 'maxlength' => 255), TRUE);
+	  // create form elements
+    //$this->add('text', 'name', ts('Name'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'label', ts('Label'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'price', ts('Price'), array('size' => 10, 'maxlength' => 255), TRUE);
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_AdhocChargesItem', 'weight'), TRUE);
@@ -144,12 +144,12 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
 
 		// udpate action
       if ($this->_action & CRM_Core_Action::UPDATE) {
-        CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $set->title)), ts('Saved'), 'success');
+        CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $set->label)), ts('Saved'), 'success');
       }
       else {
         $url = CRM_Utils_System::url('civicrm/admin/adhoc_charges_item', 'reset=1&action=browse&sid=' . $set->id);
         CRM_Core_Session::setStatus(
-          ts("Your additional charges item '%1' has been added.", array(1 => $set->title)), ts('Saved'), 'success');
+          ts("Your additional charges item '%1' has been added.", array(1 => $set->label)), ts('Saved'), 'success');
         $session = CRM_Core_Session::singleton();
         $session->replaceUserContext($url);
       }
