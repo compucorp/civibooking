@@ -67,12 +67,6 @@
   </field>
 
   <field>
-    <name>slot_being_edited_colour</name>
-    <type>varchar</type>
-    <length>10</length>
-  </field>
-
-  <field>
     <name>slot_booked_colour</name>
     <type>varchar</type>
     <length>10</length>

@@ -81,9 +81,10 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
     $this->add('text', 'cc_email_address', ts('CC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('text', 'bcc_email_address', ts('BCC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('checkbox', 'log_confirmation_email', ts('Log email?'));
+    $this->add('text', 'slot_new_colour', ts('New Slot Colour'));
+    $this->add('text', 'slot_being_edited_colour', ts('Slot Editing Colour'));
     $this->add('text', 'slot_booked_colour', ts('Booked Slot Colour'));
     $this->add('text', 'slot_provisional_colour', ts('Provisional Slot Colour'));
-    $this->add('text', 'slot_being_edited_colour', ts('New Slot/Editing Colour'));
 
 
     $this->addFormRule(array('CRM_Admin_Form_Preferences_Booking', 'formRule'), $this);
@@ -118,6 +119,7 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
     $defaults['slot_booked_colour'] = $this->_config['slot_booked_colour'];
     $defaults['slot_provisional_colour'] = $this->_config['slot_provisional_colour'];
     $defaults['slot_being_edited_colour'] = $this->_config['slot_being_edited_colour'];
+    $defaults['slot_new_colour'] = $this->_config['slot_new_colour'];
 
     return $defaults;
   }
