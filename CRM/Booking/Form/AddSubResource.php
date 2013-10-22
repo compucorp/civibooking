@@ -91,6 +91,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       $subResources['sub_resources'] = array();
       $subResources['resources'] = $this->_resourcesPrice;
       $slots = civicrm_api3('Slot', 'get', array('booking_id' => $this->_id));
+      $unitPriceList =  CRM_Booking_BAO_ResourceConfigOption::buildOptions('unit_id', 'create');
       foreach ($slots['values'] as $key => $slot) {
         $subSlots = civicrm_api3('SubSlot', 'get', array('slot_id' => $slot['id']));
         foreach ($subSlots['values'] as $subSlot) {
@@ -103,16 +104,17 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
             "note" =>  CRM_Utils_Array::value('note', $subSlot),
           );
           $resourceResult = civicrm_api3('Resource', 'get', array('id' => $subSlot['resource_id']));
-          $resource = $resourceResult['values'][ $resourceResult['id']];
+          $resource = $resourceResult['values'][$subSlot['resource_id']];
           $subResources['sub_resources'][$subSlot['id']]['resource'] = array(
             "id" => $resource['id'],
             "label" => $resource['label']
           );
           $configOptionResult = civicrm_api3('ResourceConfigOption', 'get', array('id' => $subSlot['config_id']));
-          $configOption = $configOptionResult['values'][$configOptionResult['id']];
+          $configOption = $configOptionResult['values'][$subSlot['config_id']];
+          $unit = $unitPriceList[$configOption['unit_id']];
           $subResources['sub_resources'][$subSlot['id']]['configuration'] = array(
             "id" => $configOption['id'],
-            "label" => $configOption['label'] . ' - ' . $configOption['price'] . ' / ', //TODO get unit
+            "label" => $configOption['label'] . ' - ' . $configOption['price'] . ' / ' . $unit,
             "price" => $configOption['price'],
           );
           $priceEstimate =  $configOption['price'] *  CRM_Utils_Array::value('quantity', $subSlot);
