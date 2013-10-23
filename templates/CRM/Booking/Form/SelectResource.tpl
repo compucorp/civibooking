@@ -87,7 +87,7 @@
   var crmDateFormat = "{/literal}{$dateformat}{literal}";
   var bookingId = "{/literal}{$bookingId}{literal}";
   var bookingSlotDate  = "{/literal}{$bookingSlotDate}{literal}";
-  var colour = "{/literal}{$colour}{literal}";
+  var newSlotcolour = "{/literal}{$colour}{literal}";
 
   cj(function($) {
     var elements = [// original hierarhical array to display
@@ -113,9 +113,9 @@
       name: "timeline",
       x_unit: "minute",
       x_date: "%H:%i",
-      x_step: 30,
-      x_size: 24,
-      x_start: 16,
+      x_step: {/literal}{$xStep}{literal}, //time period
+      x_size: {/literal}{$xSize}{literal}, // side of block from start time to end time
+      x_start: {/literal}{$xStart}{literal},
       x_length: 48,
       y_unit: elements,
       y_property: "resource_id",

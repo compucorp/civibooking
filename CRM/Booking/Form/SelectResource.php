@@ -59,6 +59,11 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     $config = CRM_Booking_BAO_BookingConfig::getConfig();
     $this->assign('colour', CRM_Utils_Array::value('slot_new_colour', $config));
 
+    list($xStart, $xSize, $xStep) = CRM_Booking_Utils_DateTime::getCalendarTime();
+    $this->assign('xStart', $xStart);
+    $this->assign('xSize', $xSize);
+    $this->assign('xStep', $xStep);
+
     $this->assign('timeOptions', CRM_Booking_Utils_DateTime::getTimeRange());
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');

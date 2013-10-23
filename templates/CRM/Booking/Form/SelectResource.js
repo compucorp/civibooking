@@ -27,6 +27,8 @@ cj(function($) {
   scheduler.config.details_on_dblclick=false;
   scheduler.config.collision_limit = 1; //allows creating 1 events per time slot
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
+
+
   if(bookingSlotDate){
     console.log(bookingSlotDate);
     var date = new Date(bookingSlotDate);
