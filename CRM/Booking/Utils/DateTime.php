@@ -92,10 +92,9 @@ class CRM_Booking_Utils_DateTime {
     $config = CRM_Booking_BAO_BookingConfig::getConfig();
     $start = strtotime(CRM_Utils_Array::value('day_start_at', $config));
     $end = strtotime(CRM_Utils_Array::value('day_end_at', $config));
-    //$periodTime = !CRM_Utils_Array::value('time_period', $config) ? 30 :  CRM_Utils_Array::value('time_period', $config);;
-    $periodTime = 30;
+    $periodTime = 30; //fixed the period time
     $startHour = 8;
-    $startMinutes = 30;
+    $startMinutes = 0;
     $endHour = 22;
     $endMinutes = 30;
     $xStart = (($startHour * (60 / $startMinutes)) + ($startMinutes / $periodTime));

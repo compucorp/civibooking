@@ -77,12 +77,12 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
       FALSE,
       array()
     );
-
+    /*
     $this->add('select', 'time_period', ts('Time period'),
       array(10 => '10', 15 => '15', 20 => '20', 30 => '30', 60 => '60'),
       FALSE,
       array()
-    );
+    );*/
 
     $this->add('text', 'cc_email_address', ts('CC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('text', 'bcc_email_address', ts('BCC'), array('size' => 50, 'maxlength' => 255), FALSE);
@@ -118,7 +118,7 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
     $defaults = array();
 	  $defaults['day_start_at'] = date('G:i', strtotime($this->_config['day_start_at']));
 	  $defaults['day_end_at'] = date('G:i', strtotime($this->_config['day_end_at']));
-    $defaults['time_period'] = $this->_config['time_period'];
+    //$defaults['time_period'] = $this->_config['time_period'];
     $defaults['cc_email_address'] = CRM_Utils_Array::value('cc_email_address', $this->_config);
 	  $defaults['bcc_email_address'] = CRM_Utils_Array::value('bcc_email_address', $this->_config);
     $defaults['log_confirmation_email'] = $this->_config['log_confirmation_email'];

@@ -30,7 +30,7 @@
 {if $resources}
   <div id="brs-container">
    <div id="scheduler">
-        <div id="resource_scheduler" class="dhx_cal_container" style='width:100%; height:500px;'>
+        <div id="resource_scheduler" class="dhx_cal_container" style='width:100%; height:600px;'>
           <div class="dhx_cal_navline">
             <div class="dhx_cal_prev_button">&nbsp;</div>
             <div class="dhx_cal_next_button">&nbsp;</div>
