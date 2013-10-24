@@ -94,7 +94,7 @@ class CRM_Booking_Utils_DateTime {
     $end = strtotime(CRM_Utils_Array::value('day_end_at', $config));
     $periodTime = 30; //fixed the period time
     $startHour = 8;
-    $startMinutes = 0;
+    $startMinutes = 30;
     $endHour = 22;
     $endMinutes = 30;
     $xStart = (($startHour * (60 / $startMinutes)) + ($startMinutes / $periodTime));
