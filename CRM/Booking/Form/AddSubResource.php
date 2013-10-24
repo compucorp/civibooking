@@ -96,10 +96,10 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       $booking = $result['values'][$result['id']];
       $subResources['sub_resources'] = array();
       $subResources['resources'] = $this->_resourcesPrice;
-      $slots = civicrm_api3('Slot', 'get', array('booking_id' => $this->_id));
+      $slots = civicrm_api3('Slot', 'get', array('booking_id' => $this->_id, 'is_deleted' => 0));
       $unitPriceList =  CRM_Booking_BAO_ResourceConfigOption::buildOptions('unit_id', 'create');
       foreach ($slots['values'] as $key => $slot) {
-        $subSlots = civicrm_api3('SubSlot', 'get', array('slot_id' => $slot['id']));
+        $subSlots = civicrm_api3('SubSlot', 'get', array('slot_id' => $slot['id'], 'is_deleted' => 0));
         foreach ($subSlots['values'] as $subSlot) {
           $subResources['sub_resources'][$subSlot['id']] = array(
             "parent_ref_id" => $slot['id'],
@@ -134,7 +134,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
         $subTotal += $price;
       }
       $addhocCharges = array("items" => array(), "note" => CRM_Utils_Array::value('adhoc_charges_note', $booking), "total" => 0);
-      $addhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $this->_id));
+      $addhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $this->_id, 'is_deleted' => 0));
       foreach ($addhocChargesResult['values'] as $key => $charge) {
         $itemResult = civicrm_api3('AdhocChargesItem', 'get', array('id' => $charge['item_id']));
         $item = $itemResult['values'][$charge['item_id']];
