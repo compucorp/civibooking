@@ -36,8 +36,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     $resources = $params['resources'];
     $adhocCharges = $params['adhoc_charges'];
 
-    dpr($adhocCharges);
-
     if($params['validate']){
       //TODO:: Validate resource
       //$result = array();
@@ -157,9 +155,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           $currentAdhocCharges = $result['values'];
         }
         $items = CRM_Utils_Array::value('items', $adhocCharges);
-        dpr($items);
         foreach ($items as $key => $item) {
-          //dpr($item);
           $params = array(
             'booking_id' =>  $bookingID,
             'item_id' => CRM_Utils_Array::value('id', $item),
