@@ -155,6 +155,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           $currentAdhocCharges = $result['values'];
         }
         $items = CRM_Utils_Array::value('items', $adhocCharges);
+        $newAdhocChargesIds = array();
         foreach ($items as $key => $item) {
           $params = array(
             'booking_id' =>  $bookingID,
@@ -171,7 +172,22 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
               $params['id'] =  $currentAdhocChargesId;
             }
           }
-          civicrm_api3('AdhocCharges', 'create', $params);
+          $result = civicrm_api3('AdhocCharges', 'create', $params);
+          $adhocChargesId =  CRM_Utils_Array::value('id', $result);
+          array_push($newAdhocChargesIds, $adhocChargesId);
+        }
+        if($isUpdate){ //remove  adhoc charges that have been removed
+          $adhocChargesToBeRemoved = array();
+          foreach ($currentAdhocCharges as $key => $adc) {
+            if(!in_array($key, $newAdhocChargesIds)){
+              $adhocChargesToBeRemoved[$key] = $adc;
+            }
+          }
+          if(!empty($adhocChargesToBeRemoved)){
+            foreach ($adhocChargesToBeRemoved as $key => $adc) {
+              civicrm_api3('AdhocCharges', 'delete', array('id' => $key));
+            }
+          }
         }
       }
       return $booking;

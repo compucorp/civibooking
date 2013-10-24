@@ -76,5 +76,22 @@ class CRM_Booking_BAO_AdhocCharges extends CRM_Booking_DAO_AdhocCharges {
     return $charges;
   }
 
+  /**
+   * Function to delete AdhocCharges
+   *
+   * @param  int  $id     Id of the AdhocCharges to be deleted.
+   *
+   * @return boolean
+   *
+   * @access public
+   * @static
+   */
+  static function del($id) {
+    $dao = new CRM_Booking_DAO_AdhocCharges();
+    $dao->id = $id;
+    $dao->is_deleted = 1;
+    return $dao->save();
+  }
+
 
 }
