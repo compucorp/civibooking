@@ -71,7 +71,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     );
 
     $this->add('text', 'title', ts('Title'), array(), TRUE);
-    $this->addDate('event_start_date', ts('Date'), TRUE, array('formatType' => 'activityDate'));
+    $this->addDate('event_start_date', ts('Date'), TRUE, array('formatType' => 'activityDateTime'));
     $this->add('textarea', 'description', ts('Description'));
     $this->add('textarea', 'note', ts('Note'));
 
@@ -117,7 +117,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $defaults['po_no'] = CRM_Utils_Array::value('po_no', $this->_values);
       $defaults['booking_status'] =  CRM_Utils_Array::value('booking_status_id', $this->_values);
       $defaults['event_start_date'] = CRM_Utils_Array::value('event_date', $this->_values);
-      list($defaults['event_start_date'], $eventTime) = CRM_Utils_Date::setDateDefaults($defaults['event_start_date'], 'activityDateTime');
+      list($defaults['event_start_date'], $defaults['event_start_date_time']) = CRM_Utils_Date::setDateDefaults($defaults['event_start_date'], 'activityDateTime');
       $defaults['description'] =  CRM_Utils_Array::value('description', $this->_values);
       $defaults['note'] =  CRM_Utils_Array::value('note', $this->_values);
       $defaults['enp'] = CRM_Utils_Array::value('participants_estimate', $this->_values);
@@ -180,7 +180,10 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
     $booking['description'] =CRM_Utils_Array::value('description', $bookingInfo);
     $booking['notes'] = CRM_Utils_Array::value('note', $bookingInfo);
-    $booking['event_date'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('event_start_date', $bookingInfo));
+    $booking['event_date'] = CRM_Utils_Date::processDate(
+      CRM_Utils_Array::value('event_start_date', $bookingInfo),
+      CRM_Utils_Array::value('event_start_date_time', $bookingInfo)
+    );
 
     $booking['discount_amount'] = CRM_Utils_Array::value('discount_amount', $addSubResoruce);
     $booking['total_amount'] = CRM_Utils_Array::value('total_price', $addSubResoruce);
