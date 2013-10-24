@@ -116,8 +116,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $defaults['title'] = CRM_Utils_Array::value('title', $this->_values);
       $defaults['po_no'] = CRM_Utils_Array::value('po_no', $this->_values);
       $defaults['booking_status'] =  CRM_Utils_Array::value('booking_status_id', $this->_values);
-      //TODO:: fixed event
-     // $defaults['event_start_date'] = CRM_Utils_Array::value('event_date', $this->_values);
+      $defaults['event_start_date'] = CRM_Utils_Array::value('event_date', $this->_values);
+      list($defaults['event_start_date'], $eventTime) = CRM_Utils_Date::setDateDefaults($defaults['event_start_date'], 'activityDateTime');
       $defaults['description'] =  CRM_Utils_Array::value('description', $this->_values);
       $defaults['note'] =  CRM_Utils_Array::value('note', $this->_values);
       $defaults['enp'] = CRM_Utils_Array::value('participants_estimate', $this->_values);
