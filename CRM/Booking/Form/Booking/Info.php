@@ -168,6 +168,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
 
     $booking = array();
+    if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
+      $booking['id'] = $this->_id;
+    }
     $booking['resources'] = $resources;
     $booking['adhoc_charges'] = $adhocCharges;
 
@@ -179,7 +182,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
 
     $booking['description'] =CRM_Utils_Array::value('description', $bookingInfo);
-    $booking['notes'] = CRM_Utils_Array::value('note', $bookingInfo);
+    $booking['note'] = CRM_Utils_Array::value('note', $bookingInfo);
     $booking['event_date'] = CRM_Utils_Date::processDate(
       CRM_Utils_Array::value('event_start_date', $bookingInfo),
       CRM_Utils_Array::value('event_start_date_time', $bookingInfo)
