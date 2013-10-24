@@ -81,6 +81,34 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
     return $dao->save();
   }
 
+  /**
+   * Function to compare if an input field is existing in array of slots
+   *
+   *
+   * @param array $fields input parameters to find slot
+   * @param array $array array of slots
+   *
+   * @return boolean, id of matching slot
+   *
+   * @access public
+   * @static
+   */
+  static function isExist($fields, $array){
+    foreach ($array as $key => $value) {
+      $id = $value['id'];
+      unset($value['booking_id']);
+      unset($value['id']);
+      unset($value['quantity']);
+      unset($value['note']);
+      $value['start'] = CRM_Utils_Date::processDate($value['start']);
+      $value['end'] =  CRM_Utils_Date::processDate($value['end']);
+      if($fields === $value){
+        return array(TRUE, $id);
+      }
+    }
+    return array(FALSE, NULL);
+  }
+
 
 
   /**
@@ -124,7 +152,8 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
              civicrm_booking_slot.note
       FROM civicrm_booking_slot
       WHERE 1
-      AND  civicrm_booking_slot.booking_id = %1";
+      AND civicrm_booking_slot.booking_id = %1
+      AND civicrm_booking_slot.is_deleted = 0";
 
     $slots = array();
     $dao = CRM_Core_DAO::executeQuery($query, $params);
