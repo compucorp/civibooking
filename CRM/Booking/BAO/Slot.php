@@ -57,6 +57,11 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
    * @static
    */
   static function del($id) {
+    //make sure sub slots get deleted as well
+    $subSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($id);
+    foreach ($subSlots as $subSlotId => $subSlots) {
+      CRM_Booking_BAO_SubSlot::del($subSlotId);
+    }
     $dao = new CRM_Booking_DAO_Slot();
     $dao->id = $id;
     $dao->is_deleted = 1;
@@ -93,8 +98,8 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
    * @access public
    * @static
    */
-  static function isExist($fields, $array){
-    foreach ($array as $key => $value) {
+  static function findExistingSlot($fields, $slots){
+    foreach ($slots as $key => $value) {
       $id = $value['id'];
       unset($value['booking_id']);
       unset($value['id']);

@@ -24,6 +24,33 @@ class CRM_Booking_BAO_AdhocCharges extends CRM_Booking_DAO_AdhocCharges {
   }
 
 
+  /**
+   * Function to compare if an input field is existing in array of adhoc charges
+   *
+   *
+   * @param array $fields input parameters to find adhoc charges
+   * @param array $array array of  adhoc charges
+   *
+   * @return boolean, id of matching  adhoc charges
+   *
+   * @access public
+   * @static
+   */
+  static function findExistingAdhocCharges($fields, $adhocChargesList){
+    foreach ($adhocChargesList as $key => $value) {
+      $id = $value['id'];
+      unset($value['id']);
+      unset($value['quantity']);
+      unset($value['is_cancelled']);
+      unset($value['is_deleted']);
+      if($fields === $value){
+        return array(TRUE, $id);
+      }
+    }
+    return array(FALSE, NULL);
+  }
+
+
   static function getBookingAdhocCharges($bookingID){
     $params = array(1 => array( $bookingID, 'Integer'));
 
