@@ -90,7 +90,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
         'id' => $this->_id,
       );
       CRM_Booking_BAO_Booking::retrieve($params, $booking);
-      $result = civicrm_api3('Slot', 'get', array('booking_id' => $this->_id));
+      $result = civicrm_api3('Slot', 'get', array('booking_id' => $this->_id, 'is_deleted' => 0));
       $config = CRM_Booking_BAO_BookingConfig::getConfig();
       $slots = array();
       foreach ($result['values'] as $key => $value) {
