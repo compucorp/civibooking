@@ -77,7 +77,28 @@ function civicrm_api3_slot_delete($params) {
 }
 
 
-
-
+/**
+ * Slot.Validate API
+ *
+ * @param array $params
+ * @return array API result descriptor
+ * @see civicrm_api3_create_success
+ * @see civicrm_api3_create_error
+ * @throws API_Exception
+ */
+function civicrm_api3_slot_validate($params) {
+  $resources = $params['resources'];
+  $isValid = TRUE;
+  $errorResources = array();
+  foreach ($resources as $key => $resource) {
+    if(!CRM_Booking_BAO_Slot::validateSlot($resource)){
+      $errorResources[] = $resource;
+    }
+  }
+  if(!empty($errorResources)){
+    $isValid = FALSE;
+  }
+  return civicrm_api3_create_success(array('is_valid' => $isValid, 'error_resources' => $errorResources), $params, 'slot', 'validate');
+}
 
 
