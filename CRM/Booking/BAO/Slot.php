@@ -95,7 +95,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
   * @access public
   * @static
   */
-  static function validateSlot($params){
+  static function isValid($params){
     $qParams = array(
       1 => array($params['start'], 'String'),
       2 => array($params['end'], 'String'),

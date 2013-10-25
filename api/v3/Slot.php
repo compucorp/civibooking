@@ -23,7 +23,7 @@ function _civicrm_api3_slot_create_spec(&$spec) {
  */
 function civicrm_api3_slot_create($params) {
   if(CRM_Utils_Array::value('id', $params)){
-    if(!CRM_Booking_BAO_Slot::validateSlot($params)){
+    if(!CRM_Booking_BAO_Slot::isValid($params)){
       return civicrm_api3_create_error('Unable to create slot. Please check the slot date time is availables.');
     }
   }
@@ -91,7 +91,7 @@ function civicrm_api3_slot_validate($params) {
   $isValid = TRUE;
   $errorResources = array();
   foreach ($resources as $key => $resource) {
-    if(!CRM_Booking_BAO_Slot::validateSlot($resource)){
+    if(!CRM_Booking_BAO_Slot::isValid($resource)){
       $errorResources[] = $resource;
     }
   }
