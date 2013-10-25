@@ -95,11 +95,11 @@ class CRM_Booking_BAO_SubSlot extends CRM_Booking_DAO_SubSlot {
    * @static
    */
   static function findExistingSubSlot($fields, $slots){
+    $keysToUnset = array('id', 'quantity', 'note');
+    CRM_Booking_Utils_Array::unsetArray($fields, $keysToUnset);
     foreach ($slots as $key => $value) {
       $id = $value['id'];
-      unset($value['id']);
-      unset($value['quantity']);
-      unset($value['note']);
+      CRM_Booking_Utils_Array::unsetArray($value, $keysToUnset);
       $value['time_required'] = CRM_Utils_Date::processDate($value['time_required']);
       if($fields === $value){
         return array(TRUE, $id);

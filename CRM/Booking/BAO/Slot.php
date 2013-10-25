@@ -99,12 +99,11 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
    * @static
    */
   static function findExistingSlot($fields, $slots){
+    $keysToUnset = array('booking_id', 'id', 'quantity', 'note');
+    CRM_Booking_Utils_Array::unsetArray($fields, $keysToUnset);
     foreach ($slots as $key => $value) {
       $id = $value['id'];
-      unset($value['booking_id']);
-      unset($value['id']);
-      unset($value['quantity']);
-      unset($value['note']);
+      CRM_Booking_Utils_Array::unsetArray($value, $keysToUnset));
       $value['start'] = CRM_Utils_Date::processDate($value['start']);
       $value['end'] =  CRM_Utils_Date::processDate($value['end']);
       if($fields === $value){
@@ -113,8 +112,6 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
     }
     return array(FALSE, NULL);
   }
-
-
 
   /**
    * Given the list of params in the params array, fetch the object
