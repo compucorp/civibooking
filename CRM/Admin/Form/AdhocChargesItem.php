@@ -127,7 +127,7 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
     $params = $this->exportValues();
 
     // delete action
-    // TODO::Implement delete action on the screen
+    // TODO::Make sure we cannot delete if the entity is linked to bookings
     if ($this->_action & CRM_Core_Action::DELETE) {
       CRM_Booking_BAO_AdhocChargesItem::del($this->_id);
       CRM_Core_Session::setStatus(ts('Selected additional charges item has been deleted.'), ts('Record Deleted'), 'success');
