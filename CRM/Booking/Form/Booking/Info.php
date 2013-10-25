@@ -166,21 +166,16 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
     $adhocCharges =  CRM_Utils_Array::value('adhoc_charges', $subResourcesValue);
 
-
     $booking = array();
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $booking['id'] = $this->_id;
     }
-    //$booking['resources'] = $resources;
-    //$booking['adhoc_charges'] = $adhocCharges;
 
     $booking['primary_contact_id'] = CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
     $booking['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo);
     $booking['po_number'] = CRM_Utils_Array::value('po_no', $bookingInfo);
     $booking['status_id'] = CRM_Utils_Array::value('booking_status', $bookingInfo);
     $booking['title'] =CRM_Utils_Array::value('title', $bookingInfo);
-
-
     $booking['description'] =CRM_Utils_Array::value('description', $bookingInfo);
     $booking['note'] = CRM_Utils_Array::value('note', $bookingInfo);
     $booking['event_date'] = CRM_Utils_Date::processDate(
@@ -194,7 +189,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     //add adhoc charge
     $booking['adhoc_charges_note'] = CRM_Utils_Array::value('note', $adhocCharges);
 
-
     $booking['participants_estimate'] = CRM_Utils_Array::value('enp', $bookingInfo);
     $booking['participants_actual'] = CRM_Utils_Array::value('fnp', $bookingInfo);
 
@@ -205,7 +199,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['updated_by'] = $session->get( 'userID' );
     $booking['updated_date'] = $now;
 
-    //$booking['validate'] = FALSE; //Make sure we ignore slot validation
     //make sure we create everything in one transaction, not too nice but it does the job
     $transaction = new CRM_Core_Transaction();
 
@@ -217,32 +210,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $this->_values = $booking;
 
       //Now we process slots/subslots and adhoc charges
-
-      //$isUpdate = FALSE;
-      //$resources = CRM_Utils_Array::value('resources', $params);
-      //$adhocCharges =  CRM_Utils_Array::value('adhoc_charges', $params);
-
-      /*if($params['validate']){
-        //TODO:: Validate resource
-        //$result = array();
-        //$isValid = CRM_Booking_BAO_Slot::validate($resources, $result);
-        //if(!$result['isValid']){
-          //return list of object that invalid
-          ///return error message
-        //}
-      }
-      unset($params['resources']);
-      unset($params['version']);
-      unset($params['adhoc_charges']);
-      unset($params['validate']);*/
-      $lineItem = array(
-          'version' => 3,
-          'sequential' => 1,
-      );
-      //try{
-      //  $booking = self::add($params);
-      //  $bookingID = $booking->id;
-
       if($this->_action == CRM_Core_Action::UPDATE){ //booking id was passed from the form so we are on edit mode
          $currentSlots = CRM_Booking_BAO_Slot::getBookingSlot($bookingID);
       }
@@ -259,12 +226,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
           'note' => CRM_Utils_Array::value('note', $resource),
         );
         if($this->_action == CRM_Core_Action::UPDATE){
-          /*$fields = array(
-            'resource_id' =>  CRM_Utils_Array::value('resource_id', $resource),
-            'config_id' =>  CRM_Utils_Array::value('configuration_id', $resource),
-            'start' =>  CRM_Utils_Date::processDate(CRM_Utils_Array::value('start_date', $resource)),
-            'end' => CRM_Utils_Date::processDate(CRM_Utils_Array::value('end_date', $resource)),
-          );*/
           list($isExist, $currentID) = CRM_Booking_BAO_Slot::findExistingSlot($slot, $currentSlots);
           if($isExist){
             $slot['id'] = $currentID;
@@ -288,12 +249,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
             'note' => CRM_Utils_Array::value('note', $subResource),
           );
           if($this->_action == CRM_Core_Action::UPDATE){
-            /*$fields = array(
-              'resource_id' =>  CRM_Utils_Array::value('resource_id', $subResource),
-              'slot_id' => $slotID,
-              'config_id' => CRM_Utils_Array::value('configuration_id', $subResource),
-              'time_required' =>  CRM_Utils_Date::processDate(CRM_Utils_Array::value('time_required', $subResource)),
-            );*/
             list($isExist, $currentSubSlotId) =  CRM_Booking_BAO_SubSlot::findExistingSubSlot($subSlot, $currentSubSlots);
             if($isExist){
               $subSlot['id'] = $currentSubSlotId;
@@ -317,7 +272,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
           }
         }
       }
-
       if($this->_action == CRM_Core_Action::UPDATE){ //remove all slots that have been removed
         $slotsToBeRemoved = array();
           foreach ($currentSlots as $key => $currentSlot) {
@@ -331,7 +285,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
           }
         }
       }
-
       if($adhocCharges){
         if($this->_action == CRM_Core_Action::UPDATE){
           $result = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $bookingID, 'is_deleted' => 0));
@@ -346,15 +299,10 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
             'quantity' => CRM_Utils_Array::value('quantity', $item),
           );
           if($this->_action == CRM_Core_Action::UPDATE){
-            /*$fields = array(
-              'booking_id' =>  $bookingID,
-              'item_id' => CRM_Utils_Array::value('id', $item),
-            );*/
             list($isExist, $currentAdhocChargesId) =  CRM_Booking_BAO_AdhocCharges::findExistingAdhocCharges($params, $currentAdhocCharges);
             if($isExist){
               $params['id'] =  $currentAdhocChargesId;
             }
-
           }
           $result = civicrm_api3('AdhocCharges', 'create', $params);
           $adhocChargesId =  CRM_Utils_Array::value('id', $result);
@@ -374,19 +322,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
           }
         }
       }
-      //return $booking;
-      /*}
-      catch (CiviCRM_API3_Exception $e) {
-        $transaction->rollback();
-        CRM_Core_Error::fatal($e->getMessage());
-      }
-      catch (Exception $e) {
-        $transaction->rollback();
-        CRM_Core_Error::fatal($e->getMessage());
-      }*/
 
       //End process
-
       parent::postProcess();
 
       $cid = CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
