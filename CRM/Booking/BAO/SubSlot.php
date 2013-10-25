@@ -101,7 +101,7 @@ class CRM_Booking_BAO_SubSlot extends CRM_Booking_DAO_SubSlot {
       $id = $value['id'];
       CRM_Booking_Utils_Array::unsetArray($value, $keysToUnset);
       $value['time_required'] = CRM_Utils_Date::processDate($value['time_required']);
-      if($fields === $value){
+      if($fields == $value){
         return array(TRUE, $id);
       }
     }
