@@ -342,7 +342,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
          foreach ($items as $key => $item) {
           $params = array(
             'booking_id' =>  $bookingID,
-            'item_id' => CRM_Utils_Array::value('id', $item),
+            'item_id' => CRM_Utils_Array::value('item_id', $item),
             'quantity' => CRM_Utils_Array::value('quantity', $item),
           );
           if($this->_action == CRM_Core_Action::UPDATE){
