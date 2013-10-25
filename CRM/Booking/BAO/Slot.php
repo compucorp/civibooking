@@ -99,19 +99,21 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
     $qParams = array(
       1 => array($params['start'], 'String'),
       2 => array($params['end'], 'String'),
+      3 => array($params['resource_id'], 'Integer')
     );
     $query = "
       SELECT civicrm_booking_slot.id
       FROM civicrm_booking_slot
       WHERE 1
       AND civicrm_booking_slot.is_deleted = 0
+      AND civicrm_booking_slot.resource_id = %3
       AND  (%1 BETWEEN civicrm_booking_slot.start AND civicrm_booking_slot.end
             OR
            %2 BETWEEN civicrm_booking_slot.start AND civicrm_booking_slot.end)";
 
     if(isset($params['id'])){
-      $qParams[3] = array($params['id'], 'Integer');
-      $query .= "\nAND civicrm_booking_slot.id != %3";
+      $qParams[4] = array($params['id'], 'Integer');
+      $query .= "\nAND civicrm_booking_slot.id != %4";
     }
     require_once('CRM/Core/DAO.php');
     $dao = CRM_Core_DAO::executeQuery( $query , $qParams );
