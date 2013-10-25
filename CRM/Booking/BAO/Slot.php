@@ -87,6 +87,42 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
   }
 
   /**
+  * Function to validate if slot is can be created
+  * @param array $params array of slot that need to created
+  *
+  * @return boolean, message, slot detail
+  *
+  * @access public
+  * @static
+  */
+  static function validateSlot($params){
+    $qParams = array(
+      1 => array($params['start'], 'String'),
+      2 => array($params['end'], 'String'),
+    );
+    $query = "
+      SELECT civicrm_booking_slot.id
+      FROM civicrm_booking_slot
+      WHERE 1
+      AND civicrm_booking_slot.is_deleted = 0
+      AND  (%1 BETWEEN civicrm_booking_slot.start AND civicrm_booking_slot.end
+            OR
+           %2 BETWEEN civicrm_booking_slot.start AND civicrm_booking_slot.end)";
+
+    if(isset($params['id'])){
+      $qParams[3] = array($params['id'], 'Integer');
+      $query .= "\nAND civicrm_booking_slot.id != %3";
+    }
+    require_once('CRM/Core/DAO.php');
+    $dao = CRM_Core_DAO::executeQuery( $query , $qParams );
+    while ($dao->fetch()) {
+      return FALSE;
+
+    }
+    return TRUE;
+  }
+
+  /**
    * Function to compare if an input field is existing in array of slots
    *
    *

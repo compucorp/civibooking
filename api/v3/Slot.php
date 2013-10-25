@@ -22,7 +22,11 @@ function _civicrm_api3_slot_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_slot_create($params) {
-  //TODO:: Validate slot if it can be created
+  if(CRM_Utils_Array::value('id', $params)){
+    if(!CRM_Booking_BAO_Slot::validateSlot($params)){
+      return civicrm_api3_create_error('Unable to create slot. Please check the slot date time is availables.');
+    }
+  }
   return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
 
