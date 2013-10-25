@@ -1,6 +1,6 @@
  {literal}
    <script type="text/template" id="selected-resource-row-tpl">
-    <tr data-eid="<%= data.id %>">
+    <tr data-eid="<%= data.id %>" data-rid="<%= data.resource_id %>" data-update="<%= data.is_updated %>" >
       <td><%= data.label %></td>
       <td><%= data.start_date %></td>
       <td><%= data.end_date %></td>
