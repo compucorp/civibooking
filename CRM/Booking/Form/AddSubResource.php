@@ -137,13 +137,13 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       $addhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $this->_id, 'is_deleted' => 0));
       foreach ($addhocChargesResult['values'] as $key => $charge) {
         $itemResult = civicrm_api3('AdhocChargesItem', 'get', array('id' => $charge['item_id'], 'is_deleted' => 0));
-        if(empty($itemResult['values'])){
-          return;
+        if(empty($itemResult['values'])){ //make sure we do not process deleted item
+          continue;
         }
         $item = $itemResult['values'][$charge['item_id']];
         $totalPrice = $item['price'] * $charge['quantity'];
         $addhocCharges['items'][$charge['id']] = array(
-          "id" => $charge['id'],
+          "item_id" => $charge['id'],
           "name" => $item['name'],
           "price" => $totalPrice,
           "quantity" => $charge['quantity'],
