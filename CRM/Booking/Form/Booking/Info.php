@@ -78,6 +78,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $this->add('text', 'enp', ts('Estimate number of participants'));
     $this->add('text', 'fnp', ts('Final number of participants'));
 
+    $this->addElement('hidden', "resources");
 
     $buttons = array(
       array('type' => 'back',
@@ -103,6 +104,18 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     if(!$contactId){
       $errors['primary_contact_id'] = ts('This field is required.');
     }
+    $resources = json_decode($params['resources'], true);
+    $resourcesToValidate['resources'] = array();
+    foreach ($resources as $key => $resource) {
+      $resource['start'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('start_date', $resource));
+      $resource['end'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('end_date', $resource));
+      $resourcesToValidate['resources'][$key] = $resource;
+    }
+    $result = civicrm_api3('Slot', 'validate', $resourcesToValidate);
+    $values = $result['values'];
+    if(!$values['is_valid']){
+      $errors['resources'] = ts('Unfortunately one or more of your booking slots are clashing with another booking. You will need to edit your booking times to resolve this before you can save your booking. Please go back to the first page to edit your booking slots.');
+    }
     return empty($errors) ? TRUE : $errors;
   }
 
@@ -125,6 +138,10 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     }
     $addSubResourcePage = $this->controller->exportValues('AddSubResource');
     $defaults['total_amount'] = $addSubResourcePage['total_price']; //use the amount that passing from the form
+
+    $selectResource = $this->controller->exportValues('SelectResource');
+    $defaults['resources']  = $selectResource['resources'];
+
     return $defaults;
   }
 

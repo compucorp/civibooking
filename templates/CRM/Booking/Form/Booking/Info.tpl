@@ -27,6 +27,7 @@
 {include file="CRM/common/WizardHeader.tpl"}
 <div id="main-container" >
   <div id="booking-detail-container" class="crm-form-block">
+      {$form.resources.html}
       {$form.primary_contact_select_id.html}
       {$form.secondary_contact_select_id.html}
       <div class="crm-section" id="contact-container">
