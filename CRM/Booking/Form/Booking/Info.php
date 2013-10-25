@@ -171,8 +171,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $booking['id'] = $this->_id;
     }
-    $booking['resources'] = $resources;
-    $booking['adhoc_charges'] = $adhocCharges;
+    //$booking['resources'] = $resources;
+    //$booking['adhoc_charges'] = $adhocCharges;
 
     $booking['primary_contact_id'] = CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
     $booking['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo);
@@ -205,13 +205,187 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['updated_by'] = $session->get( 'userID' );
     $booking['updated_date'] = $now;
 
-    $booking['validate'] = FALSE; //Make sure we ignore slot validation
+    //$booking['validate'] = FALSE; //Make sure we ignore slot validation
+    //make sure we create everything in one transaction, not too nice but it does the job
+    $transaction = new CRM_Core_Transaction();
+
     try{
       $result = civicrm_api3('Booking', 'Create', $booking);
       $bookingID = CRM_Utils_Array::value('id', $result);
       $booking =  CRM_Utils_Array::value($bookingID, CRM_Utils_Array::value('values', $result));
-      $this->_id = $bookingID;
+      $this->_id = $bookingID; //make sure we have the id on create mode
       $this->_values = $booking;
+
+      //Now we process slots/subslots and adhoc charges
+
+      //$isUpdate = FALSE;
+      //$resources = CRM_Utils_Array::value('resources', $params);
+      //$adhocCharges =  CRM_Utils_Array::value('adhoc_charges', $params);
+
+      /*if($params['validate']){
+        //TODO:: Validate resource
+        //$result = array();
+        //$isValid = CRM_Booking_BAO_Slot::validate($resources, $result);
+        //if(!$result['isValid']){
+          //return list of object that invalid
+          ///return error message
+        //}
+      }
+      unset($params['resources']);
+      unset($params['version']);
+      unset($params['adhoc_charges']);
+      unset($params['validate']);*/
+      $lineItem = array(
+          'version' => 3,
+          'sequential' => 1,
+      );
+      //try{
+      //  $booking = self::add($params);
+      //  $bookingID = $booking->id;
+
+      if($this->_action == CRM_Core_Action::UPDATE){ //booking id was passed from the form so we are on edit mode
+         $currentSlots = CRM_Booking_BAO_Slot::getBookingSlot($bookingID);
+      }
+      $newSlotIds = array();
+      $newSubSlotIds = array();
+      foreach ($resources as $key => $resource) {
+        $slot = array(
+          'booking_id' => $bookingID,
+          'config_id' => CRM_Utils_Array::value('configuration_id', $resource),
+          'start' => CRM_Utils_Date::processDate(CRM_Utils_Array::value('start_date', $resource)),
+          'end' => CRM_Utils_Date::processDate(CRM_Utils_Array::value('end_date', $resource)),
+          'resource_id' =>  CRM_Utils_Array::value('resource_id', $resource),
+          'quantity' => CRM_Utils_Array::value('quantity', $resource),
+          'note' => CRM_Utils_Array::value('note', $resource),
+        );
+        if($this->_action == CRM_Core_Action::UPDATE){
+          /*$fields = array(
+            'resource_id' =>  CRM_Utils_Array::value('resource_id', $resource),
+            'config_id' =>  CRM_Utils_Array::value('configuration_id', $resource),
+            'start' =>  CRM_Utils_Date::processDate(CRM_Utils_Array::value('start_date', $resource)),
+            'end' => CRM_Utils_Date::processDate(CRM_Utils_Array::value('end_date', $resource)),
+          );*/
+          list($isExist, $currentID) = CRM_Booking_BAO_Slot::findExistingSlot($slot, $currentSlots);
+          if($isExist){
+            $slot['id'] = $currentID;
+          }
+        }
+        $slotResult = civicrm_api3('Slot', 'create', $slot);
+        $slotID =  CRM_Utils_Array::value('id', $slotResult);
+        array_push($newSlotIds, $slotID);
+
+        if($this->_action == CRM_Core_Action::UPDATE){
+          $currentSubSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($slotID);
+        }
+        $subResources = $resource['sub_resources'];
+        foreach($subResources as $subKey => $subResource){
+          $subSlot = array(
+            'resource_id' =>  CRM_Utils_Array::value('resource_id', $subResource),
+            'slot_id' => $slotID,
+            'config_id' => CRM_Utils_Array::value('configuration_id', $subResource),
+            'time_required' =>  CRM_Utils_Date::processDate(CRM_Utils_Array::value('time_required', $subResource)),
+            'quantity' => CRM_Utils_Array::value('quantity', $subResource),
+            'note' => CRM_Utils_Array::value('note', $subResource),
+          );
+          if($this->_action == CRM_Core_Action::UPDATE){
+            /*$fields = array(
+              'resource_id' =>  CRM_Utils_Array::value('resource_id', $subResource),
+              'slot_id' => $slotID,
+              'config_id' => CRM_Utils_Array::value('configuration_id', $subResource),
+              'time_required' =>  CRM_Utils_Date::processDate(CRM_Utils_Array::value('time_required', $subResource)),
+            );*/
+            list($isExist, $currentSubSlotId) =  CRM_Booking_BAO_SubSlot::findExistingSubSlot($subSlot, $currentSubSlots);
+            if($isExist){
+              $subSlot['id'] = $currentSubSlotId;
+            }
+          }
+          $subSlotResult = civicrm_api3('SubSlot', 'Create', $subSlot);
+          $subSlotID =  CRM_Utils_Array::value('id', $subSlotResult);
+          array_push($newSubSlotIds, $subSlotID);
+        }
+        if($this->_action == CRM_Core_Action::UPDATE){ //remove subslots that have been removed
+          $subSlotsToBeRemoved = array();
+          foreach ($currentSubSlots as $key => $currentSubSlot) {
+            if(!in_array($key, $newSubSlotIds)){
+              $subSlotsToBeRemoved[$key] = $currentSubSlot;
+            }
+          }
+          if(!empty($subSlotsToBeRemoved)){
+            foreach ($subSlotsToBeRemoved as $key => $slot) {
+              civicrm_api3('SubSlot', 'delete', array('id' => $key));
+            }
+          }
+        }
+      }
+
+      if($this->_action == CRM_Core_Action::UPDATE){ //remove all slots that have been removed
+        $slotsToBeRemoved = array();
+          foreach ($currentSlots as $key => $currentSlot) {
+            if(!in_array($key, $newSlotIds)){
+              $slotsToBeRemoved[$key] = $currentSlot;
+            }
+          }
+        if(!empty($slotsToBeRemoved)){
+          foreach ($slotsToBeRemoved as $key => $slot) {
+            civicrm_api3('Slot', 'delete', array('id' => $key));
+          }
+        }
+      }
+
+      if($adhocCharges){
+        if($this->_action == CRM_Core_Action::UPDATE){
+          $result = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $bookingID));
+          $currentAdhocCharges = $result['values'];
+        }
+        $items = CRM_Utils_Array::value('items', $adhocCharges);
+        $newAdhocChargesIds = array();
+         foreach ($items as $key => $item) {
+          $params = array(
+            'booking_id' =>  $bookingID,
+            'item_id' => CRM_Utils_Array::value('id', $item),
+            'quantity' => CRM_Utils_Array::value('quantity', $item),
+          );
+          if($this->_action == CRM_Core_Action::UPDATE){
+            /*$fields = array(
+              'booking_id' =>  $bookingID,
+              'item_id' => CRM_Utils_Array::value('id', $item),
+            );*/
+            list($isExist, $currentAdhocChargesId) =  CRM_Booking_BAO_AdhocCharges::findExistingAdhocCharges($params, $currentAdhocCharges);
+            if($isExist){
+              $params['id'] =  $currentAdhocChargesId;
+            }
+          }
+          $result = civicrm_api3('AdhocCharges', 'create', $params);
+          $adhocChargesId =  CRM_Utils_Array::value('id', $result);
+          array_push($newAdhocChargesIds, $adhocChargesId);
+        }
+        if($this->_action == CRM_Core_Action::UPDATE){ //remove  adhoc charges that have been removed
+          $adhocChargesToBeRemoved = array();
+          foreach ($currentAdhocCharges as $key => $adc) {
+            if(!in_array($key, $newAdhocChargesIds)){
+              $adhocChargesToBeRemoved[$key] = $adc;
+            }
+          }
+          if(!empty($adhocChargesToBeRemoved)){
+            foreach ($adhocChargesToBeRemoved as $key => $adc) {
+              civicrm_api3('AdhocCharges', 'delete', array('id' => $key));
+            }
+          }
+        }
+      }
+      //return $booking;
+      /*}
+      catch (CiviCRM_API3_Exception $e) {
+        $transaction->rollback();
+        CRM_Core_Error::fatal($e->getMessage());
+      }
+      catch (Exception $e) {
+        $transaction->rollback();
+        CRM_Core_Error::fatal($e->getMessage());
+      }*/
+
+      //End process
+
       parent::postProcess();
 
       $cid = CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
@@ -223,6 +397,11 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       CRM_Utils_System::redirect( $url);
     }
     catch (CiviCRM_API3_Exception $e) {
+      $transaction->rollback();
+      CRM_Core_Error::fatal($e->getMessage());
+    }
+    catch (Exception $e) {
+      $transaction->rollback();
       CRM_Core_Error::fatal($e->getMessage());
     }
   }
