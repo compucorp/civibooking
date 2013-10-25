@@ -37,7 +37,7 @@ class CRM_Booking_BAO_AdhocCharges extends CRM_Booking_DAO_AdhocCharges {
    * @static
    */
   static function findExistingAdhocCharges($fields, $adhocChargesList){
-    $keysToUnset = array('id', 'quantity', 'is_cancelled', 'is_deleted');
+    $keysToUnset = array('id', 'is_cancelled', 'is_deleted');
     CRM_Booking_Utils_Array::unsetArray($fields, $keysToUnset);
     foreach ($adhocChargesList as $key => $value) {
       $id = $value['id'];
