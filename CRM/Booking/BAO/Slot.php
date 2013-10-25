@@ -103,7 +103,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
     CRM_Booking_Utils_Array::unsetArray($fields, $keysToUnset);
     foreach ($slots as $key => $value) {
       $id = $value['id'];
-      CRM_Booking_Utils_Array::unsetArray($value, $keysToUnset));
+      CRM_Booking_Utils_Array::unsetArray($value, $keysToUnset);
       $value['start'] = CRM_Utils_Date::processDate($value['start']);
       $value['end'] =  CRM_Utils_Date::processDate($value['end']);
       if($fields === $value){
