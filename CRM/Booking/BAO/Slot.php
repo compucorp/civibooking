@@ -143,7 +143,14 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
     return $slots;
   }
 
-
+/**
+ * Get Slot records from civicrm_booking_slot table
+ *
+ * @return void
+ * @author  
+ * @param $from fromDate    put mySql Date type, for example '2013-12-03'
+ * @param $to toDate        put mySql Date type, for example '2013-12-03'
+ */
   static function getSlotBetweenDate($from, $to){
 
     $params = array(1 => array( $from, 'String'),
@@ -167,6 +174,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
 
     $slots = array();
     $dao = CRM_Core_DAO::executeQuery($query, $params);
+    
     while ($dao->fetch()) {
       $slots[$dao->id] = array(
         'id' => $dao->id,
@@ -180,8 +188,93 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
     }
 
     return $slots;
-
   }
+    
+    /**
+     * 
+     *
+     * @return void
+     * @author  
+     */
+    static function getSlotDetailsOrderByResourceBetweenDate($from,$to) {
+        $slots = array();
+        $slotsResult = CRM_Booking_BAO_Slot::getSlotBetweenDate($from, $to);
+        foreach ($slotsResult as $key => $slotItem) {
+            //get booking detail
+            $params = array('booking_id' => $slotItem['booking_id'],);
+            $bookingResult = civicrm_api3('Booking','get',$params);
+            $bookingValues = CRM_Utils_Array::value('values',$bookingResult);
+            foreach ($bookingValues as $k1 => $booking) {
+                //set booking detail
+                $slotItem['function_title'] = $booking['title'];
+                $slotItem['comment'] = isset($booking['note'])?$booking['note']:NULL;
+                //get contacts detail
+                if(isset($booking['primary_contact_id'])){
+                    $paramsContact = array('contact_id' => $booking['primary_contact_id'],);
+                    $contactResult = civicrm_api3('Contact','get',$paramsContact);
+                    $contactValue = CRM_Utils_Array::value('values',$contactResult);
+                    foreach ($contactValue as $k2 => $primaryContact) {
+                        //set primary contact
+                        $slotItem['primary_contact'] = $primaryContact['display_name'];
+                    }
+                }
+                if(isset($booking['secondary_contact_id'])){
+                    $paramsContact = array('contact_id' => $booking['secondary_contact_id'],);
+                    $contactResult = civicrm_api3('Contact','get',$paramsContact);
+                    $contactValue = CRM_Utils_Array::value('values',$contactResult);
+                    foreach ($contactValue as $k2 => $secondContact) {
+                        //set secondary contact
+                        $slotItem['secondary_contact'] = $secondContact['display_name'];
+                    }
+                }
+            }
+            $slotItem['resource_config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption', $slotItem['config_id'], 'label', 'id');;
+            //get resoruce config detail
+            $slotItem['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource', $slotItem['resource_id'], 'label', 'id');;
+            //get sub slot
+            $subSlots = array();
+            $params = array('slot_id' => $slotItem['id'], 'entity_table' => 'civicrm_booking_sub_slot');
+            $subSlotResult = civicrm_api3('SubSlot','get',$params);
+            $subSlotValues = CRM_Utils_Array::value('values',$subSlotResult);
+            foreach ($subSlotValues as $k1 => $subSlotItem) {
+                //set sub slot detail
+                $subSlots['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource', $subSlotItem['resource_id'], 'label', 'id');
+                $subSlots['configuration_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption', $subSlotItem['config_id'], 'label', 'id');
+                $subSlots['time_required'] = $subSlotItem['time_required'];
+                $subSlots['quantity'] = $subSlotItem['quantity'];
+                $subSlots['booking_id'] = $slotItem['booking_id']; 
+                $subSlots['primary_contact'] = $slotItem['primary_contact']; 
+                $subSlots['secondary_contact'] = isset($slotItem['secondary_contact'])?$slotItem['secondary_contact']:NULL; 
+                $subSlots['comment'] = isset($subSlotItem['note'])?$subSlotItem['note']:NULL;
+            }
+            //final setting values
+            $slotItem['sub_resources'] = !empty($subSlots)?$subSlots:NULL;
+            $slots[$key] = $slotItem;
+        }
 
+        //rearrange items by resource
+        $orderedSlot = array();
+        foreach ($slots as $key => $slotItem) { //retrieve resource_labels 
+            $orderedSlot[CRM_Utils_Array::value('resource_label',$slotItem)] = array(
+                'slot' => array(),
+                'subslot' => array(),); //create new array contain 2 keys
+        }
+        foreach ($orderedSlot as $key => $resIdItem) {
+            foreach ($slots as $k1 => $slotItem) {
+                if($key == $slotItem['resource_label']){
+                    $orderedSlot[$key]['slot'][] = $slotItem;
+                    if(!empty($slotItem['sub_resources'])){
+                        $orderedSlot[$key]['subslot'][] = $slotItem['sub_resources'];
+                    }
+                }
+            }
+        }
+
+        //DEBUG
+        dpr('$orderedSlot');
+        dpr($orderedSlot);
+        
+        return $orderedSlot;
+    }
 
 }
