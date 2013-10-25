@@ -117,6 +117,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
           ),
           'note' => CRM_Utils_Array::value('note', $value),
           'color' =>  CRM_Utils_Array::value('slot_being_edited_colour', $config),
+          'is_updated' => TRUE,
         );
       }
       $firstSlot = reset($slots);
@@ -156,17 +157,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
   }
 
-
-
-  public function postProcess() {
-
-    $params = $this->exportValues();
-    $resources = explode(PHP_EOL, $params['resources']);
-
-    $session = CRM_Core_Session::singleton();
-    $params['created_id'] = $session->get('userID');
-
-  }
+  public function postProcess() {}
 
   /**
    * Display Name of the form
