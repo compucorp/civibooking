@@ -104,7 +104,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     if(!$contactId){
       $errors['primary_contact_id'] = ts('This field is required.');
     }
-    $resources = json_decode($params['resources'], true);
+    $selectResource = $context->controller->exportValues('SelectResource');
+    $resources = json_decode($selectResource['resources'], true);
     $resourcesToValidate['resources'] = array();
     foreach ($resources as $key => $resource) {
       $resource['start'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('start_date', $resource));
@@ -138,10 +139,6 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     }
     $addSubResourcePage = $this->controller->exportValues('AddSubResource');
     $defaults['total_amount'] = $addSubResourcePage['total_price']; //use the amount that passing from the form
-
-    $selectResource = $this->controller->exportValues('SelectResource');
-    $defaults['resources']  = $selectResource['resources'];
-
     return $defaults;
   }
 
