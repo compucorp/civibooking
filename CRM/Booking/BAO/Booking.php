@@ -226,7 +226,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     }
     //get adhoc charges
     $adhocCharges = array();
-    $adhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $id));
+    $adhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $id , 'is_deleted' => 0));
     $adhocChargesValues = CRM_Utils_Array::value('values', $adhocChargesResult);
     foreach ($adhocChargesValues as $id => $charges) {
         $charges['item_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_AdhocChargesItem',
