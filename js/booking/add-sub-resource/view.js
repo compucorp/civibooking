@@ -368,7 +368,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       if(CRM.BookingApp.Utils.isPositiveInteger(quantity)){
         var itemPrice = parseFloat(price) * parseFloat(quantity);
         this.$el.find('#'+ name).html(parseFloat(itemPrice).toFixed(2));
-        var item = {id: itemId, name: name, price: price, quantity: quantity, item_price: itemPrice}
+        var item = {item_id: itemId, name: name, price: price, quantity: quantity, item_price: itemPrice}
         this.model.attributes.items[itemId] = item;
       }else{
         this.$el.find('#'+ name).html(0);
