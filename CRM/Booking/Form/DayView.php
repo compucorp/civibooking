@@ -24,22 +24,36 @@ class CRM_Booking_Form_DayView extends CRM_Core_Form {
         'name' => ts('Reset'),
       ),
     ));
-
-
     // export form elements
     parent::buildQuickForm();
   }
 
+  function preProcess() {
+       self::registerScripts();
+  }
+  
   function postProcess() {
     $values = $this->exportValues();
     
     //get booking slots from selected date
     $from = CRM_Utils_Date::processDate(CRM_Utils_Array::value('dayview_select_date',$values));
     $to = CRM_Utils_Date::processDate(CRM_Utils_Array::value('dayview_select_date',$values));
-    $slots = CRM_Booking_BAO_Slot::getSlotDetailsOrderByResourceBetweenDate($from, $to);
+    $resources = CRM_Booking_BAO_Slot::getSlotDetailsOrderByResourceBetweenDate($from, $to);
+    //put resources result to values, being ready to display.
+    $values['resources'] = $resources;
     
-    parent::postProcess();
+    $this->assign($values);
+    //parent::postProcess();
   }
 
-
+    static function registerScripts() {
+        static $loaded = FALSE;
+        if ($loaded) {
+          return;
+        }
+        $loaded = TRUE;
+        CRM_Core_Resources::singleton()
+              ->addScriptFile('uk.co.compucorp.civicrm.booking', 'CRM/Booking/Form/DayView.js', 10, 'html-header', FALSE);
+    
+      }
 }
