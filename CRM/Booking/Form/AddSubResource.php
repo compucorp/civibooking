@@ -142,14 +142,14 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
         }
         $item = $itemResult['values'][$charge['item_id']];
         $totalPrice = $item['price'] * $charge['quantity'];
-        $addhocCharges['items'][$charge['id']] = array(
-          "item_id" => $charge['id'],
+        $addhocCharges['items'][$charge['item_id']] = array(
+          "item_id" => $charge['item_id'],
           "name" => $item['name'],
           "price" => $totalPrice,
           "quantity" => $charge['quantity'],
           "item_price" => $item['price']
         );
-         $addhocCharges['total'] +=  $totalPrice;
+        $addhocCharges['total'] +=  $totalPrice;
       }
       $subResources['sub_total'] = $subTotal;
       $subResources['adhoc_charges'] = $addhocCharges;

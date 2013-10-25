@@ -334,7 +334,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
       if($adhocCharges){
         if($this->_action == CRM_Core_Action::UPDATE){
-          $result = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $bookingID));
+          $result = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $bookingID, 'is_deleted' => 0));
           $currentAdhocCharges = $result['values'];
         }
         $items = CRM_Utils_Array::value('items', $adhocCharges);
@@ -354,6 +354,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
             if($isExist){
               $params['id'] =  $currentAdhocChargesId;
             }
+
           }
           $result = civicrm_api3('AdhocCharges', 'create', $params);
           $adhocChargesId =  CRM_Utils_Array::value('id', $result);
