@@ -36,7 +36,7 @@
 
 class CRM_Booking_Utils_Array{
 
-  function static unsetArray(&$value, $keys){
+  static function unsetArray(&$value, $keys){
     foreach ($keys as $key) {
       unset($value[$key]);
     }
