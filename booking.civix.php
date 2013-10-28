@@ -96,10 +96,10 @@ function _booking_civix_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
 }
 
 function _booking_civix_upgrader() {
-  if (!file_exists(__DIR__.'/CRM/booking/Upgrader.php')) {
+  if (!file_exists(__DIR__.'/CRM/Booking/Upgrader.php')) {
     return NULL;
   } else {
-    return CRM_booking_Upgrader_Base::instance();
+    return CRM_Booking_Upgrader_Base::instance();
   }
 }
 

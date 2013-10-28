@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/booking/day-view</path>
+    <page_callback>CRM_Booking_Form_DayView</page_callback>
+    <title>DayView</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/booking/day-view/print</path>
+    <page_callback>CRM_Booking_Page_DayViewPrint</page_callback>
+    <title>DayViewPrint</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>

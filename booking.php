@@ -408,7 +408,20 @@ function booking_civicrm_navigationMenu( &$params ) {
         ),
       'child' => null
       ),
-      2 => $findBooking
+      2 => $findBooking,
+      3 => array(
+        'attributes' => array(
+          'label' => ts('Day View'),
+          'name' => 'day_view',
+          'url' => 'civicrm/booking/day-view',
+          'permission' => null,
+          'operator' => null,
+          'separator' => 0,
+          'parentID' => null,
+          'navID' => 2 ,
+          'active' => 1
+        )
+      ),
     )
   );
   array_unshift($params, $bookingMenu);
