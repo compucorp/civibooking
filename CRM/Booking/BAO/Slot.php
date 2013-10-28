@@ -238,8 +238,8 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
             $subSlotValues = CRM_Utils_Array::value('values',$subSlotResult);
             foreach ($subSlotValues as $k1 => $subSlotItem) {
                 //set sub slot detail
-                $subSlots['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource', $subSlotItem['resource_id'], 'label', 'id');
-                $subSlots['configuration_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption', $subSlotItem['config_id'], 'label', 'id');
+                $subSlots['sub_resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource', $subSlotItem['resource_id'], 'label', 'id');
+                $subSlots['sub_resoruce_config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption', $subSlotItem['config_id'], 'label', 'id');
                 $subSlots['time_required'] = $subSlotItem['time_required'];
                 $subSlots['quantity'] = $subSlotItem['quantity'];
                 $subSlots['booking_id'] = $slotItem['booking_id']; 
@@ -253,28 +253,29 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
         }
 
         //rearrange items by resource
-        $orderedSlot = array();
-        foreach ($slots as $key => $slotItem) { //retrieve resource_labels 
-            $orderedSlot[CRM_Utils_Array::value('resource_label',$slotItem)] = array(
+        $orderResource = array();
+        foreach ($slots as $key => $slotItem) { //retrieve resource_labels
+            $tempArray = array(
+                'id' => CRM_Utils_Array::value('resource_id',$slotItem),
+                'label' => CRM_Utils_Array::value('resource_label',$slotItem),
                 'slot' => array(),
-                'subslot' => array(),); //create new array contain 2 keys
+                'subslot' => array(),
+            );
+            if(!array_search($tempArray, $orderResource)){
+                $orderResource[$key] = $tempArray;
+            } 
         }
-        foreach ($orderedSlot as $key => $resIdItem) {
+        foreach ($orderResource as $key => $resItem) {
             foreach ($slots as $k1 => $slotItem) {
-                if($key == $slotItem['resource_label']){
-                    $orderedSlot[$key]['slot'][] = $slotItem;
+                if($resItem['label'] == $slotItem['resource_label']){
+                    $orderResource[$key]['slot'][] = $slotItem;
                     if(!empty($slotItem['sub_resources'])){
-                        $orderedSlot[$key]['subslot'][] = $slotItem['sub_resources'];
+                        $orderResource[$key]['subslot'][] = $slotItem['sub_resources'];
                     }
                 }
             }
         }
-
-        //DEBUG
-        dpr('$orderedSlot');
-        dpr($orderedSlot);
-        
-        return $orderedSlot;
+        return $orderResource;
     }
 
 }
