@@ -2,21 +2,20 @@ var basket = {};
 var subTotal = 0.00;
 
 function show_minical(){
-    if (scheduler.isCalendarVisible()){
-        scheduler.destroyCalendar();
-    }else{
-        scheduler.renderCalendar({
-          position:"dhx_minical_icon",
-          date:scheduler._date,
-          navigation:true,
-          handler:function(date,calendar){
-            scheduler.setCurrentView(date);
-            scheduler.destroyCalendar()
-          }
-      });
-    }
+  if (scheduler.isCalendarVisible()){
+    scheduler.destroyCalendar();
+  }else{
+    scheduler.renderCalendar({
+      position:"dhx_minical_icon",
+      date:scheduler._date,
+      navigation:true,
+      handler:function(date,calendar){
+        scheduler.setCurrentView(date);
+        scheduler.destroyCalendar()
+      }
+    });
   }
-
+}
 
 cj(function($) {
 
@@ -28,7 +27,12 @@ cj(function($) {
   scheduler.config.collision_limit = 1; //allows creating 1 events per time slot
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
 
-  scheduler.init("resource_scheduler", new Date() ,"timeline");
+  if(bookingSlotDate){
+    var date = new Date(bookingSlotDate);
+  }else{
+    var date = new Date();
+  }
+  scheduler.init("resource_scheduler", date ,"timeline");
   scheduler.setLoadMode("day");
   if(bookingId){
     var url = [CRM.url('civicrm/booking/ajax/slots'), '?booking_id=',bookingId].join('');
@@ -159,6 +163,7 @@ cj(function($) {
     ev.quantity = $('input[name="quantity"]').val();
     ev.configuration_id = $('#configSelect').val();
     ev.note = $("#resource-note").val();
+    ev.color = newSlotcolour;
     ev.readonly = true;
     var item = {
       id: ev.id,
@@ -171,6 +176,7 @@ cj(function($) {
       quantity: ev.quantity,
       price: ev.price,
       note: ev.note,
+      is_updated: false,
     };
     basket[ev.id] = item;
     updateBasket(item);
@@ -218,7 +224,6 @@ cj(function($) {
       $('input[name="quantity"]').attr("disabled",false);
     }
   });
-
 
   function updateBasket(item){
     subTotal =  parseFloat(subTotal) + parseFloat(item.price);

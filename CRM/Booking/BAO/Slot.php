@@ -57,6 +57,11 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
    * @static
    */
   static function del($id) {
+    //make sure sub slots get deleted as well
+    $subSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($id);
+    foreach ($subSlots as $subSlotId => $subSlots) {
+      CRM_Booking_BAO_SubSlot::del($subSlotId);
+    }
     $dao = new CRM_Booking_DAO_Slot();
     $dao->id = $id;
     $dao->is_deleted = 1;
@@ -81,7 +86,70 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
     return $dao->save();
   }
 
+  /**
+  * Function to validate if slot is can be created
+  * @param array $params array of slot that need to created
+  *
+  * @return boolean, message, slot detail
+  *
+  * @access public
+  * @static
+  */
+  static function isValid($params){
+    $qParams = array(
+      1 => array($params['start'], 'String'),
+      2 => array($params['end'], 'String'),
+      3 => array($params['resource_id'], 'Integer')
+    );
+    $query = "
+      SELECT civicrm_booking_slot.id
+      FROM civicrm_booking_slot
+      WHERE 1
+      AND civicrm_booking_slot.is_deleted = 0
+      AND civicrm_booking_slot.resource_id = %3
+      AND  (%1 BETWEEN civicrm_booking_slot.start AND civicrm_booking_slot.end
+            OR
+           %2 BETWEEN civicrm_booking_slot.start AND civicrm_booking_slot.end)";
 
+    if(isset($params['id'])){
+      $qParams[4] = array($params['id'], 'Integer');
+      $query .= "\nAND civicrm_booking_slot.id != %4";
+    }
+    require_once('CRM/Core/DAO.php');
+    $dao = CRM_Core_DAO::executeQuery( $query , $qParams );
+    while ($dao->fetch()) {
+      return FALSE;
+
+    }
+    return TRUE;
+  }
+
+  /**
+   * Function to compare if an input field is existing in array of slots
+   *
+   *
+   * @param array $fields input parameters to find slot
+   * @param array $array array of slots
+   *
+   * @return boolean, id of matching slot
+   *
+   * @access public
+   * @static
+   */
+  static function findExistingSlot($fields, $slots){
+    $keysToUnset = array('booking_id', 'id', 'quantity', 'note');
+    CRM_Booking_Utils_Array::unsetArray($fields, $keysToUnset);
+    foreach ($slots as $key => $value) {
+      $id = $value['id'];
+      CRM_Booking_Utils_Array::unsetArray($value, $keysToUnset);
+      $value['start'] = CRM_Utils_Date::processDate($value['start']);
+      $value['end'] =  CRM_Utils_Date::processDate($value['end']);
+      if($fields == $value){
+        return array(TRUE, $id);
+      }
+    }
+    return array(FALSE, NULL);
+  }
 
   /**
    * Given the list of params in the params array, fetch the object
@@ -124,7 +192,8 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
              civicrm_booking_slot.note
       FROM civicrm_booking_slot
       WHERE 1
-      AND  civicrm_booking_slot.booking_id = %1";
+      AND civicrm_booking_slot.booking_id = %1
+      AND civicrm_booking_slot.is_deleted = 0";
 
     $slots = array();
     $dao = CRM_Core_DAO::executeQuery($query, $params);

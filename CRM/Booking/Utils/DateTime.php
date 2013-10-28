@@ -88,4 +88,19 @@ class CRM_Booking_Utils_DateTime {
     return range(1, 31);
   }
 
+  static function getCalendarTime(){
+    $config = CRM_Booking_BAO_BookingConfig::getConfig();
+    $start = strtotime(CRM_Utils_Array::value('day_start_at', $config));
+    $end = strtotime(CRM_Utils_Array::value('day_end_at', $config));
+    $periodTime = 30; //fixed the period time
+    $startHour = 8;
+    $startMinutes = 30;
+    $endHour = 22;
+    $endMinutes = 30;
+    $xStart = (($startHour * (60 / $startMinutes)) + ($startMinutes / $periodTime));
+    $xSize =  (($endHour * (60 / $periodTime)) + ($endMinutes / $periodTime)) - ((($startHour * (60 / $periodTime)) + ($startMinutes / $periodTime )) - 1);
+    return array($xStart, $xSize, $periodTime);
+
+  }
+
 }

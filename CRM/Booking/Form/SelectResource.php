@@ -13,7 +13,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    *
    * @var integer
    */
-  protected $_id;
+  //protected $_id;
 
   /**
    * Function to set variables up before form is built
@@ -26,6 +26,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     $this->_id = CRM_Utils_Request::retrieve('id', 'Positive',
       $this, FALSE, 0
     );
+
     $this->assign('bookingId', $this->_id);
 
     $days = CRM_Booking_Utils_DateTime::getDays();
@@ -55,12 +56,22 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
     $this->assign('resources', $resources);;
     $this->assign('currencySymbols', $currencySymbols);
+    $config = CRM_Booking_BAO_BookingConfig::getConfig();
+    $this->assign('colour', CRM_Utils_Array::value('slot_new_colour', $config));
+
+    list($xStart, $xSize, $xStep) = CRM_Booking_Utils_DateTime::getCalendarTime();
+    $this->assign('xStart', $xStart);
+    $this->assign('xSize', $xSize);
+    $this->assign('xStep', $xStep);
 
     $this->assign('timeOptions', CRM_Booking_Utils_DateTime::getTimeRange());
-
+    if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
+      $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');
+      CRM_Utils_System::setTitle(ts('Edit Booking') . " - $title");
+    }else{
+      CRM_Utils_System::setTitle(ts('New Booking') );
+    }
     self::registerScripts();
-
-
   }
 
   /**
@@ -75,32 +86,49 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
     $defaults = array();
     if($this->_id){
-      $params = array(
-        'version' => 3,
-        'booking_id' => $this->_id,
+      $params =   array(
+        'id' => $this->_id,
       );
-      $result = civicrm_api('Slot', 'get', $params);
+      CRM_Booking_BAO_Booking::retrieve($params, $booking);
+      $result = civicrm_api3('Slot', 'get', array('booking_id' => $this->_id, 'is_deleted' => 0));
       $config = CRM_Booking_BAO_BookingConfig::getConfig();
       $slots = array();
       foreach ($result['values'] as $key => $value) {
-        CRM_Booking_BAO_Booking::retrieve($params, $booking );
         $displayName = CRM_Contact_BAO_Contact::displayName(CRM_Utils_Array::value('primary_contact_id', $booking));
         $slots[$key] = array(
           'id' => CRM_Utils_Array::value('id', $value),
           'resource_id' => CRM_Utils_Array::value('resource_id', $value),
           'start_date' =>CRM_Utils_Array::value('start', $value) ,
           'end_date' => CRM_Utils_Array::value('end', $value),
-          'label' => CRM_Booking_BAO_Resource::getFieldValue('label', CRM_Utils_Array::value('resource_id', $value)), // resource label
+          'label' => CRM_Core_DAO::getFieldValue(
+            'CRM_Booking_BAO_Resource',
+            CRM_Utils_Array::value('resource_id', $value),
+            'label',
+            'id'
+          ),
           'text' =>  CRM_Utils_Array::value('booking_id', $value) . ' : ' . $displayName,
           'configuration_id' => CRM_Utils_Array::value('config_id', $value),
           'quantity' => CRM_Utils_Array::value('quantity', $value),
-          'price' => CRM_Booking_BAO_ResourceConfigOption::getFieldValue('price', CRM_Utils_Array::value('config_id', $value)), // resource price,
+          'price' => CRM_Core_DAO::getFieldValue(
+            'CRM_Booking_BAO_ResourceConfigOption',
+            CRM_Utils_Array::value('config_id', $value),
+            'price',
+            'id'
+          ),
           'note' => CRM_Utils_Array::value('note', $value),
           'color' =>  CRM_Utils_Array::value('slot_being_edited_colour', $config),
+          'is_updated' => TRUE,
         );
       }
+      $firstSlot = reset($slots);
+      if($firstSlot){
+        $slotStartDate = $firstSlot['start_date'];
+        $this->assign('bookingSlotDate', $slotStartDate);
+      }
+      $this->assign('bookingId', $this->_id);
       $defaults['resources'] = json_encode($slots);
     }
+
     return $defaults;
   }
 
@@ -129,17 +157,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
   }
 
-
-
-  public function postProcess() {
-
-    $params = $this->exportValues();
-    $resources = explode(PHP_EOL, $params['resources']);
-
-    $session = CRM_Core_Session::singleton();
-    $params['created_id'] = $session->get('userID');
-
-  }
+  public function postProcess() {}
 
   /**
    * Display Name of the form

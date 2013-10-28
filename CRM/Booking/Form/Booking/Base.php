@@ -80,8 +80,8 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     $this->_values['payment_status'] =  CRM_Booking_BAO_Booking::getPaymentStatus($this->_id);
     //ResoveDefault
     CRM_Booking_BAO_Booking::resolveDefaults($this->_values);
-
-
+    $title = $this->_values['title'];
+    CRM_Utils_System::setTitle(ts('Update Booking') . " - $title");
   }
 
   /**
@@ -331,7 +331,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
 
   function postProcess(){
     //CRM_Utils_System::flushCache();
-    
+
     if ($this->_action & CRM_Core_Action::ADD || $this->_action & CRM_Core_Action::UPDATE || $this->_action & CRM_Core_Action::CLOSE) {
       $bookingInfo = $this->exportValues();
 
@@ -370,7 +370,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $values['event_date'] = $this->_values['event_date'];
         $values['participants_estimate'] = $this->_values['participants_estimate'];
         $values['participants_actual'] = $this->_values['participants_actual'];
-		
+
         $emailTo = CRM_Utils_Array::value('email_to', $bookingInfo);
         $contactIds = array();
         if ($this->_action & CRM_Core_Action::ADD){
@@ -397,7 +397,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           'target_contact_id' => CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo),
           'subject' => ts("Booking ID: $this->_id")
       );
-	  
+
       //Finally add booking activity
      CRM_Booking_BAO_Booking::createActivity($params);
     }

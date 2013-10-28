@@ -33,7 +33,6 @@
         {include file="CRM/common/enableDisable.tpl"}
         <table class="selector">
         <tr class="columnheader">
-            <th >{ts}Name{/ts}</th>
             <th >{ts}Label{/ts}</th>
             <th >{ts}Price{/ts}</th>
             <th >{ts}Weight{/ts}</th>
@@ -42,7 +41,6 @@
         </tr>
         {foreach from=$rows item=row}
         <tr id="row_{$row.id}" class="crm-booking_adhocchargesitem {cycle values="odd-row,even-row"} {$row.class}{if NOT $row.is_active} disabled{/if}">
-            <td class="crm-booking-adhocchargesitem-name">{$row.name}</td>
             <td class="crm-booking-adhocchargesitem-label">{$row.label}</td>
             <td class="crm-booking-adhocchargesitem-price">{$row.price}</td>
             <td class="crm-booking-adhocchargesitem-weight">{$row.weight}</td>

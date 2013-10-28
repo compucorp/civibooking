@@ -24,6 +24,32 @@ class CRM_Booking_BAO_AdhocCharges extends CRM_Booking_DAO_AdhocCharges {
   }
 
 
+  /**
+   * Function to compare if an input field is existing in array of adhoc charges
+   *
+   *
+   * @param array $fields input parameters to find adhoc charges
+   * @param array $array array of  adhoc charges
+   *
+   * @return boolean, id of matching  adhoc charges
+   *
+   * @access public
+   * @static
+   */
+  static function findExistingAdhocCharges($fields, $adhocChargesList){
+    $keysToUnset = array('id', 'quantity' ,'is_cancelled', 'is_deleted');
+    CRM_Booking_Utils_Array::unsetArray($fields, $keysToUnset);
+    foreach ($adhocChargesList as $key => $value) {
+      $id = $value['id'];
+      CRM_Booking_Utils_Array::unsetArray($value, $keysToUnset);
+      if($fields == $value){
+        return array(TRUE, $id);
+      }
+    }
+    return array(FALSE, NULL);
+  }
+
+
   static function getBookingAdhocCharges($bookingID){
     $params = array(1 => array( $bookingID, 'Integer'));
 
@@ -47,6 +73,23 @@ class CRM_Booking_BAO_AdhocCharges extends CRM_Booking_DAO_AdhocCharges {
       );
     }
     return $charges;
+  }
+
+  /**
+   * Function to delete AdhocCharges
+   *
+   * @param  int  $id     Id of the AdhocCharges to be deleted.
+   *
+   * @return boolean
+   *
+   * @access public
+   * @static
+   */
+  static function del($id) {
+    $dao = new CRM_Booking_DAO_AdhocCharges();
+    $dao->id = $id;
+    $dao->is_deleted = 1;
+    return $dao->save();
   }
 
 

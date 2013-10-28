@@ -30,7 +30,7 @@
 {if $resources}
   <div id="brs-container">
    <div id="scheduler">
-        <div id="resource_scheduler" class="dhx_cal_container" style='width:100%; height:500px;'>
+        <div id="resource_scheduler" class="dhx_cal_container" style='width:100%; height:600px;'>
           <div class="dhx_cal_navline">
             <div class="dhx_cal_prev_button">&nbsp;</div>
             <div class="dhx_cal_next_button">&nbsp;</div>
@@ -38,8 +38,8 @@
             <div class="dhx_cal_date"></div>
             {* <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
             <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
-            <div class="dhx_cal_tab" name="timeline_tab" style="right:204;"></div>
-            <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div> *}
+            <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+            <div class="dhx_cal_tab" name="timeline_tab" style="right:204;"></div> *}
             <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="show_minical()">&nbsp;</div>
           </div>
           <div class="dhx_cal_header">
@@ -86,6 +86,8 @@
   <script type="text/javascript">
   var crmDateFormat = "{/literal}{$dateformat}{literal}";
   var bookingId = "{/literal}{$bookingId}{literal}";
+  var bookingSlotDate  = "{/literal}{$bookingSlotDate}{literal}";
+  var newSlotcolour = "{/literal}{$colour}{literal}";
 
   cj(function($) {
     var elements = [// original hierarhical array to display
@@ -111,9 +113,9 @@
       name: "timeline",
       x_unit: "minute",
       x_date: "%H:%i",
-      x_step: 30,
-      x_size: 24,
-      x_start: 16,
+      x_step: {/literal}{$xStep}{literal}, //time period
+      x_size: {/literal}{$xSize}{literal}, // side of block from start time to end time
+      x_start: {/literal}{$xStart}{literal},
       x_length: 48,
       y_unit: elements,
       y_property: "resource_id",

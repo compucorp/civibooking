@@ -1,7 +1,8 @@
 <?php
+
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.3                                                |
+ | CiviCRM version 4.4                                              |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2013                                |
  +--------------------------------------------------------------------+
@@ -24,41 +25,21 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 */
+
 /**
  *
- * @package CRM
+ * @package CDM
  * @copyright CiviCRM LLC (c) 2004-2013
  * $Id$
  *
  */
-class CRM_Booking_Controller_Booking extends CRM_Core_Controller {
 
-  /**
-   * class constructor
-   */
-  function __construct($title = NULL, $action = CRM_Core_Action::NONE, $modal = TRUE) {
+class CRM_Booking_Utils_Array{
 
-    parent::__construct($title, $modal, NULL, FALSE, TRUE);
-
-    $bookingID = CRM_Utils_Request::retrieve('id', 'Positive',
-      $this, FALSE, 0
-    );
-
-    //if booking id exist assume so we entering edit mode
-    if ($bookingID){
-      $action = CRM_Core_Action::UPDATE;
-    }else {  //force action to add
-      $action = CRM_Core_Action::ADD;
+  static function unsetArray(&$value, $keys){
+    foreach ($keys as $key) {
+      unset($value[$key]);
     }
-
-    $this->_stateMachine = new CRM_Booking_StateMachine_Booking($this, $action);
-
-    // create and instantiate the pages
-    $this->addPages($this->_stateMachine, $action);
-
-    // add all the actions
-    $this->addActions();
-
   }
-}
 
+}

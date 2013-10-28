@@ -10,14 +10,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
    */
   static $_exportableFields = NULL;
 
-
-  static function add(&$params){
-    $bookingDAO = new CRM_Booking_DAO_Booking();
-    $bookingDAO->copyValues($params);
-    return $bookingDAO->save();
-  }
-
-
     /**
    * takes an associative array and creates a booking object
    *
@@ -32,79 +24,9 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
    * @static
    */
   static function create(&$params) {
-    $resources = $params['resources'];
-    $adhocCharges = $params['adhoc_charges'];
-
-    if($params['validate']){
-      //TODO:: Validate resource
-      //$result = array();
-      //$isValid = CRM_Booking_BAO_Slot::validate($resources, $result);
-      //if(!$result['isValid']){
-        //return list of object that invalid
-        ///return error message
-      //}
-    }
-    unset($params['resources']);
-    unset($params['version']);
-    unset($params['adhoc_charges']);
-    unset($params['validate']);
-    $transaction = new CRM_Core_Transaction();
-    $lineItem = array(
-        'version' => 3,
-        'sequential' => 1,
-    );
-    try{
-      $booking = self::add($params);
-
-      $bookingID = $booking->id;
-      foreach ($resources as $key => $resource) {
-        $slot = array(
-          'booking_id' => $bookingID,
-          'config_id' => CRM_Utils_Array::value('configuration_id', $resource),
-          'start' => CRM_Utils_Date::processDate(CRM_Utils_Array::value('start_date', $resource)),
-          'end' => CRM_Utils_Date::processDate(CRM_Utils_Array::value('end_date', $resource)),
-          'resource_id' =>  CRM_Utils_Array::value('resource_id', $resource),
-          'quantity' => CRM_Utils_Array::value('quantity', $resource),
-          'note' => CRM_Utils_Array::value('note', $resource),
-        );
-        $slotResult = civicrm_api3('Slot', 'Create', $slot);
-        $slotID =  CRM_Utils_Array::value('id', $slotResult);
-
-        $subResources = $resource['sub_resources'];
-        foreach($subResources as $subKey => $subResource){
-          $subSlot = array(
-            'resource_id' =>  CRM_Utils_Array::value('resource_id', $subResource),
-            'slot_id' => $slotID,
-            'config_id' => CRM_Utils_Array::value('configuration_id', $subResource),
-            'time_required' =>  CRM_Utils_Date::processDate(CRM_Utils_Array::value('time_required', $subResource)),
-            'quantity' => CRM_Utils_Array::value('quantity', $subResource),
-            'note' => CRM_Utils_Array::value('note', $subResource),
-          );
-          $subSlotResult = civicrm_api3('SubSlot', 'Create', $subSlot);
-        }
-      }
-      if($adhocCharges){
-        $items = CRM_Utils_Array::value('items', $adhocCharges);
-        foreach ($items as $key => $item) {
-          $params = array(
-            'booking_id' =>  $bookingID,
-            'item_id' => CRM_Utils_Array::value('id', $item),
-            'quantity' => CRM_Utils_Array::value('quantity', $item),
-          );
-          civicrm_api3('AdhocCharges', 'create', $params);
-        }
-      }
-      return $booking;
-    }
-    catch (CiviCRM_API3_Exception $e) {
-      $transaction->rollback();
-      CRM_Core_Error::fatal($e->getMessage());
-    }
-    catch (Exception $e) {
-      $transaction->rollback();
-      CRM_Core_Error::fatal($e->getMessage());
-    }
-
+    $bookingDAO = new CRM_Booking_DAO_Booking();
+    $bookingDAO->copyValues($params);
+    return $bookingDAO->save();
   }
 
 
@@ -304,7 +226,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     }
     //get adhoc charges
     $adhocCharges = array();
-    $adhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $id));
+    $adhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $id , 'is_deleted' => 0));
     $adhocChargesValues = CRM_Utils_Array::value('values', $adhocChargesResult);
     foreach ($adhocChargesValues as $id => $charges) {
         $charges['item_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_AdhocChargesItem',
@@ -323,56 +245,55 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           $charges['total_amount'] = CRM_Utils_Array::value('line_total', $chargesLineItem);
           $charges['quantity'] = CRM_Utils_Array::value('qty', $chargesLineItem);
         }else{ //calulate manuanlly
-          $charges['total_amount'] = CRM_Booking_BAO_Booking::calulateSlotPrice($subSlot['config_id'], $subSlot['quantity']);
+          //this error
+          /*$charges['total_amount'] = CRM_Booking_BAO_Booking::calulateSlotPrice($charges['config_id'], $charges['quantity']);
           $charges['unit_price'] = CRM_Core_DAO::getFieldValue(
             'CRM_Booking_DAO_AdhocChargesItem',
             $charges['item_id'],
             'price',
             'id'
-          );
+          );*/
         }
         $adhocCharges[$id] = $charges;
     }
     //get cancellation charges
     $cancellationCharges = array();
-	$cancellationsResult = civicrm_api3('Cancellation','get',array('booking_id' => $id));
-	$cancellationsValues = CRM_Utils_Array::value('values',$cancellationsResult);
-	foreach ($cancellationsValues as $key => $cancels) {
-		//get LineItem record wheather the booking has contribution or not.
-		$params = array(
-          'entity_id' => $cancels['id'],
-          'entity_table' => 'civicrm_booking_cancellation',
-        );
-        $lineItemResult = civicrm_api3('LineItem', 'get', $params);	//retrieve LineItem record.
-        if(!empty($lineItemResult['values'])){
-          $cancelsLineItem = CRM_Utils_Array::value($lineItemResult['id'], $lineItemResult['values']);
-			//TODO: define cancellation fee from LineItem table
-            //$charges['unit_price'] = CRM_Utils_Array::value('unit_price', $chargesLineItem);
-        }else{ //otherwise calulate manuanlly
-          $cancels['total_fee'] = $cancels['cancellation_fee'] + $cancels['additional_fee'];
-          
-        }
-		//get booking price
-		$params = array(
-          'booking_id' => $cancels['booking_id'],
-        );
-		$bookingItem = civicrm_api3('Booking','get',$params);
-		foreach (CRM_Utils_Array::value('values',$bookingItem) as $k => $v) {
-			$cancels['booking_price'] = CRM_Utils_Array::value('total_amount',$v) - CRM_Utils_Array::value('discount_amount',$v);
-            $cancels['event_date'] = CRM_Utils_Array::value('event_date',$v);
-		}
-        //calculate the total amount of cancellation charge
-        $cancels['cancellation_total_fee'] = $cancels['cancellation_fee'] + $cancels['additional_fee'];
-        
-        //calculate how many days before event date
-        $cancellation_date = new DateTime($cancels['cancellation_date']);
-        $eventDate = new DateTime($cancels['event_date']);
-        $interval = $cancellation_date->diff($eventDate);
-        $cancels['prior_days'] = $interval->days;
-        
-        $cancellationCharges[$key] = $cancels;
-	}
-	//get contribution
+  	$cancellationsResult = civicrm_api3('Cancellation','get',array('booking_id' => $id));
+	  $cancellationsValues = CRM_Utils_Array::value('values',$cancellationsResult);
+	  foreach ($cancellationsValues as $key => $cancels) {
+		  //get LineItem record wheather the booking has contribution or not.
+		  $params = array(
+        'entity_id' => $cancels['id'],
+        'entity_table' => 'civicrm_booking_cancellation',
+      );
+      $lineItemResult = civicrm_api3('LineItem', 'get', $params);	//retrieve LineItem record.
+      if(!empty($lineItemResult['values'])){
+        $cancelsLineItem = CRM_Utils_Array::value($lineItemResult['id'], $lineItemResult['values']);
+	    	//TODO: define cancellation fee from LineItem table
+        //$charges['unit_price'] = CRM_Utils_Array::value('unit_price', $chargesLineItem);
+      }else{ //otherwise calulate manuanlly
+        $cancels['total_fee'] = $cancels['cancellation_fee'] + $cancels['additional_fee'];
+      }
+		  //get booking price
+		  $params = array('booking_id' => $cancels['booking_id']);
+		  $bookingItem = civicrm_api3('Booking','get',$params);
+		  foreach (CRM_Utils_Array::value('values',$bookingItem) as $k => $v) {
+			  $cancels['booking_price'] = CRM_Utils_Array::value('total_amount',$v) - CRM_Utils_Array::value('discount_amount',$v);
+        $cancels['event_date'] = CRM_Utils_Array::value('event_date',$v);
+		  }
+
+      //calculate the total amount of cancellation charge
+      $cancels['cancellation_total_fee'] = $cancels['cancellation_fee'] + $cancels['additional_fee'];
+
+      //calculate how many days before event date
+      $cancellation_date = new DateTime($cancels['cancellation_date']);
+      $eventDate = new DateTime($cancels['event_date']);
+      $interval = $cancellation_date->diff($eventDate);
+      $cancels['prior_days'] = $interval->days;
+
+      $cancellationCharges[$key] = $cancels;
+	  }
+	  //get contribution
     $contribution = array();
     $bookingPaymentResult = civicrm_api3('BookingPayment','get',array('booking_id' => $id));
     $bookingPaymentValues = CRM_Utils_Array::value('values',$bookingPaymentResult); //get contribution id from booking_payment
@@ -383,7 +304,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             $contribution[$k] = $conValues;
         }
     }
-    
+
     return array(
       'slots' => $slots,
       'sub_slots' => $subSlots,
@@ -751,7 +672,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       	'sub_slots' => $subSlots,
       	'adhoc_charges' => $adhocCharges,
       	'cancellation_charges' => $cancellationCharges,
-      	
+
         //TODO:: build the booking tpl
       );
       $sendTemplateParams = array(
@@ -793,7 +714,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       }
 
       list($sent, $subject, $message, $html)  = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
-      
+
       if($sent & CRM_Utils_Array::value('log_confirmation_email', $config)){
           $params = array(
             'version' => 3,

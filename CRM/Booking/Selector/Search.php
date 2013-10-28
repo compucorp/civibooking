@@ -229,7 +229,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
         ),
         CRM_Core_Action::UPDATE => array(
           'name' => ts('Edit'),
-          'url' => 'civicrm/booking/add',
+          'url' => 'civicrm/booking/edit',
           'qs' => 'reset=1&action=update&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
           'title' => ts('Edit Booking'),
         ),

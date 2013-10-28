@@ -82,6 +82,34 @@ class CRM_Booking_BAO_SubSlot extends CRM_Booking_DAO_SubSlot {
   }
 
 
+   /**
+   * Function to compare if an input field is existing in array of slots
+   *
+   *
+   * @param array $fields input parameters to find slot
+   * @param array $array array of slots
+   *
+   * @return boolean, id of matching slot
+   *
+   * @access public
+   * @static
+   */
+  static function findExistingSubSlot($fields, $slots){
+    $keysToUnset = array('id', 'quantity', 'note');
+    CRM_Booking_Utils_Array::unsetArray($fields, $keysToUnset);
+    foreach ($slots as $key => $value) {
+      $id = $value['id'];
+      CRM_Booking_Utils_Array::unsetArray($value, $keysToUnset);
+      $value['time_required'] = CRM_Utils_Date::processDate($value['time_required']);
+      if($fields == $value){
+        return array(TRUE, $id);
+      }
+    }
+    return array(FALSE, NULL);
+  }
+
+
+
 
   /**
    * Given the list of params in the params array, fetch the object
@@ -125,6 +153,7 @@ class CRM_Booking_BAO_SubSlot extends CRM_Booking_DAO_SubSlot {
       FROM civicrm_booking_sub_slot
       WHERE 1
       AND civicrm_booking_sub_slot.slot_id = %1
+      AND civicrm_booking_sub_slot.is_deleted = 0;
      ";
 
     $slots = array();
