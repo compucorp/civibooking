@@ -12,18 +12,18 @@
 
 
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
-<legend>Header</legend>
-User content  
+<legend>{ts}Header{/ts}</legend>
+{ts}User content{/ts}  
 </fieldset>
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
-<legend>Booking Information</legend>
+<legend>{ts}Booking Information{/ts}</legend>
   <table cellspacing="3" style="font-family: Arial, Verdana, sans-serif; font-size: 12px;">
         <tbody>
         <tr>
-          <th style="text-align: left;">Booking ID:</th>
-          <td>&nbsp;</td>
-          <th style="text-align: left;">Today's date</th>
-          <td>14.10.2013</td>
+          <th style="text-align: left;">{ts}Booking ID:{/ts}</th>
+          <td>{$booking_id}</td>
+          <th style="text-align: left;">{ts}Today's date{/ts}</th>
+          <td>{$today_date}</td>
         </tr>
         <tr>
           <th style="text-align: left;">&nbsp;</th>
@@ -32,50 +32,50 @@ User content
           <td>&nbsp;</td>
         </tr>
         <tr>
-          <th style="text-align: left;">Contact</th>
+          <th style="text-align: left;">{ts}Contact{/ts}</th>
           <td> {contact.first_name} {contact.last_name} </td>
           <td style="text-align: left;"></td>
           <td></td>
         </tr>
         <tr>
-          <th style="text-align: left;">Organisation:</th>
+          <th style="text-align: left;">{ts}Organisation:{/ts}</th>
+          <td>{contact.organization_name}</td>
+          <td style="text-align: left;">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">{ts}Organisation Address:{/ts}</th>
+          <td>{$contact.street_address}</td>
+          <td style="text-align: left;"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">{ts}Town:{/ts}</th>
+          <td>{$contact.city}</td>
+          <td style="text-align: left;">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">{ts}County:{/ts}</th>
           <td>&nbsp;</td>
           <td style="text-align: left;">&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
         <tr>
-          <th style="text-align: left;">Organisation Address:</th>
+          <th style="text-align: left;">{ts}Fax:{/ts}</th>
           <td></td>
           <td style="text-align: left;"></td>
           <td></td>
         </tr>
         <tr>
-          <th style="text-align: left;">Town:</th>
-          <td>&nbsp;</td>
-          <td style="text-align: left;">&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <th style="text-align: left;">County:</th>
-          <td>&nbsp;</td>
-          <td style="text-align: left;">&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <th style="text-align: left;">Fax:</th>
-          <td></td>
+          <th style="text-align: left;">{ts}Email:{/ts}</th>
+          <td>{$email}</td>
           <td style="text-align: left;"></td>
           <td></td>
         </tr>
         <tr>
-          <th style="text-align: left;">Email:</th>
-          <td></td>
-          <td style="text-align: left;"></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th style="text-align: left;">Post code</th>
-          <td></td>
+          <th style="text-align: left;">{ts}Post code{/ts}</th>
+          <td>{$contact.postal_code}</td>
           <td style="text-align: left;"></td>
           <td></td>
         </tr>
@@ -86,26 +86,25 @@ User content
           <td></td>
         </tr>
         <tr>
-          <th style="text-align: left;">Day of Function:</th>
-          <td>Tuesday</td>
+          <th style="text-align: left;">{ts}Day of Function:{/ts}</th>
+          <td>{$booking_event_day}</td>
           <th style="text-align: left;">Date of Function:</th>
-          <td>28/09/2013</td>
+          <td>{$booking_event_date|crmDate}</td>
         </tr>
         <tr>
-          <th style="text-align: left;">Function title:</th>
-          <td>Interviews</td>
-          <th style="text-align: left;">Function status:</th>
-          <td>Booked</td>
+          <th style="text-align: left;">{ts}Function title:{/ts}</th>
+          <td>{$booking_title}</td>
+          <th style="text-align: left;">{ts}Function status:{/ts}</th>
+          <td>{$booking_status}</td>
         </tr>
         <tr>
-          <th style="text-align: left;">Estimated Number:</th>
-          <td>4</td>
-          <th style="text-align: left;">Final Max Number:</th>
-          <td>4</td>
+          <th style="text-align: left;">{ts}Estimated Number:{/ts}</th>
+          <td>{$participants_estimate}</td>
+          <th style="text-align: left;">{ts}Final Max Number:{/ts}</th>
+          <td>{$participants_actual}</td>
         </tr>
         <tr>
           <th style="text-align: left;">&nbsp;</th>
-           
           Address
           <td>&nbsp;</td>
           <td style="text-align: left;">&nbsp;</td>
@@ -116,20 +115,20 @@ User content
 </fieldset>
 
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
-  <legend>Booking Resource</legend>
+  <legend>{ts}Booking Resource{/ts}</legend>
   <span style="background-color: #CDE8FE; padding: 4px 6px; margin: 0 0 0.3em;">
-    Resources
+    {ts}Resources{/ts}
   </span>
   <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
     <tbody>
       <tr>
-        <th align="left">Resource</th>
-        <th align="left">From</th>
-        <th align="left">T</th>
-        <th align="left">Configuration</th>
-        <th align="left">Price Per unit</th>
-        <th align="left">Quantity</th>
-        <th align="left">Total price</th>
+        <th align="left">{ts}Resource{/ts}</th>
+        <th align="left">{ts}From{/ts}</th>
+        <th align="left">{ts}T{/ts}</th>
+        <th align="left">{ts}Configuration{/ts}</th>
+        <th align="left">{ts}Price Per unit{/ts}</th>
+        <th align="left">{ts}Quantity{/ts}</th>
+        <th align="left">{ts}Total price{/ts}</th>
       </tr>
 
       {foreach from=$slots item=slot}
@@ -146,20 +145,20 @@ User content
 
     </tbody> 
   </table>
-
+{if !empty($sub_slots)}
   <span style="background-color: #CDE8FE; padding: 4px 6px; margin: 0 0 0.3em;">
   Other items
 </span>
   <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
     <tbody>
       <tr>
-        <th align="left">Resource</th>
-        <th align="left">Parent Resource</th>
-        <th align="left">Time</th>
-        <th align="left">Configuration</th>
-        <th align="left">Price Per unit</th>
-        <th align="left">Quantity</th>
-        <th align="left">Total price</th>
+        <th align="left">{ts}Resource{/ts}</th>
+        <th align="left">{ts}Parent Resource{/ts}</th>
+        <th align="left">{ts}Time{/ts}</th>
+        <th align="left">{ts}Configuration{/ts}</th>
+        <th align="left">{ts}Price Per unit{/ts}</th>
+        <th align="left">{ts}Quantity{/ts}</th>
+        <th align="left">{ts}Total price{/ts}</th>
       </tr>
 
       {foreach from=$sub_slots item=subSlot}
@@ -176,14 +175,16 @@ User content
 
     </tbody> 
   </table>
+  {/if}
+  {if !empty($adhoc_charges)}
   <span style="background-color: #CDE8FE; padding: 4px 6px; margin: 0 0 0.3em;">Additional charges </span>
   <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
     <tbody>
       <tr>
-        <th align="left">Item</th>
-        <th align="left">Price Per unit</th>
-        <th align="left">Quantity</th>
-        <th align="left">Total price</th>
+        <th align="left">{ts}Item{/ts}</th>
+        <th align="left">{ts}Price Per unit{/ts}</th>
+        <th align="left">{ts}Quantity{/ts}</th>
+        <th align="left">{ts}Total price{/ts}</th>
       </tr>
 
       {foreach from=$adhoc_charges item=adhocCharge}
@@ -196,58 +197,60 @@ User content
       {/foreach}
     </tbody>
   </table>
+  {/if}
 </fieldset>
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
 <legend>Price</legend>  
 <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
     <tbody>
       <tr>
-        <th align="left">Sub total</th>
-        <td>200</td>
+        <th align="left">{ts}Sub total{/ts}</th>
+        <td>{$booking_subtotal}</td>
       </tr>
       <tr>
-        <th align="left">Discounts</th>
-        <td>100</td>
+        <th align="left">{ts}Discounts{/ts}</th>
+        <td>{$booking_discount}</td>
       </tr>
       <tr>
-        <th align="left">Total</th>
-        <td>50</td>
+        <th align="left">{ts}Total{/ts}</th>
+        <td>{$booking_total}</td>
       </tr>
     </tbody>
   </table>
 </fieldset>
+{if !empty($cancellation_charges)}
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
-<legend>Booking cancellation</legend>  
+<legend>{ts}Booking cancellation{/ts}</legend>  
  {foreach from=$cancellation_charges item=cancellationCharges}
   <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px; border-spacing: 3px;">
     <tbody>
       <tr>
-        <th align="left">Date cancelled:</th>
+        <th align="left">{ts}Date cancelled:{/ts}</th>
         <td>{$cancellationCharges.cancellation_date}</td>
         <td></td>
       </tr>
       <tr>
-        <th align="left">Booking price</th>
+        <th align="left">{ts}Booking price{/ts}</th>
         <td>{$cancellationCharges.booking_price}</td>
         <td></td>
       </tr>
       <tr>
-        <th align="left">This booking was cancelled</th>
+        <th align="left">{ts}This booking was cancelled{/ts}</th>
         <td>{$cancellationCharges.prior_days} days</td>
-        <td>before the event was intended to take place</td>
+        <td>{ts}before the event was intended to take place{/ts}</td>
       </tr>
       <tr>
-        <th align="left">Cancellation subtotal:</th>
+        <th align="left">{ts}Cancellation subtotal:{/ts}</th>
         <td>{$cancellationCharges.cancellation_fee}</td>
         <td></td>
       </tr>
       <tr>
-        <th align="left">Other cancellation charges:</th>
+        <th align="left">{ts}Other cancellation charges:{/ts}</th>
         <td>{$cancellationCharges.additional_fee}</td>
         <td></td>
       </tr>
       <tr>
-        <th align="left" cospan"3">Description:</th>
+        <th align="left" cospan"3">{ts}Description:{/ts}</th>
       </tr>
       <tr>
         <td>
@@ -257,7 +260,7 @@ User content
         </td>
       </tr>
       <tr>
-        <th align="left">Cancellation fee:</th>
+        <th align="left">{ts}Cancellation fee:{/ts}</th>
         <td>{$cancellationCharges.total_fee}</td>
         <td></td>
       </tr>
@@ -265,9 +268,10 @@ User content
   </table>
    {/foreach}
 </fieldset>
+{/if}
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
-<legend>Footer</legend>  
-User content
+<legend>{ts}Footer{/ts}</legend>  
+{ts}User content{/ts}
 </fieldset>
 
 
