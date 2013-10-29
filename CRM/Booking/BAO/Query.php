@@ -252,8 +252,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
     $from = NULL;
     switch ($name) {
       case 'civicrm_booking':
-        //force to use INNER JOIN
-        $from = " INNER JOIN civicrm_booking ON civicrm_booking.primary_contact_id = contact_a.id AND civicrm_booking.is_deleted = 0";
+        $from = " $side JOIN civicrm_booking ON civicrm_booking.primary_contact_id = contact_a.id AND civicrm_booking.is_deleted = 0";
         break;
       case 'civicrm_booking_status':
         $from = " $side JOIN civicrm_option_group option_group_booking_status ON (option_group_booking_status.name = 'booking_status')";
