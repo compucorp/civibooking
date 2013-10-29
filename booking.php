@@ -413,7 +413,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => ts('Day View'),
           'name' => 'day_view',
-          'url' => 'civicrm/booking/day-view',
+          'url' => 'civicrm/booking/day-view&reset=1',
           'permission' => null,
           'operator' => null,
           'separator' => 0,

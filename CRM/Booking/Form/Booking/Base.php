@@ -56,7 +56,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
   public function preProcess() {
     $this->_id = $this->get('id');
     $this->_cid = $this->get('cid');
-    $params        = array('id' => $this->_id);
+    $params  = array('id' => $this->_id);
 
     CRM_Booking_BAO_Booking::retrieve($params, $this->_values );
 
