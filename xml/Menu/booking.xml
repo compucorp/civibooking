@@ -50,7 +50,7 @@
     <path>civicrm/booking/search</path>
     <title>Find Booking</title>
     <page_callback>CRM_Booking_Controller_Search</page_callback>
-    <access_arguments>access Booking</access_arguments>
+    <access_arguments>access CiviCRM</access_arguments>
     <page_type>1</page_type>
     <weight>510</weight>
   </item>

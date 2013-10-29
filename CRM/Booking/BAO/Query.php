@@ -338,17 +338,17 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
   }
 
   public function getPanesMapper(&$panes) {
-    if (!CRM_Core_Permission::check('access Booking')) return;
+   // if (!CRM_Core_Permission::check('access Booking')) return;
     $panes['Bookings'] = 'civicrm_booking';
   }
 
   public function registerAdvancedSearchPane(&$panes) {
-    if (!CRM_Core_Permission::check('access Booking')) return;
+    //if (!CRM_Core_Permission::check('access Booking')) return;
     $panes['Bookings'] = 'booking';
   }
 
   public function buildAdvancedSearchPaneForm(&$form, $type) {
-    if (!CRM_Core_Permission::check('access Booking')) return;
+    //if (!CRM_Core_Permission::check('access Booking')) return;
     if ($type  == 'booking') {
       $form->add('hidden', 'hidden_booking', 1);
       self::buildSearchForm($form);
@@ -356,7 +356,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
   }
 
   public function setAdvancedSearchPaneTemplatePath(&$paneTemplatePathArray, $type) {
-    if (!CRM_Core_Permission::check('access Booking')) return;
+    //if (!CRM_Core_Permission::check('access Booking')) return;
     if ($type  == 'booking') {
       $paneTemplatePathArray['booking'] = 'CRM/Booking/Form/Search/Criteria.tpl';
     }
@@ -376,7 +376,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
    * @void
    */
   public function alterSearchBuilderOptions(&$apiEntities, &$fieldOptions) {
-    if (!CRM_Core_Permission::check('access Booking')) return;
+   // if (!CRM_Core_Permission::check('access Booking')) return;
     $apiEntities = array_merge($apiEntities, array(
       'Booking',
       'BookingPayment',
