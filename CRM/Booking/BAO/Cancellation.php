@@ -31,12 +31,10 @@ class CRM_Booking_BAO_Cancellation extends CRM_Booking_DAO_Cancellation {
       try{
         $params = array(
           'version' => 3,
-          'option_group_name' => 'booking_status',
-          'name' => 'cancelled',
+          'option_group_name' => CRM_Booking_Utils_Constants::OPTION_BOOKING_STATUS,
+          'name' => CRM_Booking_Utils_Constants::OPTION_VALUE_CANCELLED,
         );
         $result = civicrm_api('OptionValue', 'get', $params);
-        $booking['id'] = $bookingID;
-        $booking['status_id'] = CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
 
         $params = array();
         $params['id'] = $bookingID;
