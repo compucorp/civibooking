@@ -212,6 +212,19 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
     return $slots;
   }
 
+
+  static function calulatePrice($configId, $qty){
+    if(!$configId & !$qty){
+      return NULL;
+    }
+    $price = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
+      $configId,
+      'price',
+      'id'
+    );
+    return $price * $qty;
+  }
+
 /**
  * Get Slot records from civicrm_booking_slot table
  *
