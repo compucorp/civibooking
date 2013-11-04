@@ -638,7 +638,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
     //send email only when email is present
     if ($email) {
-
+        
     	//get booking detail
     	$bookingDetail = CRM_Booking_BAO_Booking::getBookingDetails($values['booking_id']);
     	$slots = CRM_Utils_Array::value('slots', $bookingDetail);
@@ -646,6 +646,21 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     	$adhocCharges = CRM_Utils_Array::value('adhoc_charges', $bookingDetail);
     	$cancellationCharges = CRM_Utils_Array::value('cancellation_charges', $bookingDetail);
 
+        //get contact detail
+        $contactDetail = array();
+        $params = array(
+            'contact_id' => $contactID,
+        );
+        $contactDetailResult = civicrm_api3('Contact', 'get', $params); 
+        $contactValues = CRM_Utils_Array::value($contactDetailResult['id'],$contactDetailResult['values']);
+        foreach ($contactValues as $key => $contactItem) {
+            $contactDetail[$key] = $contactItem;
+        }
+        //TODO rectify $contactDetail elements(Fax, Org address, County)
+        
+        //get Price elements(Subtotal, Discount, Total)  
+        $booking_amount = CRM_Booking_BAO_Booking::getBookingAmount($values['booking_id']);
+        
       $tplParams = array(
         'email' => $email,
         'today_date' => date('d.m.Y'),
@@ -654,15 +669,19 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         'booking_status' => $values['booking_status'],
         'booking_event_date' => $values['event_date'],
         'booking_event_day' => date('l',$values['event_date']),
+        'booking_subtotal' => $booking_amount['resource_fees'] + $booking_amount['sub_resource_fees'],
+        'booking_total' => $booking_amount['total_amount'],
+        'booking_discount' => $booking_amount['discount_amount'],
+        
         'participants_estimate' => $values['participants_estimate'],
         'participants_actual' => $values['participants_actual'],
+        'contact' => $contactDetail,
       	'slots' => $slots,
       	'sub_slots' => $subSlots,
       	'adhoc_charges' => $adhocCharges,
       	'cancellation_charges' => $cancellationCharges,
-
-        //TODO:: build the booking tpl
       );
+      
       $sendTemplateParams = array(
         'groupName' => 'msg_tpl_workflow_booking',
         'valueName' => 'booking_offline_receipt',
@@ -671,7 +690,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         'tplParams' => $tplParams,
         'PDFFilename' => 'bookingReceipt.pdf',
       );
-
+      
       if(CRM_Utils_Array::value('include_payment_info', $values)){
         //TODO: add contribution detail
         $sendTemplateParams['tplParams']['contribution'] = NULL;
