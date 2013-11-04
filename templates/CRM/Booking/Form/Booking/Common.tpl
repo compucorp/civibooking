@@ -12,10 +12,19 @@
     <div class="content">{$form.email_to.html}</div>
    </div>
   <div class="crm-section">
-    <div class="label">{$form.receipt_message.label}</div>
+    <div class="label">{ts}Receipt Message{/ts}</div>
     <div class="content">
-      <span class="description">{ts}If you need to include a special message for this booking contacts, enter it here. Otherwise, the confirmation email will include the standard receipt message configured under System Message Templates.{/ts}</span>
-      {$form.receipt_message.html}
+    	<span class="description">{ts}If you need to include a special message for this booking contacts, enter it here. Otherwise, the confirmation email will include the standard receipt message configured under System Message Templates.{/ts}</span>
+    </div>
+    <div class="label">{$form.receipt_header_message.label}</div>
+    <div class="content">
+      {$form.receipt_header_message.html}
+    </div>
+  </div>
+  <div class="crm-section">
+    <div class="label">{$form.receipt_footer_message.label}</div>
+    <div class="content">
+      {$form.receipt_footer_message.html}
     </div>
   </div>
 </fieldset>

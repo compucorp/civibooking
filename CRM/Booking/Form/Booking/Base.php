@@ -157,8 +157,10 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         ts('From Email Address'), array(
           '' => ts('- select -')) + $fromEmailAddress, FALSE
       );
-
-      $this->add('textarea', 'receipt_message', ts('Receipt Message'));
+      //header of email template
+      $this->add('textarea', 'receipt_header_message', ts('Header'));
+      //footer of email template
+      $this->add('textarea', 'receipt_footer_message', ts('Footer'));
 
       if($this->_id){
         $contactDropdown =  array('' => ts('- select -'),
@@ -168,7 +170,6 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           //add Both option for sending email to both contacts
           $contactDropdown[CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS] =  ts('Both');
         }
-
       }else{
         $contactDropdown = array(
           '' => ts('- select -'),
@@ -376,8 +377,10 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $values['booking_title'] = $this->_values['title'];
         $values['booking_status'] = $this->_values['status'];
         $values['event_date'] = $this->_values['event_date'];
-        $values['participants_estimate'] = $this->_values['participants_estimate'];
-        $values['participants_actual'] = $this->_values['participants_actual'];
+        $values['participants_estimate'] = CRM_Utils_Array::value('participants_estimate',$this->_values);
+        $values['participants_actual'] = CRM_Utils_Array::value('participants_actual',$this->_values);
+        $values['receipt_header_message'] = CRM_Utils_Array::value('receipt_header_message',$bookingInfo);
+        $values['receipt_footer_message'] = CRM_Utils_Array::value('receipt_footer_message',$bookingInfo);
 
         $emailTo = CRM_Utils_Array::value('email_to', $bookingInfo);
         $contactIds = array();

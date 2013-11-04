@@ -527,7 +527,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       'discount_amount' => 0,
       'total_amount' => 0,
     );
-    self::retrieve($params = array('id' => $id), $booking);
+    $params = array('id' => $id);
+    self::retrieve($params, $booking);
     $bookingAmount['discount_amount'] = CRM_Utils_Array::value('discount_amount', $booking);
     $bookingAmount['total_amount'] = CRM_Utils_Array::value('total_amount', $booking);
     $slots = CRM_Booking_BAO_Slot::getBookingSlot($id);
@@ -539,7 +540,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       }
     }
     $adhocCharges = CRM_Booking_BAO_AdhocCharges::getBookingAdhocCharges($id);
-    CRM_Booking_BAO_Payment::retrieve($params = array('booking_id' => $id), $payment);
+    $params = array('booking_id' => $id);
+    CRM_Booking_BAO_Payment::retrieve($params, $payment);
     if(!empty($payment) && isset($payment['contribution_id'])){ // contribution exit so get all price from line item
       /*
       $params = array(
@@ -661,18 +663,21 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         //get Price elements(Subtotal, Discount, Total)  
         $booking_amount = CRM_Booking_BAO_Booking::getBookingAmount($values['booking_id']);
         
+        $eventDate = new DateTime($values['event_date']);
+        
       $tplParams = array(
         'email' => $email,
         'today_date' => date('d.m.Y'),
+        'receipt_header_message' => $values['receipt_header_message'],
+        'receipt_footer_message' => $values['receipt_footer_message'],
         'booking_id' => $values['booking_id'],
         'booking_title' => $values['booking_title'],
         'booking_status' => $values['booking_status'],
         'booking_event_date' => $values['event_date'],
-        'booking_event_day' => date('l',$values['event_date']),
+        'booking_event_day' => $eventDate->format('l'),
         'booking_subtotal' => $booking_amount['resource_fees'] + $booking_amount['sub_resource_fees'],
         'booking_total' => $booking_amount['total_amount'],
         'booking_discount' => $booking_amount['discount_amount'],
-        
         'participants_estimate' => $values['participants_estimate'],
         'participants_actual' => $values['participants_actual'],
         'contact' => $contactDetail,
