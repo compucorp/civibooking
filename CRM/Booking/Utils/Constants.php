@@ -46,4 +46,6 @@ class CRM_Booking_Utils_Constants{
   const OPTION_MSG_TPL_WORKFLOW_BOOKING = 'msg_tpl_workflow_booking';
   const OPTION_VALUE_CANCELLED = 'cancelled';
 
+  const OPTION_BOTH_CONTACTS = 'both_contacts';
+
 }

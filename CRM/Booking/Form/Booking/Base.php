@@ -165,6 +165,8 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
                                 $this->_values['primary_contact_id'] => CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']));
         if(isset($this->_values['secondary_contact_id'])){
           $contactDropdown[$this->_values['secondary_contact_id']] =  CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
+          //add Both option for sending email to both contacts
+          $contactDropdown[CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS] =  ts('Both');
         }
 
       }else{
@@ -172,7 +174,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           '' => ts('- select -'),
           '1' => ts('Primary contact'),
           '2' => ts('Secondary contact'),
-          '3' => ts('Both')
+          CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS => ts('Both')
         );
       }
 
@@ -389,9 +391,15 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
             array_push($contactIds, CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo));
           }
         }else{
-          array_push($contactIds, $emailTo);
+          if($emailTo == CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS){
+            array_push($contactIds, CRM_Utils_Array::value('primary_contact_id', $this->_values));
+            array_push($contactIds, CRM_Utils_Array::value('secondary_contact_id', $this->_values));
+          }else{
+            array_push($contactIds, $emailTo);
+          }
         }
         $values['include_payment_info'] = CRM_Utils_Array::value('include_payment_information', $bookingInfo);
+        
         foreach ($contactIds as $key => $cid) {
           $return = CRM_Booking_BAO_Booking::sendMail($cid, $values);   //send email
         }
