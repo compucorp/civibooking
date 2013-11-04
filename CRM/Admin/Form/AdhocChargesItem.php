@@ -58,7 +58,6 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
     }
 
 	  // create form elements
-    //$this->add('text', 'name', ts('Name'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'label', ts('Label'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'price', ts('Price'), array('size' => 10, 'maxlength' => 255), TRUE);
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_AdhocChargesItem', 'weight'), TRUE);
@@ -89,12 +88,12 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
 
   static function formRule($fields) {
   	// get price value
-	$price = CRM_Utils_Array::value('price', $fields);
-	// put validation
-	if(!is_numeric($price)){
-		// set error msg
-		$errors['price'] = ts('This fields should be numeric.');
-	}
+	  $price = CRM_Utils_Array::value('price', $fields);
+	  // put validation
+	  if(!is_numeric($price)){
+	   // set error msg
+		  $errors['price'] = ts('This fields should be numeric.');
+	  }
     if (!empty($errors)) {
       return $errors;
     }

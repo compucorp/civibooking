@@ -125,6 +125,10 @@ class CRM_Booking_Page_AJAX {
           "end_date" =>CRM_Utils_Array::value('end', $slot),
           "text" => CRM_Utils_Array::value('booking_id', $slot) . ' : ' . $displayName,
           "resource_id" => CRM_Utils_Array::value('resource_id', $slot),
+          "configuration_id" => CRM_Utils_Array::value('config_id', $slot),
+          "price" => CRM_Booking_BAO_Slot::calulatePrice($slot['config_id'], $slot['quantity']),
+          "quantity" =>  CRM_Utils_Array::value('quantity', $slot),
+          "note" =>  CRM_Utils_Array::value('note', $slot),
           "readonly" => true
         );
         if($bookingStatus == 1){ //Provisional, TODO: Fixed to get the value from the name i.e provisional

@@ -179,7 +179,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         $slots[$key]['total_amount'] = CRM_Utils_Array::value('line_total', $lineItem);
         $slots[$key]['quantity'] = CRM_Utils_Array::value('qty', $lineItem);
       }else{ //calulate manuanlly
-        $slots[$key]['total_amount'] = CRM_Booking_BAO_Booking::calulateSlotPrice($slot['config_id'], $slot['quantity']);
+        $slots[$key]['total_amount'] = CRM_Booking_BAO_Slot::calulatePrice($slot['config_id'], $slot['quantity']);
         $slots[$key]['unit_price'] = CRM_Core_DAO::getFieldValue(
             'CRM_Booking_DAO_ResourceConfigOption',
             $slot['config_id'],
@@ -211,7 +211,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           $subSlot['total_amount'] = CRM_Utils_Array::value('line_total', $subSlotlineItem);
           $subSlot['quantity'] = CRM_Utils_Array::value('qty', $subSlotlineItem);
         }else{ //calulate manuanlly
-          $subSlot['total_amount'] = CRM_Booking_BAO_Booking::calulateSlotPrice($subSlot['config_id'], $subSlot['quantity']);
+          $subSlot['total_amount'] = CRM_Booking_BAO_Slot::calulatePrice($subSlot['config_id'], $subSlot['quantity']);
           $subSlot['unit_price'] = CRM_Core_DAO::getFieldValue(
             'CRM_Booking_DAO_ResourceConfigOption',
             $subSlot['config_id'],
@@ -246,7 +246,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           $charges['quantity'] = CRM_Utils_Array::value('qty', $chargesLineItem);
         }else{ //calulate manuanlly
           //this error
-          /*$charges['total_amount'] = CRM_Booking_BAO_Booking::calulateSlotPrice($charges['config_id'], $charges['quantity']);
+          /*$charges['total_amount'] = CRM_Booking_BAO_Slot::calulatePrice($charges['config_id'], $charges['quantity']);
           $charges['unit_price'] = CRM_Core_DAO::getFieldValue(
             'CRM_Booking_DAO_AdhocChargesItem',
             $charges['item_id'],
@@ -582,10 +582,10 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       }
     }else{
       foreach ($slots as $id => $slot) {
-        $bookingAmount['resource_fees'] += self::calulateSlotPrice(CRM_Utils_Array::value('config_id', $slot) ,CRM_Utils_Array::value('quantity', $slot));
+        $bookingAmount['resource_fees'] += CRM_Booking_BAO_Slot::calulatePrice(CRM_Utils_Array::value('config_id', $slot) ,CRM_Utils_Array::value('quantity', $slot));
       }
       foreach ($subSlots as $id => $subSlot) {
-        $bookingAmount['sub_resource_fees'] += self::calulateSlotPrice(CRM_Utils_Array::value('config_id', $subSlot) ,CRM_Utils_Array::value('quantity', $subSlot));
+        $bookingAmount['sub_resource_fees'] += CRM_Booking_BAO_Slot::calulatePrice(CRM_Utils_Array::value('config_id', $subSlot) ,CRM_Utils_Array::value('quantity', $subSlot));
       }
       foreach ($adhocCharges as $charges) {
         $price = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_AdhocChargesItem',
@@ -597,18 +597,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       }
     }
     return $bookingAmount;
-  }
-
-  static function calulateSlotPrice($configId, $qty){
-    if(!$configId & !$qty){
-      return NULL;
-    }
-    $price = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
-      $configId,
-      'price',
-      'id'
-    );
-    return $price * $qty;
   }
 
   static function createActivity($params){

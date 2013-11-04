@@ -28,13 +28,15 @@
     <h3>{ts}View Booking - ID {/ts}{$id}</h3>
     <div class="action-link">
         <div class="crm-submit-buttons">
-          {if call_user_func(array('CRM_Core_Permission','check'), 'edit booking')}
-            {assign var='urlParams' value="reset=1&id=$id&cid=$contact_id&action=update&context=$context&selectedChild=booking"}
-          {if ($context eq 'search' ) && $searchKey}
-          {assign var='urlParams' value="reset=1&id=$id&cid=$contact_id&action=update&context=$context&selectedChild=booking&key=$searchKey"}
-          {/if}
-               <a class="button" href="{crmURL p='civicrm/booking/add/' q=$urlParams}" accesskey="e"><span><div class="icon edit-icon"></div> {ts}Edit{/ts}</span></a>
+          {if !$is_cancelled}
+            {if call_user_func(array('CRM_Core_Permission','check'), 'edit booking')}
+              {assign var='urlParams' value="reset=1&id=$id&cid=$contact_id&action=update&context=$context&selectedChild=booking"}
+            {if ($context eq 'search' ) && $searchKey}
+            {assign var='urlParams' value="reset=1&id=$id&cid=$contact_id&action=update&context=$context&selectedChild=booking&key=$searchKey"}
             {/if}
+                 <a class="button" href="{crmURL p='civicrm/booking/edit/' q=$urlParams}" accesskey="e"><span><div class="icon edit-icon"></div> {ts}Edit{/ts}</span></a>
+            {/if}
+          {/if}
             {if call_user_func(array('CRM_Core_Permission','check'), 'delete in CiviBooking')}
                 {assign var='urlParams' value="reset=1&id=$id&cid=$contact_id&action=delete&context=$context&selectedChild=event"}
           {if ($context eq 'search' ) && $searchKey}
@@ -205,7 +207,7 @@
       {/foreach}
     </table>
     {/if}
-    
+
     {if $cancellation_charges}
      <h3>{ts}Cancellation{/ts}</h3>
      <table class="crm-info-panel">
@@ -249,7 +251,7 @@
       {/foreach}
     </table>
     {/if}
-    
+
     {if $contribution}
      <h3>{ts}Contribution{/ts}</h3>
      <table class="selector">
@@ -279,7 +281,7 @@
       {/foreach}
     </table>
     {/if}
-    
+
     <div class="crm-submit-buttons">
           {if call_user_func(array('CRM_Core_Permission','check'), 'edit booking')}
             {assign var='urlParams' value="reset=1&id=$id&cid=$contact_id&action=update&context=$context&selectedChild=booking"}

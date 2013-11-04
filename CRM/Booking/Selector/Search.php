@@ -363,11 +363,14 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
         }
         $links = self::links($this->_key, $this->_context);
         if($isCancelled){
-          unset($links[CRM_Core_Action::UPDATE]);
-          unset($links[CRM_Core_Action::BASIC]);
+          if($result->booking_payment_status_id){
+            unset($links[CRM_Core_Action::UPDATE]);
+            unset($links[CRM_Core_Action::BASIC]);
+          }
           unset($links[CRM_Core_Action::ADVANCED]);
           unset($links[CRM_Core_Action::CLOSE]);
         }
+
         $row['action'] = CRM_Core_Action::formLink($links,
           $mask,
           array(

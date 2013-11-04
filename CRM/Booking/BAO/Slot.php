@@ -212,11 +212,24 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
     return $slots;
   }
 
+
+  static function calulatePrice($configId, $qty){
+    if(!$configId & !$qty){
+      return NULL;
+    }
+    $price = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption',
+      $configId,
+      'price',
+      'id'
+    );
+    return $price * $qty;
+  }
+
 /**
  * Get Slot records from civicrm_booking_slot table
  *
  * @return void
- * @author  
+ * @author
  * @param $from fromDate    put mySql Date type, for example '2013-12-03'
  * @param $to toDate        put mySql Date type, for example '2013-12-03'
  */
@@ -232,6 +245,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
              civicrm_booking_slot.config_id,
              civicrm_booking_slot.start,
              civicrm_booking_slot.end,
+             civicrm_booking_slot.quantity,
              civicrm_booking_slot.note
       FROM civicrm_booking_slot
       WHERE 1
@@ -243,7 +257,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
 
     $slots = array();
     $dao = CRM_Core_DAO::executeQuery($query, $params);
-    
+
     while ($dao->fetch()) {
       $slots[$dao->id] = array(
         'id' => $dao->id,
@@ -252,18 +266,19 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
         'config_id' => $dao->config_id,
         'start' => $dao->start,
         'end' => $dao->end,
+        'quantity' => $dao->quantity,
         'note' => $dao->note,
       );
     }
 
     return $slots;
   }
-    
+
     /**
-     * 
+     *
      *
      * @return void
-     * @author  
+     * @author
      */
     static function getSlotDetailsOrderByResourceBetweenDate($from,$to) {
         $slots = array();
@@ -311,9 +326,9 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
                 $subSlots['sub_resoruce_config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption', $subSlotItem['config_id'], 'label', 'id');
                 $subSlots['time_required'] = $subSlotItem['time_required'];
                 $subSlots['quantity'] = $subSlotItem['quantity'];
-                $subSlots['booking_id'] = $slotItem['booking_id']; 
-                $subSlots['primary_contact'] = $slotItem['primary_contact']; 
-                $subSlots['secondary_contact'] = isset($slotItem['secondary_contact'])?$slotItem['secondary_contact']:NULL; 
+                $subSlots['booking_id'] = $slotItem['booking_id'];
+                $subSlots['primary_contact'] = $slotItem['primary_contact'];
+                $subSlots['secondary_contact'] = isset($slotItem['secondary_contact'])?$slotItem['secondary_contact']:NULL;
                 $subSlots['comment'] = isset($subSlotItem['note'])?$subSlotItem['note']:NULL;
             }
             //final setting values
@@ -332,7 +347,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
             );
             if(!array_search($tempArray, $orderResource)){
                 $orderResource[$key] = $tempArray;
-            } 
+            }
         }
         foreach ($orderResource as $key => $resItem) {
             foreach ($slots as $k1 => $slotItem) {

@@ -48,4 +48,26 @@ function civicrm_api3_booking_get($params) {
 
 
 
+/**
+ * Booking.Delete API
+ *
+ * @param array $params
+ * @return array API result descriptor
+ * @see civicrm_api3_create_success
+ * @see civicrm_api3_create_error
+ * @throws API_Exception
+ */
+function civicrm_api3_Booking_delete($params) {
+  if (CRM_Booking_BAO_Booking::del($params['id'])) {
+    return civicrm_api3_create_success($params, $params, 'booking', 'delete');
+  }
+  else {
+   return civicrm_api3_create_error('Could not delete booking.');
+  }
+}
+
+
+
+
+
 
