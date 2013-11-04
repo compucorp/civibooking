@@ -66,6 +66,17 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
     $this->assign('displayName', $displayName);
     $this->assign('secondaryContactDisplayName',$secondaryContactDisplayName );
     $this->assign('contact_id', $this->_cid);
+
+    $params = array(
+      'option_group_name' => CRM_Booking_Utils_Constants::OPTION_BOOKING_STATUS,
+      'name' => CRM_Booking_Utils_Constants::OPTION_VALUE_CANCELLED,
+    );
+    $result = civicrm_api3('OptionValue', 'get', $params);
+    $this->_cancelStatusId =  $cancelStatus = CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
+
+    if ($this->_values['status_id'] == $cancelStatus){
+      $this->assign('is_cancelled', TRUE);
+    }
     // omitting contactImage from title for now since the summary overlay css doesn't work outside of our crm-container
     CRM_Utils_System::setTitle(ts('View Booking for') .  ' ' . $displayName);
 
