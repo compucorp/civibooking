@@ -74,7 +74,10 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     $this->_cancelStatusId =  $cancelStatus = CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
 
     if ($this->_values['status_id'] == $cancelStatus & ($this->_action != CRM_Core_Action::DELETE & $this->_action != CRM_Core_Action::VIEW)) {
-      CRM_Core_Error::statusBounce(ts('The requested booking record has already been cancelled'));
+      $bookingPayment = civicrm_api3('BookingPayment', 'get', array('booking_id' => $this->_id));
+      if($bookingPayment['count'] > 0){
+        CRM_Core_Error::statusBounce(ts('The requested booking record has already been cancelled'));
+      }
     }
 
     $this->_values['payment_status'] =  CRM_Booking_BAO_Booking::getPaymentStatus($this->_id);
