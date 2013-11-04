@@ -11,6 +11,13 @@
     <div class="label">{$form.email_to.label}</div>
     <div class="content">{$form.email_to.html}</div>
    </div>
+  <div class="crm-section">
+    <div class="label">{$form.receipt_message.label}</div>
+    <div class="content">
+      <span class="description">{ts}If you need to include a special message for this booking contacts, enter it here. Otherwise, the confirmation email will include the standard receipt message configured under System Message Templates.{/ts}</span>
+      {$form.receipt_message.html}
+    </div>
+  </div>
 </fieldset>
 <div class="crm-section">
     <div class="label">{ts}Payment status{/ts}</div>

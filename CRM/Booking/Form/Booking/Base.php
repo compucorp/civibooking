@@ -158,6 +158,8 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           '' => ts('- select -')) + $fromEmailAddress, FALSE
       );
 
+      $this->add('textarea', 'receipt_message', ts('Receipt Message'));
+
       if($this->_id){
         $contactDropdown =  array('' => ts('- select -'),
                                 $this->_values['primary_contact_id'] => CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']));
@@ -172,14 +174,15 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           '2' => ts('Secondary contact'),
           '3' => ts('Both')
         );
-
       }
+
       $this->add('select', 'email_to', ts('Email to'),
         $contactDropdown, FALSE,
         array(
           'id' => 'email_to',
         )
       );
+
 
       $this->addElement('checkbox', 'record_contribution', ts('Record Payment?'));
 
