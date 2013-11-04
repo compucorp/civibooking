@@ -27,7 +27,7 @@
       </tr>
     {/foreach}
     </table>
-    <h5>{ts}Sub resources{/ts}</h5>
+    <h5>{ts}Unlimited resources{/ts}</h5>
   <table class="selector">
     <thead class="sticky">
       <tr>

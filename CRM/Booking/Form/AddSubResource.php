@@ -21,7 +21,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
    * @access public
    */
   public function getTitle() {
-    return ts('Add sub resources');
+    return ts('Add unlimited resources');
   }
 
   function preProcess(){
@@ -191,7 +191,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
     $this->add('textarea',
               'sub_resources',
-               ts('Sub Resource(s)'),
+               ts('Unlimited Resource(s)'),
                FALSE);
 
     $buttons = array(

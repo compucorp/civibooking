@@ -81,7 +81,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
      var startDate =  $(e.currentTarget).data('sdate');
      var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref});
      var view = new AddSubResource.AddSubResourceModal({model: model, start_date: startDate});
-     view.title = ts('Add sub resource');
+     view.title = ts('Add unlimited resource');
      CRM.BookingApp.modal.show(view);
     },
     addDiscountAmount: function(e){
@@ -132,7 +132,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
 
       CRM.BookingApp.vent.trigger('render:price', this.model , parentRef );
       CRM.BookingApp.vent.trigger('update:resources', this.model);
-      CRM.alert(ts(''), ts('Sub resource removed'), 'success');
+      CRM.alert(ts(''), ts('Unlimited resource removed'), 'success');
 
     }
   });

@@ -63,7 +63,7 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     $this->addDate('cancellation_date', ts('Date of Cancellation'), TRUE, array('formatType' => 'activityDate'));
 
     $this->add('text', 'resource_fee', ts('Resource Fees'), array('disabled' => 'disabled'));
-    $this->add('text', 'sub_resource_fee', ts('Sub Resource Fees'), array('disabled' => 'disabled'));
+    $this->add('text', 'sub_resource_fee', ts('Unlimited Resource Fees'), array('disabled' => 'disabled'));
     $this->add('text', 'adhoc_charges', ts('Ad-hoc Charges'), array('disabled' => 'disabled'));
     $this->add('text', 'discount_amount', ts('Discount Amount'), array('disabled' => 'disabled'));
     $this->add('text', 'booking_total', ts('Booking Amount'), array('disabled' => 'disabled'));
