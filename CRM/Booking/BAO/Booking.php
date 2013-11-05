@@ -228,7 +228,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     $adhocCharges = array();
     $adhocChargesResult = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $id , 'is_deleted' => 0));
     $adhocChargesValues = CRM_Utils_Array::value('values', $adhocChargesResult);
-    foreach ($adhocChargesValues as $id => $charges) {
+    foreach ($adhocChargesValues as $kc => $charges) {
         $charges['item_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_AdhocChargesItem',
           $charges['item_id'],
           'label',
@@ -244,17 +244,16 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           $charges['unit_price'] = CRM_Utils_Array::value('unit_price', $chargesLineItem);
           $charges['total_amount'] = CRM_Utils_Array::value('line_total', $chargesLineItem);
           $charges['quantity'] = CRM_Utils_Array::value('qty', $chargesLineItem);
-        }else{ //calulate manuanlly
-          //this error
-          /*$charges['total_amount'] = CRM_Booking_BAO_Slot::calulatePrice($charges['config_id'], $charges['quantity']);
+        }else{ //calulate manually
           $charges['unit_price'] = CRM_Core_DAO::getFieldValue(
             'CRM_Booking_DAO_AdhocChargesItem',
             $charges['item_id'],
             'price',
             'id'
-          );*/
+          );
+          $charges['total_amount'] = $charges['unit_price'] * $charges['quantity']; 
         }
-        $adhocCharges[$id] = $charges;
+        $adhocCharges[$kc] = $charges;
     }
     //get cancellation charges
     $cancellationCharges = array();
@@ -297,6 +296,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     $contribution = array();
     $bookingPaymentResult = civicrm_api3('BookingPayment','get',array('booking_id' => $id));
     $bookingPaymentValues = CRM_Utils_Array::value('values',$bookingPaymentResult); //get contribution id from booking_payment
+    
     foreach ($bookingPaymentValues as $key => $bpValues) {
         $contributionResult = civicrm_api3('Contribution','get',array('id' => $bpValues['contribution_id']));   //get contribution record
         $contributionValues = CRM_Utils_Array::value('values',$contributionResult);
@@ -529,6 +529,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     );
     $params = array('id' => $id);
     self::retrieve($params, $booking);
+    
     $bookingAmount['discount_amount'] = CRM_Utils_Array::value('discount_amount', $booking);
     $bookingAmount['total_amount'] = CRM_Utils_Array::value('total_amount', $booking);
     $slots = CRM_Booking_BAO_Slot::getBookingSlot($id);
@@ -663,29 +664,30 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         //get Price elements(Subtotal, Discount, Total)  
         $booking_amount = CRM_Booking_BAO_Booking::getBookingAmount($values['booking_id']);
         
+        
         $eventDate = new DateTime($values['event_date']);
         
-      $tplParams = array(
-        'email' => $email,
-        'today_date' => date('d.m.Y'),
-        'receipt_header_message' => $values['receipt_header_message'],
-        'receipt_footer_message' => $values['receipt_footer_message'],
-        'booking_id' => $values['booking_id'],
-        'booking_title' => $values['booking_title'],
-        'booking_status' => $values['booking_status'],
-        'booking_event_date' => $values['event_date'],
-        'booking_event_day' => $eventDate->format('l'),
-        'booking_subtotal' => $booking_amount['resource_fees'] + $booking_amount['sub_resource_fees'],
-        'booking_total' => $booking_amount['total_amount'],
-        'booking_discount' => $booking_amount['discount_amount'],
-        'participants_estimate' => $values['participants_estimate'],
-        'participants_actual' => $values['participants_actual'],
-        'contact' => $contactDetail,
-      	'slots' => $slots,
-      	'sub_slots' => $subSlots,
-      	'adhoc_charges' => $adhocCharges,
-      	'cancellation_charges' => $cancellationCharges,
-      );
+        $tplParams = array(
+            'email' => $email,
+            'today_date' => date('d.m.Y'),
+            'receipt_header_message' => $values['receipt_header_message'],
+            'receipt_footer_message' => $values['receipt_footer_message'],
+            'booking_id' => $values['booking_id'],
+            'booking_title' => $values['booking_title'],
+            'booking_status' => $values['booking_status'],
+            'booking_event_date' => $values['event_date'],
+            'booking_event_day' => $eventDate->format('l'),
+            'booking_subtotal' => $booking_amount['resource_fees'] + $booking_amount['sub_resource_fees'] + $booking_amount['adhoc_charges_fees'],
+            'booking_total' => $booking_amount['total_amount'],
+            'booking_discount' => $booking_amount['discount_amount'],
+            'participants_estimate' => $values['participants_estimate'],
+            'participants_actual' => $values['participants_actual'],
+            'contact' => $contactDetail,
+            'slots' => $slots,
+            'sub_slots' => $subSlots,
+            'adhoc_charges' => $adhocCharges,
+            'cancellation_charges' => $cancellationCharges,
+        );
       
       $sendTemplateParams = array(
         'groupName' => 'msg_tpl_workflow_booking',
