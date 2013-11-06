@@ -47,6 +47,14 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
    */
   public function preProcess() {
     parent::preProcess();
+    //Set up prevalue
+    $bookingAmount = CRM_Booking_BAO_Booking::getBookingAmount($this->_id);
+    $this->_values['resource_fee'] = CRM_Utils_Array::value('resource_fees', $bookingAmount);
+    $this->_values['sub_resource_fee'] = CRM_Utils_Array::value('sub_resource_fees', $bookingAmount);
+    $this->_values['adhoc_charges'] = CRM_Utils_Array::value('adhoc_charges_fees', $bookingAmount);
+    $this->_values['discount_amount'] = CRM_Utils_Array::value('discount_amount', $bookingAmount);
+    $this->_values['booking_total'] = CRM_Utils_Array::value('total_amount', $bookingAmount);
+    $this->assign('booking',$this->_values);
     self::registerScripts();
   }
 
@@ -59,14 +67,9 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
   public function buildQuickForm() {
     parent::buildQuickForm();
 
-    $this->add('text', 'event_date', ts('Date of Event'), array('disabled' => 'disabled'));
     $this->addDate('cancellation_date', ts('Date of Cancellation'), TRUE, array('formatType' => 'activityDate'));
 
-    $this->add('text', 'resource_fee', ts('Resource Fees'), array('disabled' => 'disabled'));
-    $this->add('text', 'sub_resource_fee', ts('Unlimited Resource Fees'), array('disabled' => 'disabled'));
-    $this->add('text', 'adhoc_charges', ts('Ad-hoc Charges'), array('disabled' => 'disabled'));
-    $this->add('text', 'discount_amount', ts('Discount Amount'), array('disabled' => 'disabled'));
-    $this->add('text', 'booking_total', ts('Booking Amount'), array('disabled' => 'disabled'));
+    $this->add('hidden', 'booking_total', ts('Booking Amount'), array('disabled' => 'disabled'));
 
     $result = civicrm_api('OptionValue', 'get',  array(
       'version' => 3,
@@ -82,7 +85,7 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
       array()
     );
 
-    $this->add('text', 'cancellation_charge', ts('Cancellation Charge'), array('disabled' => 'disabled'));
+    $this->add('hidden', 'cancellation_charge', ts('Cancellation Charge'), array('disabled' => 'disabled'));
     $this->add('text', 'adjustment', ts('Additional Charges'));
     $this->add('textarea', 'comment', ts('Charge Comment'));
 
@@ -100,11 +103,13 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
 
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
-    $bookingAmount = CRM_Booking_BAO_Booking::getBookingAmount($this->_id);
-    $defaults['resource_fee'] = CRM_Utils_Array::value('resource_fees', $bookingAmount);
-    $defaults['sub_resource_fee'] = CRM_Utils_Array::value('sub_resource_fees', $bookingAmount);
-    $defaults['adhoc_charges'] = CRM_Utils_Array::value('adhoc_charges_fees', $bookingAmount);
-    $defaults['booking_total'] = CRM_Utils_Array::value('total_amount', $bookingAmount);
+    // $bookingAmount = CRM_Booking_BAO_Booking::getBookingAmount($this->_id);
+//     
+    // $defaults['resource_fee'] = CRM_Utils_Array::value('resource_fees', $bookingAmount);
+    // $defaults['sub_resource_fee'] = CRM_Utils_Array::value('sub_resource_fees', $bookingAmount);
+    // $defaults['adhoc_charges'] = CRM_Utils_Array::value('adhoc_charges_fees', $bookingAmount);
+    // $defaults['booking_total'] = CRM_Utils_Array::value('total_amount', $bookingAmount);
+//     
     return $defaults;
   }
 
@@ -118,6 +123,7 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     $params['cancellation_fee'] = ($params['cancellation_percentage'] / 100) * $params['booking_total'];
     $params['additional_charge'] = $values['adjustment'];
     $params['comment'] = $values['comment'];
+    
     civicrm_api3('Cancellation', 'create', $params);
     parent::postProcess();
     CRM_Core_Session::setStatus(ts('The booking \'%1\' has been cancelled.', array(1 => $this->_values['title'])), ts('Saved'), 'success');
