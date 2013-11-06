@@ -157,22 +157,25 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         ts('From Email Address'), array(
           '' => ts('- select -')) + $fromEmailAddress, FALSE
       );
-
-      $this->add('textarea', 'receipt_message', ts('Receipt Message'));
+      //header of email template
+      $this->add('textarea', 'receipt_header_message', ts('Header'));
+      //footer of email template
+      $this->add('textarea', 'receipt_footer_message', ts('Footer'));
 
       if($this->_id){
         $contactDropdown =  array('' => ts('- select -'),
                                 $this->_values['primary_contact_id'] => CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']));
         if(isset($this->_values['secondary_contact_id'])){
           $contactDropdown[$this->_values['secondary_contact_id']] =  CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
+          //add Both option for sending email to both contacts
+          $contactDropdown[CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS] =  ts('Both');
         }
-
       }else{
         $contactDropdown = array(
           '' => ts('- select -'),
           '1' => ts('Primary contact'),
           '2' => ts('Secondary contact'),
-          '3' => ts('Both')
+          CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS => ts('Both')
         );
       }
 
@@ -372,10 +375,12 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $values['from_email_address'] = CRM_Utils_Array::value(CRM_Utils_Array::value('from_email_address', $bookingInfo), $fromEmailAddress);
         $values['booking_id'] = $this->_id;
         $values['booking_title'] = $this->_values['title'];
-        $values['booking_status'] = $this->_values['status'];
+        $values['booking_status'] = CRM_Utils_Array::value('status',$this->_values);;
         $values['event_date'] = $this->_values['event_date'];
-        $values['participants_estimate'] = $this->_values['participants_estimate'];
-        $values['participants_actual'] = $this->_values['participants_actual'];
+        $values['participants_estimate'] = CRM_Utils_Array::value('participants_estimate',$this->_values);
+        $values['participants_actual'] = CRM_Utils_Array::value('participants_actual',$this->_values);
+        $values['receipt_header_message'] = CRM_Utils_Array::value('receipt_header_message',$bookingInfo);
+        $values['receipt_footer_message'] = CRM_Utils_Array::value('receipt_footer_message',$bookingInfo);
 
         $emailTo = CRM_Utils_Array::value('email_to', $bookingInfo);
         $contactIds = array();
@@ -389,9 +394,15 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
             array_push($contactIds, CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo));
           }
         }else{
-          array_push($contactIds, $emailTo);
+          if($emailTo == CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS){
+            array_push($contactIds, CRM_Utils_Array::value('primary_contact_id', $this->_values));
+            array_push($contactIds, CRM_Utils_Array::value('secondary_contact_id', $this->_values));
+          }else{
+            array_push($contactIds, $emailTo);
+          }
         }
         $values['include_payment_info'] = CRM_Utils_Array::value('include_payment_information', $bookingInfo);
+        
         foreach ($contactIds as $key => $cid) {
           $return = CRM_Booking_BAO_Booking::sendMail($cid, $values);   //send email
         }

@@ -50,6 +50,7 @@ class CRM_Booking_Form_DayView extends CRM_Core_Form {
         //Convert date to compile with crmDate 
         $values['dayview_select_date'] = DateTime::createFromFormat('m/d/Y',$selectedDate)->format('Y-m-d');
     }
+
     //assign values to show on template    
     $this->assign($values);
     //parent::postProcess();

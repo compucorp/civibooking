@@ -10,11 +10,12 @@
 {capture assign=labelStyle }style="padding: 4px; border-bottom: 1px solid #999; background-color: #f7f7f7;"{/capture}
 {capture assign=valueStyle }style="padding: 4px; border-bottom: 1px solid #999;"{/capture}
 
-
+{if $receipt_header_message}
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
 <legend>{ts}Header{/ts}</legend>
-{ts}User content{/ts}  
+{$receipt_header_message}
 </fieldset>
+{/if}
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
 <legend>{ts}Booking Information{/ts}</legend>
   <table cellspacing="3" style="font-family: Arial, Verdana, sans-serif; font-size: 12px;">
@@ -147,7 +148,7 @@
   </table>
 {if !empty($sub_slots)}
   <span style="background-color: #CDE8FE; padding: 4px 6px; margin: 0 0 0.3em;">
-  Other items
+  Unlimited resources
 </span>
   <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px 6px;">
     <tbody>
@@ -269,10 +270,12 @@
    {/foreach}
 </fieldset>
 {/if}
+{if $receipt_footer_message}
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px 5px;">
-<legend>{ts}Footer{/ts}</legend>  
-{ts}User content{/ts}
+<legend>{ts}Footer{/ts}</legend>
+{$receipt_footer_message}  
 </fieldset>
+{/if}
 
 
 </html>

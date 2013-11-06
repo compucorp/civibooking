@@ -61,7 +61,9 @@
       </tr>
       <tr class="crm-bookingview-form-block-associated-contact">
         <td class="label">{ts}Associated Contact{/ts}</td><td>
+          <a href="{crmURL p='civicrm/contact/view' q="reset=1&cid=$secondary_contact_id"}" title="view contact record">
           {$secondaryContactDisplayName}
+          </a>
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-date-made">
