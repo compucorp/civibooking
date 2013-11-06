@@ -16,8 +16,8 @@
       </thead>
     {foreach from=$resource.slot item=resItem}
       <tr class="{cycle values="odd-row,even-row"}">
-        <td>{$resItem.start}</td>
-        <td>{$resItem.end}</td>
+        <td>{$resItem.start|crmDate}</td>
+        <td>{$resItem.end|crmDate}</td>
         <td>{$resItem.resource_config_label}</td>
         <td>{$resItem.booking_id}</td>
         <td>{$resItem.function_title}</td>
@@ -27,6 +27,7 @@
       </tr>
     {/foreach}
     </table>
+  {if $resource.subslot}
     <h5>{ts}Unlimited resources{/ts}</h5>
   <table class="selector">
     <thead class="sticky">
@@ -44,7 +45,7 @@
     {foreach from=$resource.subslot item=ssItem}
     <tr class="{cycle values="odd-row,even-row"}">
       <td>{$ssItem.sub_resource_label}</td>
-      <td>{$ssItem.time_required}</td>
+      <td>{$ssItem.time_required|crmDate}</td>
       <td>{$ssItem.sub_resource_config_label}</td>
       <td>{$ssItem.quantity}</td>
       <td>{$ssItem.booking_id}</td>
@@ -54,4 +55,5 @@
     </tr>
     {/foreach}
   </table>
+  {/if}
   {/foreach}
