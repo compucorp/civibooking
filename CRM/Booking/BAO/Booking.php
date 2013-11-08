@@ -664,7 +664,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         //get Price elements(Subtotal, Discount, Total)  
         $booking_amount = CRM_Booking_BAO_Booking::getBookingAmount($values['booking_id']);
         
-        
         $eventDate = new DateTime($values['event_date']);
         
         $tplParams = array(
@@ -698,9 +697,15 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         'PDFFilename' => 'bookingReceipt.pdf',
       );
       
+      //get include payment check box 
       if(CRM_Utils_Array::value('include_payment_info', $values)){
-        //TODO: add contribution detail
-        $sendTemplateParams['tplParams']['contribution'] = NULL;
+      //get contribution record
+        $contribution = array();
+        $contributionResult = CRM_Utils_Array::value('contribution',$bookingDetail);
+        foreach ($contributionResult as $kx => $ctbItem) {
+            $contribution = $ctbItem;
+        }
+        $sendTemplateParams['tplParams']['contribution'] = $contribution;
       }
 
       // address required during receipt processing (pdf and email receipt)
@@ -726,19 +731,17 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       if($bcc){
         $sendTemplateParams['bcc'] = $bcc;
       }
-
+      
       list($sent, $subject, $message, $html)  = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
 
       if($sent & CRM_Utils_Array::value('log_confirmation_email', $config)){
           $params = array(
-            'version' => 3,
             'option_group_name' => 'activity_type',
             'name' => 'Email',
           );
-          $optionValue = civicrm_api('OptionValue', 'get', $params);
+          $optionValue = civicrm_api3('OptionValue', 'get', $params);
           $activityTypeId = $optionValue['values'][$optionValue['id']]['value'];
           $params = array(
-            'version' => 3,
             /*'source_contact_id' => $values['source_contact_id'],*/
             'activity_type_id' => $activityTypeId,
             'subject' => ts('Booking Confirmation Email'),
@@ -747,7 +750,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             'status_id' => 2,
             'priority_id' => 1,
           );
-          $result = civicrm_api('Activity', 'create', $params);
+          $result = civicrm_api3('Activity', 'create', $params);
        }
       if ($returnMessageText) {
         return array(

@@ -381,6 +381,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $values['participants_actual'] = CRM_Utils_Array::value('participants_actual',$this->_values);
         $values['receipt_header_message'] = CRM_Utils_Array::value('receipt_header_message',$bookingInfo);
         $values['receipt_footer_message'] = CRM_Utils_Array::value('receipt_footer_message',$bookingInfo);
+        $values['include_payment_info'] = CRM_Utils_Array::value('include_payment_information', $bookingInfo);
 
         $emailTo = CRM_Utils_Array::value('email_to', $bookingInfo);
         $contactIds = array();
@@ -401,7 +402,6 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
             array_push($contactIds, $emailTo);
           }
         }
-        $values['include_payment_info'] = CRM_Utils_Array::value('include_payment_information', $bookingInfo);
         
         foreach ($contactIds as $key => $cid) {
           $return = CRM_Booking_BAO_Booking::sendMail($cid, $values);   //send email
