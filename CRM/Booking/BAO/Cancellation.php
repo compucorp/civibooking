@@ -30,11 +30,10 @@ class CRM_Booking_BAO_Cancellation extends CRM_Booking_DAO_Cancellation {
       $transaction = new CRM_Core_Transaction();
       try{
         $params = array(
-          'version' => 3,
           'option_group_name' => CRM_Booking_Utils_Constants::OPTION_BOOKING_STATUS,
           'name' => CRM_Booking_Utils_Constants::OPTION_VALUE_CANCELLED,
         );
-        $result = civicrm_api('OptionValue', 'get', $params);
+        $result = civicrm_api3('OptionValue', 'get', $params);
 
         $params = array();
         $params['id'] = $bookingID;
@@ -63,10 +62,12 @@ class CRM_Booking_BAO_Cancellation extends CRM_Booking_DAO_Cancellation {
         foreach ($slots as $slotId => $slots) {
           $subSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($slotId);
           foreach ($subSlots as $subSlotId => $subSlot) {
-           CRM_Booking_BAO_SubSlot::cancel($subSlotId);
+          CRM_Booking_BAO_SubSlot::cancel($subSlotId);
           }
-          CRM_Booking_BAO_Slot::cancel($slotId);
+         CRM_Booking_BAO_Slot::cancel($slotId);
         }
+        // return TRUE;
+        
       }catch (Exception $e) {
           $transaction->rollback();
           CRM_Core_Error::fatal($e->getMessage());

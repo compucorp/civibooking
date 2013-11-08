@@ -103,13 +103,6 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
 
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
-    // $bookingAmount = CRM_Booking_BAO_Booking::getBookingAmount($this->_id);
-//     
-    // $defaults['resource_fee'] = CRM_Utils_Array::value('resource_fees', $bookingAmount);
-    // $defaults['sub_resource_fee'] = CRM_Utils_Array::value('sub_resource_fees', $bookingAmount);
-    // $defaults['adhoc_charges'] = CRM_Utils_Array::value('adhoc_charges_fees', $bookingAmount);
-    // $defaults['booking_total'] = CRM_Utils_Array::value('total_amount', $bookingAmount);
-//     
     return $defaults;
   }
 
@@ -124,7 +117,7 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     $params['additional_charge'] = $values['adjustment'];
     $params['comment'] = $values['comment'];
     
-    civicrm_api3('Cancellation', 'create', $params);
+    CRM_Booking_BAO_Cancellation::create($params);
     parent::postProcess();
     CRM_Core_Session::setStatus(ts('The booking \'%1\' has been cancelled.', array(1 => $this->_values['title'])), ts('Saved'), 'success');
   }
