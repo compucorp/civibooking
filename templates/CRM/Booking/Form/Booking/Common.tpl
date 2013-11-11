@@ -38,10 +38,18 @@
       {/if}
     </div>
 </div>
+{if $rows.0.contribution_id}
+<!-- Show Contribution record  -->
+    <fieldset>
+    {include file="CRM/Contribute/Form/Selector.tpl" context="Search"}
+    </fieldset>
+{else}
+<!-- Show Record Payment form -->
 <div class="crm-section">
   <div class="label">{$form.record_contribution.label}</div>
   <div class="content">{$form.record_contribution.html}</div>
 </div>
+
 <fieldset id="payment-detail" class="hiddenElement"><legend>{ts}Payment details{/ts}</legend>
   <div class="crm-section">
     <div class="label">{$form.select_payment_contact.label}</div>
@@ -80,6 +88,8 @@
     <div class="content">{$form.include_payment_information.html}</div>
 </div>
 </fieldset>
+{/if}
+
 {literal}
 <script type="text/javascript">
 cj(function($) {
