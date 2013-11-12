@@ -48,9 +48,6 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
   public function preProcess() {
     parent::preProcess();
     $this->assign('booking', $this->_values);
-    
-    //get contribution record
-    CRM_Booking_Form_Booking_Update::associatedContribution($this->_values['primary_contact_id']);
   }
 
   /**
@@ -105,29 +102,5 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
     }
   }
 
-
- /**
-   * This function is used for the to show the associated
-   * contribution for the booking
-   * @form array $form (ref.) an assoc array of name/value pairs
-   * return null
-   * @access public
-   */
-  public static function associatedContribution($contactId = NULL) {
-    $controller = new CRM_Core_Controller_Simple(
-      'CRM_Contribute_Form_Search',
-      ts('Contributions'),
-      NULL,
-      FALSE, FALSE, TRUE
-    );
-    $controller->setEmbedded(TRUE);
-    $controller->reset();
-    $controller->set('force', 1);
-    $controller->set('cid', $contactId);
-    //$controller->set('memberId', $membershipId);
-    $controller->set('context', 'contribution');
-    $controller->process();
-    $controller->run();
-  }
 }
 

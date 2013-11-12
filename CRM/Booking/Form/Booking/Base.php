@@ -85,6 +85,9 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     CRM_Booking_BAO_Booking::resolveDefaults($this->_values);
     $title = $this->_values['title'];
     CRM_Utils_System::setTitle(ts('Update Booking') . " - $title");
+    
+    //get contribution record
+    $this->associatedContribution($this->_id);
   }
 
   /**
@@ -420,5 +423,38 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     }
   }
 
+  /**
+   * This function is used for the to show the associated
+   * contribution for the booking
+   * return null
+   */
+  function associatedContribution($booking_id = NULL) {
+    //get contributionId from booking_payment 
+    $contributionId = NULL;
+    $bookingPaymentResult = civicrm_api3('BookingPayment','get',array('booking_id'=>$booking_id,));
+    if($bookingPaymentResult['count'] == 0){
+        return NULL;
+    }else{
+        $bookingPaymentValues = CRM_Utils_Array::value('values', $bookingPaymentResult);
+        $contributionId = CRM_Utils_Array::value('contribution_id',current($bookingPaymentValues));
+    }
+    
+    //get contribution record by selector controller framework
+    //REMARK: consider CiviCRM CORE dependency
+    $this->_formValues['contribution_id'] = $contributionId;
+    $this->_queryParams = CRM_Contact_BAO_Query::convertFormValues($this->_formValues);
+    $selector = new CRM_Contribute_Selector_Search($this->_queryParams,
+      NULL, NULL, NULL, NULL, NULL
+    );
+
+    $controller = new CRM_Core_Selector_Controller($selector,
+      NULL, NULL,
+      CRM_Core_Action::VIEW,
+      $this,
+      CRM_Core_Selector_Controller::TRANSFER, NULL
+    );
+    $controller->setEmbedded(TRUE);
+    $controller->run();
+  }
 }
 
