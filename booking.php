@@ -416,7 +416,9 @@ function booking_civicrm_navigationMenu( &$params ) {
       ),
     )
   );
+
   array_unshift($params, $bookingMenu);
+  /*
   $searchMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Search...', 'id', 'name');
   if ($searchMenuId) {
     $maxSearchMenuKey = max( array_keys($params[$searchMenuId]['child']));
@@ -435,7 +437,7 @@ function booking_civicrm_navigationMenu( &$params ) {
     $searchMenuTemp =  $params[$searchMenuId];
     unset($params[$searchMenuId]);
     array_unshift($params, $searchMenuTemp);
-
   }
+  */
 
 }

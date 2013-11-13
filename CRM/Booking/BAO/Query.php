@@ -114,7 +114,6 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
         $query->_select['booking_event_date'] = "civicrm_booking.event_date as booking_event_date";
         $query->_element['booking_event_date'] = 1;
       }
-
       if (CRM_Utils_Array::value('booking_associated_contact', $query->_returnProperties)) {
         $query->_select['civicrm_booking_associated_contact'] = "civicrm_booking.secondary_contact_id as booking_associated_contact_id";
         $query->_select['civicrm_booking_associated_contact_id'] = "civicrm_booking_associated_contact.sort_name as booking_associated_contact";
@@ -326,7 +325,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
 
     $paymentStatus = CRM_Contribute_PseudoConstant::contributionStatus();
     foreach ($paymentStatus as $id => $name) {
-      $form->_paymentStatus = &$form->addElement('checkbox', "booking_payment_status_id[$id]", NULL, $name);
+      $form->_paymentStatus = $form->addElement('checkbox', "booking_payment_status_id[$id]", NULL, $name);
     }
 
   }
