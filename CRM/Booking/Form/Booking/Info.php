@@ -304,7 +304,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
           $result = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $bookingID, 'is_deleted' => 0));
           $currentAdhocCharges = $result['values'];
         }
-        $items = CRM_Utils_Array::value('items', $adhocCharges);
+        // fixed bug of CVB-94 
+        // Ad-hoc charges - cannot save
+        $items = array_filter(CRM_Utils_Array::value('items', $adhocCharges));
         $newAdhocChargesIds = array();
          foreach ($items as $key => $item) {
           $params = array(
@@ -322,6 +324,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
           $adhocChargesId =  CRM_Utils_Array::value('id', $result);
           array_push($newAdhocChargesIds, $adhocChargesId);
         }
+
+
         if($this->_action == CRM_Core_Action::UPDATE){ //remove  adhoc charges that have been removed
           $adhocChargesToBeRemoved = array();
           foreach ($currentAdhocCharges as $key => $adc) {
