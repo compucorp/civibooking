@@ -115,8 +115,8 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
         $query->_element['booking_event_date'] = 1;
       }
       if (CRM_Utils_Array::value('booking_associated_contact', $query->_returnProperties)) {
-        $query->_select['civicrm_booking_associated_contact'] = "civicrm_booking.secondary_contact_id as booking_associated_contact_id";
-        $query->_select['civicrm_booking_associated_contact_id'] = "civicrm_booking_associated_contact.sort_name as booking_associated_contact";
+        $query->_select['booking_associated_contact'] = "civicrm_booking_associated_contact.sort_name as booking_associated_contact";
+        $query->_select['booking_associated_contact_id'] = "civicrm_booking.secondary_contact_id as booking_associated_contact_id";
         $query->_element['civicrm_booking_associated_contact'] = 1;
         $query->_element['civicrm_booking_associated_contact_id'] = 1;
         $query->_tables['civicrm_contact'] = 1;
