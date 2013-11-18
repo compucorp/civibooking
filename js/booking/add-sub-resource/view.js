@@ -156,7 +156,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       BookingApp.Common.Views.BookingProcessModal.prototype.onRender.apply(this, arguments);
       var thisView = this;
       this.$el.find('#loading').show();
-      var initsdate = moment(new Date(this.startDate));
+      var initsdate = moment(this.startDate, "YYYY-MM-DD HH:mm");
       var sTime = [initsdate.hours(), ":", initsdate.minute() <10?'0' + initsdate.minute() : initsdate.minute()].join("");
       this.$el.find("#required-time-select").val(sTime);
       this.$el.find("#required-day-select").val(initsdate.format("D"));
