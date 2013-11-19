@@ -74,7 +74,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     'booking_total_amount',
     'booking_event_date',
     'booking_associated_contact_id',
-    'booking_associated_contact_sort_name',
+    'booking_associated_contact',
     'booking_created_date',
   );
 
@@ -348,6 +348,11 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     $cancelStatusId = CRM_Utils_Array::value('value', CRM_Utils_Array::value($ov['id'], $ov['values']));
     while ($result->fetch()) {
       $row = array();
+      //Fixed - CVB-84
+      //Make sure we don't return contact that doesn't have booking
+      if(!$result->booking_id){
+        continue;
+      }
 
       // the columns we are interested in
       foreach (self::$_properties as $property) {
