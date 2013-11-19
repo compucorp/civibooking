@@ -28,7 +28,7 @@ cj(function($) {
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
 
   if(bookingSlotDate){
-    var date = new Date(bookingSlotDate);
+    var date = moment(bookingSlotDate, "YYYY-MM-DD HH:mm").toDate();
   }else{
     var date = new Date();
   }
