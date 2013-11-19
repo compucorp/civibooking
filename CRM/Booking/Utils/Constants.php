@@ -36,7 +36,7 @@
 
 class CRM_Booking_Utils_Constants{
 
-  const ACTIVITY_TYPE = 'booking_acivity_booking';
+  const ACTIVITY_TYPE = 'booking_activity_booking';
   const OPTION_BOOKING_STATUS = 'booking_status';
   const OPTION_RESOURCE_TYPE = 'booking_resource_type';
   const OPTION_RESOURCE_LOCATION = 'booking_resource_location';
