@@ -13,7 +13,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
       'version' => 3,
       'sequential' => 1,
       'label' =>  'Booking',
-      'name' => 'booking_acivity_booking',
+      'name' => CRM_Booking_Utils_Constants::ACTIVITY_TYPE,
       'weight' => 1,
       'is_active' => 1,
       'is_reserved' => 1
