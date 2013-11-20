@@ -17,8 +17,8 @@ function show_minical(){
   }
 }
 
-cj(function($) {
 
+cj(function($) {
   scheduler.locale.labels.timeline_tab = "Timeline";
   scheduler.config.show_loading = true;
   scheduler.config.full_day = true;
@@ -32,6 +32,7 @@ cj(function($) {
   }else{
     var date = new Date();
   }
+  
   scheduler.init("resource_scheduler", date ,"timeline");
   scheduler.setLoadMode("day");
   if(bookingId){
@@ -39,114 +40,140 @@ cj(function($) {
   }else{
     var url = CRM.url('civicrm/booking/ajax/slots');
   }
+  
   scheduler.load(url,"json");
+  
+  //event on lightbox changed
+  scheduler.attachEvent("onEventChanged", function(event_id,event_object){
+    //DEBUG    
+    console.log(event_object);
+    
+    var ev = event_object;
+     var item = {
+      id: ev.id,
+      resource_id: ev.resource_id,
+      start_date:  moment(ev.start_date).format("YYYY-M-D HH:mm:ss"),
+      end_date: moment(ev.end_date).format("YYYY-M-D HH:mm:ss"),
+      label: ev.label,
+      text: ev.text,
+      configuration_id: ev.configuration_id ,
+      quantity: ev.quantity,
+      price: ev.price,
+      note: ev.note,
+      is_updated: true,
+    };
+    basket[ev.id] = item;
+    updateBasket(item);
+  });
 
+  //Onclick at lightbox
   scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
 
     scheduler.startLightbox(id,null);
     scheduler.hideCover();
-    $("#crm-booking-new-slot").dialog({
-        title: ts('Add resource to basket'),
-        modal: true,
-        minWidth: 600,
-        open: function() {
-          $('#crm-booking-new-slot').html(['<div class="crm-loading-element">', ts('Loading ...'), '</div>'].join(""));
+    
+		$("#crm-booking-new-slot").dialog({
+			title : ts('Add resource to basket'),
+			modal : true,
+			minWidth : 600,
+			open : function() {
+				$('#crm-booking-new-slot').html(['<div class="crm-loading-element">', ts('Loading ...'), '</div>'].join(""));
+				//CiviCRM api call to set up configuration options
+				CRM.api('Resource', 'get', {
+					id : ev.resource_id,
+					sequential : 1,
+					'api.resource_config_set.get' : {
+						id : '$value.set_id',
+						'api.resource_config_option.get' : {
+							set_id : '$value.id',
+							'api.option_group.get' : {
+								name : 'booking_size_unit',
+							},
+							'api.option_value.get' : {
+								value : '$value.unit_id',
+								option_group_id : '$value.api.option_group.get.value'
+							}
+						}
+					}
+				}, {
+					success : function(data) {
+						//insert the template so tag <form /> will work for validation
+						var template = _.template(cj('#add-resource-template').html());
+						$('#crm-booking-new-slot').html(template());
 
-           CRM.api('Resource', 'get', {
-                id: ev.resource_id,
-                sequential: 1,
-                'api.resource_config_set.get': {
-                  id: '$value.set_id',
-                  'api.resource_config_option.get': {
-                    set_id: '$value.id',
-                    'api.option_group.get':{
-                      name: 'booking_size_unit',
-                    },
-                    'api.option_value.get':{
-                      value: '$value.unit_id',
-                      option_group_id: '$value.api.option_group.get.value'
-                    }
-                  }
-                }
-              },
-            {
-            success: function(data) {
-              //insert the template so tag <form /> will work for validation
-              var template = _.template(cj('#add-resource-template').html());
-              $('#crm-booking-new-slot').html(template());
+						$('#add-resource-form').validate({
+							rules : {
+								configuration : {
+									required : true
+								},
+								quantity : {
+									required : true,
+									number : true
+								},
+							}
+						});
 
-              $('#add-resource-form').validate({
-                    rules: {
-                        configuration: {
-                          required: true
-                        },
-                        quantity: {
-                          required: true,
-                          number: true
-                        },
-                    }
-              });
+						if (ev.readonly) {
+						  //not allow to edit
+							//$(".crm-booking-form-add-resource").attr("disabled", true);
+							//$("#add-resource-btn").hide();
+							$("#price-estimate").html(ev.price);
+							$("#resource-note").val(ev.note);
+							$("input[name='quantity']").val(ev.quantity);
+						} else {
+							$("#SelectResource :input").attr("disabled", false);
+							$("#price-estimate").html('0');
+							$("#resource-note").val('');
+							$("input[name='quantity']").val('');
+							$("#add-resource-btn").show();
+						}
+						var initStartDate = moment(new Date(ev.start_date));
+						var initEndDate = moment(new Date(ev.end_date));
+						var startTime = [initStartDate.hours(), ":", initStartDate.minute() < 10 ? '0' + initStartDate.minute() : initStartDate.minute()].join("");
+						var endTime = [initEndDate.hours(), ":", initEndDate.minute() < 10 ? '0' + initEndDate.minute() : initEndDate.minute()].join("");
+						$("#start-time-select").val(startTime);
+						$("#start-day-select").val(initStartDate.format("D"));
+						$("#start-month-select").val(initStartDate.months() + 1);
+						$("#start-year-select").val(initStartDate.years());
+						$("#end-time-select").val(endTime);
+						$("#end-day-select").val(initEndDate.format("D"));
+						$("#end-month-select").val(initEndDate.months() + 1);
+						$("#end-year-select").val(initEndDate.years());
 
-              if(ev.readonly){
-                $(".crm-booking-form-add-resource").attr("disabled", true);
-                $("#price-estimate").html(ev.price);
-                $("#resource-note").val(ev.note);
-                $("input[name='quantity']").val(ev.quantity);
-                $("#add-resource-btn").hide();
-              }else{
-                $("#SelectResource :input").attr("disabled", false);
-                $("#price-estimate").html('0');
-                $("#resource-note").val('');
-                $("input[name='quantity']").val('');
-                $("#add-resource-btn").show();
-              }
-              var initStartDate = moment(new Date(ev.start_date));
-              var initEndDate = moment(new Date(ev.end_date));
-              var startTime = [initStartDate.hours(), ":", initStartDate.minute() <10?'0' + initStartDate.minute() : initStartDate.minute()].join("");
-              var endTime = [initEndDate.hours(), ":", initEndDate.minute() <10?'0' + initEndDate.minute() : initEndDate.minute()].join("");
-              $("#start-time-select").val(startTime);
-              $("#start-day-select").val(initStartDate.format("D"));
-              $("#start-month-select").val(initStartDate.months() + 1);
-              $("#start-year-select").val(initStartDate.years());
-              $("#end-time-select").val(endTime);
-              $("#end-day-select").val(initEndDate.format("D"));
-              $("#end-month-select").val(initEndDate.months() + 1);
-              $("#end-year-select").val(initEndDate.years());
-
-
-              var resource =  data['values']['0'];
-              $("#resource-label").val(resource.label);
-              var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
-              var optionsTemp = [];
-              if(ev.readonly){
-                var configId = ev.configuration_id;
-                 _.each(options, function (item, key){
-                  if(item.id == configId){
-                    item.selected = "selected";
-                  }else{
-                    item.selected = "";
-                  }
-                  optionsTemp.push(item);
-                });
-                options = optionsTemp;
-              }
-              var template = _.template(cj('#select-config-option-template').html());
-              $('#configSelect').html(template({
-                options: options,
-                first_option:  ["- ", ts('select configuration')," -"].join("")}));
-                }
-              });
-        },
-        close: function() {
-          scheduler.endLightbox(false, null);
-          $(this).dialog('destroy');
-        },
-    });
+						var resource = data['values']['0'];
+						$("#resource-label").val(resource.label);
+						var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
+						var optionsTemp = [];
+						if (ev.readonly) {
+							var configId = ev.configuration_id;
+							_.each(options, function(item, key) {
+								if (item.id == configId) {
+									item.selected = "selected";
+								} else {
+									item.selected = "";
+								}
+								optionsTemp.push(item);
+							});
+							options = optionsTemp;
+						}
+						var template = _.template(cj('#select-config-option-template').html());
+						$('#configSelect').html(template({
+							options : options,
+							first_option : ["- ", ts('select configuration'), " -"].join("")
+						}));
+					}
+				});
+			},
+			close : function() {
+				scheduler.endLightbox(false, null);
+				$(this).dialog('destroy');
+			},
+		}); 
   };
 
-
- $(document).on("click", 'input[name="select-resource-save"]', function(e){
+  //Onclick "select-resource-save"
+  $(document).on("click", 'input[name="select-resource-save"]', function(e){
     e.preventDefault();
     if (!$('#add-resource-form').valid()) {
         return false;
@@ -184,7 +211,8 @@ cj(function($) {
     $("#crm-booking-new-slot").dialog('close');
   });
 
- $(document).on("click", ".remove-from-basket-btn", function(e){
+  //Onclick "Remove from basket"
+  $(document).on("click", ".remove-from-basket-btn", function(e){
     e.preventDefault();
     var eid = $(this).data('eid');
     var ev = scheduler.getEvent(eid);
@@ -200,13 +228,14 @@ cj(function($) {
     CRM.alert(ts(''), ts('Resource removed'), 'success');
   });
 
-
- $(document).on('click', 'input[name="select-resource-cancel"]', function(e){
+  //Onclick "select-resource-cancel"
+  $(document).on('click', 'input[name="select-resource-cancel"]', function(e){
     e.preventDefault();
     scheduler.endLightbox(false, null);
     $("#crm-booking-new-slot").dialog('close');
   });
 
+  //adjusting "quantity"
   $(document).on('keypress keyup keydown', 'input[name="quantity"]',  function(e) {
     var price = $("#configSelect").find(':selected').data('price');
     var priceEstimate = price * $(this).val();
@@ -215,6 +244,7 @@ cj(function($) {
     }
   });
 
+  //Onchange "configSelect"
   $('#configSelect').change(function(e) {
     var val = $(this).val();
     if(val == ""){
@@ -225,11 +255,21 @@ cj(function($) {
     }
   });
 
+  //Render basket table
   function updateBasket(item){
-    subTotal =  parseFloat(subTotal) + parseFloat(item.price);
+    var el =  $('tr[data-eid=' + item.id + ']');
+    if(el.length){ //check object existing
+    }else{
+      subTotal =  parseFloat(subTotal) + parseFloat(item.price);
+    }
+
     if(!isNaN(subTotal)){
       var template = _.template(cj('#selected-resource-row-tpl').html());
-      $('#basket-table > tbody:last').append(template({data: item}));
+      if(el.length){ //check object existing
+        el.replaceWith(template({data: item}));
+      }else{
+        $('#basket-table > tbody:last').append(template({data: item})); //add new item to table
+      }
       $("#resources").val(JSON.stringify(basket)); //ADD JSON object to basket
       $('#subTotal').html(subTotal);
       $('#basket-region').show();
@@ -238,6 +278,7 @@ cj(function($) {
     }
   }
 
+  //execute when page load
   function loadEvents(){
     if ($.trim($("#resources").val())) {
         var slots = [];
