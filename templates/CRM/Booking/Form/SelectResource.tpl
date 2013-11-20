@@ -54,13 +54,15 @@
         <div class="crm-section" >
           <h4>Currently in basket</h4>
           <table id="basket-table" >
-            <tr>
-                <th>Resource</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Price</th>
-                <th></th>
-             </tr>
+            <thead>
+                <tr>
+                    <th>Resource</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Price</th>
+                    <th></th>
+                 </tr>
+            </thead>
             <tbody>
 
             </tbody>
