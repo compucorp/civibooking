@@ -129,7 +129,8 @@ class CRM_Booking_Page_AJAX {
           "price" => CRM_Booking_BAO_Slot::calulatePrice($slot['config_id'], $slot['quantity']),
           "quantity" =>  CRM_Utils_Array::value('quantity', $slot),
           "note" =>  CRM_Utils_Array::value('note', $slot),
-          "readonly" => true
+          "readonly" => true,
+          "booking_id" => CRM_Utils_Array::value('booking_id', $slot)
         );
         if($bookingStatus == 1){ //Provisional, TODO: Fixed to get the value from the name i.e provisional
           $data['color'] = $provisionalColour;
