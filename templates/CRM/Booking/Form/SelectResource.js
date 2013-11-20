@@ -35,26 +35,39 @@ cj(function($) {
   
   scheduler.init("resource_scheduler", date ,"timeline");
   scheduler.setLoadMode("day");
+  
   if(bookingId){
     var url = [CRM.url('civicrm/booking/ajax/slots'), '?booking_id=',bookingId].join('');
   }else{
     var url = CRM.url('civicrm/booking/ajax/slots');
   }
-  
   scheduler.load(url,"json");
   
+  //prevent lightbox changing
+  scheduler.attachEvent("onBeforeDrag", function(id){
+    var evObj = scheduler.getEvent(id);
+    if(evObj.booking_id != bookingId){  //check adjustable slots against with bookingId
+      return !evObj.readonly;  //allow
+    }else{
+      return evObj.readonly;   //not allow
+    }
+  });
+  
   //event on lightbox changed
-  scheduler.attachEvent("onEventChanged", function(event_id,event_object){
-    //DEBUG    
-    console.log(event_object);
+  scheduler.attachEvent("onEventChanged", function(event_id,ev){
     
-    var ev = event_object;
-     var item = {
+    //retrieve resource label
+    var resourceLabel = $("#resource-label").val();
+    if(typeof resourceLabel === "undefined"){
+      resourceLabel = ev.label;
+    }
+    //initiate item for updateBasket ui
+    var item = {
       id: ev.id,
       resource_id: ev.resource_id,
       start_date:  moment(ev.start_date).format("YYYY-M-D HH:mm:ss"),
       end_date: moment(ev.end_date).format("YYYY-M-D HH:mm:ss"),
-      label: ev.label,
+      label: resourceLabel,
       text: ev.text,
       configuration_id: ev.configuration_id ,
       quantity: ev.quantity,
@@ -113,11 +126,12 @@ cj(function($) {
 								},
 							}
 						});
-
 						if (ev.readonly) {
-						  //not allow to edit
-							//$(".crm-booking-form-add-resource").attr("disabled", true);
-							//$("#add-resource-btn").hide();
+						  if(ev.booking_id != bookingId){ //check editable slots against with bookingId
+  						  //set not allow to edit
+     						$(".crm-booking-form-add-resource").attr("disabled", true);
+    						$("#add-resource-btn").hide();
+						  }
 							$("#price-estimate").html(ev.price);
 							$("#resource-note").val(ev.note);
 							$("input[name='quantity']").val(ev.quantity);
@@ -191,7 +205,7 @@ cj(function($) {
     ev.configuration_id = $('#configSelect').val();
     ev.note = $("#resource-note").val();
     ev.color = newSlotcolour;
-    ev.readonly = true;
+    //ev.readonly = true;
     var item = {
       id: ev.id,
       resource_id: ev.resource_id,

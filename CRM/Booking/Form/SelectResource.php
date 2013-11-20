@@ -118,6 +118,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
           'note' => CRM_Utils_Array::value('note', $value),
           'color' =>  CRM_Utils_Array::value('slot_being_edited_colour', $config),
           'is_updated' => TRUE,
+          'booking_id' => CRM_Utils_Array::value('booking_id', $value),
         );
       }
       $firstSlot = reset($slots);
