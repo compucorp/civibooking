@@ -17,7 +17,6 @@ function show_minical(){
   }
 }
 
-
 cj(function($) {
   scheduler.locale.labels.timeline_tab = "Timeline";
   scheduler.config.show_loading = true;
@@ -30,7 +29,7 @@ cj(function($) {
   if(bookingSlotDate){
     var date = moment(bookingSlotDate, "YYYY-MM-DD HH:mm").toDate();
   }else{
-    var date = new Date();
+    var date = new Date();  //today date
   }
   
   scheduler.init("resource_scheduler", date ,"timeline");
@@ -46,43 +45,29 @@ cj(function($) {
   //prevent lightbox changing
   scheduler.attachEvent("onBeforeDrag", function(id){
     var evObj = scheduler.getEvent(id);
-    if(evObj.booking_id != bookingId){  //check adjustable slots against with bookingId
-      return !evObj.readonly;  //allow
-    }else{
-      return evObj.readonly;   //not allow
+    if(evObj != "undefined"){
+      if(evObj.booking_id != bookingId){  //check adjustable slots against with bookingId
+        return !evObj.readonly;  //allow
+      }else{
+        return evObj.readonly;   //not allow
+      }
     }
   });
   
-  //event on lightbox changed
+  //when edit lightbox
   scheduler.attachEvent("onEventChanged", function(event_id,ev){
-    
-    //retrieve resource label
-    var resourceLabel = $("#resource-label").val();
-    if(typeof resourceLabel === "undefined"){
-      resourceLabel = ev.label;
-    }
-    //initiate item for updateBasket ui
-    var item = {
-      id: ev.id,
-      resource_id: ev.resource_id,
-      start_date:  moment(ev.start_date).format("YYYY-M-D HH:mm:ss"),
-      end_date: moment(ev.end_date).format("YYYY-M-D HH:mm:ss"),
-      label: resourceLabel,
-      text: ev.text,
-      configuration_id: ev.configuration_id ,
-      quantity: ev.quantity,
-      price: ev.price,
-      note: ev.note,
-      is_updated: true,
-    };
-    basket[ev.id] = item;
-    updateBasket(item);
+    var item = getItemInBasket(ev.id);  //get item in basket
+    var resourceLabel = item.label;     //get resoruce label
+    item.start_date = moment(ev.start_date).format("YYYY-M-D HH:mm:ss");
+    item.end_date = moment(ev.end_date).format("YYYY-M-D HH:mm:ss");
+    item.is_updated = true;
+    basket[ev.id] = item;   //update item in basket
+    updateBasketTable(item);  //render ui
   });
 
-  //Onclick at lightbox
+  //click at lightbox
   scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
-
     scheduler.startLightbox(id,null);
     scheduler.hideCover();
     
@@ -114,7 +99,7 @@ cj(function($) {
 						//insert the template so tag <form /> will work for validation
 						var template = _.template(cj('#add-resource-template').html());
 						$('#crm-booking-new-slot').html(template());
-
+            //add validation
 						$('#add-resource-form').validate({
 							rules : {
 								configuration : {
@@ -126,22 +111,25 @@ cj(function($) {
 								},
 							}
 						});
-						if (ev.readonly) {
-						  if(ev.booking_id != bookingId){ //check editable slots against with bookingId
-  						  //set not allow to edit
-     						$(".crm-booking-form-add-resource").attr("disabled", true);
-    						$("#add-resource-btn").hide();
-						  }
-							$("#price-estimate").html(ev.price);
-							$("#resource-note").val(ev.note);
-							$("input[name='quantity']").val(ev.quantity);
-						} else {
+						var item = getItemInBasket(id);
+						if (item == null && (ev.booking_id === "undefined")) { //new item?
 							$("#SelectResource :input").attr("disabled", false);
+							//clear form value
 							$("#price-estimate").html('0');
 							$("#resource-note").val('');
 							$("input[name='quantity']").val('');
 							$("#add-resource-btn").show();
+						} else {
+						  //set form value
+							$("#price-estimate").html(ev.price);
+							$("#resource-note").val(ev.note);
+							$("input[name='quantity']").val(ev.quantity);
 						}
+            //lock editing
+						if((ev.readonly) && (ev.booking_id != bookingId)){ //check editable slots against with bookingId
+              $(".crm-booking-form-add-resource").attr("disabled", true);
+              $("#add-resource-btn").hide();
+            } 
 						var initStartDate = moment(new Date(ev.start_date));
 						var initEndDate = moment(new Date(ev.end_date));
 						var startTime = [initStartDate.hours(), ":", initStartDate.minute() < 10 ? '0' + initStartDate.minute() : initStartDate.minute()].join("");
@@ -154,12 +142,13 @@ cj(function($) {
 						$("#end-day-select").val(initEndDate.format("D"));
 						$("#end-month-select").val(initEndDate.months() + 1);
 						$("#end-year-select").val(initEndDate.years());
-
+						
 						var resource = data['values']['0'];
 						$("#resource-label").val(resource.label);
 						var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
 						var optionsTemp = [];
-						if (ev.readonly) {
+						
+						//if (ev.readonly) {
 							var configId = ev.configuration_id;
 							_.each(options, function(item, key) {
 								if (item.id == configId) {
@@ -170,8 +159,9 @@ cj(function($) {
 								optionsTemp.push(item);
 							});
 							options = optionsTemp;
-						}
+						//}
 						var template = _.template(cj('#select-config-option-template').html());
+						
 						$('#configSelect').html(template({
 							options : options,
 							first_option : ["- ", ts('select configuration'), " -"].join("")
@@ -197,41 +187,34 @@ cj(function($) {
     var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
     var endTime = $("#end-time-select").val().split(":");
     var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);
-    ev.text = [$("#resource-label").val(), " - ", ts("New")].join("");
+    
     ev.start_date = startDate;
     ev.end_date = endDate;
     ev.price = $("#price-estimate").html();
     ev.quantity = $('input[name="quantity"]').val();
     ev.configuration_id = $('#configSelect').val();
     ev.note = $("#resource-note").val();
-    ev.color = newSlotcolour;
-    //ev.readonly = true;
-    var item = {
-      id: ev.id,
-      resource_id: ev.resource_id,
-      start_date:  moment(ev.start_date).format("YYYY-M-D HH:mm"),
-      end_date: moment(ev.end_date).format("YYYY-M-D HH:mm"),
-      label: $("#resource-label").val(),
-      text: ev.text,
-      configuration_id: ev.configuration_id ,
-      quantity: ev.quantity,
-      price: ev.price,
-      note: ev.note,
-      is_updated: false,
-    };
+    
+    var item = getItemInBasket(ev.id);
+    if(item == null){ //new item?
+      ev.text = [$("#resource-label").val(), " - ", ts("New")].join("");
+      ev.color = newSlotcolour;   //mark color to new item
+    }
+    item = createItem(ev);
     basket[ev.id] = item;
-    updateBasket(item);
+    updateBasketTable(item);
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
   });
 
-  //Onclick "Remove from basket"
+  //click "Remove from basket"
   $(document).on("click", ".remove-from-basket-btn", function(e){
     e.preventDefault();
     var eid = $(this).data('eid');
     var ev = scheduler.getEvent(eid);
-    subTotal -=  ev.price;
+    //subTotal -=  ev.price;
     delete basket[eid];
+    subTotal = calculateTotalPrice();
     $('tr[data-eid=' + eid + ']').remove();
     $('#subTotal').html(subTotal);
     $("#resources").val(JSON.stringify(basket));
@@ -270,13 +253,9 @@ cj(function($) {
   });
 
   //Render basket table
-  function updateBasket(item){
-    var el =  $('tr[data-eid=' + item.id + ']');
-    if(el.length){ //check object existing
-    }else{
-      subTotal =  parseFloat(subTotal) + parseFloat(item.price);
-    }
-
+  function updateBasketTable(item){
+    var el =  $('tr[data-eid=' + item.id + ']');  //check item in basket table
+    subTotal = calculateTotalPrice();
     if(!isNaN(subTotal)){
       var template = _.template(cj('#selected-resource-row-tpl').html());
       if(el.length){ //check object existing
@@ -292,6 +271,55 @@ cj(function($) {
     }
   }
 
+  //initiate item
+	function createItem(ev) {
+		var item = {
+			id : ev.id,
+			resource_id : ev.resource_id,
+			start_date : moment(ev.start_date).format("YYYY-M-D HH:mm"),
+			end_date : moment(ev.end_date).format("YYYY-M-D HH:mm"),
+			label : $("#resource-label").val(),
+			text : ev.text,
+			configuration_id : ev.configuration_id,
+			quantity : ev.quantity,
+			price : ev.price,
+			note : ev.note,
+			readonly : ev.readonly,
+			is_updated : false,
+		};
+		return item;
+	}
+
+  //calculate total price in basket
+  function calculateTotalPrice(){
+    var priceList = $.map(basket, function(val, key) {
+      return { price: val.price, quantity: val.quantity};
+    });
+    if(typeof priceList[0] === 'undefined'){
+      return 0;
+    }
+    var total = 0;
+    for(var i=0; i < priceList.length; ++i){
+       total += parseFloat(priceList[i].price);
+    }
+    return total;
+  }
+
+  //check item id in basket
+  function getItemInBasket(id){
+    var idList = $.map(basket, function(val, key) {
+      return { id: val.id};
+    });
+    if(typeof idList[0] !== 'undefined'){
+      for(var i = 0; i<idList.length; ++i){
+        if(id == idList[i].id){
+          return basket[id];
+        }
+      }
+    }
+    return null;
+  }
+
   //execute when page load
   function loadEvents(){
     if ($.trim($("#resources").val())) {
@@ -301,7 +329,7 @@ cj(function($) {
           basket[key] = item;
           item.readonly = true;
           slots.push(item);
-          updateBasket(item);
+          updateBasketTable(item);
         });
         scheduler.parse(JSON.stringify(slots),"json");
     }
