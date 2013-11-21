@@ -28,6 +28,10 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     );
 
     $this->assign('bookingId', $this->_id);
+    
+    // $config = CRM_Core_Config::singleton();
+    // $dateFormat = $config->dateformatDatetime;
+    //dpr($dateFormat);
 
     $days = CRM_Booking_Utils_DateTime::getDays();
     $months = CRM_Utils_Date::getFullMonthNames();
@@ -109,12 +113,13 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
           'text' =>  CRM_Utils_Array::value('booking_id', $value) . ' : ' . $displayName,
           'configuration_id' => CRM_Utils_Array::value('config_id', $value),
           'quantity' => CRM_Utils_Array::value('quantity', $value),
-          'price' => CRM_Core_DAO::getFieldValue(
+          //price = quantity * resource config price
+          'price' => CRM_Utils_Array::value('quantity', $value) * floatval(CRM_Core_DAO::getFieldValue(
             'CRM_Booking_BAO_ResourceConfigOption',
             CRM_Utils_Array::value('config_id', $value),
             'price',
             'id'
-          ),
+          )),
           'note' => CRM_Utils_Array::value('note', $value),
           'color' =>  CRM_Utils_Array::value('slot_being_edited_colour', $config),
           'is_updated' => TRUE,
