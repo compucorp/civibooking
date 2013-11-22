@@ -1,3 +1,4 @@
+
 CRM.BookingApp.module('Entities', function(Entities, BookingApp, Backbone, Marionette, $, _){
 
   Entities.SubResource = Backbone.Model.extend({
