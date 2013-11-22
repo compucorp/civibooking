@@ -77,6 +77,9 @@
     <td><%= quantity %></td>
     <td><%= time_required %></td>
     <td>{$currencySymbols}<%= price_estimate %></td>
-    <td><span><a href="#" data-ref="<%=ref_id %>" data-parent-ref="<%= parent_ref_id %>" data-price="<%= price_estimate %>"  class="remove-sub-resource action-item action-item-first" >{ts}Remove{/ts}</a></span></td>
+    <td>
+        <span><a href="#" data-ref="<%=ref_id %>" data-parent-ref="<%= parent_ref_id %>" data-time-required="<%= time_required %>"  class="edit-sub-resource action-item action-item-first" >{ts}Edit{/ts}</a></span>
+        <span><a href="#" data-ref="<%=ref_id %>" data-parent-ref="<%= parent_ref_id %>" data-price="<%= price_estimate %>"  class="remove-sub-resource action-item action-item-first" >{ts}Remove{/ts}</a></span>
+    </td>
   </tr>
 </script>
