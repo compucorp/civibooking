@@ -42,6 +42,9 @@
 
 {literal}
 <script type="text/javascript">
+
+var crmDateFormat = "{/literal}{$dateFormat}{literal}";   //retrieve crmDateFormat
+
 cj(function() {
   CRM.BookingApp.start();
 });

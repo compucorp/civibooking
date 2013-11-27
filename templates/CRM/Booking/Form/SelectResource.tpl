@@ -86,7 +86,8 @@
   </div>
   {literal}
   <script type="text/javascript">
-  var crmDateFormat = "{/literal}{$dateformat}{literal}";
+  var crmDateFormat = "{/literal}{$dateFormat}{literal}";   //retrieve crmDateFormat
+  
   var bookingId = "{/literal}{$bookingId}{literal}";
   var bookingSlotDate  = "{/literal}{$bookingSlotDate}{literal}";
   var newSlotcolour = "{/literal}{$colour}{literal}";

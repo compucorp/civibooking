@@ -17,8 +17,8 @@
             <td class="">
               <a class="collapsed" href="#" data-ref="{$key}"></a>&nbsp;<strong>{$resource.label}</strong><br>
             </td>
-            <td class="crm-booking-resource-to ">{$resource.start_date} </td>
-            <td class="crm-booking-resource-from ">{$resource.end_date}</td>
+            <td class="crm-booking-resource-to ">{$resource.start_date|crmDate}</td>
+            <td class="crm-booking-resource-from ">{$resource.end_date|crmDate}</td>
             <td class="crm-booking-resource-price ">{$currencySymbols}<span data-ref="{$key}" id="resource-price-{$key}">{$resource.price}</span></td>
             <td class="crm-booking-resource-total-price ">{$currencySymbols}<span data-ref="{$key}" data-price="{$resource.price}" id="resource-total-price-{$key}">{$resource.price}<span></td>
             <td >
@@ -75,7 +75,7 @@
     <td><%= resource.label %></td>
     <td><%= configuration.label %></td>
     <td><%= quantity %></td>
-    <td><%= time_required %></td>
+    <td><%= moment(time_required).strftime(crmDateFormat) %></td>
     <td>{$currencySymbols}<%= price_estimate %></td>
     <td>
         <span><a href="#" data-ref="<%=ref_id %>" data-parent-ref="<%= parent_ref_id %>" data-time-required="<%= time_required %>"  class="edit-sub-resource action-item action-item-first" >{ts}Edit{/ts}</a></span>

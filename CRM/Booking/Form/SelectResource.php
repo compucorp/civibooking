@@ -15,6 +15,8 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    */
   //protected $_id;
 
+  protected $crmDateFormat;
+  
   /**
    * Function to set variables up before form is built
    *
@@ -29,9 +31,16 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
     $this->assign('bookingId', $this->_id);
     
-    // $config = CRM_Core_Config::singleton();
-    // $dateFormat = $config->dateformatDatetime;
-    //dpr($dateFormat);
+    $config = CRM_Core_Config::singleton();
+    /**
+     * [dateformatDatetime] => %B %E%f, %Y %l:%M %P
+     * [dateformatFull] => %B %E%f, %Y
+     * [dateformatPartial] => %B %Y
+     * [dateformatYear] => %Y
+     * [dateformatTime] => %l:%M %P
+     */
+    $this->crmDateFormat = $config->dateformatDatetime; //retrieve crmDateFormat
+    $this->assign('dateFormat', $this->crmDateFormat);
 
     $days = CRM_Booking_Utils_DateTime::getDays();
     $months = CRM_Utils_Date::getFullMonthNames();
@@ -102,8 +111,10 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
         $slots[$key] = array(
           'id' => CRM_Utils_Array::value('id', $value),
           'resource_id' => CRM_Utils_Array::value('resource_id', $value),
-          'start_date' =>CRM_Utils_Array::value('start', $value) ,
-          'end_date' => CRM_Utils_Array::value('end', $value),
+          
+          'start_date' => CRM_Utils_Array::value('start', $value) ,
+          'end_date' => CRM_Utils_Array::value('end', $value) ,
+          
           'label' => CRM_Core_DAO::getFieldValue(
             'CRM_Booking_BAO_Resource',
             CRM_Utils_Array::value('resource_id', $value),
@@ -132,9 +143,9 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
         $this->assign('bookingSlotDate', $slotStartDate);
       }
       $this->assign('bookingId', $this->_id);
+      
       $defaults['resources'] = json_encode($slots);
     }
-
     return $defaults;
   }
 
@@ -189,7 +200,15 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
 
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
+      ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
+      ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
+      ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
+      ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
+
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/app.js', 140, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/utils.js', 141, 'html-header', FALSE)
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/civicrm-moment-strftime.js', 142, 'html-header', FALSE)
 
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.js', 132, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/ext/dhtmlxscheduler_timeline.js', 134, 'html-header')

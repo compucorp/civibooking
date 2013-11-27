@@ -78,6 +78,17 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     }else{
       CRM_Utils_System::setTitle(ts('New Booking') );
     }
+
+    /**
+     * [dateformatDatetime] => %B %E%f, %Y %l:%M %P
+     * [dateformatFull] => %B %E%f, %Y
+     * [dateformatPartial] => %B %Y
+     * [dateformatYear] => %Y
+     * [dateformatTime] => %l:%M %P
+     */
+    $this->crmDateFormat = $config->dateformatDatetime; //retrieve crmDateFormat
+    $this->assign('dateFormat', $this->crmDateFormat);
+
     self::registerScripts();
 
   }
@@ -235,6 +246,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
 
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/civicrm-moment-strftime.js', 140, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/app.js', 150, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/common/views.js', 151, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/utils.js', 151, 'html-header', FALSE)

@@ -25,9 +25,10 @@ cj(function($) {
   scheduler.config.details_on_dblclick=false;
   scheduler.config.collision_limit = 1; //allows creating 1 events per time slot
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
-
+  
   if(bookingSlotDate){
-    var date = moment(bookingSlotDate, "YYYY-MM-DD HH:mm").toDate();
+    var momentDate = moment(bookingSlotDate, "YYYY-MM-DD HH:mm");
+    var date = momentDate.toDate();
   }else{
     var date = new Date();  //today date
   }
@@ -58,6 +59,7 @@ cj(function($) {
   scheduler.attachEvent("onEventChanged", function(event_id,ev){
     var item = getItemInBasket(ev.id);  //get item in basket
     var resourceLabel = item.label;     //get resoruce label
+    
     item.start_date = moment(ev.start_date).format("YYYY-M-D HH:mm:ss");
     item.end_date = moment(ev.end_date).format("YYYY-M-D HH:mm:ss");
     item.is_updated = true;
