@@ -120,7 +120,17 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
    *
    * @var datetime
    */
-  public $event_date;
+  public $booking_date;
+  /**
+   *
+   * @var datetime
+   */
+  public $start_date;
+  /**
+   *
+   * @var datetime
+   */
+  public $end_date;
   /**
    *
    * @var string
@@ -279,13 +289,33 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
             'optionGroupName' => 'booking_status',
           )
         ) ,
-        'booking_event_date' => array(
-          'name' => 'event_date',
+        'booking_date' => array(
+          'name' => 'booking_date',
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('Event Date') ,
+          'title' => ts('Booking Date') ,
           'required' => true,
           'export' => true,
-          'where' => 'civicrm_booking.event_date',
+          'where' => 'civicrm_booking.booking_date',
+          'headerPattern' => '',
+          'dataPattern' => '',
+        ) ,
+        'booking_start_date' => array(
+          'name' => 'start_date',
+          'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
+          'title' => ts('Start Date') ,
+          'required' => true,
+          'export' => true,
+          'where' => 'civicrm_booking.start_date',
+          'headerPattern' => '',
+          'dataPattern' => '',
+        ) ,
+        'booking_end_date' => array(
+          'name' => 'end_date',
+          'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
+          'title' => ts('End Date') ,
+          'required' => true,
+          'export' => true,
+          'where' => 'civicrm_booking.end_date',
           'headerPattern' => '',
           'dataPattern' => '',
         ) ,
@@ -402,7 +432,9 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'secondary_contact_id' => 'secondary_contact_id',
         'title' => 'booking_title',
         'status_id' => 'booking_status_id',
-        'event_date' => 'booking_event_date',
+        'booking_date' => 'booking_date',
+        'start_date' => 'booking_start_date',
+        'end_date' => 'booking_end_date',
         'po_number' => 'booking_po_number',
         'total_amount' => 'total_amount',
         'description' => 'description',

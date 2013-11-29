@@ -111,7 +111,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
       }
 
       if (CRM_Utils_Array::value('booking_event_date', $query->_returnProperties)) {
-        $query->_select['booking_event_date'] = "civicrm_booking.event_date as booking_event_date";
+        $query->_select['booking_event_date'] = "civicrm_booking.booking_date as booking_event_date";
         $query->_element['booking_event_date'] = 1;
       }
       if (CRM_Utils_Array::value('booking_associated_contact', $query->_returnProperties)) {
@@ -216,7 +216,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
       case 'booking_event_date_low':
       case 'booking_event_date_high':
         $query->dateQueryBuilder($values,
-          'civicrm_booking', 'booking_event_date', 'event_date', 'Event Start Date'
+          'civicrm_booking', 'booking_event_date', 'booking_date', 'Event Start Date'
         );
         return;
 
@@ -314,7 +314,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
     );
 
     $form->add('text', 'booking_id', ts('Booking ID'));
-    $form->add('text', 'booking_title', ts('Title'));
+    $form->add('text', 'booking_title', ts('Booking Title'));
 
     CRM_Core_Form_Date::buildDateRange($form, 'booking_event_date', 1, '_low', '_high', ts('From'), FALSE);
 

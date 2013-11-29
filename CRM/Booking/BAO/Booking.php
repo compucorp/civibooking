@@ -278,7 +278,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 		  $bookingItem = civicrm_api3('Booking','get',$params);
 		  foreach (CRM_Utils_Array::value('values',$bookingItem) as $k => $v) {
 			  $cancels['booking_price'] = CRM_Utils_Array::value('total_amount',$v) - CRM_Utils_Array::value('discount_amount',$v);
-        $cancels['event_date'] = CRM_Utils_Array::value('event_date',$v);
+        $cancels['booking_date'] = CRM_Utils_Array::value('booking_date',$v);
 		  }
 
       //calculate the total amount of cancellation charge
@@ -286,7 +286,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
       //calculate how many days before event date
       $cancellation_date = new DateTime($cancels['cancellation_date']);
-      $eventDate = new DateTime($cancels['event_date']);
+      $eventDate = new DateTime($cancels['booking_date']);
       $interval = $cancellation_date->diff($eventDate);
       $cancels['prior_days'] = $interval->days;
 
@@ -392,7 +392,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
                      civicrm_contact.display_name as parimary_contact_name,
                      civicrm_booking.title as title,
                      civicrm_booking.created_date as created_date,
-                     civicrm_booking.event_date as event_date,
+                     civicrm_booking.booking_date as booking_date,
                      civicrm_booking.total_amount as total_amount,
                      payment_status_value.label as payment_status,
                      booking_status_value.label as booking_status
@@ -418,7 +418,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         'primary_contact_name' => $dao->parimary_contact_name,
         'title' => $dao->title,
         'created_date' => $dao->created_date,
-        'event_date' => $dao->event_date,
+        'booking_date' => $dao->booking_date,
         'total_amount' => $dao->total_amount,
         'booking_payment_status' => $dao->payment_status,
         'booking_status' => $dao->booking_status
@@ -664,7 +664,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         //get Price elements(Subtotal, Discount, Total)  
         $booking_amount = CRM_Booking_BAO_Booking::getBookingAmount($values['booking_id']);
         
-        $eventDate = new DateTime($values['event_date']);
+        $eventDate = new DateTime($values['booking_date']);
         
         $tplParams = array(
             'email' => $email,
@@ -674,7 +674,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             'booking_id' => $values['booking_id'],
             'booking_title' => $values['booking_title'],
             'booking_status' => $values['booking_status'],
-            'booking_event_date' => $values['event_date'],
+            'booking_event_date' => $values['booking_date'],
             'booking_event_day' => $eventDate->format('l'),
             'booking_subtotal' => $booking_amount['resource_fees'] + $booking_amount['sub_resource_fees'] + $booking_amount['adhoc_charges_fees'],
             'booking_total' => $booking_amount['total_amount'],

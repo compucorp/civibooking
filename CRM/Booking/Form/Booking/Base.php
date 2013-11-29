@@ -379,7 +379,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $values['booking_id'] = $this->_id;
         $values['booking_title'] = $this->_values['title'];
         $values['booking_status'] = CRM_Utils_Array::value('status',$this->_values);;
-        $values['event_date'] = $this->_values['event_date'];
+        $values['booking_date'] = $this->_values['booking_date'];
         $values['participants_estimate'] = CRM_Utils_Array::value('participants_estimate',$this->_values);
         $values['participants_actual'] = CRM_Utils_Array::value('participants_actual',$this->_values);
         $values['receipt_header_message'] = CRM_Utils_Array::value('receipt_header_message',$bookingInfo);

@@ -130,7 +130,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $defaults['title'] = CRM_Utils_Array::value('title', $this->_values);
       $defaults['po_no'] = CRM_Utils_Array::value('po_no', $this->_values);
       $defaults['booking_status'] =  CRM_Utils_Array::value('booking_status_id', $this->_values);
-      $defaults['event_start_date'] = CRM_Utils_Array::value('event_date', $this->_values);
+      $defaults['event_start_date'] = CRM_Utils_Array::value('booking_date', $this->_values);
       list($defaults['event_start_date'], $defaults['event_start_date_time']) = CRM_Utils_Date::setDateDefaults($defaults['event_start_date'], 'activityDateTime');
       $defaults['description'] =  CRM_Utils_Array::value('description', $this->_values);
       $defaults['note'] =  CRM_Utils_Array::value('note', $this->_values);
@@ -192,7 +192,10 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['title'] =CRM_Utils_Array::value('title', $bookingInfo);
     $booking['description'] =CRM_Utils_Array::value('description', $bookingInfo);
     $booking['note'] = CRM_Utils_Array::value('note', $bookingInfo);
-    $booking['event_date'] = CRM_Utils_Date::processDate(
+    
+    
+    
+    $booking['booking_date'] = CRM_Utils_Date::processDate(
       CRM_Utils_Array::value('event_start_date', $bookingInfo),
       CRM_Utils_Array::value('event_start_date_time', $bookingInfo)
     );
@@ -212,7 +215,21 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['created_date'] = $now;
     $booking['updated_by'] = $session->get( 'userID' );
     $booking['updated_date'] = $now;
-
+  
+    //retrieve booking_start_date, booking_end_date from all slots
+    $dates = array();
+    foreach ($resources as $key => $slot) {
+        array_push($dates, CRM_Utils_Array::value('start_date', $slot));
+        array_push($dates, CRM_Utils_Array::value('end_date', $slot));
+    }
+    sort($dates); 
+    $bookingStartDate = $dates[0];
+    $bookingEndDate = $dates[count($dates)-1];
+    
+    
+    $booking['booking_start_date'] = CRM_Utils_Date::processDate($bookingStartDate);
+    $booking['booking_end_date'] = CRM_Utils_Date::processDate($bookingEndDate);
+    
     //make sure we create everything in one transaction, not too nice but it does the job
     $transaction = new CRM_Core_Transaction();
 

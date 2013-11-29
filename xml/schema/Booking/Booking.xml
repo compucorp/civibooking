@@ -89,12 +89,30 @@
   </field>
 
   <field>
-    <name>event_date</name>
+    <name>booking_date</name>
     <type>datetime</type>
     <required>true</required>
-    <title>Event Date</title>
+    <title>Booking Date</title>
     <export>true</export>
-    <uniqueName>booking_event_date</uniqueName>
+    <uniqueName>booking_date</uniqueName>
+  </field>
+
+  <field>
+    <name>start_date</name>
+    <type>datetime</type>
+    <required>true</required>
+    <title>Start Date</title>
+    <export>true</export>
+    <uniqueName>booking_start_date</uniqueName>
+  </field>
+
+  <field>
+    <name>end_date</name>
+    <type>datetime</type>
+    <required>true</required>
+    <title>End Date</title>
+    <export>true</export>
+    <uniqueName>booking_end_date</uniqueName>
   </field>
 
   <field>

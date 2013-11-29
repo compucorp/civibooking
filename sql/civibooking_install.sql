@@ -58,7 +58,9 @@ CREATE TABLE `civicrm_booking` (
      `secondary_contact_id` int unsigned NULL   COMMENT 'FK to Contact ID',
      `title` varchar(255) NOT NULL   ,
      `status_id` int unsigned NOT NULL   COMMENT 'The status associated with this booking. Implicit FK to option_value row in booking status option_group.',
-     `event_date` datetime NOT NULL   ,
+     `booking_date` datetime NOT NULL   ,
+     `start_date` datetime NOT NULL   ,
+     `end_date` datetime NOT NULL   ,
      `po_number` varchar(255) NOT NULL   ,
      `total_amount` decimal(20,2) NOT NULL   COMMENT 'Total amount of this booking calculated from slots,sub slots, ad-hoc charges and discount amount',
      `description` varchar(255)    ,
@@ -71,15 +73,15 @@ CREATE TABLE `civicrm_booking` (
      `created_by` int unsigned NOT NULL   ,
      `created_date` datetime NOT NULL   ,
      `updated_by` int unsigned NOT NULL   ,
-     `updated_date` datetime NOT NULL
+     `updated_date` datetime NOT NULL    
 ,
     PRIMARY KEY ( `id` )
-
+ 
     ,     INDEX `index_is_deleted`(
         is_deleted
   )
-
-,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
+  
+,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE  
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
