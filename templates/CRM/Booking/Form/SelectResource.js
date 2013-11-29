@@ -11,7 +11,7 @@ function show_minical(){
       navigation:true,
       handler:function(date,calendar){
         scheduler.setCurrentView(date);
-        scheduler.destroyCalendar()
+        scheduler.destroyCalendar();
       }
     });
   }
@@ -21,13 +21,13 @@ cj(function($) {
   scheduler.locale.labels.timeline_tab = "Timeline";
   scheduler.config.show_loading = true;
   scheduler.config.full_day = true;
-  scheduler.config.details_on_create=true;
-  scheduler.config.details_on_dblclick=false;
+  scheduler.config.details_on_create = true;
+  scheduler.config.details_on_dblclick = false;
   scheduler.config.collision_limit = 1; //allows creating 1 events per time slot
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
   
   if(bookingSlotDate){
-    var momentDate = moment(bookingSlotDate, "YYYY-MM-DD HH:mm");
+    var momentDate = moment(bookingSlotDate, "YYYY-M-D HH:mm");
     var date = momentDate.toDate();
   }else{
     var date = new Date();  //today date
@@ -46,12 +46,23 @@ cj(function($) {
   //prevent lightbox changing
   scheduler.attachEvent("onBeforeDrag", function(id){
     var evObj = scheduler.getEvent(id);
-    if(evObj != "undefined"){
-      if(evObj.booking_id != bookingId){  //check adjustable slots against with bookingId
-        return !evObj.readonly;  //allow
-      }else{
-        return evObj.readonly;   //not allow
-      }
+    
+    //DEBUG  
+    // console.log(evObj);
+		// console.log('evObj.booking_id', evObj.booking_id);
+		// console.log('bookingId', bookingId);
+		// console.log('_.isNull(evObj.booking_id)', _.isNull(evObj.booking_id));
+		// console.log('!_.isUndefined(evObj.booking_id)', !_.isUndefined(evObj.booking_id));
+		// console.log('evObj.booking_id != bookingId', evObj.booking_id != bookingId);
+		// console.log('evObj.readonly', evObj.readonly); 
+    if(!_.isUndefined(evObj.booking_id) && !_.isNull(evObj.booking_id) && evObj.booking_id != bookingId){
+      //console.log("Not Allow");
+      evObj.readonly = true;
+      return false;   //not allow
+    }else{
+      //console.log("Allow");
+      evObj.readonly = false;
+      return true;  //allow
     }
   });
   
@@ -127,11 +138,14 @@ cj(function($) {
 							$("#resource-note").val(ev.note);
 							$("input[name='quantity']").val(ev.quantity);
 						}
+						
             //lock editing
+            console.log('ev.readonly',ev.readonly);
 						if((ev.readonly) && (ev.booking_id != bookingId)){ //check editable slots against with bookingId
               $(".crm-booking-form-add-resource").attr("disabled", true);
               $("#add-resource-btn").hide();
-            } 
+            }
+            
 						var initStartDate = moment(new Date(ev.start_date));
 						var initEndDate = moment(new Date(ev.end_date));
 						var startTime = [initStartDate.hours(), ":", initStartDate.minute() < 10 ? '0' + initStartDate.minute() : initStartDate.minute()].join("");
@@ -178,7 +192,7 @@ cj(function($) {
 		}); 
   };
 
-  //Onclick "select-resource-save"
+  //Click Save - "select-resource-save"
   $(document).on("click", 'input[name="select-resource-save"]', function(e){
     e.preventDefault();
     if (!$('#add-resource-form').valid()) {
@@ -204,6 +218,13 @@ cj(function($) {
     }
     item = createItem(ev);
     basket[ev.id] = item;
+    
+    //DEBUG
+		console.log('item.start_date', item.start_date);
+		console.log('moment(data.start_date "YYYY-M-D HH:mm").strftime(crmDateFormat)', moment(item.start_date, "YYYY-M-D HH:mm").strftime(crmDateFormat)); 
+
+    
+    
     updateBasketTable(item);
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
@@ -246,6 +267,9 @@ cj(function($) {
   //Onchange "configSelect"
   $('#configSelect').change(function(e) {
     var val = $(this).val();
+    
+    console.log("val",val);
+    
     if(val == ""){
       $('input[name="quantity"]').attr("disabled",true);
       $('#price-estimate').html(0);

@@ -75,7 +75,7 @@
     <td><%= resource.label %></td>
     <td><%= configuration.label %></td>
     <td><%= quantity %></td>
-    <td><%= moment(time_required).strftime(crmDateFormat) %></td>
+    <td><%= moment(time_required,"YYYY-M-D HH:mm").strftime(crmDateFormat) %></td>
     <td>{$currencySymbols}<%= price_estimate %></td>
     <td>
         <span><a href="#" data-ref="<%=ref_id %>" data-parent-ref="<%= parent_ref_id %>" data-time-required="<%= time_required %>"  class="edit-sub-resource action-item action-item-first" >{ts}Edit{/ts}</a></span>

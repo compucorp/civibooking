@@ -17,7 +17,7 @@ var replacements = {
     b: 'MMM',
     B: 'MMMM',
     d: 'DD',
-    E: 'DD',
+    E: 'D',
     f: '',
     H: 'HH',
     I: 'hh',
@@ -43,7 +43,7 @@ var replacements = {
   };
 
 /**
- * Additional function to moment 
+ * Additional strftime function to moment.js
  */
 (function() {
   var moment;
@@ -53,7 +53,7 @@ var replacements = {
   } else {
     moment = this.moment;
   }
-
+  
   moment.fn.strftime = function(format) {
     var key, momentFormat, value;
     momentFormat = format;
@@ -72,7 +72,9 @@ var replacements = {
 
 }).call(this);
 
-
+/**
+ * Convert Civicrm Date format to moment.js date format
+ */
 function toMomentDateFormat(str){
   var value;
   for (key in replacements) {
