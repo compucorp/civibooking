@@ -4,6 +4,7 @@
       <td><%= data.label %></td>
       <td><%= moment(data.start_date, "YYYY-M-D HH:mm").strftime(crmDateFormat) %></td>
       <td><%= moment(data.end_date, "YYYY-M-D HH:mm").strftime(crmDateFormat) %></td>
+      <td><%= data.quantity %></td>
       <td>{/literal}{$currencySymbols}{literal}<%= data.price %></td>
       <td><input type="button" data-eid="<%= data.id %>" class="remove-from-basket-btn" value="{/literal}{ts}Remove from basket{/ts}{literal}" name="button" ></td>
       </tr>

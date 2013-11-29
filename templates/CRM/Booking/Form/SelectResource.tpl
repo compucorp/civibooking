@@ -59,6 +59,7 @@
                     <th>Resource</th>
                     <th>From</th>
                     <th>To</th>
+                    <th>Quantity</th>
                     <th>Price</th>
                     <th></th>
                  </tr>
