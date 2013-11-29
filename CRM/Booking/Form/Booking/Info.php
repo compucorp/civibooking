@@ -70,7 +70,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       array()
     );
 
-    $this->add('text', 'title', ts('Title'), array(), TRUE);
+    $this->add('text', 'title', ts('Title'), array('size' => 80, 'maxlength' => 255), TRUE);
     $this->addDate('event_start_date', ts('Date'), TRUE, array('formatType' => 'activityDateTime'));
     $this->add('textarea', 'description', ts('Description'));
     $this->add('textarea', 'note', ts('Note'));
