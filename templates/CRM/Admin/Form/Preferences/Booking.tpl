@@ -26,6 +26,8 @@
 
 <h3>{ts}Booking System Configuration{/ts}</h3>
 <div class="crm-block crm-form-block crm-booking-system-config-form-block">
+  
+  {* CVB-101: Remove out for now 
   <fieldset><legend>{ts}Time{/ts}</legend>
   <table class="form-layout-compressed">
     <tr class="crm-booking-system-config-form-block-day_start_at">
@@ -40,6 +42,7 @@
          {$form.day_end_at.html}
       </td>
     </tr>
+  *}
     {*
     <tr class="crm-booking-system-config-form-block-time_period">
       <td class="label">{$form.time_period.label}</td>
@@ -48,8 +51,10 @@
       </td>
     </tr>
     *}
+  {*
   </table>
   </fieldset>
+  *}
 
   <fieldset><legend>{ts}Booking confirmation emails{/ts}</legend>
   <table class="form-layout-compressed">
