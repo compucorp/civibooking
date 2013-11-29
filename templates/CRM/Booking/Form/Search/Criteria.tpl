@@ -47,14 +47,18 @@
 </tr>
 
 <tr>
+{* CVB-116:Remove ResourceType as of pending searching issue.
   <td>
     <label>{$form.booking_resource_id.label}</label> <br />
     {$form.booking_resource_id.html}
   </td>
+*}
   <td>
     {$form.booking_po_no.label}<br />
     {$form.booking_po_no.html}
    </td>
+  <td>
+  </td>
 </tr>
 
 <tr>
@@ -68,6 +72,8 @@
     {/foreach}
     </div>
   </td>
+  
+  {*    remove Payment Status as of pending searching issue.
   <td class="crm-booking-form-block-payment_status_id"><label>{ts}Payment Status{/ts}</label>
     <br />
     <div class="listing-box" style="width: auto; height: 120px">
@@ -78,5 +84,6 @@
     {/foreach}
     </div><br />
   </td>
+  *}
 </tr>
 </table>
