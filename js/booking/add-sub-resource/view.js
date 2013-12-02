@@ -455,7 +455,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       var adhocChargesTotal = this.model.get('total');
       //console.log(adhocChargesTotal);
       subResourceModel.set('adhoc_charges', this.model.attributes);
-      var currentTotal = subResourceModel.get('total_price');
+      var currentTotal = subResourceModel.get('sub_total');
       var newTotal = parseFloat(adhocChargesTotal) + parseFloat(currentTotal);
       subResourceModel.set("total_price", parseFloat(newTotal));
       CRM.BookingApp.vent.trigger('render:price', subResourceModel);
