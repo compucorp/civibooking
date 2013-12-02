@@ -733,11 +733,12 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       }
       
       list($sent, $subject, $message, $html)  = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
-
+      
       if($sent & CRM_Utils_Array::value('log_confirmation_email', $config)){
+          //create activity for sending email
           $params = array(
             'option_group_name' => 'activity_type',
-            'name' => 'Email',
+            'name' => CRM_Booking_Utils_Constants::ACTIVITY_TYPE_SEND_EMAIL,
           );
           $optionValue = civicrm_api3('OptionValue', 'get', $params);
           $activityTypeId = $optionValue['values'][$optionValue['id']]['value'];

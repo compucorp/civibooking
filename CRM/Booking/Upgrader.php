@@ -19,6 +19,18 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
       'is_reserved' => 1
     );
     $result = civicrm_api('ActivityType', 'create', $params);
+    
+    //create new activity type for sending email confirmation :CVB-95
+    $params = array(
+      'version' => 3,
+      'sequential' => 1,
+      'label' =>  'Send booking confirmation',
+      'name' => CRM_Booking_Utils_Constants::ACTIVITY_TYPE_SEND_EMAIL,
+      'weight' => 1,
+      'is_active' => 1,
+      'is_reserved' => 1
+    );
+    $result = civicrm_api('ActivityType', 'create', $params);
 
     $result = civicrm_api('OptionGroup', 'getsingle', array(
       'version' => 3,

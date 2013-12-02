@@ -37,6 +37,7 @@
 class CRM_Booking_Utils_Constants{
 
   const ACTIVITY_TYPE = 'booking_activity_booking';
+  const ACTIVITY_TYPE_SEND_EMAIL = 'send_booking_confirmation';
   const OPTION_BOOKING_STATUS = 'booking_status';
   const OPTION_RESOURCE_TYPE = 'booking_resource_type';
   const OPTION_RESOURCE_LOCATION = 'booking_resource_location';
