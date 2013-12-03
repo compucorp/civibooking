@@ -219,6 +219,20 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
           'civicrm_booking', 'booking_event_date', 'booking_date', 'Event Start Date'
         );
         return;
+      case 'booking_start_date':
+      case 'booking_start_date_low':
+      case 'booking_start_date_high':
+        $query->dateQueryBuilder($values,
+          'civicrm_booking', 'booking_start_date', 'start_date', 'Start Date'
+        );
+        return;
+      case 'booking_end_date':
+      case 'booking_end_date_low':
+      case 'booking_end_date_high':
+        $query->dateQueryBuilder($values,
+          'civicrm_booking', 'booking_end_date', 'end_date', 'End Date'
+        );
+        return;
 
       default:
         if (!isset($fields[$name])) {
@@ -317,6 +331,9 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
     $form->add('text', 'booking_title', ts('Booking Title'));
 
     CRM_Core_Form_Date::buildDateRange($form, 'booking_event_date', 1, '_low', '_high', ts('From'), FALSE);
+
+    CRM_Core_Form_Date::buildDateRange($form, 'booking_start_date', 1, '_low', '_high', ts('From'), FALSE);
+    CRM_Core_Form_Date::buildDateRange($form, 'booking_end_date', 1, '_low', '_high', ts('From'), FALSE);
 
     $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
     foreach ($bookingStatus as $id => $name) {

@@ -45,6 +45,22 @@
 <tr>
   {include file="CRM/Core/DateRange.tpl" fieldName="booking_event_date" from='_low' to='_high'}
 </tr>
+<tr>
+  <td>
+  <label>{ts}Start Dates{/ts}</label> <br/>
+  </td>
+</tr>
+<tr>
+  {include file="CRM/Core/DateRange.tpl" fieldName="booking_start_date" from='_low' to='_high'}
+</tr>
+<tr>
+  <td>
+  <label>{ts}End Dates{/ts}</label> <br/>
+  </td>
+</tr>
+<tr>
+  {include file="CRM/Core/DateRange.tpl" fieldName="booking_end_date" from='_low' to='_high'}
+</tr>
 
 <tr>
 {* CVB-116:Remove ResourceType as of pending searching issue.
