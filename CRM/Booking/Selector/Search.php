@@ -419,18 +419,18 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
           'sort' => 'booking_title',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
-        array(
-          'name' => ts('Date Made'),
-          'sort' => 'booking_created_date',
-          'direction' => CRM_Utils_Sort::DONTCARE,
-        ),
+        // array(
+          // 'name' => ts('Start Date'),
+          // 'sort' => 'booking_start_date',
+          // 'direction' => CRM_Utils_Sort::DONTCARE,
+        // ),
         array(
           'name' => ts('Associated Contact'),
           'sort' => 'booking_associated_contact',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
         array(
-          'name' => ts('Event date'),
+          'name' => ts('Date Booking Made'),
           'sort' => 'booking_event_date',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),

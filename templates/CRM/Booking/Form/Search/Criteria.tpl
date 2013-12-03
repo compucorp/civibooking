@@ -39,7 +39,7 @@
 
 <tr>
   <td>
-  <label>{ts}Event Dates{/ts}</label> <br/>
+  <label>{ts}Date Booking Made{/ts}</label> <br/>
   </td>
 </tr>
 <tr>
