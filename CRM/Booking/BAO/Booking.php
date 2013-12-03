@@ -515,7 +515,11 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     return self::$_exportableFields["booking"];
   }
 
-
+  /**
+   * Get all amount of booking
+   * 
+   * Remark: The total_amount has been deducted from discount amount.
+   */
   static function getBookingAmount($id){
     if(!$id){
       return;
@@ -676,7 +680,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             'booking_status' => $values['booking_status'],
             'booking_event_date' => $values['booking_date'],
             'booking_event_day' => $eventDate->format('l'),
-            'booking_subtotal' => $booking_amount['resource_fees'] + $booking_amount['sub_resource_fees'] + $booking_amount['adhoc_charges_fees'],
+            'booking_subtotal' => $booking_amount['total_amount'] + $booking_amount['discount_amount'], //total_amount has been deducted from discount
             'booking_total' => $booking_amount['total_amount'],
             'booking_discount' => $booking_amount['discount_amount'],
             'participants_estimate' => $values['participants_estimate'],
