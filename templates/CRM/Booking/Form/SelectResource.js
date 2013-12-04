@@ -61,15 +61,22 @@ cj(function($) {
   });
   
   //when edit lightbox
-  scheduler.attachEvent("onEventChanged", function(event_id,ev){
-    var item = getItemInBasket(ev.id);  //get item in basket
-    var resourceLabel = item.label;     //get resoruce label
-    
-    item.start_date = moment(ev.start_date).format("YYYY-M-D HH:mm:ss");
-    item.end_date = moment(ev.end_date).format("YYYY-M-D HH:mm:ss");
-    item.is_updated = true;
-    basket[ev.id] = item;   //update item in basket
-    updateBasketTable(item);  //render ui
+	scheduler.attachEvent("onEventChanged", function(event_id, ev){
+    var resourceLabel = $("div[event_id="+event_id+"]").parent().parent().parent().find(".dhx_scell_name").html(); //get resoruce label from position of lightbox
+    var resourceId = ev.resource_id;
+    var selectedItem = getItemInBasket(ev.id);  //get item in basket
+    if(_.isUndefined(ev.booking_id)){ //new item?
+      var lightboxText = [resourceLabel, " - ", ts("New")].join("");
+      selectedItem.text = lightboxText;
+      ev.text = lightboxText;
+    }
+    selectedItem.label = resourceLabel;
+    selectedItem.resource_id = resourceId;
+    selectedItem.start_date = moment(ev.start_date).format("YYYY-M-D HH:mm:ss");
+    selectedItem.end_date = moment(ev.end_date).format("YYYY-M-D HH:mm:ss");
+    selectedItem.is_updated = true;
+    basket[ev.id] = selectedItem;   //update item in basket
+    updateBasketTable(selectedItem);  //render ui
   });
 
   //click at lightbox

@@ -102,7 +102,7 @@
                 {/literal}
                   {foreach from=$resourceType.child item=resource}
                    {literal}
-                    {key:{/literal}{$resource.id}{literal}, label:"{/literal}{$resource.label}{literal}"},
+                    {key:"{/literal}{$resource.id}{literal}", label:"{/literal}{$resource.label}{literal}"},
                    {/literal}
                   {/foreach}
                   {literal}
