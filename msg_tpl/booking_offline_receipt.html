@@ -10,11 +10,13 @@
 {capture assign=labelStyle }style="padding: 4px; border-bottom: 1px solid #999; background-color: #f7f7f7;"{/capture}
 {capture assign=valueStyle }style="padding: 4px; border-bottom: 1px solid #999;"{/capture}
 
-{if $receipt_header_message}
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; margin:5px auto; border:1px solid;">
+{if $receipt_header_message}
 {$receipt_header_message}
-</fieldset>
+{else}
+{ts}Your company header message.{/ts}
 {/if}
+</fieldset>
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px auto; border:1px solid;">
 <legend style="border: 1px solid; background-color: #fafafa; padding: 0.2em 0.9em;">{ts}Booking Information{/ts}</legend>
   <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; border: 1px solid #efefef; border-collapse: collapse; margin: 0em 0em 1em;">
@@ -37,7 +39,7 @@
         </tr>
         <tr style="border-bottom: 1px solid #FFFFFF;">
           <td style="padding: 3px;">{ts}Contact{/ts}</td>
-          <td style="padding: 3px;"> {contact.first_name} {contact.last_name} </td>
+          <td style="padding: 3px;"> {contact.display_name} </td>
           <td style="padding: 3px;">&nbsp;</td>
           <td style="padding: 3px;">&nbsp;</td>
         </tr>
@@ -49,19 +51,19 @@
         </tr>
         <tr style="border-bottom: 1px solid #FFFFFF;">
           <td style="padding: 3px;">{ts}Organisation Address:{/ts}</td>
-          <td style="padding: 3px;">{$contact.street_address}</td>
+          <td style="padding: 3px;">{contact.street_address}</td>
           <td style="padding: 3px;">&nbsp;</td>
           <td style="padding: 3px;">&nbsp;</td>
         </tr>
         <tr style="border-bottom: 1px solid #FFFFFF;">
           <td style="padding: 3px;">{ts}Town:{/ts}</td>
-          <td style="padding: 3px;">{$contact.city}</td>
+          <td style="padding: 3px;">{contact.city}</td>
           <td style="padding: 3px;">&nbsp;</td>
           <td style="padding: 3px;">&nbsp;</td>
         </tr>
         <tr style="border-bottom: 1px solid #FFFFFF;">
           <td style="padding: 3px;">{ts}County:{/ts}</td>
-          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">{contact.addressee_display}</td>
           <td style="padding: 3px;">&nbsp;</td>
           <td style="padding: 3px;">&nbsp;</td>
         </tr>
@@ -79,7 +81,7 @@
         </tr>
         <tr style="border-bottom: 1px solid #FFFFFF;">
           <td style="padding: 3px;">{ts}Post code{/ts}</td>
-          <td style="padding: 3px;">{$contact.postal_code}</td>
+          <td style="padding: 3px;">{contact.postal_code}</td>
           <td style="padding: 3px;">&nbsp;</td>
           <td style="padding: 3px;">&nbsp;</td>
         </tr>
@@ -282,7 +284,7 @@
     <tbody>
       <tr style="border-bottom: 1px solid #FFFFFF;">
         <td style="padding: 3px;">{ts}Name{/ts}</td>
-        <td style="padding: 3px;">{$contribution}</td>
+        <td style="padding: 3px;">{contact.display_name}</td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
         <td style="padding: 3px;">{ts}Amount{/ts}</td>
@@ -316,11 +318,13 @@
 </table>
 </fieldset>
 {/if}
-{if $receipt_footer_message}
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; margin:5px auto; border:1px solid;">
-{$receipt_footer_message}  
-</fieldset>
+{if $receipt_footer_message}
+{$receipt_footer_message}
+{else}
+{ts}Your company footer message.{/ts}  
 {/if}
+</fieldset>
 
 
 </html>

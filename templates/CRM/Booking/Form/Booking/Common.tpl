@@ -11,6 +11,8 @@
     <div class="label">{$form.email_to.label}</div>
     <div class="content">{$form.email_to.html}</div>
    </div>
+   
+{*
   <div class="crm-section">
     <div class="label">{ts}Receipt Message{/ts}</div>
     <div class="content">
@@ -27,6 +29,8 @@
       {$form.receipt_footer_message.html}
     </div>
   </div>
+*}
+  
 </fieldset>
 <div class="crm-section">
     <div class="label">{ts}Payment status{/ts}</div>

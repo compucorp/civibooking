@@ -1,1 +1,79 @@
-Hello {$contact.first_name}
+{if $receipt_header_message}
+{$receipt_header_message}
+{else}
+{ts}Your company header message.{/ts}
+{/if}
+
+
+--- {ts}Booking Information{/ts} ---
+{ts}Booking ID:{/ts}    {$booking_id}
+{ts}Today's date{/ts}:   {$today_date}
+             
+{ts}Contact{/ts}:        {contact.display_name} 
+{ts}Organisation{/ts}:   {contact.organization_name}
+{ts}Organisation Address{/ts}:   {contact.street_address}
+{ts}Town{/ts}:   {contact.city}
+{ts}County{/ts}: 
+{ts}Fax{/ts}:    
+{ts}Email{/ts}:  {$email}
+{ts}Post code{/ts}:  {contact.postal_code}
+
+{ts}Day of Function{/ts}:    {$booking_event_day}    
+{ts}Date of Function{/ts}:   {$booking_event_date|crmDate}
+{ts}Function title{/ts}:     {$booking_title}    
+{ts}Function status{/ts}:    {$booking_status}
+{ts}Estimated Number{/ts}:   {$participants_estimate}
+{ts}Final Max Number{/ts}:   {$participants_actual}
+
+--- {ts}Booking Resource{/ts} ---
+{ts}RESOURCE{/ts} |    {ts}FROM{/ts} |            {ts}TO{/ts} |            {ts}CONFIGURATION{/ts} |   {ts}PRICE PER UNIT{/ts} |  {ts}QUANTITY{/ts} |    {ts}TOTAL PRICE{/ts} |
+{foreach from=$slots item=slot}
+{$slot.resource_label}  {$slot.start|crmDate}   {$slot.end|crmDate} {$slot.config_label}    {$slot.unit_price}  {$slot.quantity}    {$slot.total_amount}
+{/foreach}
+
+--- {ts}Unlimited resources{/ts} ---
+{ts}RESOURCE{/ts} |    {ts}PARENT RESOURCE{/ts} | {ts}TIME{/ts} |              {ts}CONFIGURATION{/ts} |   {ts}PRICE PER UNIT{/ts} |  {ts}QUANTITY{/ts} |    {ts}TOTAL PRICE{/ts} |
+{foreach from=$sub_slots item=subSlot}
+{$subSlot.resource_label}   {$subSlot.parent_resource_label}        {$subSlot.time_required|crmDate}    {$subSlot.config_label} {$subSlot.unit_price}   {$subSlot.quantity} {$subSlot.total_amount}
+{/foreach}
+
+--- {ts}Additional charges{/ts} ---
+{ts}ITEM{/ts} |       {ts}PRICE PER UNIT{/ts} |  {ts}QUANTITY{/ts} |    {ts}TOTAL PRICE{/ts} |
+{foreach from=$adhoc_charges item=adhocCharge}
+{$adhocCharge.item_label}       {$adhocCharge.unit_price}               {$adhocCharge.quantity}      {$adhocCharge.total_amount}
+{/foreach}
+
+--- {ts}Price{/ts} ---
+{ts}Sub total{/ts}:     {$booking_subtotal}
+{ts}Discounts{/ts}:   {$booking_discount}
+{ts}Total{/ts}:             {$booking_total}
+{if !empty($cancellation_charges)}
+{foreach from=$cancellation_charges item=cancellationCharges}
+
+--- {ts}Cancellation{/ts} ---
+{ts}Date cancelled{/ts}: {$cancellationCharges.cancellation_date}
+{ts}Booking price{/ts}:  {$cancellationCharges.booking_price}
+{ts}This booking was cancelled{/ts} {$cancellationCharges.prior_days} {ts}days{/ts}
+{ts}Cancellation subtotal{/ts}:  {$cancellationCharges.cancellation_fee}
+{ts}Other cancellation charges{/ts}: {$cancellationCharges.additional_fee}
+{ts}Description{/ts}:    {$cancellationCharges.comment}
+{/foreach}
+{/if}
+{if !empty($contribution)}
+
+--- {ts}Contribution{/ts} ---
+{ts}Name{/ts}:   {contact.display_name}
+{ts}Amount{/ts}: {$contribution.total_amount}
+{ts}Type{/ts}:   {$contribution.financial_type}
+{ts}Source{/ts}: {$contribution.contribution_source}
+{ts}Received Date{/ts}:  {$contribution.receive_date|crmDate}
+{ts}Thank-you Sent{/ts}:  {$contribution.thankyou_date|crmDate}
+{ts}Status{/ts}: {$contribution.contribution_status}
+{ts}Premium{/ts}:    {$contribution.product_name}
+{/if}
+
+{if $receipt_footer_message}
+{$receipt_footer_message}
+{else}
+{ts}Your company footer message.{/ts}
+{/if}
