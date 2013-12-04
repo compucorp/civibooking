@@ -47,21 +47,15 @@ cj(function($) {
   scheduler.attachEvent("onBeforeDrag", function(id){
     var evObj = scheduler.getEvent(id);
     
-    //DEBUG  
-    // console.log(evObj);
-		// console.log('evObj.booking_id', evObj.booking_id);
-		// console.log('bookingId', bookingId);
-		// console.log('_.isNull(evObj.booking_id)', _.isNull(evObj.booking_id));
-		// console.log('!_.isUndefined(evObj.booking_id)', !_.isUndefined(evObj.booking_id));
-		// console.log('evObj.booking_id != bookingId', evObj.booking_id != bookingId);
-		// console.log('evObj.readonly', evObj.readonly); 
-    if(!_.isUndefined(evObj.booking_id) && !_.isNull(evObj.booking_id) && evObj.booking_id != bookingId){
+    if(!_.isUndefined(evObj) && !_.isUndefined(evObj.booking_id) && !_.isNull(evObj.booking_id) && evObj.booking_id != bookingId){
       //console.log("Not Allow");
       evObj.readonly = true;
       return false;   //not allow
     }else{
       //console.log("Allow");
-      evObj.readonly = false;
+      if(!_.isUndefined(evObj)){
+        evObj.readonly = false;
+      }
       return true;  //allow
     }
   });
@@ -140,7 +134,6 @@ cj(function($) {
 						}
 						
             //lock editing
-            console.log('ev.readonly',ev.readonly);
 						if((ev.readonly) && (ev.booking_id != bookingId)){ //check editable slots against with bookingId
               $(".crm-booking-form-add-resource").attr("disabled", true);
               $("#add-resource-btn").hide();
@@ -219,12 +212,6 @@ cj(function($) {
     item = createItem(ev);
     basket[ev.id] = item;
     
-    //DEBUG
-		console.log('item.start_date', item.start_date);
-		console.log('moment(data.start_date "YYYY-M-D HH:mm").strftime(crmDateFormat)', moment(item.start_date, "YYYY-M-D HH:mm").strftime(crmDateFormat)); 
-
-    
-    
     updateBasketTable(item);
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
@@ -267,9 +254,6 @@ cj(function($) {
   //Onchange "configSelect"
   $('#configSelect').change(function(e) {
     var val = $(this).val();
-    
-    console.log("val",val);
-    
     if(val == ""){
       $('input[name="quantity"]').attr("disabled",true);
       $('#price-estimate').html(0);

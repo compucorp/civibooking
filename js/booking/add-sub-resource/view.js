@@ -58,7 +58,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         self.$el.find("#crm-booking-sub-resource-table-" + item.parent_ref_id).append(template(item));
         items.push(item);
       });
-      if($.trim($("#sub_resources").val())) {
+      //if($.trim($("#sub_resources").val())) {
         this.$el.find("span[id^='resource-total-price-']").each(function(){
           var el = $(this);
           var resourceTotalPrice = parseFloat(el.data('price'));
@@ -74,7 +74,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
             self.$el.find('#crm-booking-sub-resource-row-' + el.data('ref')).show();
           }
         });
-      }
+      //}
       this.model.attributes.sub_total = subtotal;
       this.model.attributes.total_price = (subtotal + this.model.get("adhoc_charges").total) - this.model.get("discount_amount");
       this.model.attributes.discount_amount = this.model.get("discount_amount");
