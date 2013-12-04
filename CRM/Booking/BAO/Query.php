@@ -152,7 +152,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
         return;
       case 'booking_po_no':
         $query->_where[$grouping][] = CRM_Contact_BAO_Query::buildClause("civicrm_booking.po_number", $op, $value, 'String');
-        $query->_qill[$grouping][] = ts("Purchase order number %1 '%2'", array(1 => $op, 2 => $value));
+        $query->_qill[$grouping][] = ts("Purchase Order Number %1 '%2'", array(1 => $op, 2 => $value));
         $query->_tables['civicrm_booking'] = $query->_whereTables['civicrm_booking'] = 1;
         return;
       case 'booking_status_id':
@@ -314,7 +314,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
   static function buildSearchForm(&$form) {
 
 
-    $form->add('text', 'booking_po_no', ts('Purchase order number'));
+    $form->add('text', 'booking_po_no', ts('Purchase Order Number'));
 
     $resourceTypes =  CRM_Booking_BAO_Resource::getResourceTypes();
     $resources = array();
