@@ -87,10 +87,12 @@
     <div class="label">{$form.contribution_status_id.label}</div>
     <div class="content">{$form.contribution_status_id.html}</div>
   </div>
+  {* Hide include_payment_information option for now.
   <div class="crm-section">
     <div class="label"></div>
     <div class="content">{$form.include_payment_information.html}</div>
-</div>
+  </div>
+   *}
 </fieldset>
 {/if}
 

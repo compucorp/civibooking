@@ -645,53 +645,71 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
     //send email only when email is present
     if ($email) {
-        
+      $bookingId = $values['booking_id'];
+      
+      //get latest booking status
+      $params = array(
+            'id' => $bookingId,
+        );
+      $bookingLatest = civicrm_api3('Booking', 'get', $params);
+      $bookingStatusValueItems =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create'); //get booking status option values
+      $bookingLatestStatus = $bookingStatusValueItems[$bookingLatest['values'][$bookingId]['status_id']];
+      
     	//get booking detail
     	$bookingDetail = CRM_Booking_BAO_Booking::getBookingDetails($values['booking_id']);
     	$slots = CRM_Utils_Array::value('slots', $bookingDetail);
     	$subSlots = CRM_Utils_Array::value('sub_slots', $bookingDetail);
     	$adhocCharges = CRM_Utils_Array::value('adhoc_charges', $bookingDetail);
-    	$cancellationCharges = CRM_Utils_Array::value('cancellation_charges', $bookingDetail);
-
+    	$cancellationCharges = CRM_Utils_Array::value('cancellation_charges' , $bookingDetail);
+      
+      //get contacts associating with booking 
+      $contactIds = array();
+      $contactIds['primary_contact'] = CRM_Utils_Array::value('primary_contact_id',$values);
+      $contactIds['secondary_contact'] = CRM_Utils_Array::value('secondary_contact_id',$values);
+      $contactsDetail = array();
+      foreach (array_filter($contactIds) as $k => $contactIdItem) {
         //get contact detail
         $contactDetail = array();
         $params = array(
-            'contact_id' => $contactID,
+            'contact_id' => $contactIdItem,
         );
-        $contactDetailResult = civicrm_api3('Contact', 'get', $params); 
-        $contactValues = CRM_Utils_Array::value($contactDetailResult['id'],$contactDetailResult['values']);
+        $contactDetailResult = civicrm_api3('Contact', 'get', $params);
+        $contactValues = CRM_Utils_Array::value($contactDetailResult['id'], $contactDetailResult['values']);
         foreach ($contactValues as $key => $contactItem) {
             $contactDetail[$key] = $contactItem;
         }
-        //TODO rectify $contactDetail elements(Fax, Org address, County)
+        $contactsDetail[$k] = $contactDetail; 
+      }
         
-        //get Price elements(Subtotal, Discount, Total)  
-        $booking_amount = CRM_Booking_BAO_Booking::getBookingAmount($values['booking_id']);
+      //get Price elements(Subtotal, Discount, Total)  
+      $booking_amount = CRM_Booking_BAO_Booking::getBookingAmount($values['booking_id']);
+      //get date booking made        
+      $dateBookingMade = new DateTime($values['booking_date']);
         
-        $eventDate = new DateTime($values['booking_date']);
-        
-        $tplParams = array(
-            'email' => $email,
-            'today_date' => date('d.m.Y'),
-            'receipt_header_message' => $values['receipt_header_message'],
-            'receipt_footer_message' => $values['receipt_footer_message'],
-            'booking_id' => $values['booking_id'],
-            'booking_title' => $values['booking_title'],
-            'booking_status' => $values['booking_status'],
-            'booking_event_date' => $values['booking_date'],
-            'booking_event_day' => $eventDate->format('l'),
-            'booking_subtotal' => $booking_amount['total_amount'] + $booking_amount['discount_amount'], //total_amount has been deducted from discount
-            'booking_total' => $booking_amount['total_amount'],
-            'booking_discount' => $booking_amount['discount_amount'],
-            'participants_estimate' => $values['participants_estimate'],
-            'participants_actual' => $values['participants_actual'],
-            'contact' => $contactDetail,
-            'slots' => $slots,
-            'sub_slots' => $subSlots,
-            'adhoc_charges' => $adhocCharges,
-            'cancellation_charges' => $cancellationCharges,
-        );
-      
+      $tplParams = array(
+          'email' => $email,
+          'today_date' => date('d.m.Y'),
+          'receipt_header_message' => $values['receipt_header_message'],
+          'receipt_footer_message' => $values['receipt_footer_message'],
+          'booking_id' => $bookingId,
+          'booking_title' => $values['booking_title'],
+          'booking_status' => $bookingLatestStatus,
+          'booking_date_made' => $values['booking_date'],
+          'booking_start_date' => $values['booking_start_date'],
+          'booking_end_date' => $values['booking_end_date'],
+          'booking_event_day' => $dateBookingMade->format('l'),
+          'booking_subtotal' => number_format($booking_amount['total_amount'] + $booking_amount['discount_amount'], 2, '.', ''), //total_amount has been deducted from discount
+          'booking_total' => number_format($booking_amount['total_amount'], 2, '.', ''),
+          'booking_discount' => number_format($booking_amount['discount_amount'], 2, '.', ''),
+          'participants_estimate' => $values['participants_estimate'],
+          'participants_actual' => $values['participants_actual'],
+          'contacts' => $contactsDetail,
+          'slots' => $slots,
+          'sub_slots' => $subSlots,
+          'adhoc_charges' => $adhocCharges,
+          'cancellation_charges' => $cancellationCharges,
+      );
+    
       $sendTemplateParams = array(
         'groupName' => 'msg_tpl_workflow_booking',
         'valueName' => 'booking_offline_receipt',
@@ -702,7 +720,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       );
       
       //get include payment check box 
-      if(CRM_Utils_Array::value('include_payment_info', $values)){
+      //if(CRM_Utils_Array::value('include_payment_info', $values)){
+      if(CRM_Utils_Array::value('contribution',$bookingDetail)){
       //get contribution record
         $contribution = array();
         $contributionResult = CRM_Utils_Array::value('contribution',$bookingDetail);
@@ -710,14 +729,11 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             $contribution = $ctbItem;
         }
         $sendTemplateParams['tplParams']['contribution'] = $contribution;
+        
+        //calculate Amount outstanding
+        $sendTemplateParams['tplParams']['amount_outstanding'] = number_format($booking_amount['total_amount']-$contribution['total_amount'], 2, '.', '');
       }
-
-      // address required during receipt processing (pdf and email receipt)
-      //TODO:: add addresss
-      if ($displayAddress = CRM_Utils_Array::value('address', $values)) {
-        $sendTemplateParams['tplParams']['address'] = $displayAddress;
-      }
-
+      
       //TODO:: add line item tpl params
       if ($lineItem = CRM_Utils_Array::value('lineItem', $values)) {
         $sendTemplateParams['tplParams']['lineItem'] = $lineItem;
