@@ -168,13 +168,13 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       if($this->_id){
         $contactDropdown =  array('' => ts('- select -'),
                                 $this->_values['primary_contact_id'] => CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']));
+        $paymentContacts = $contactDropdown;
         if(isset($this->_values['secondary_contact_id'])){
           $contactDropdown[$this->_values['secondary_contact_id']] =  CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
           //add Both option for sending email to both contacts
           $contactDropdown[CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS] =  ts('Both');
           $paymentContacts = array_slice($contactDropdown, 1, -1);
         }
-        $paymentContacts = $contactDropdown;
       }else{
         $contactDropdown = array(
           '' => ts('- select -'),
