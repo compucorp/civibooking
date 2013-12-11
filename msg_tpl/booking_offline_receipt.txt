@@ -1,79 +1,107 @@
-{if $receipt_header_message}
-{$receipt_header_message}
-{else}
-{ts}Your company header message.{/ts}
+
+{* ----- Your company header message. ----- *}
+
+_________________________________________________________
+{ts}Booking ID{/ts}:     {$booking_id}
+{ts}From{/ts}:           {$booking_start_date|crmDate}
+{ts}To{/ts}:             {$booking_end_date|crmDate}
+{ts}Booking status{/ts}: {$booking_status} 
+
+{if !empty($contribution)}
+=========================================================
+{ts}PAYMENT INFORMATION{/ts} 
+=========================================================
+{ts}Total amount due{/ts}:   {$booking_total}
+{ts}Amount paid{/ts}:
+    {ts}Name{/ts}:   {contact.display_name}
+    {ts}Amount{/ts}: {$contribution.total_amount}
+    {ts}Type{/ts}:   {$contribution.financial_type}
+    {ts}Source{/ts}: {$contribution.contribution_source}
+    {ts}Received Date{/ts}:  {$contribution.receive_date|crmDate}
+    {ts}Status{/ts}: {$contribution.contribution_status}
+    {ts}Premium{/ts}:    {$contribution.product_name}
+{ts}Amounts Outstanding{/ts}:        {$amount_outstanding} 
+_________________________________________________________
 {/if}
-
-
---- {ts}Booking Information{/ts} ---
-{ts}Booking ID:{/ts}    {$booking_id}
+{ts}BOOKING INFORMATION{/ts}  
+_________________________________________________________
+{ts}Booking ID{/ts}:    {$booking_id}
 {ts}Today's date{/ts}:   {$today_date}
-             
-{ts}Contact{/ts}:        {contact.display_name} 
-{ts}Organisation{/ts}:   {contact.organization_name}
-{ts}Organisation Address{/ts}:   {contact.street_address}
-{ts}Town{/ts}:   {contact.city}
-{ts}County{/ts}: 
-{ts}Fax{/ts}:    
-{ts}Email{/ts}:  {$email}
-{ts}Post code{/ts}:  {contact.postal_code}
-
-{ts}Day of Function{/ts}:    {$booking_event_day}    
-{ts}Date of Function{/ts}:   {$booking_event_date|crmDate}
-{ts}Function title{/ts}:     {$booking_title}    
-{ts}Function status{/ts}:    {$booking_status}
+---          
+{ts}Primary Contact{/ts}:   {$contacts.primary_contact.display_name}
+    {ts}Street Address{/ts}:        {$contacts.primary_contact.street_address}
+    {ts}Address Line 1{/ts}:        {$contacts.primary_contact.supplemental_address_1}
+    {ts}Address Line 2{/ts}:        {$contacts.primary_contact.supplemental_address_2}
+    {ts}Town{/ts}:      {$contacts.primary_contact.city}
+    {ts}County{/ts}:    {$contacts.primary_contact.state_province_name}
+    {ts}Country{/ts}:   {$contacts.primary_contact.country}
+    {ts}Post code{/ts}:  {$contacts.primary_contact.postal_code}
+    {ts}Telephone{/ts}:  {$contacts.primary_contact.phone}
+    {ts}Email{/ts}:  {$contacts.primary_contact.email}
+---
+{if !empty($contacts.secondary_contact)}
+{ts}Secondary Contact{/ts}: {$contacts.secondary_contact.display_name}
+    {ts}Street Address{/ts}:        {$contacts.secondary_contact.street_address}
+    {ts}Address Line 1{/ts}:        {$contacts.secondary_contact.supplemental_address_1}
+    {ts}Address Line 2{/ts}:        {$contacts.secondary_contact.supplemental_address_2}
+    {ts}Town{/ts}:      {$contacts.secondary_contact.city}
+    {ts}County{/ts}:    {$contacts.secondary_contact.state_province_name}
+    {ts}Country{/ts}:   {$contacts.secondary_contact.country}
+    {ts}Post code{/ts}:  {$contacts.secondary_contact.postal_code}
+    {ts}Telephone{/ts}:  {$contacts.secondary_contact.phone}
+    {ts}Email{/ts}:  {$contacts.secondary_contact.email}
+---
+{/if}
+{ts}Day booking made{/ts}:    {$booking_event_day}    
+{ts}Date booking made{/ts}:   {$booking_event_date|crmDate}
+{ts}Booking title{/ts}:     {$booking_title}    
+{ts}Booking status{/ts}:    {$booking_status}
 {ts}Estimated Number{/ts}:   {$participants_estimate}
-{ts}Final Max Number{/ts}:   {$participants_actual}
-
---- {ts}Booking Resource{/ts} ---
-{ts}RESOURCE{/ts} |    {ts}FROM{/ts} |            {ts}TO{/ts} |            {ts}CONFIGURATION{/ts} |   {ts}PRICE PER UNIT{/ts} |  {ts}QUANTITY{/ts} |    {ts}TOTAL PRICE{/ts} |
+{ts}Final Number{/ts}:      {$participants_actual}
+_________________________________________________________
+{ts}BOOKING RESOURCE{/ts} 
+_________________________________________________________
+{ts}RESOURCE{/ts} |     {ts}FROM{/ts} |            {ts}TO{/ts} |            {ts}CONFIGURATION{/ts} |   {ts}PRICE PER UNIT{/ts} |  {ts}QUANTITY{/ts} |    {ts}TOTAL PRICE{/ts} |
 {foreach from=$slots item=slot}
 {$slot.resource_label}  {$slot.start|crmDate}   {$slot.end|crmDate} {$slot.config_label}    {$slot.unit_price}  {$slot.quantity}    {$slot.total_amount}
 {/foreach}
-
---- {ts}Unlimited resources{/ts} ---
+_________________________________________________________
+{ts}UNLIMITED RESOURCES{/ts} 
+_________________________________________________________
 {ts}RESOURCE{/ts} |    {ts}PARENT RESOURCE{/ts} | {ts}TIME{/ts} |              {ts}CONFIGURATION{/ts} |   {ts}PRICE PER UNIT{/ts} |  {ts}QUANTITY{/ts} |    {ts}TOTAL PRICE{/ts} |
 {foreach from=$sub_slots item=subSlot}
 {$subSlot.resource_label}   {$subSlot.parent_resource_label}        {$subSlot.time_required|crmDate}    {$subSlot.config_label} {$subSlot.unit_price}   {$subSlot.quantity} {$subSlot.total_amount}
 {/foreach}
-
---- {ts}Additional charges{/ts} ---
+_________________________________________________________
+{ts}ADDITIONAL CHARGES{/ts} 
+_________________________________________________________
 {ts}ITEM{/ts} |       {ts}PRICE PER UNIT{/ts} |  {ts}QUANTITY{/ts} |    {ts}TOTAL PRICE{/ts} |
 {foreach from=$adhoc_charges item=adhocCharge}
 {$adhocCharge.item_label}       {$adhocCharge.unit_price}               {$adhocCharge.quantity}      {$adhocCharge.total_amount}
 {/foreach}
-
---- {ts}Price{/ts} ---
+---
+_________________________________________________________
+{ts}PRICE{/ts} 
+_________________________________________________________
 {ts}Sub total{/ts}:     {$booking_subtotal}
 {ts}Discounts{/ts}:   {$booking_discount}
 {ts}Total{/ts}:             {$booking_total}
+_________________________________________________________
 {if !empty($cancellation_charges)}
 {foreach from=$cancellation_charges item=cancellationCharges}
-
---- {ts}Cancellation{/ts} ---
+_________________________________________________________
+{ts}CANCELLATION{/ts} 
+_________________________________________________________
 {ts}Date cancelled{/ts}: {$cancellationCharges.cancellation_date}
 {ts}Booking price{/ts}:  {$cancellationCharges.booking_price}
 {ts}This booking was cancelled{/ts} {$cancellationCharges.prior_days} {ts}days{/ts}
 {ts}Cancellation subtotal{/ts}:  {$cancellationCharges.cancellation_fee}
 {ts}Other cancellation charges{/ts}: {$cancellationCharges.additional_fee}
 {ts}Description{/ts}:    {$cancellationCharges.comment}
-{/foreach}
-{/if}
-{if !empty($contribution)}
-
---- {ts}Contribution{/ts} ---
-{ts}Name{/ts}:   {contact.display_name}
-{ts}Amount{/ts}: {$contribution.total_amount}
-{ts}Type{/ts}:   {$contribution.financial_type}
-{ts}Source{/ts}: {$contribution.contribution_source}
-{ts}Received Date{/ts}:  {$contribution.receive_date|crmDate}
-{ts}Thank-you Sent{/ts}:  {$contribution.thankyou_date|crmDate}
-{ts}Status{/ts}: {$contribution.contribution_status}
-{ts}Premium{/ts}:    {$contribution.product_name}
+{/foreach} 
+_________________________________________________________
 {/if}
 
-{if $receipt_footer_message}
-{$receipt_footer_message}
-{else}
-{ts}Your company footer message.{/ts}
-{/if}
+
+{* ----- Your company footer message. ----- *}
+
