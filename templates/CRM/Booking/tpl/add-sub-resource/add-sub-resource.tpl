@@ -56,8 +56,8 @@
             <td><span><a href="#" class="edit-adhoc-charge " title="{ts}Edit additional charges{/ts}">{ts}Edit additional charges{/ts}</a></span></td>
           </tr>
           <tr >
-            <td class="text-right" colspan="4"><span>{$form.discount_amount.label}:</span></td>
-            <td>{$currencySymbols}{$form.discount_amount.html}</td>
+            <td class="text-right" colspan="4"><span>{$form.discount_amount_dummy.label}:</span></td>
+            <td>{$currencySymbols}{$form.discount_amount_dummy.html}</td>
             <td></td>
         </td>
           <tr>

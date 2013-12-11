@@ -59,7 +59,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
               'version' => 3,
               'sequential' => 1,
               'msg_title' => $title,
-              'msg_subject' => ts("Booking - Confirmation Receipt"),
+              'msg_subject' => ts("Booking - Confirmation Receipt").' - '.ts("Booking Status:").'{$booking_status}',
               'msg_text' => $text,
               'msg_html' => $html,
               'is_active' => 1,

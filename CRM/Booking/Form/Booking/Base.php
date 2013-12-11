@@ -377,16 +377,20 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address');
         $values['from_email_address'] = CRM_Utils_Array::value(CRM_Utils_Array::value('from_email_address', $bookingInfo), $fromEmailAddress);
         $values['booking_id'] = $this->_id;
+        $values['primary_contact_id'] = CRM_Utils_Array::value('primary_contact_id', $this->_values);
+        $values['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_id', $this->_values);
         $values['booking_title'] = $this->_values['title'];
         $values['booking_status'] = CRM_Utils_Array::value('status',$this->_values);;
         $values['booking_date'] = $this->_values['booking_date'];
+        $values['booking_start_date'] = $this->_values['start_date'];
+        $values['booking_end_date'] = $this->_values['end_date'];
         $values['participants_estimate'] = CRM_Utils_Array::value('participants_estimate',$this->_values);
         $values['participants_actual'] = CRM_Utils_Array::value('participants_actual',$this->_values);
         $values['receipt_header_message'] = CRM_Utils_Array::value('receipt_header_message',$bookingInfo);
         $values['receipt_footer_message'] = CRM_Utils_Array::value('receipt_footer_message',$bookingInfo);
         $values['include_payment_info'] = CRM_Utils_Array::value('include_payment_information', $bookingInfo);
 
-        $emailTo = CRM_Utils_Array::value('email_to', $bookingInfo);
+        $emailTo = CRM_Utils_Array::value('email_to', $bookingInfo);  //retrieve value from 'Email to' selectbox
         $contactIds = array();
         if ($this->_action & CRM_Core_Action::ADD){
           if($emailTo == 1){

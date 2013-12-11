@@ -68,10 +68,11 @@ class CRM_Booking_Form_Task {
   static function &tasks() {
     if (!(self::$_tasks)) {
       self::$_tasks = array(
-        1 => array('title' => ts('Delete Bookings'),
-          'class' => 'CRM_Contribute_Form_Task_Delete',
-          'result' => FALSE,
-        ),
+        //implement in next version
+        // 1 => array('title' => ts('Delete Bookings'),
+          // 'class' => 'CRM_Contribute_Form_Task_Delete',
+          // 'result' => FALSE,
+        // ),
         2 => array('title' => ts('Print Bookings'),
           'class' => 'CRM_Contribute_Form_Task_Print',
           'result' => FALSE,

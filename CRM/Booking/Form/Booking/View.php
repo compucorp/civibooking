@@ -55,8 +55,7 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
     $this->_values['adhoc_charges'] = CRM_Utils_Array::value('adhoc_charges', $details);
     $this->_values['cancellation_charges'] = CRM_Utils_Array::value('cancellation_charges', $details);
     $this->_values['contribution'] = CRM_Utils_Array::value('contribution', $details);
-
-    $this->_values['sub_total'] = CRM_Utils_Array::value('total_amount', $this->_values) + CRM_Utils_Array::value('discount_amount', $this->_values);
+    $this->_values['sub_total'] = CRM_Utils_Array::value('total_amount', $this->_values) + CRM_Utils_Array::value('discount_amount', $this->_values); //total_amount has been deducted from discount
 
     $this->assign($this->_values);
 

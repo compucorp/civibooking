@@ -10,21 +10,104 @@
 {capture assign=labelStyle }style="padding: 4px; border-bottom: 1px solid #999; background-color: #f7f7f7;"{/capture}
 {capture assign=valueStyle }style="padding: 4px; border-bottom: 1px solid #999;"{/capture}
 
-{if $receipt_header_message}
-<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; margin:5px auto; border:1px solid;">
-{$receipt_header_message}
+<span style="font-family: Arial, Verdana, sans-serif; font-size: 15px;">
+<!-- 
+    Your company header message can go here. 
+-->
+</span>
+
+<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 14px; font-weight: bold; margin:5px auto; border:1px solid;">
+<legend style="border: 1px solid; background-color: #fafafa; padding: 0.2em 0.9em;">{ts}Booking Status{/ts}</legend>
+  <table style="padding: 1px 2px; margin: 0 0 0.3em; font-weight: normal; vertical-align: bottom;">
+      <td style="font-weight: bold;">
+        {ts}Booking ID{/ts}:
+      </td>
+      <td style="padding-right: 20px;">
+        {$booking_id}
+      </td>
+      <td style=" font-weight: bold;">
+        {ts}From{/ts}:
+      </td>
+      <td style="padding-right: 20px;">
+        {$booking_start_date|crmDate}
+      </td>
+      <td style=" font-weight: bold;">
+        {ts}To{/ts}:
+      </td>
+      <td style="padding-right: 20px;">
+        {$booking_end_date|crmDate}
+      </td>
+      <td style=" font-weight: bold;">
+        {ts}Booking Status{/ts}:
+      </td>
+      <td style="">
+        {$booking_status}
+      </td>
+  </table>
+</fieldset>
+
+{if !empty($contribution)}
+<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px auto; border:1px solid;">
+<legend style="border: 1px solid; background-color: #fafafa; padding: 0.2em 0.9em;">{ts}Payment Information{/ts}</legend>
+    
+    <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; border: 1px solid #efefef; border-collapse: collapse; margin: 0em 0em 1em; padding: 100px;">
+        <col style="background-color: #fafafa; text-align: left; color: #7a7a60; width: 13em;"/>
+        <col style="background-color: #f4f4ed;"/>
+        <tbody>
+          <tr style="border-bottom: 1px solid #FFFFFF;">
+            <td style="padding: 5px;">{ts}Total Amount Due{/ts}:</td>
+            <td style="padding: 5px;">{$booking_total}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #FFFFFF;">
+            <td colspan="2" style="padding: 5px 5px 0px 5px;">{ts}Amounts Paid{/ts}:</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="padding: 5px; background-color: #FFFFFF;">
+                <table style="font-size: 12px; margin: 1px; border-spacing: 0px;">
+                    <thead style="font-weight: bold; text-transform: uppercase; color: #52534D; vertical-align: top; text-align: left;">
+                        <tr>
+                        <th style="padding: 3px;">{ts}Name{/ts}</th>
+                        <th style="padding: 3px;">{ts}Amount{/ts}</th>
+                        <th style="padding: 3px;">{ts}Type{/ts}</th>
+                        <th style="padding: 3px;">{ts}Source{/ts}</th>
+                        <th style="padding: 3px;">{ts}Received Date{/ts}</th>
+                        <th style="padding: 3px;">{ts}Status{/ts}</th>
+                        <th style="padding: 3px;">{ts}Premium{/ts}</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: #f4f4ed; font-style: normal; vertical-align: baseline;">
+                      <tr>
+                        <td style="padding: 4px; border: 1px dotted #CFCEC3;">{$contacts.primary_contact.display_name}</td>
+                        <td style="padding: 3px;">{$contribution.total_amount}</td>
+                        <td style="padding: 3px;">{$contribution.financial_type}</td>
+                        <td style="padding: 3px;">{$contribution.contribution_source}</td>
+                        <td style="padding: 3px;">{$contribution.receive_date|crmDate}</td>
+                        <td style="padding: 3px;">{$contribution.contribution_status}</td>
+                        <td style="padding: 3px;">{$contribution.product_name}&nbsp;</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </td>
+          </tr>
+          <tr style="border-bottom: 1px solid #FFFFFF;">
+            <td style="padding: 5px;">{ts}Amounts Outstanding{/ts}:</td>
+            <td style="padding: 5px;">{$amount_outstanding}</td>
+          </tr>
+        </tbody>
+    </table>
 </fieldset>
 {/if}
+
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px auto; border:1px solid;">
 <legend style="border: 1px solid; background-color: #fafafa; padding: 0.2em 0.9em;">{ts}Booking Information{/ts}</legend>
   <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; border: 1px solid #efefef; border-collapse: collapse; margin: 0em 0em 1em;">
-	<col style="background-color: #fafafa; text-align: left; color: #7a7a60; width: 13em;"/>
-	<col style="background-color: #f4f4ed; width: 18.5em;"/>
-	<col style="background-color: #fafafa; text-align: left; color: #7a7a60; width: 13em;"/>
-	<col style="background-color: #f4f4ed; width: 18.5em;"/>
+	<col style="background-color: #fafafa; text-align: left; color: #7a7a60; width: 11.5em;"/>
+	<col style="background-color: #f4f4ed; width: 20em;"/>
+	<col style="background-color: #fafafa; text-align: left; color: #7a7a60; width: 11.5em;"/>
+	<col style="background-color: #f4f4ed; width: 20em;"/>
         <tbody>
         <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Booking ID:{/ts}</td>
+          <td style="padding: 3px;">{ts}Booking ID{/ts}:</td>
           <td style="padding: 3px;">{$booking_id}</td>
           <td style="padding: 3px;">{ts}Today's date{/ts}</td>
           <td style="padding: 3px;">{$today_date}</td>
@@ -36,75 +119,143 @@
           <td style="padding: 3px;">&nbsp;</td>
         </tr>
         <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Contact{/ts}</td>
-          <td style="padding: 3px;"> {contact.first_name} {contact.last_name} </td>
+          <td style="padding: 3px;">{ts}Primary Contact{/ts}</td>
+          <td style="padding: 3px;"> {$contacts.primary_contact.display_name} </td>
+          {if !empty($contacts.secondary_contact)}
+          <td style="padding: 3px;">{ts}Secondary Contact{/ts}</td>
+          <td style="padding: 3px;"> {$contacts.secondary_contact.display_name} </td>
+          {else}
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
+          {/if}
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">{ts}Street Address{/ts}:</td>
+          <td style="padding: 3px;">{$contacts.primary_contact.street_address}</td>
+          {if !empty($contacts.secondary_contact)}
+          <td style="padding: 3px;">{ts}Street Address{/ts}:</td>
+          <td style="padding: 3px;"> {$contacts.secondary_contact.street_address} </td>
+          {else}
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
+          {/if}
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">{ts}Address Line 1{/ts}:</td>
+          <td style="padding: 3px;">{$contacts.primary_contact.supplemental_address_1}</td>
+          {if !empty($contacts.secondary_contact)}
+          <td style="padding: 3px;">{ts}Address Line 1{/ts}:</td>
+          <td style="padding: 3px;"> {$contacts.secondary_contact.supplemental_address_1} </td>
+          {else}
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
+          {/if}
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">{ts}Address Line 2{/ts}:</td>
+          <td style="padding: 3px;">{$contacts.primary_contact.supplemental_address_2}</td>
+          {if !empty($contacts.secondary_contact)}
+          <td style="padding: 3px;">{ts}Address Line 2{/ts}:</td>
+          <td style="padding: 3px;"> {$contacts.secondary_contact.supplemental_address_2} </td>
+          {else}
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
+          {/if}
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">{ts}Town{/ts}:</td>
+          <td style="padding: 3px;">{$contacts.primary_contact.city}</td>
+          {if !empty($contacts.secondary_contact)}
+          <td style="padding: 3px;">{ts}Town{/ts}:</td>
+          <td style="padding: 3px;"> {$contacts.secondary_contact.city} </td>
+          {else}
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
+          {/if}
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">{ts}County{/ts}:</td>
+          <td style="padding: 3px;">{$contacts.primary_contact.state_province_name}</td>
+          {if !empty($contacts.secondary_contact)}
+          <td style="padding: 3px;">{ts}County{/ts}:</td>
+          <td style="padding: 3px;"> {$contacts.secondary_contact.state_province_name} </td>
+          {else}
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
+          {/if}
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">{ts}Country{/ts}:</td>
+          <td style="padding: 3px;">{$contacts.primary_contact.country}</td>
+          {if !empty($contacts.secondary_contact)}
+          <td style="padding: 3px;">{ts}Country{/ts}:</td>
+          <td style="padding: 3px;"> {$contacts.secondary_contact.country} </td>
+          {else}
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
+          {/if}
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">{ts}Post code{/ts}:</td>
+          <td style="padding: 3px;">{$contacts.primary_contact.postal_code}</td>
+          {if !empty($contacts.secondary_contact)}
+          <td style="padding: 3px;">{ts}Post code{/ts}:</td>
+          <td style="padding: 3px;"> {$contacts.secondary_contact.postal_code} </td>
+          {else}
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
+          {/if}
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">{ts}Telephone{/ts}:</td>
+          <td style="padding: 3px;">{$contacts.primary_contact.phone}</td>
+          {if !empty($contacts.secondary_contact)}
+          <td style="padding: 3px;">{ts}Telephone{/ts}:</td>
+          <td style="padding: 3px;"> {$contacts.secondary_contact.phone} </td>
+          {else}
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
+          {/if}
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">{ts}Email{/ts}:</td>
+          <td style="padding: 3px;">{$contacts.primary_contact.email}</td>
+          {if !empty($contacts.secondary_contact)}
+          <td style="padding: 3px;">{ts}Email{/ts}:</td>
+          <td style="padding: 3px;"> {$contacts.secondary_contact.email} </td>
+          {else}
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
+          {/if}
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">&nbsp;</td>
+          <td style="padding: 3px;">&nbsp;</td>
           <td style="padding: 3px;">&nbsp;</td>
           <td style="padding: 3px;">&nbsp;</td>
         </tr>
         <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Organisation:{/ts}</td>
-          <td style="padding: 3px;">{contact.organization_name}</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Organisation Address:{/ts}</td>
-          <td style="padding: 3px;">{$contact.street_address}</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Town:{/ts}</td>
-          <td style="padding: 3px;">{$contact.city}</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}County:{/ts}</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Fax:{/ts}</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Email:{/ts}</td>
-          <td style="padding: 3px;">{$email}</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Post code{/ts}</td>
-          <td style="padding: 3px;">{$contact.postal_code}</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-          <td style="padding: 3px;">&nbsp;</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Day of Function:{/ts}</td>
+          <td style="padding: 3px;">{ts}Day Booking Made{/ts}:</td>
           <td style="padding: 3px;">{$booking_event_day}</td>
-          <td style="padding: 3px;">Date of Function:</td>
-          <td style="padding: 3px;">{$booking_event_date|crmDate}</td>
+          <td style="padding: 3px;">{ts}Date Booking Made{/ts}:</td>
+          <td style="padding: 3px;">{$booking_date_made|crmDate}</td>
         </tr>
         <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Function title:{/ts}</td>
+          <td style="padding: 3px;">{ts}From{/ts}:</td>
+          <td style="padding: 3px;">{$booking_start_date|crmDate}</td>
+          <td style="padding: 3px;">{ts}To{/ts}:</td>
+          <td style="padding: 3px;">{$booking_end_date|crmDate}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #FFFFFF;">
+          <td style="padding: 3px;">{ts}Booking Title{/ts}:</td>
           <td style="padding: 3px;">{$booking_title}</td>
-          <td style="padding: 3px;">{ts}Function status:{/ts}</td>
+          <td style="padding: 3px;">{ts}Booking Status{/ts}:</td>
           <td style="padding: 3px;">{$booking_status}</td>
         </tr>
         <tr style="border-bottom: 1px solid #FFFFFF;">
-          <td style="padding: 3px;">{ts}Estimated Number:{/ts}</td>
+          <td style="padding: 3px;">{ts}Estimated Number{/ts}:</td>
           <td style="padding: 3px;">{$participants_estimate}</td>
-          <td style="padding: 3px;">{ts}Final Max Number:{/ts}</td>
+          <td style="padding: 3px;">{ts}Final Number{/ts}:</td>
           <td style="padding: 3px;">{$participants_actual}</td>
         </tr>
       </tbody>
@@ -140,7 +291,6 @@
         <td style="padding: 4px; border: 1px dotted #CFCEC3">{$slot.total_amount}</td>
       </tr>
       {/foreach}
-
     </tbody> 
   </table>
 {if !empty($sub_slots)}
@@ -200,21 +350,21 @@
 </fieldset>
 <fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px auto; border:1px solid;">
 <legend style="border: 1px solid; background-color: #fafafa; padding: 0.2em 0.9em;">{ts}Price{/ts}</legend>  
-<table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; border: 1px solid #efefef; border-collapse: collapse; margin: 0em 0em 1em; padding: 100px;">
-	<col style="background-color: #fafafa; text-align: left; color: #7a7a60; width: 13em;"/>
-	<col style="background-color: #f4f4ed; width: 50em;"/>
+<table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; border: 1px solid #efefef; border-collapse: collapse; margin: 0em 0em 1em;">
+	<col style="background-color: #fafafa; color: #7a7a60; width: 8em;"/>
+	<col style="background-color: #f4f4ed; width: 10em;"/>
     <tbody>
       <tr style="border-bottom: 1px solid #FFFFFF;">
         <td style="padding: 5px;">{ts}Sub total{/ts}</td>
-        <td style="padding: 5px;">{$booking_subtotal}</td>
+        <td style="padding: 5px; text-align: right;">{$booking_subtotal}</td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
         <td style="padding: 5px;">{ts}Discounts{/ts}</td>
-        <td style="padding: 5px;">{$booking_discount}</td>
+        <td style="padding: 5px; text-align: right;">{$booking_discount}</td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
         <td style="padding: 5px;">{ts}Total{/ts}</td>
-        <td style="padding: 5px;">{$booking_total}</td>
+        <td style="padding: 5px; text-align: right;">{$booking_total}</td>
       </tr>
     </tbody>
   </table>
@@ -224,48 +374,42 @@
 <legend style="border: 1px solid; background-color: #fafafa; padding: 0.2em 0.9em;">{ts}Booking cancellation{/ts}</legend>  
  {foreach from=$cancellation_charges item=cancellationCharges}
   <table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; border: 1px solid #efefef; border-collapse: collapse; margin: 0em 0em 1em;">
-	<col style="background-color: #fafafa; text-align: left; color: #7a7a60; width: 13em;"/>
-	<col span="2" style="background-color: #f4f4ed; width: 25em;"/>
+	<col style="background-color: #fafafa; text-align: left; color: #7a7a60; width: 20em;"/>
+	<col span="1" style="background-color: #f4f4ed; width: 43em;"/>
     <tbody>
       <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Date cancelled:{/ts}</td>
-        <td>{$cancellationCharges.cancellation_date}</td>
-        <td></td>
+        <td style="padding: 3px;">{ts}Date Cancelled{/ts}:</td>
+        <td>{$cancellationCharges.cancellation_date|crmDate}</td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Booking price{/ts}</td>
+        <td style="padding: 3px;">{ts}Booking Price{/ts}</td>
         <td>{$cancellationCharges.booking_price}</td>
-        <td></td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
         <td style="padding: 3px;">{ts}This booking was cancelled{/ts}</td>
-        <td>{$cancellationCharges.prior_days} days</td>
-        <td>{ts}before the event was intended to take place{/ts}</td>
+        <td>{$cancellationCharges.prior_days} days {ts}before the event was intended to take place{/ts}</td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Cancellation subtotal:{/ts}</td>
+        <td style="padding: 3px;">{ts}Cancellation Subtotal{/ts}:</td>
         <td>{$cancellationCharges.cancellation_fee}</td>
-        <td></td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Other cancellation charges:{/ts}</td>
+        <td style="padding: 3px;">{ts}Other Cancellation Charges{/ts}:</td>
         <td>{$cancellationCharges.additional_fee}</td>
-        <td></td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td align="left" cospan"3">{ts}Description:{/ts}</td>
+        <td align="left" cospan"2">{ts}Charge Comment{/ts}:</td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td colspan="3">
-          <table style="border: 1px solid #056085; font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 4px;">
-            <tr><td>{$cancellationCharges.comment}</td></tr>
+        <td colspan="2">
+          <table style="border: 1px solid #056085; font-family: Arial, Verdana, sans-serif; font-size: 12px; padding: 2px; margin: 3px; width: 100%;">
+            <tr><td>{$cancellationCharges.comment}&nbsp;</td></tr>
           </table>
         </td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Cancellation fee:{/ts}</td>
+        <td style="padding: 3px;">{ts}Cancellation fee{/ts}:</td>
         <td>{$cancellationCharges.total_fee}</td>
-        <td></td>
       </tr>
     </tbody>
   </table>
@@ -273,54 +417,9 @@
 </fieldset>
 {/if}
 
-{if !empty($contribution)}
-<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; font-weight: bold; margin:5px auto; border:1px solid;">
-<legend style="border: 1px solid; background-color: #fafafa; padding: 0.2em 0.9em;">{ts}Contribution{/ts}</legend>
-<table style="font-family: Arial, Verdana, sans-serif; font-size: 12px; border: 1px solid #efefef; border-collapse: collapse; margin: 0em 0em 1em;">
-	<col style="background-color: #fafafa; text-align: left; color: #7a7a60; width: 13em;"/>
-	<col style="background-color: #f4f4ed; width: 50em;"/>
-    <tbody>
-      <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Name{/ts}</td>
-        <td style="padding: 3px;">{$contribution}</td>
-      </tr>
-      <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Amount{/ts}</td>
-        <td style="padding: 3px;">{$contribution.total_amount}</td>
-      </tr>
-      <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Type{/ts}</td>
-        <td style="padding: 3px;">{$contribution.financial_type}</td>
-      </tr>
-      <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Source{/ts}</td>
-        <td style="padding: 3px;">{$contribution.contribution_source}</td>
-      </tr>
-      <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Received Date{/ts}</td>
-        <td style="padding: 3px;">{$contribution.receive_date|crmDate}</td>
-      </tr>
-      <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Thank-you Sent{/ts}</td>
-        <td style="padding: 3px;">{$contribution.thankyou_date|crmDate}</td>
-      </tr>
-      <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Status{/ts}</td>
-        <td style="padding: 3px;">{$contribution.contribution_status}</td>
-      </tr>
-      <tr style="border-bottom: 1px solid #FFFFFF;">
-        <td style="padding: 3px;">{ts}Premium{/ts}</td>
-        <td style="padding: 3px;">{$contribution.product_name}&nbsp;</td>
-      </tr>
-    </tbody>
-</table>
-</fieldset>
-{/if}
-{if $receipt_footer_message}
-<fieldset style="font-family: Arial, Verdana, sans-serif; font-size: 15px; margin:5px auto; border:1px solid;">
-{$receipt_footer_message}  
-</fieldset>
-{/if}
-
-
+<span style="font-family: Arial, Verdana, sans-serif; font-size: 15px;">
+<!-- 
+    Your company footer message can go here. 
+-->
+</span>
 </html>

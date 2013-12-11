@@ -47,35 +47,36 @@ cj(function($) {
   scheduler.attachEvent("onBeforeDrag", function(id){
     var evObj = scheduler.getEvent(id);
     
-    //DEBUG  
-    // console.log(evObj);
-		// console.log('evObj.booking_id', evObj.booking_id);
-		// console.log('bookingId', bookingId);
-		// console.log('_.isNull(evObj.booking_id)', _.isNull(evObj.booking_id));
-		// console.log('!_.isUndefined(evObj.booking_id)', !_.isUndefined(evObj.booking_id));
-		// console.log('evObj.booking_id != bookingId', evObj.booking_id != bookingId);
-		// console.log('evObj.readonly', evObj.readonly); 
-    if(!_.isUndefined(evObj.booking_id) && !_.isNull(evObj.booking_id) && evObj.booking_id != bookingId){
+    if(!_.isUndefined(evObj) && !_.isUndefined(evObj.booking_id) && !_.isNull(evObj.booking_id) && evObj.booking_id != bookingId){
       //console.log("Not Allow");
       evObj.readonly = true;
       return false;   //not allow
     }else{
       //console.log("Allow");
-      evObj.readonly = false;
+      if(!_.isUndefined(evObj)){
+        evObj.readonly = false;
+      }
       return true;  //allow
     }
   });
   
   //when edit lightbox
-  scheduler.attachEvent("onEventChanged", function(event_id,ev){
-    var item = getItemInBasket(ev.id);  //get item in basket
-    var resourceLabel = item.label;     //get resoruce label
-    
-    item.start_date = moment(ev.start_date).format("YYYY-M-D HH:mm:ss");
-    item.end_date = moment(ev.end_date).format("YYYY-M-D HH:mm:ss");
-    item.is_updated = true;
-    basket[ev.id] = item;   //update item in basket
-    updateBasketTable(item);  //render ui
+	scheduler.attachEvent("onEventChanged", function(event_id, ev){
+    var resourceLabel = $("div[event_id="+event_id+"]").parent().parent().parent().find(".dhx_scell_name").html(); //get resoruce label from position of lightbox
+    var resourceId = ev.resource_id;
+    var selectedItem = getItemInBasket(ev.id);  //get item in basket
+    if(_.isUndefined(ev.booking_id)){ //new item?
+      var lightboxText = [resourceLabel, " - ", ts("New")].join("");
+      selectedItem.text = lightboxText;
+      ev.text = lightboxText;
+    }
+    selectedItem.label = resourceLabel;
+    selectedItem.resource_id = resourceId;
+    selectedItem.start_date = moment(ev.start_date).format("YYYY-M-D HH:mm:ss");
+    selectedItem.end_date = moment(ev.end_date).format("YYYY-M-D HH:mm:ss");
+    selectedItem.is_updated = true;
+    basket[ev.id] = selectedItem;   //update item in basket
+    updateBasketTable(selectedItem);  //render ui
   });
 
   //click at lightbox
@@ -140,7 +141,6 @@ cj(function($) {
 						}
 						
             //lock editing
-            console.log('ev.readonly',ev.readonly);
 						if((ev.readonly) && (ev.booking_id != bookingId)){ //check editable slots against with bookingId
               $(".crm-booking-form-add-resource").attr("disabled", true);
               $("#add-resource-btn").hide();
@@ -219,12 +219,6 @@ cj(function($) {
     item = createItem(ev);
     basket[ev.id] = item;
     
-    //DEBUG
-		console.log('item.start_date', item.start_date);
-		console.log('moment(data.start_date "YYYY-M-D HH:mm").strftime(crmDateFormat)', moment(item.start_date, "YYYY-M-D HH:mm").strftime(crmDateFormat)); 
-
-    
-    
     updateBasketTable(item);
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
@@ -267,9 +261,6 @@ cj(function($) {
   //Onchange "configSelect"
   $('#configSelect').change(function(e) {
     var val = $(this).val();
-    
-    console.log("val",val);
-    
     if(val == ""){
       $('input[name="quantity"]').attr("disabled",true);
       $('#price-estimate').html(0);

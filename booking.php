@@ -14,7 +14,7 @@ function booking_civicrm_tabs(&$tabs, $cid) {
     $tab = array(
       'id' => 'booking',
       'count' => $count,
-      'title' => 'Booking',
+      'title' => 'Bookings',
       'weight' => 0, //we are at first tab
     );
     $tab['url'] = CRM_Utils_System::url('civicrm/contact/view/booking', "reset=1&cid={$cid}&snippet=1&force=1", false, null, false);

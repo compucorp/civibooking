@@ -67,13 +67,18 @@
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-date-made">
-        <td class="label">{ts}Date Made{/ts}</td><td>
-          {$created_date|crmDate}
+        <td class="label">{ts}Date Booking Made{/ts}</td><td>
+          {$booking_date|crmDate}
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-event-date">
-        <td class="label">{ts}Event Date{/ts}</td><td>
-          {$event_date|crmDate}
+        <td class="label">{ts}Start Date{/ts}</td><td>
+          {$start_date|crmDate}
+        </td>
+      </tr>
+      <tr class="crm-bookingview-form-block-event-date">
+        <td class="label">{ts}End Date{/ts}</td><td>
+          {$end_date|crmDate}
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-po-no">

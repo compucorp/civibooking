@@ -39,11 +39,27 @@
 
 <tr>
   <td>
-  <label>{ts}Event Dates{/ts}</label> <br/>
+  <label>{ts}Date Booking Made{/ts}</label> <br/>
   </td>
 </tr>
 <tr>
   {include file="CRM/Core/DateRange.tpl" fieldName="booking_event_date" from='_low' to='_high'}
+</tr>
+<tr>
+  <td>
+  <label>{ts}Start Dates{/ts}</label> <br/>
+  </td>
+</tr>
+<tr>
+  {include file="CRM/Core/DateRange.tpl" fieldName="booking_start_date" from='_low' to='_high'}
+</tr>
+<tr>
+  <td>
+  <label>{ts}End Dates{/ts}</label> <br/>
+  </td>
+</tr>
+<tr>
+  {include file="CRM/Core/DateRange.tpl" fieldName="booking_end_date" from='_low' to='_high'}
 </tr>
 
 <tr>

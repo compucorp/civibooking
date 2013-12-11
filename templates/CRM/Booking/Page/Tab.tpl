@@ -33,7 +33,7 @@
 {else}
     <div class="view-content">
         {if $action eq 16 and $permission EQ 'edit'}
-           {capture assign=newBookingURL}{crmURL p="civicrm/booking/add/" q="reset=1&action=add&cid=`$contact_id`}{/capture}
+           {capture assign=newBookingURL}{crmURL p="civicrm/booking/add/" q="reset=1&action=add&cid=$cid"}{/capture}
             <div class="action-link">
                 <a accesskey="N" href="{$newBookingURL}" class="button"><span><div class="icon add-icon"></div>{ts}Add a booking for this contact{/ts}</span>
                 </a>
