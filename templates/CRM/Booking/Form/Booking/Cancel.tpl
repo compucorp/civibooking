@@ -2,8 +2,12 @@
 <div class="crm-form-block crm-cancel-booking-form-block">
   <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="top"}</div>
   <div class="crm-section">
-    <div class="label">{ts}Date of Event{/ts}</div>
-    <div class="content">{$booking.event_date}</div>
+    <div class="label">{ts}Event Start Date{/ts}</div>
+    <div class="content">{$booking.booking_start_date|crmDate}</div>
+  </div>
+  <div class="crm-section">
+    <div class="label">{ts}Event End Date{/ts}</div>
+    <div class="content">{$booking.booking_end_date|crmDate}</div>
   </div>
   <div class="crm-section">
     <div class="label">{$form.cancellation_date.label}</div>
@@ -52,3 +56,12 @@
   {include file="CRM/Booking/Form/Booking/Common.tpl"}
  <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 </div>
+
+{* Set today date for datepicker *}
+{literal}
+  <script type="text/javascript">
+  cj(function($) {
+    $('#cancellation_date_display').datepicker("setDate", (new Date()));
+  });
+  </script>
+{/literal}
