@@ -251,7 +251,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             'price',
             'id'
           );
-          $charges['total_amount'] = $charges['unit_price'] * $charges['quantity']; 
+          $charges['total_amount'] = $charges['unit_price'] * $charges['quantity'];
         }
         $adhocCharges[$kc] = $charges;
     }
@@ -296,7 +296,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     $contribution = array();
     $bookingPaymentResult = civicrm_api3('BookingPayment','get',array('booking_id' => $id));
     $bookingPaymentValues = CRM_Utils_Array::value('values',$bookingPaymentResult); //get contribution id from booking_payment
-    
+
     foreach ($bookingPaymentValues as $key => $bpValues) {
         $contributionResult = civicrm_api3('Contribution','get',array('id' => $bpValues['contribution_id']));   //get contribution record
         $contributionValues = CRM_Utils_Array::value('values',$contributionResult);
@@ -517,7 +517,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
   /**
    * Get all amount of booking
-   * 
+   *
    * Remark: The total_amount has been deducted from discount amount.
    */
   static function getBookingAmount($id){
@@ -533,7 +533,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     );
     $params = array('id' => $id);
     self::retrieve($params, $booking);
-    
+
     $bookingAmount['discount_amount'] = CRM_Utils_Array::value('discount_amount', $booking);
     $bookingAmount['total_amount'] = CRM_Utils_Array::value('total_amount', $booking);
     $slots = CRM_Booking_BAO_Slot::getBookingSlot($id);
@@ -623,7 +623,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       'activity_date_time' => date('YmdHis'),
       'target_contact_id' => CRM_Utils_Array::value('target_contact_id', $params),
       'status_id' => 2,
-      'priority_id' => 1,
+      'priority_id' => 2,
     );
     $result = civicrm_api3('Activity', 'create', $params);
   }
@@ -646,7 +646,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
     //send email only when email is present
     if ($email) {
       $bookingId = $values['booking_id'];
-      
+
       //get latest booking status
       $params = array(
             'id' => $bookingId,
@@ -654,15 +654,15 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       $bookingLatest = civicrm_api3('Booking', 'get', $params);
       $bookingStatusValueItems =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create'); //get booking status option values
       $bookingLatestStatus = $bookingStatusValueItems[$bookingLatest['values'][$bookingId]['status_id']];
-      
+
     	//get booking detail
     	$bookingDetail = CRM_Booking_BAO_Booking::getBookingDetails($values['booking_id']);
     	$slots = CRM_Utils_Array::value('slots', $bookingDetail);
     	$subSlots = CRM_Utils_Array::value('sub_slots', $bookingDetail);
     	$adhocCharges = CRM_Utils_Array::value('adhoc_charges', $bookingDetail);
     	$cancellationCharges = CRM_Utils_Array::value('cancellation_charges' , $bookingDetail);
-      
-      //get contacts associating with booking 
+
+      //get contacts associating with booking
       $contactIds = array();
       $contactIds['primary_contact'] = CRM_Utils_Array::value('primary_contact_id',$values);
       $contactIds['secondary_contact'] = CRM_Utils_Array::value('secondary_contact_id',$values);
@@ -678,14 +678,14 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         foreach ($contactValues as $key => $contactItem) {
             $contactDetail[$key] = $contactItem;
         }
-        $contactsDetail[$k] = $contactDetail; 
+        $contactsDetail[$k] = $contactDetail;
       }
-        
-      //get Price elements(Subtotal, Discount, Total)  
+
+      //get Price elements(Subtotal, Discount, Total)
       $booking_amount = CRM_Booking_BAO_Booking::getBookingAmount($values['booking_id']);
-      //get date booking made        
+      //get date booking made
       $dateBookingMade = new DateTime($values['booking_date']);
-        
+
       $tplParams = array(
           'email' => $email,
           'today_date' => date('d.m.Y'),
@@ -709,7 +709,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           'adhoc_charges' => $adhocCharges,
           'cancellation_charges' => $cancellationCharges,
       );
-    
+
       $sendTemplateParams = array(
         'groupName' => 'msg_tpl_workflow_booking',
         'valueName' => 'booking_offline_receipt',
@@ -718,8 +718,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         'tplParams' => $tplParams,
         'PDFFilename' => 'bookingReceipt.pdf',
       );
-      
-      //get include payment check box 
+
+      //get include payment check box
       //if(CRM_Utils_Array::value('include_payment_info', $values)){
       if(CRM_Utils_Array::value('contribution',$bookingDetail)){
       //get contribution record
@@ -729,11 +729,11 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             $contribution = $ctbItem;
         }
         $sendTemplateParams['tplParams']['contribution'] = $contribution;
-        
+
         //calculate Amount outstanding
         $sendTemplateParams['tplParams']['amount_outstanding'] = number_format($booking_amount['total_amount']-$contribution['total_amount'], 2, '.', '');
       }
-      
+
       //TODO:: add line item tpl params
       if ($lineItem = CRM_Utils_Array::value('lineItem', $values)) {
         $sendTemplateParams['tplParams']['lineItem'] = $lineItem;
@@ -751,10 +751,12 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       if($bcc){
         $sendTemplateParams['bcc'] = $bcc;
       }
-      
+
       list($sent, $subject, $message, $html)  = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
-      
-      if($sent & CRM_Utils_Array::value('log_confirmation_email', $config)){  //check log_email_confirmaiton 
+
+      if($sent & CRM_Utils_Array::value('log_confirmation_email', $config)){  //check log_email_confirmaiton
+          $session =& CRM_Core_Session::singleton( );
+          $userId = $session->get( 'userID' ); // which is contact id of the user
           //create activity for sending email
           $params = array(
             'option_group_name' => 'activity_type',
@@ -763,13 +765,14 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           $optionValue = civicrm_api3('OptionValue', 'get', $params);
           $activityTypeId = $optionValue['values'][$optionValue['id']]['value'];
           $params = array(
-            /*'source_contact_id' => $values['source_contact_id'],*/
+            'source_contact_id' => $userId,
             'activity_type_id' => $activityTypeId,
-            'subject' => ts('Booking Confirmation Email'),
+            'subject' => ts('Send Booking Confirmation Email'),
             'activity_date_time' => date('YmdHis'),
             'target_contact_id' => $contactID,
+            'details' => $message,
             'status_id' => 2,
-            'priority_id' => 1,
+            'priority_id' => 2,
           );
           $result = civicrm_api3('Activity', 'create', $params);
        }
