@@ -15,7 +15,8 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    */
   //protected $_id;
 
-  protected $crmDateFormat;
+  
+  private $configOptions;
   
   /**
    * Function to set variables up before form is built
@@ -102,12 +103,19 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
       $params =   array(
         'id' => $this->_id,
       );
+      
       CRM_Booking_BAO_Booking::retrieve($params, $booking);
       $result = civicrm_api3('Slot', 'get', array('booking_id' => $this->_id, 'is_deleted' => 0));
       $config = CRM_Booking_BAO_BookingConfig::getConfig();
       $slots = array();
       foreach ($result['values'] as $key => $value) {
         $displayName = CRM_Contact_BAO_Contact::displayName(CRM_Utils_Array::value('primary_contact_id', $booking));
+        $configOptItem = $this->getConfigOptionById(CRM_Utils_Array::value('config_id', $value));
+        //manipulate quantity to display in basket with "quantity" x "configuration (with price)", ie, "3 x People (30) = 90"
+        $displayQuantity = CRM_Utils_Array::value('quantity', $value)
+          .' x '.CRM_Utils_Array::value('unit_id',$configOptItem)
+          .' ('.CRM_Utils_Array::value('price',$configOptItem).')';
+        
         $slots[$key] = array(
           'id' => CRM_Utils_Array::value('id', $value),
           'resource_id' => CRM_Utils_Array::value('resource_id', $value),
@@ -124,6 +132,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
           'text' =>  CRM_Utils_Array::value('booking_id', $value) . ' : ' . $displayName,
           'configuration_id' => CRM_Utils_Array::value('config_id', $value),
           'quantity' => CRM_Utils_Array::value('quantity', $value),
+          'quantity_display' => $displayQuantity,
           //price = quantity * resource config price
           'price' => CRM_Utils_Array::value('quantity', $value) * floatval(CRM_Core_DAO::getFieldValue(
             'CRM_Booking_BAO_ResourceConfigOption',
@@ -229,4 +238,19 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
 
   }
 
+  private function getConfigOptionById($configurationId){
+    if(!$this->configOptions){
+      //load configuration option
+      $params = array('sequential' => 1,);
+      $configOptionResult = civicrm_api3('ResourceConfigOption', 'get', $params);
+      $this->configOptions = CRM_Utils_Array::value('values', $configOptionResult);
+    }
+    $configOptItems = $this->configOptions;
+    foreach ($configOptItems as $key => $value) {
+      if(CRM_Utils_Array::value('id', $value) == $configurationId){
+        return $configOptItems[$key];
+      }
+    }
+    return null;
+  }
 }

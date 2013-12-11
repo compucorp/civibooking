@@ -163,7 +163,6 @@ cj(function($) {
 						$("#resource-label").val(resource.label);
 						var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
 						var optionsTemp = [];
-						
 						//if (ev.readonly) {
 							var configId = ev.configuration_id;
 							_.each(options, function(item, key) {
@@ -203,11 +202,14 @@ cj(function($) {
     var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
     var endTime = $("#end-time-select").val().split(":");
     var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);
+    var configOptionUnitId = $.trim(_.last($('#configSelect').find(':selected').html().split("/"))).toLowerCase();
+    var configOptionPrice = $('#configSelect').find(':selected').data('price');
     
     ev.start_date = startDate;
     ev.end_date = endDate;
     ev.price = $("#price-estimate").html();
     ev.quantity = $('input[name="quantity"]').val();
+    ev.quantity_display = $('input[name="quantity"]').val() + " x " + configOptionUnitId + " ("+ configOptionPrice +")";
     ev.configuration_id = $('#configSelect').val();
     ev.note = $("#resource-note").val();
     
@@ -299,6 +301,7 @@ cj(function($) {
 			text : ev.text,
 			configuration_id : ev.configuration_id,
 			quantity : ev.quantity,
+			quantity_display : ev.quantity_display,
 			price : ev.price,
 			note : ev.note,
 			readonly : ev.readonly,
