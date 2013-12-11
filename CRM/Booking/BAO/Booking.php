@@ -623,7 +623,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       'activity_date_time' => date('YmdHis'),
       'target_contact_id' => CRM_Utils_Array::value('target_contact_id', $params),
       'status_id' => 2,
-      'priority_id' => 1,
+      'priority_id' => 2,
     );
     $result = civicrm_api3('Activity', 'create', $params);
   }
@@ -772,7 +772,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             'target_contact_id' => $contactID,
             'details' => $message,
             'status_id' => 2,
-            'priority_id' => 1,
+            'priority_id' => 2,
           );
           $result = civicrm_api3('Activity', 'create', $params);
        }
