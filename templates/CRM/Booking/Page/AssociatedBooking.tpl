@@ -3,7 +3,7 @@
     <tr>
       <th scope="col">{ts}Booking Contact{/ts}</th>
       <th scope="col">{ts}Title{/ts}</th>
-      <th scope="col">{ts}Event date{/ts}</th>
+      <th scope="col">{ts}Date Booking Made{/ts}</th>
       <th scope="col">{ts}Price{/ts}</th>
       <th scope="col">{ts}Booking Status{/ts}</th>
       <th scope="col">{ts}Payment Status{/ts}</th>
@@ -19,7 +19,7 @@
         {$row.title}
     </td>
     <td class="crm-booking-event_date">
-        {$row.event_date}
+        {$row.booking_event_date}
     </td>
     <td class="crm-booking-total_amount">
         {$row.total_amount}

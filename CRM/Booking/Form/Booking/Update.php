@@ -60,12 +60,18 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
     parent::buildQuickForm();
     if($this->_action & CRM_Core_Action::UPDATE){
       $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
-      unset($bookingStatus[$this->_cancelStatusId]); //remove cancelled option
-      $this->add('select', 'booking_status', ts('Booking status'),
-        array('' => ts('- select -')) + $bookingStatus,
-        TRUE,
-        array()
-      );
+      
+      if($this->_values['status_id'] == $this->_cancelStatusId){
+        $this->assign('cancel_status_id', $this->_cancelStatusId);
+        $this->add('hidden', 'booking_status', $this->_values['status_id']);
+      }else{
+        unset($bookingStatus[$this->_cancelStatusId]); //remove cancelled option
+        $this->add('select', 'booking_status', ts('Booking status'),
+          array('' => ts('- select -')) + $bookingStatus,
+          TRUE,
+          array()
+        );
+      }
     }
     $this->addFormRule( array( 'CRM_Booking_Form_Booking_Update', 'formRule' ), $this );
 
@@ -79,7 +85,7 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
 
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
-    if ($this->_action & CRM_Core_Action::UPDATE) {
+    if ($this->_action & CRM_Core_Action::UPDATE || $this->_values['status_id'] == $this->_cancelStatusId) {
       $defaults['booking_status'] = $this->_values['status_id'];
     }
     return $defaults;
