@@ -122,7 +122,7 @@
       </tr>
       <tr class="crm-bookingview-form-block-discount_amount">
         <td class="label">{ts}Sub Total{/ts}</td><td>
-          {$sub_total}
+          {$sub_total|string_format:"%.2f"}
         </td>
       </tr>
          <tr class="crm-bookingview-form-block-discount_amount">
