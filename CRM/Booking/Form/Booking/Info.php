@@ -127,6 +127,11 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $defaults['primary_contact_select_id'] = CRM_Utils_Array::value('primary_contact_id', $this->_values);
       $displayName = CRM_Contact_BAO_Contact::displayName(CRM_Utils_Array::value('primary_contact_id', $this->_values));
       $defaults['primary_contact_id'] =  CRM_Utils_Array::value('primary_contact_id', $this->_values) . "::" . $displayName;
+
+      $defaults['secondary_contact_select_id'] = CRM_Utils_Array::value('secondary_contact_id', $this->_values);
+      $displayName = CRM_Contact_BAO_Contact::displayName(CRM_Utils_Array::value('secondary_contact_id', $this->_values));
+      $defaults['secondary_contact_id'] =  CRM_Utils_Array::value('secondary_contact_id', $this->_values) . "::" . $displayName;
+
       $defaults['title'] = CRM_Utils_Array::value('title', $this->_values);
       $defaults['po_no'] = CRM_Utils_Array::value('po_no', $this->_values);
       $defaults['booking_status'] =  CRM_Utils_Array::value('booking_status_id', $this->_values);
@@ -192,9 +197,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['title'] =CRM_Utils_Array::value('title', $bookingInfo);
     $booking['description'] =CRM_Utils_Array::value('description', $bookingInfo);
     $booking['note'] = CRM_Utils_Array::value('note', $bookingInfo);
-    
-    
-    
+
+
+
     $booking['booking_date'] = CRM_Utils_Date::processDate(
       CRM_Utils_Array::value('event_start_date', $bookingInfo),
       CRM_Utils_Array::value('event_start_date_time', $bookingInfo)
@@ -215,21 +220,21 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['created_date'] = $now;
     $booking['updated_by'] = $session->get( 'userID' );
     $booking['updated_date'] = $now;
-  
+
     //retrieve booking_start_date, booking_end_date from all slots
     $dates = array();
     foreach ($resources as $key => $slot) {
         array_push($dates, CRM_Utils_Array::value('start_date', $slot));
         array_push($dates, CRM_Utils_Array::value('end_date', $slot));
     }
-    sort($dates); 
+    sort($dates);
     $bookingStartDate = $dates[0];
     $bookingEndDate = $dates[count($dates)-1];
-    
-    
+
+
     $booking['booking_start_date'] = CRM_Utils_Date::processDate($bookingStartDate);
     $booking['booking_end_date'] = CRM_Utils_Date::processDate($bookingEndDate);
-    
+
     //make sure we create everything in one transaction, not too nice but it does the job
     $transaction = new CRM_Core_Transaction();
 
@@ -321,7 +326,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
           $result = civicrm_api3('AdhocCharges', 'get', array('booking_id' => $bookingID, 'is_deleted' => 0));
           $currentAdhocCharges = $result['values'];
         }
-        // fixed bug of CVB-94 
+        // fixed bug of CVB-94
         // Ad-hoc charges - cannot save
         $items = array_filter(CRM_Utils_Array::value('items', $adhocCharges));
         $newAdhocChargesIds = array();
