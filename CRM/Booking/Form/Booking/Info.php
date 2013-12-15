@@ -141,6 +141,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $defaults['note'] =  CRM_Utils_Array::value('note', $this->_values);
       $defaults['enp'] = CRM_Utils_Array::value('participants_estimate', $this->_values);
       $defaults['fnp'] =  CRM_Utils_Array::value('participants_actual', $this->_values);
+    }else{
+      list($defaults['event_start_date'], $defaults['event_start_date_time']) = CRM_Utils_Date::setDateDefaults(date("Y-m-d H:i:s"), 'activityDateTime');
+
     }
     $addSubResourcePage = $this->controller->exportValues('AddSubResource');
     $defaults['total_amount'] = $addSubResourcePage['total_price']; //use the amount that passing from the form
