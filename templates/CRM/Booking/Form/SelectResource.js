@@ -25,28 +25,28 @@ cj(function($) {
   scheduler.config.details_on_dblclick = false;
   scheduler.config.collision_limit = 1; //allows creating 1 events per time slot
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
-  
+
   if(bookingSlotDate){
     var momentDate = moment(bookingSlotDate, "YYYY-M-D HH:mm");
     var date = momentDate.toDate();
   }else{
     var date = new Date();  //today date
   }
-  
+
   scheduler.init("resource_scheduler", date ,"timeline");
   scheduler.setLoadMode("day");
-  
+
   if(bookingId){
     var url = [CRM.url('civicrm/booking/ajax/slots'), '?booking_id=',bookingId].join('');
   }else{
     var url = CRM.url('civicrm/booking/ajax/slots');
   }
   scheduler.load(url,"json");
-  
+
   //prevent lightbox changing
   scheduler.attachEvent("onBeforeDrag", function(id){
     var evObj = scheduler.getEvent(id);
-    
+
     if(!_.isUndefined(evObj) && !_.isUndefined(evObj.booking_id) && !_.isNull(evObj.booking_id) && evObj.booking_id != bookingId){
       //console.log("Not Allow");
       evObj.readonly = true;
@@ -59,7 +59,7 @@ cj(function($) {
       return true;  //allow
     }
   });
-  
+
   //when edit lightbox
 	scheduler.attachEvent("onEventChanged", function(event_id, ev){
     var resourceLabel = $("div[event_id="+event_id+"]").parent().parent().parent().find(".dhx_scell_name").html(); //get resoruce label from position of lightbox
@@ -79,12 +79,26 @@ cj(function($) {
     updateBasketTable(selectedItem);  //render ui
   });
 
+  //custom validator for start time and end time
+  $.validator.addMethod("greaterThan", function(value, element) {
+      //var sTime = parseInt(cj('select[name="startSelect"]').val());
+      //var eTime = parseInt(cj('select[name="endSelect"]').val());
+
+      var startTime = $("#start-time-select").val().split(":");
+      var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
+      var endTime = $("#end-time-select").val().split(":");
+      var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);
+
+      var val = startDate < endDate || value == "";
+      return val;
+  }, ts("End date time must be after start date time"));
+
   //click at lightbox
   scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
     scheduler.startLightbox(id,null);
     scheduler.hideCover();
-    
+
 		$("#crm-booking-new-slot").dialog({
 			title : ts('Add resource to basket'),
 			modal : true,
@@ -123,6 +137,9 @@ cj(function($) {
 									required : true,
 									number : true
 								},
+                "end-time-select" : {
+                  "greaterThan" : true
+                },
 							}
 						});
 						var item = getItemInBasket(id);
@@ -139,13 +156,13 @@ cj(function($) {
 							$("#resource-note").val(ev.note);
 							$("input[name='quantity']").val(ev.quantity);
 						}
-						
+
             //lock editing
 						if((ev.readonly) && (ev.booking_id != bookingId)){ //check editable slots against with bookingId
               $(".crm-booking-form-add-resource").attr("disabled", true);
               $("#add-resource-btn").hide();
             }
-            
+
 						var initStartDate = moment(new Date(ev.start_date));
 						var initEndDate = moment(new Date(ev.end_date));
 						var startTime = [initStartDate.hours(), ":", initStartDate.minute() < 10 ? '0' + initStartDate.minute() : initStartDate.minute()].join("");
@@ -158,7 +175,7 @@ cj(function($) {
 						$("#end-day-select").val(initEndDate.format("D"));
 						$("#end-month-select").val(initEndDate.months() + 1);
 						$("#end-year-select").val(initEndDate.years());
-						
+
 						var resource = data['values']['0'];
 						$("#resource-label").val(resource.label);
 						var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
@@ -176,7 +193,7 @@ cj(function($) {
 							options = optionsTemp;
 						//}
 						var template = _.template(cj('#select-config-option-template').html());
-						
+
 						$('#configSelect').html(template({
 							options : options,
 							first_option : ["- ", ts('select configuration'), " -"].join("")
@@ -188,7 +205,7 @@ cj(function($) {
 				scheduler.endLightbox(false, null);
 				$(this).dialog('destroy');
 			},
-		}); 
+		});
   };
 
   //Click Save - "select-resource-save"
@@ -204,7 +221,7 @@ cj(function($) {
     var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);
     var configOptionUnitId = $.trim(_.last($('#configSelect').find(':selected').html().split("/"))).toLowerCase();
     var configOptionPrice = $('#configSelect').find(':selected').data('price');
-    
+
     ev.start_date = startDate;
     ev.end_date = endDate;
     ev.price = $("#price-estimate").html();
@@ -212,7 +229,7 @@ cj(function($) {
     ev.quantity_display = $('input[name="quantity"]').val() + " x " + configOptionUnitId + " ("+ configOptionPrice +")";
     ev.configuration_id = $('#configSelect').val();
     ev.note = $("#resource-note").val();
-    
+
     var item = getItemInBasket(ev.id);
     if(item == null){ //new item?
       ev.text = [$("#resource-label").val(), " - ", ts("New")].join("");
@@ -220,7 +237,7 @@ cj(function($) {
     }
     item = createItem(ev);
     basket[ev.id] = item;
-    
+
     updateBasketTable(item);
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
