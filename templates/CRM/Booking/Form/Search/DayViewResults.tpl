@@ -9,9 +9,10 @@
           <th scope="col">{ts}Configuration{/ts}</th>
           <th scope="col">{ts}Booking ID{/ts}</th>
           <th scope="col">{ts}Function Title{/ts}</th>
+          <th scope="col">{ts}Estimated event participants{/ts}</th>
           <th scope="col">{ts}Primary Contact{/ts}</th>
           <th scope="col">{ts}Secondary Contact{/ts}</th>
-          <th scope="col">{ts}Commment{/ts}</th>
+          <th scope="col">{ts}Note{/ts}</th>
         </tr>
       </thead>
     {foreach from=$resource.slot item=resItem}
@@ -21,9 +22,10 @@
         <td>{$resItem.resource_config_label}</td>
         <td>{$resItem.booking_id}</td>
         <td>{$resItem.function_title}</td>
+        <td>{$resItem.estimated_participant}</td>
         <td>{$resItem.primary_contact}</td>
         <td>{$resItem.secondary_contact}</td>
-        <td>{$resItem.comment}</td>
+        <td>{$resItem.note}</td>
       </tr>
     {/foreach}
     </table>
@@ -39,7 +41,7 @@
         <th scope="col">{ts}Booking ID{/ts}</th>
         <th scope="col">{ts}Primary Contact{/ts}</th>
         <th scope="col">{ts}Secondary Contact{/ts}</th>
-        <th scope="col">{ts}Comment{/ts}</th>
+        <th scope="col">{ts}Note{/ts}</th>
       </tr>
     </thead>
     {foreach from=$resource.subslot item=ssItem}
@@ -51,7 +53,7 @@
       <td>{$ssItem.booking_id}</td>
       <td>{$ssItem.primary_contact}</td>
       <td>{$ssItem.secondary_contact}</td>
-      <td>{$ssItem.comment}</td>
+      <td>{$ssItem.note}</td>
     </tr>
     {/foreach}
   </table>
