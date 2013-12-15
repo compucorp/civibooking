@@ -19,7 +19,7 @@
         {$row.title}
     </td>
     <td class="crm-booking-event_date">
-        {$row.booking_event_date}
+        {$row.booking_date|crmDate}
     </td>
     <td class="crm-booking-total_amount">
         {$row.total_amount}
