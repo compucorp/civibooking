@@ -85,7 +85,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     CRM_Booking_BAO_Booking::resolveDefaults($this->_values);
     $title = $this->_values['title'];
     CRM_Utils_System::setTitle(ts('Update Booking') . " - $title");
-    
+
     //get contribution record
     $this->associatedContribution($this->_id);
   }
@@ -173,7 +173,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           $contactDropdown[$this->_values['secondary_contact_id']] =  CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
           //add Both option for sending email to both contacts
           $contactDropdown[CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS] =  ts('Both');
-          $paymentContacts = array_slice($contactDropdown, 1, -1);
+          //$paymentContacts = array_slice($contactDropdown, 1, -1);
         }
       }else{
         $contactDropdown = array(
@@ -182,7 +182,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           '2' => ts('Secondary contact'),
           CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS => ts('Both')
         );
-        $paymentContacts = array_slice($contactDropdown, 1, -1);
+        //$paymentContacts = array_slice($contactDropdown, 1, -1);
       }
 
       $this->add('select', 'email_to', ts('Email to'),
@@ -194,12 +194,19 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
 
       $this->addElement('checkbox', 'record_contribution', ts('Record Payment?'));
 
+
+
+      if(array_key_exists('both_contacts', $contactDropdown)){
+        unset($contactDropdown['both_contacts']);
+      }
+      $paymentContacts = $contactDropdown;
       $this->add('select', 'select_payment_contact', ts('Select contact'),
           $paymentContacts, FALSE,
           array(
             'id' => 'select_payment_contact',
           )
       );
+
 
       $this->addDate('receive_date', ts('Received'), FALSE, array('formatType' => 'activityDate'));
 
@@ -261,7 +268,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         }
         if(!$self->_id){
           if($selectPaymentContact == 2 && !$secondaryContactId){
-            $errors['select_payment_contact'] = ts('Please select add secondary contact.');
+            $errors['select_payment_contact'] = ts('Please select a contact for recording payment');
           }
         }
         $financialTypeId = CRM_Utils_Array::value('financial_type_id', $params);
@@ -413,7 +420,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
             array_push($contactIds, $emailTo);
           }
         }
-        
+
         foreach ($contactIds as $key => $cid) {
           $return = CRM_Booking_BAO_Booking::sendMail($cid, $values);   //send email
         }
@@ -437,7 +444,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
    * return null
    */
   function associatedContribution($booking_id = NULL) {
-    //get contributionId from booking_payment 
+    //get contributionId from booking_payment
     $contributionId = NULL;
     $bookingPaymentResult = civicrm_api3('BookingPayment','get',array('booking_id'=>$booking_id,));
     if($bookingPaymentResult['count'] == 0){
@@ -446,7 +453,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $bookingPaymentValues = CRM_Utils_Array::value('values', $bookingPaymentResult);
         $contributionId = CRM_Utils_Array::value('contribution_id',current($bookingPaymentValues));
     }
-    
+
     //get contribution record by selector controller framework
     //REMARK: consider CiviCRM CORE dependency
     $this->_formValues['contribution_id'] = $contributionId;
