@@ -61,6 +61,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     while ($bao->fetch()) {
       $items[$bao->id] = array();
       CRM_Core_DAO::storeValues($bao, $items[$bao->id]);
+      $items[$bao->id]['name'] = preg_replace('/[^\p{L}\p{N}\s]/u', '_', $items[$bao->id]['name']);
     }
 
     $days = CRM_Booking_Utils_DateTime::getDays();
@@ -166,7 +167,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       $subResources['adhoc_charges'] = $addhocCharges;
       $total = ($subTotal - $this->_discountAmount) +  $addhocCharges['total'];
       $subResources['total_price'] = $total;
-      // force JSON to encode empty array as object if there is empty array in $subResources 
+      // force JSON to encode empty array as object if there is empty array in $subResources
       $defaults['sub_resources'] =  json_encode($subResources,JSON_FORCE_OBJECT);
       $defaults['sub_total'] = $subTotal;
       $defaults['adhoc_charge'] = $addhocCharges['total'];
