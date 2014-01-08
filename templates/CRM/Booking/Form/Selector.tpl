@@ -69,7 +69,12 @@
     <td class="crm-booking-event_date">
         {$row.booking_event_date|crmDate}
     </td>
-
+	<td class="crm-booking-start_date">
+        {$row.booking_start_date|crmDate}
+    </td>
+	<td class="crm-booking-end_date">
+        {$row.booking_end_date|crmDate}
+    </td>
     <td class="crm-booking-total_amount">
         {$row.booking_total_amount}
     </td>
