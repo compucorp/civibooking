@@ -753,8 +753,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       }
 
       list($sent, $subject, $message, $html)  = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
-
-      if($sent & CRM_Utils_Array::value('log_confirmation_email', $config)){  //check log_email_confirmaiton
+      if($sent && CRM_Utils_Array::value('log_confirmation_email', $config)){  //check log_email_confirmaiton
           $session =& CRM_Core_Session::singleton( );
           $userId = $session->get( 'userID' ); // which is contact id of the user
           //create activity for sending email

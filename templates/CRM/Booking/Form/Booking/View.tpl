@@ -159,7 +159,7 @@
         <td>{$slot.note}</td>
         <td>{$slot.unit_price}</td>
         <td>{$slot.quantity}</td>
-        <td>{$slot.total_amount}</td>
+        <td>{$slot.total_amount|number_format:2:".":","}</td>
       </tr>
       {/foreach}
     </table>
@@ -188,7 +188,7 @@
         <td>{$subSlot.note}</td>
         <td>{$subSlot.unit_price}</td>
         <td>{$subSlot.quantity}</td>
-        <td>{$subSlot.total_amount}</td>
+        <td>{$subSlot.total_amount|number_format:2:".":","}</td>
       </tr>
       {/foreach}
     </table>
@@ -209,7 +209,7 @@
         <td>{$charges.item_label}</td>
         <td>{$charges.unit_price}</td>
         <td>{$charges.quantity}</td>
-        <td>{$charges.total_amount}</td>
+        <td>{$charges.total_amount|number_format:2:".":","}</td>
       </tr>
       {/foreach}
     </table>

@@ -6,26 +6,7 @@
       <label>{ts}Start date time{/ts}</label>
     </div>
     <div class="content">
-      <select id="start-day-select" name="start-day-select" class="crm-booking-form-add-resource">
-        {foreach from=$days item=day}
-          <option value="{$day}">{$day}</option>
-        {/foreach}
-     </select>
-     <select id="start-month-select" name="start-month-select" class="crm-booking-form-add-resource">
-        {foreach from=$months key=k item=month}
-          <option value="{$k}">{$month}</option>
-        {/foreach}
-     </select>
-     <select id="start-year-select" name="start-year-select" class="crm-booking-form-add-resource">
-        {foreach from=$years item=year}
-          <option value="{$year}">{$year}</option>
-        {/foreach}
-     </select>
-      <select id="start-time-select" name="start-time-select" class="crm-booking-form-add-resource">
-        {foreach from=$timeOptions key=k item=time}
-          <option value="{$time.time}">{$time.time}</option>
-        {/foreach}
-     </select>
+      <input type="text"  id="datetimepicker" size="18px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -35,26 +16,7 @@
       <label>{ts}End date time{/ts}</label>
     </div>
     <div class="content">
-     <select id="end-day-select" name="end-day-select" class="crm-booking-form-add-resource">
-        {foreach from=$days item=day}
-          <option value="{$day}">{$day}</option>
-        {/foreach}
-     </select>
-     <select id="end-month-select" name="end-month-select" class="crm-booking-form-add-resource">
-        {foreach from=$months key=k item=month}
-          <option value="{$k}">{$month}</option>
-        {/foreach}
-     </select>
-     <select id="end-year-select" name="end-year-select" class="crm-booking-form-add-resource">
-        {foreach from=$years item=year}
-          <option value="{$year}">{$year}</option>
-        {/foreach}
-     </select>
-     <select id="end-time-select" name="end-time-select" class="crm-booking-form-add-resource">
-        {foreach from=$timeOptions key=k item=time}
-          <option value="{$time.time}">{$time.time}</option>
-      {/foreach}
-      </select>
+     <input type="text"  id="datetimepicker2" size="18px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -107,6 +69,14 @@
       <input class="validate form-submit default" name="select-resource-cancel" value="{ts}Cancel{/ts}" type="submit" >
     </span>
   </div>
+  {literal}
+  <script>
+ cj(function($) {
+    $( "#datetimepicker" ).datetimepicker();
+	$( "#datetimepicker2" ).datetimepicker();
+});
+</script>
+{/literal}
 </form>
 </script>
 

@@ -84,10 +84,20 @@ cj(function($) {
       //var sTime = parseInt(cj('select[name="startSelect"]').val());
       //var eTime = parseInt(cj('select[name="endSelect"]').val());
 
-      var startTime = $("#start-time-select").val().split(":");
+      /*var startTime = $("#start-time-select").val().split(":");
       var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
       var endTime = $("#end-time-select").val().split(":");
-      var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);
+      var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);*/
+	  //var startArray = new Date($("#datetimepicker").val().split("/"," ",":"));
+	  //var endDate = new Date($("#datetimepicker2").val().split("/"," ",":"));
+	  var startArray = $("#datetimepicker").val().split(" ");
+	  var endArray = $("#datetimepicker2").val().split(" ");
+	  var startDateArray = startArray[0].split("/");
+	  var endDateArray = endArray[0].split("/");
+	  var startTimeArray = startArray[1].split(":");
+	  var endTimeArray = endArray[1].split(":");
+	  var startDate = new Date(startDateArray[2],startDateArray[1],startDateArray[0],startTimeArray[0],startTimeArray[1]);
+	  var endDate = new Date(endDateArray[2],endDateArray[1],endDateArray[0],endTimeArray[0],endTimeArray[1]);
 
       var val = startDate < endDate || value == "";
       return val;
@@ -167,14 +177,33 @@ cj(function($) {
 						var initEndDate = moment(new Date(ev.end_date));
 						var startTime = [initStartDate.hours(), ":", initStartDate.minute() < 10 ? '0' + initStartDate.minute() : initStartDate.minute()].join("");
 						var endTime = [initEndDate.hours(), ":", initEndDate.minute() < 10 ? '0' + initEndDate.minute() : initEndDate.minute()].join("");
-						$("#start-time-select").val(startTime);
+						/*$("#start-time-select").val(startTime);
 						$("#start-day-select").val(initStartDate.format("D"));
 						$("#start-month-select").val(initStartDate.months() + 1);
 						$("#start-year-select").val(initStartDate.years());
 						$("#end-time-select").val(endTime);
 						$("#end-day-select").val(initEndDate.format("D"));
 						$("#end-month-select").val(initEndDate.months() + 1);
-						$("#end-year-select").val(initEndDate.years());
+						$("#end-year-select").val(initEndDate.years());*/
+						var month=new Array();
+						month[0]="01";
+						month[1]="02";
+						month[2]="03";
+						month[3]="04";
+						month[4]="05";
+						month[5]="06";
+						month[6]="07";
+						month[7]="08";
+						month[8]="09";
+						month[9]="10";
+						month[10]="11";
+						month[11]="12";
+						var startDateString = [initStartDate.format("DD"),"/",month[initStartDate.months()],"/",initStartDate.years()].join("");
+						var endDateString = [initStartDate.format("DD"),"/",month[initStartDate.months()],"/",initStartDate.years()].join("");
+						var startDatetimeString = [startDateString, " ", startTime].join("");
+						var endDatetimeString = [endDateString, " ", endTime].join("");
+						$("#datetimepicker").val(startDatetimeString);
+						$("#datetimepicker2").val(endDatetimeString);
 
 						var resource = data['values']['0'];
 						$("#resource-label").val(resource.label);
@@ -215,10 +244,20 @@ cj(function($) {
         return false;
     }
     var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
-    var startTime = $("#start-time-select").val().split(":");
+    /*var startTime = $("#start-time-select").val().split(":");
     var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
     var endTime = $("#end-time-select").val().split(":");
-    var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);
+    var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);*/
+	var startArray = $("#datetimepicker").val().split(" ");
+	var endArray = $("#datetimepicker2").val().split(" ");
+	var startDateArray = startArray[0].split("/");
+	var endDateArray = endArray[0].split("/");
+	var startTimeArray = startArray[1].split(":");
+	var endTimeArray = endArray[1].split(":");
+	var startDate = new Date(startDateArray[2],startDateArray[1],startDateArray[0],startTimeArray[0],startTimeArray[1]);
+	var endDate = new Date(endDateArray[2],endDateArray[1],endDateArray[0],endTimeArray[0],endTimeArray[1]);
+	
+	
     var configOptionUnitId = $.trim(_.last($('#configSelect').find(':selected').html().split("/"))).toLowerCase();
     var configOptionPrice = $('#configSelect').find(':selected').data('price');
 

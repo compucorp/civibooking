@@ -73,6 +73,8 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     'booking_payment_status',
     'booking_total_amount',
     'booking_event_date',
+	'booking_start_date',//guanhuan
+	'booking_end_date',//guanhuan
     'booking_associated_contact_id',
     'booking_associated_contact',
     'booking_created_date',
@@ -320,7 +322,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     $result = $this->_query->searchQuery($offset, $rowCount, $sort,
       FALSE, FALSE,
       FALSE, FALSE,
-      FALSE,
+      FALSE, 
       $this->_bookingClause
     );
 
@@ -433,6 +435,16 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
         array(
           'name' => ts('Date Booking Made'),
           'sort' => 'booking_event_date',
+          'direction' => CRM_Utils_Sort::DONTCARE,
+        ),
+		array(
+          'name' => ts('Start Date'),
+          'sort' => 'start_date',
+          'direction' => CRM_Utils_Sort::DONTCARE,
+        ),
+		array(
+          'name' => ts('End Date'),
+          'sort' => 'end_date',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
         array(

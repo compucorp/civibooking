@@ -114,6 +114,14 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
         $query->_select['booking_event_date'] = "civicrm_booking.booking_date as booking_event_date";
         $query->_element['booking_event_date'] = 1;
       }
+	  if (CRM_Utils_Array::value('booking_start_date', $query->_returnProperties)) {
+        $query->_select['booking_start_date'] = "civicrm_booking.start_date as booking_start_date";
+        $query->_element['booking_start_date'] = 1;
+      }
+	  if (CRM_Utils_Array::value('booking_end_date', $query->_returnProperties)) {
+        $query->_select['booking_end_date'] = "civicrm_booking.end_date as booking_end_date";
+        $query->_element['booking_end_date'] = 1;
+      }
       if (CRM_Utils_Array::value('booking_associated_contact', $query->_returnProperties)) {
         $query->_select['booking_associated_contact'] = "civicrm_booking_associated_contact.sort_name as booking_associated_contact";
         $query->_select['booking_associated_contact_id'] = "civicrm_booking.secondary_contact_id as booking_associated_contact_id";
@@ -306,6 +314,8 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
         'booking_created_date' => 1,
         'booking_total_amount' => 1,
         'booking_event_date' => 1,
+        'booking_start_date' => 1,
+        'booking_end_date' => 1,
         'booking_associated_contact' => 1,
     );
     return $properties;
