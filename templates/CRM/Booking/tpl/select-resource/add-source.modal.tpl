@@ -6,7 +6,7 @@
       <label>{ts}Start date time{/ts}</label>
     </div>
     <div class="content">
-      <input type="text"  id="datetimepicker" size="18px" />
+      <input type="text"  id="start_datetimepicker" size="18px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -16,7 +16,7 @@
       <label>{ts}End date time{/ts}</label>
     </div>
     <div class="content">
-     <input type="text"  id="datetimepicker2" size="18px" />
+     <input type="text"  id="end_datetimepicker" size="18px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -72,8 +72,8 @@
   {literal}
   <script>
  cj(function($) {
-    $( "#datetimepicker" ).datetimepicker();
-	$( "#datetimepicker2" ).datetimepicker();
+    $( "#start_datetimepicker" ).datetimepicker();
+	$( "#end_datetimepicker" ).datetimepicker();
 });
 </script>
 {/literal}
