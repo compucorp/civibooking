@@ -88,8 +88,6 @@ cj(function($) {
       var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
       var endTime = $("#end-time-select").val().split(":");
       var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);*/
-	  //var startArray = new Date($("#datetimepicker").val().split("/"," ",":"));
-	  //var endDate = new Date($("#datetimepicker2").val().split("/"," ",":"));
 	  var startArray = $("#datetimepicker").val().split(" ");
 	  var endArray = $("#datetimepicker2").val().split(" ");
 	  var startDateArray = startArray[0].split("/");
@@ -254,9 +252,8 @@ cj(function($) {
 	var endDateArray = endArray[0].split("/");
 	var startTimeArray = startArray[1].split(":");
 	var endTimeArray = endArray[1].split(":");
-	var startDate = new Date(startDateArray[2],startDateArray[1],startDateArray[0],startTimeArray[0],startTimeArray[1]);
-	var endDate = new Date(endDateArray[2],endDateArray[1],endDateArray[0],endTimeArray[0],endTimeArray[1]);
-	
+	var startDate = new Date(startDateArray[2],startDateArray[1]-1,startDateArray[0],startTimeArray[0],startTimeArray[1]);
+	var endDate = new Date(endDateArray[2],endDateArray[1]-1,endDateArray[0],endTimeArray[0],endTimeArray[1]);
 	
     var configOptionUnitId = $.trim(_.last($('#configSelect').find(':selected').html().split("/"))).toLowerCase();
     var configOptionPrice = $('#configSelect').find(':selected').data('price');
