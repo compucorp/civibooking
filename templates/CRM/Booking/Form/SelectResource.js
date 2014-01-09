@@ -84,18 +84,17 @@ cj(function($) {
       //var sTime = parseInt(cj('select[name="startSelect"]').val());
       //var eTime = parseInt(cj('select[name="endSelect"]').val());
 
-      /*var startTime = $("#start-time-select").val().split(":");
-      var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
-      var endTime = $("#end-time-select").val().split(":");
-      var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);*/
-	  var startArray = $("#datetimepicker").val().split(" ");
-	  var endArray = $("#datetimepicker2").val().split(" ");
-	  var startDateArray = startArray[0].split("/");
-	  var endDateArray = endArray[0].split("/");
-	  var startTimeArray = startArray[1].split(":");
-	  var endTimeArray = endArray[1].split(":");
-	  var startDate = new Date(startDateArray[2],startDateArray[1],startDateArray[0],startTimeArray[0],startTimeArray[1]);
-	  var endDate = new Date(endDateArray[2],endDateArray[1],endDateArray[0],endTimeArray[0],endTimeArray[1]);
+    //get the digital values of the retrieved dates
+	  var startDateTimeVals = $("#start_datetimepicker").val().split(" ");
+	  var endDateTimeVals = $("#end_datetimepicker").val().split(" ");
+	  var startDateVals = startDateTimeVals[0].split("/");
+	  var endDateVals = endDateTimeVals[0].split("/");
+	  var startTimeVals = startDateTimeVals[1].split(":");
+	  var endTimeVals = endDateTimeVals[1].split(":");
+    
+    //create the date format for the retrieved dates
+	  var startDate = new Date(startDateVals[2],startDateVals[1],startDateVals[0],startTimeVals[0],startTimeVals[1]);
+	  var endDate = new Date(endDateVals[2],endDateVals[1],endDateVals[0],endTimeVals[0],endTimeVals[1]);
 
       var val = startDate < endDate || value == "";
       return val;
@@ -175,14 +174,8 @@ cj(function($) {
 						var initEndDate = moment(new Date(ev.end_date));
 						var startTime = [initStartDate.hours(), ":", initStartDate.minute() < 10 ? '0' + initStartDate.minute() : initStartDate.minute()].join("");
 						var endTime = [initEndDate.hours(), ":", initEndDate.minute() < 10 ? '0' + initEndDate.minute() : initEndDate.minute()].join("");
-						/*$("#start-time-select").val(startTime);
-						$("#start-day-select").val(initStartDate.format("D"));
-						$("#start-month-select").val(initStartDate.months() + 1);
-						$("#start-year-select").val(initStartDate.years());
-						$("#end-time-select").val(endTime);
-						$("#end-day-select").val(initEndDate.format("D"));
-						$("#end-month-select").val(initEndDate.months() + 1);
-						$("#end-year-select").val(initEndDate.years());*/
+            
+            //set the formatted months
 						var month=new Array();
 						month[0]="01";
 						month[1]="02";
@@ -196,12 +189,14 @@ cj(function($) {
 						month[9]="10";
 						month[10]="11";
 						month[11]="12";
-						var startDateString = [initStartDate.format("DD"),"/",month[initStartDate.months()],"/",initStartDate.years()].join("");
-						var endDateString = [initStartDate.format("DD"),"/",month[initStartDate.months()],"/",initStartDate.years()].join("");
-						var startDatetimeString = [startDateString, " ", startTime].join("");
-						var endDatetimeString = [endDateString, " ", endTime].join("");
-						$("#datetimepicker").val(startDatetimeString);
-						$("#datetimepicker2").val(endDatetimeString);
+            
+            //get and set the text for the datetimepicker text fields for the booking creating window
+						var startDateTxt = [initStartDate.format("DD"),"/",month[initStartDate.months()],"/",initStartDate.years()].join("");
+						var endDateTxt = [initStartDate.format("DD"),"/",month[initStartDate.months()],"/",initStartDate.years()].join("");
+						var startDatetimeTxt = [startDateTxt, " ", startTime].join("");
+						var endDatetimeTxt = [endDateTxt, " ", endTime].join("");
+						$("#start_datetimepicker").val(startDatetimeTxt);
+						$("#end_datetimepicker").val(endDatetimeTxt);
 
 						var resource = data['values']['0'];
 						$("#resource-label").val(resource.label);
@@ -246,8 +241,8 @@ cj(function($) {
     var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
     var endTime = $("#end-time-select").val().split(":");
     var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);*/
-	var startArray = $("#datetimepicker").val().split(" ");
-	var endArray = $("#datetimepicker2").val().split(" ");
+	var startArray = $("#start_datetimepicker").val().split(" ");
+	var endArray = $("#end_datetimepicker").val().split(" ");
 	var startDateArray = startArray[0].split("/");
 	var endDateArray = endArray[0].split("/");
 	var startTimeArray = startArray[1].split(":");
