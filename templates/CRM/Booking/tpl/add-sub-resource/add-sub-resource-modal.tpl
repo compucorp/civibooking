@@ -41,26 +41,7 @@
       <label for="time_required">{ts}Time required{/ts}</label>
     </div>
     <div class="content">
-      <select id="required-day-select" name="required-day-select">
-        {foreach from=$days item=day}
-          <option value="{$day}">{$day}</option>
-        {/foreach}
-     </select>
-     <select id="required-month-select" name="required-month-select">
-        {foreach from=$months key=k item=month}
-          <option value="{$k}">{$month}</option>
-        {/foreach}
-     </select>
-     <select id="required-year-select" name="required-year-select">
-        {foreach from=$years item=year}
-          <option value="{$year}">{$year}</option>
-        {/foreach}
-     </select>
-      <select id="required-time-select" name="required-time-select" >
-        {foreach from=$timeOptions key=k item=time}
-          <option value="{$time.time}">{$time.time}</option>
-        {/foreach}
-     </select>
+      <input type="text"  id="datetimepicker" size="18px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -92,7 +73,14 @@
   </div>
 </form>
 </div>
+{literal}
+  <script>
+ cj(function($) {
+   
+    
+});
 </script>
-
+{/literal}
+</script>
 
 

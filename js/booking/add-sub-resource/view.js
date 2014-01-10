@@ -202,18 +202,36 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     },
     onRender: function(){
       BookingApp.Common.Views.BookingProcessModal.prototype.onRender.apply(this, arguments);
+      
       var thisView = this;  //set 'this' object for calling inside callback function 
       this.$el.find('#loading').show();
+      
       var initsdate = moment(this.model.get('time_required'), "YYYY-MM-DD HH:mm:ss");
-      var sTime = [initsdate.hours(), ":", initsdate.minute() < 10 ? '0' + initsdate.minute() : initsdate.minute()].join("");
-      this.$el.find("#required-time-select").val(sTime); 
-      this.$el.find("#required-day-select").val(initsdate.format("D"));
-      this.$el.find("#required-month-select").val(initsdate.months() + 1);
-      this.$el.find("#required-year-select").val(initsdate.years());
+      var sTime = [initsdate.hours() < 10 ? '0' + initsdate.hours() : initsdate.hours(), ":", initsdate.minute() < 10 ? '0' + initsdate.minute() : initsdate.minute()].join("");
+   
+      //set the formatted months
+      var month=new Array();
+      month[0]="01";
+      month[1]="02";
+      month[2]="03";
+      month[3]="04";
+      month[4]="05";
+      month[5]="06";
+      month[6]="07";
+      month[7]="08";
+      month[8]="09";
+      month[9]="10";
+      month[10]="11";
+      month[11]="12";
+      var dateTxt = [initsdate.format("DD"),"/",month[initsdate.months()],"/",initsdate.years()].join("");
+      var datetimeTxt = [dateTxt, " ", sTime].join("");
+      this.$el.find("#datetimepicker").val(datetimeTxt);
 
        CRM.api('Resource', 'get', {'sequential': 1, 'is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
         {success: function(data) {
             thisView.template =  _.template($('#add-sub-resource-template').html());
+            thisView.$el.find("#datetimepicker").datetimepicker();
+
             //thisView.resources = data.values;
             var tpl = _.template($('#select-option-template').html());
             var params = {
@@ -360,16 +378,12 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         return false;
       }
       this.model.set('note', this.$el.find('#sub-resource-note').val());
-      var requiredTime = this.$el.find("#required-time-select").val().split(":");
-      var requiredDate = new Date(
-        this.$el.find("#required-year-select").val(),
-        this.$el.find("#required-month-select").val() - 1,
-        this.$el.find("#required-day-select").val(),
-        requiredTime[0],
-        requiredTime[1]
-      );
-			var timeRequired = moment(requiredDate).format("YYYY-M-D HH:mm");
-			this.model.set('time_required', timeRequired); 
+      var dateTimeVals = this.$el.find("#datetimepicker").val().split(" ");
+      var dateVals = dateTimeVals[0].split("/");
+      var timeVals = dateTimeVals[1].split(":");
+      var requiredDate = new Date(dateVals[2],dateVals[0]-1,dateVals[1],timeVals[0],timeVals[1]);
+			//var timeRequired = moment(requiredDate).format("YYYY-M-D HH:mm");
+			//this.model.set('time_required', timeRequired); 
 
       var parentRefId = this.model.get('parent_ref_id');
       
