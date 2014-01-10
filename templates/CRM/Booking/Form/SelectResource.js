@@ -81,8 +81,6 @@ cj(function($) {
 
   //custom validator for start time and end time
   $.validator.addMethod("greaterThan", function(value, element) {
-      //var sTime = parseInt(cj('select[name="startSelect"]').val());
-      //var eTime = parseInt(cj('select[name="endSelect"]').val());
 
     //get the digital values of the retrieved dates
 	  var startDateTimeVals = $("#start_datetimepicker").val().split(" ");
@@ -96,8 +94,8 @@ cj(function($) {
 	  var startDate = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
 	  var endDate = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
 
-      var val = startDate < endDate || value == "";
-      return val;
+    var val = startDate < endDate || value == "";
+    return val;
   }, ts("End date time must be after start date time"));
 
   //click at lightbox
@@ -144,7 +142,7 @@ cj(function($) {
 									required : true,
 									number : true
 								},
-                "end-time-select" : {
+                "end_datetimepicker" : {
                   "greaterThan" : true
                 },
 							}
@@ -237,18 +235,14 @@ cj(function($) {
         return false;
     }
     var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
-    /*var startTime = $("#start-time-select").val().split(":");
-    var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
-    var endTime = $("#end-time-select").val().split(":");
-    var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);*/
-	var startArray = $("#start_datetimepicker").val().split(" ");
-	var endArray = $("#end_datetimepicker").val().split(" ");
-	var startDateArray = startArray[0].split("/");
-	var endDateArray = endArray[0].split("/");
-	var startTimeArray = startArray[1].split(":");
-	var endTimeArray = endArray[1].split(":");
-	var startDate = new Date(startDateArray[2],startDateArray[0]-1,startDateArray[1],startTimeArray[0],startTimeArray[1]);
-	var endDate = new Date(endDateArray[2],endDateArray[0]-1,endDateArray[1],endTimeArray[0],endTimeArray[1]);
+    var startArray = $("#start_datetimepicker").val().split(" ");
+    var endArray = $("#end_datetimepicker").val().split(" ");
+    var startDateArray = startArray[0].split("/");
+    var endDateArray = endArray[0].split("/");
+    var startTimeArray = startArray[1].split(":");
+    var endTimeArray = endArray[1].split(":");
+    var startDate = new Date(startDateArray[2],startDateArray[0]-1,startDateArray[1],startTimeArray[0],startTimeArray[1]);
+    var endDate = new Date(endDateArray[2],endDateArray[0]-1,endDateArray[1],endTimeArray[0],endTimeArray[1]);
 	
     var configOptionUnitId = $.trim(_.last($('#configSelect').find(':selected').html().split("/"))).toLowerCase();
     var configOptionPrice = $('#configSelect').find(':selected').data('price');
@@ -278,8 +272,6 @@ cj(function($) {
   $(document).on("click", ".remove-from-basket-btn", function(e){
     e.preventDefault();
     var eid = $(this).data('eid');
-    var ev = scheduler.getEvent(eid);
-    //subTotal -=  ev.price;
     delete basket[eid];
     subTotal = calculateTotalPrice();
     $('tr[data-eid=' + eid + ']').remove();

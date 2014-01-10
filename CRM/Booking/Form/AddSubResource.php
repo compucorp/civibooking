@@ -68,9 +68,6 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     //$months = CRM_Utils_Date::getFullMonthNames();
     //$years = CRM_Booking_Utils_DateTime::getYears();
 
-    //$this->assign('days', $days);
-    //$this->assign('months', $months);
-    //$this->assign('years', $years);
 
     $this->assign('items', $items);
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
@@ -279,6 +276,4 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     $region->add(array('template' => 'CRM/Booking/tpl/select-option.tpl' ));
 
   }
-
-
 }

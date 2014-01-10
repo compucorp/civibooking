@@ -208,11 +208,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       
       var initsdate = moment(this.model.get('time_required'), "YYYY-MM-DD HH:mm:ss");
       var sTime = [initsdate.hours() < 10 ? '0' + initsdate.hours() : initsdate.hours(), ":", initsdate.minute() < 10 ? '0' + initsdate.minute() : initsdate.minute()].join("");
-      /*this.$el.find("#required-time-select").val(sTime); 
-      this.$el.find("#required-day-select").val(initsdate.format("D"));
-      this.$el.find("#required-month-select").val(initsdate.months() + 1);
-      this.$el.find("#required-year-select").val(initsdate.years());*/
-      
+   
       //set the formatted months
       var month=new Array();
       month[0]="01";

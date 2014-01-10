@@ -208,7 +208,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.css', 92, 'page-header')
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
 	  
-	  //guanhuan datetimepicker
+	  //datetimepicker
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/jquery-ui-timepicker-addon.css', 93, 'html-header')
 
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
@@ -222,7 +222,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/utils.js', 141, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/civicrm-moment-strftime.js', 142, 'html-header', FALSE)
 	  
-	  //guanhuan datetimepicker
+	  //datetimepicker
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/jquery-ui-timepicker-addon.js', 143, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/jquery-ui-sliderAccess.js', 144, 'html-header')
 
