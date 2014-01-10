@@ -83,8 +83,8 @@ cj(function($) {
   $.validator.addMethod("greaterThan", function(value, element) {
 
     //get the digital values of the retrieved dates
-	  var startDateTimeVals = $("#start_datetimepicker").val().split(" ");
-	  var endDateTimeVals = $("#end_datetimepicker").val().split(" ");
+	  var startDateTimeVals = $("#start_date_time").val().split(" ");
+	  var endDateTimeVals = $("#end_date_time").val().split(" ");
 	  var startDateVals = startDateTimeVals[0].split("/");
 	  var endDateVals = endDateTimeVals[0].split("/");
 	  var startTimeVals = startDateTimeVals[1].split(":");
@@ -142,7 +142,7 @@ cj(function($) {
 									required : true,
 									number : true
 								},
-                "end_datetimepicker" : {
+                "end_date_time" : {
                   "greaterThan" : true
                 },
 							}
@@ -193,8 +193,8 @@ cj(function($) {
 						var endDateTxt = [month[initStartDate.months()],"/",initStartDate.format("DD"),"/",initStartDate.years()].join("");
 						var startDatetimeTxt = [startDateTxt, " ", startTime].join("");
 						var endDatetimeTxt = [endDateTxt, " ", endTime].join("");
-						$("#start_datetimepicker").val(startDatetimeTxt);
-						$("#end_datetimepicker").val(endDatetimeTxt);
+						$("#start_date_time").val(startDatetimeTxt);
+						$("#end_date_time").val(endDatetimeTxt);
 
 						var resource = data['values']['0'];
 						$("#resource-label").val(resource.label);
@@ -235,8 +235,8 @@ cj(function($) {
         return false;
     }
     var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
-    var startArray = $("#start_datetimepicker").val().split(" ");
-    var endArray = $("#end_datetimepicker").val().split(" ");
+    var startArray = $("#start_date_time").val().split(" ");
+    var endArray = $("#end_date_time").val().split(" ");
     var startDateArray = startArray[0].split("/");
     var endDateArray = endArray[0].split("/");
     var startTimeArray = startArray[1].split(":");
