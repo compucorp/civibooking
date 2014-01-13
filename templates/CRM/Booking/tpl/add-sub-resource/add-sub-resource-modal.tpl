@@ -41,7 +41,8 @@
       <label for="time_required">{ts}Time required{/ts}</label>
     </div>
     <div class="content">
-      <input type="text"  id="datetimepicker" size="18px" />
+      <input type="text"  name="required_date" id="required_date" size="10px" />
+      <input type="text"  name="required_time"   id="required_time" size="4px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -73,14 +74,6 @@
   </div>
 </form>
 </div>
-{literal}
-  <script>
- cj(function($) {
-   
-    
-});
-</script>
-{/literal}
 </script>
 
 

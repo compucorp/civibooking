@@ -153,9 +153,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   function postProcess() {
     $bookingInfo = $this->exportValues();
     $selectResource = $this->controller->exportValues('SelectResource');
-    $addSubResoruce = $this->controller->exportValues('AddSubResource');
+    $addSubResource = $this->controller->exportValues('AddSubResource');
     $resourcesValue = json_decode($selectResource['resources'], true);
-    $subResourcesValue = json_decode($addSubResoruce['sub_resources'], true);
+    $subResourcesValue = json_decode($addSubResource['sub_resources'], true);
     $subResources = $subResourcesValue['sub_resources'];
 
     //Build resources array for passing to Booking APIs
@@ -208,8 +208,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       CRM_Utils_Array::value('event_start_date_time', $bookingInfo)
     );
 
-    $booking['discount_amount'] = CRM_Utils_Array::value('discount_amount', $addSubResoruce);
-    $booking['total_amount'] = CRM_Utils_Array::value('total_price', $addSubResoruce);
+    $booking['discount_amount'] = CRM_Utils_Array::value('discount_amount', $addSubResource);
+    $booking['total_amount'] = CRM_Utils_Array::value('total_price', $addSubResource);
 
     //add adhoc charge
     $booking['adhoc_charges_note'] = CRM_Utils_Array::value('note', $adhocCharges);

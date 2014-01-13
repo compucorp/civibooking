@@ -92,7 +92,7 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
 	  // put validation
 	  if(!is_numeric($price)){
 	   // set error msg
-		  $errors['price'] = ts('This fields should be numeric.');
+		  $errors['price'] = ts('This field should be numeric.');
 	  }
     if (!empty($errors)) {
       return $errors;

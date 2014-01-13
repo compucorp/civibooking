@@ -25,7 +25,7 @@ class CRM_Booking_BAO_ResourceConfigOption extends CRM_Booking_DAO_ResourceConfi
       /**
    * Function to delete ResourceConfigOption
    *
-   * @param  int  $id     Id of the Resoruce Config Option to be deleted.
+   * @param  int  $id     Id of the Resource Config Option to be deleted.
    *
    * @return boolean
    *

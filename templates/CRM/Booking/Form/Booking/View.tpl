@@ -164,12 +164,12 @@
       {/foreach}
     </table>
     {if $sub_slots}
-     <h3>{ts}Unlmited Resources{/ts}</h3>
+     <h3>{ts}Unlimited Resources{/ts}</h3>
      <table class="selector">
       <thead class="sticky">
         <tr>
           <th scope="col">{ts}Resource{/ts}</th>
-          <th scope="col">{ts}Parent Resoruce{/ts}</th>
+          <th scope="col">{ts}Parent Resource{/ts}</th>
           <th scope="col">{ts}Time Required{/ts}</th>
           <th scope="col">{ts}Configuration{/ts}</th>
           <th scope="col">{ts}Note{/ts}</th>

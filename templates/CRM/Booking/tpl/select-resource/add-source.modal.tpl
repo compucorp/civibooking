@@ -6,7 +6,8 @@
       <label>{ts}Start date time{/ts}</label>
     </div>
     <div class="content">
-      <input type="text"  name="start_date_time"   id="start_date_time" size="18px" />
+      <input type="text"  name="start_date"   id="start_date" size="10px" />
+      <input type="text"  name="start_time"   id="start_time" size="4px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -16,7 +17,8 @@
       <label>{ts}End date time{/ts}</label>
     </div>
     <div class="content">
-     <input type="text"  name="end_date_time"    id="end_date_time" size="18px" />
+     <input type="text"  name="end_date"    id="end_date" size="10px" />
+     <input type="text"  name="end_time"   id="end_time" size="4px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -70,10 +72,25 @@
     </span>
   </div>
   {literal}
+
   <script>
  cj(function($) {
-    $( "#start_date_time" ).datetimepicker();
-	$( "#end_date_time" ).datetimepicker();
+    $( "#start_date" ).datepicker({
+      changeMonth: true,
+      changeYear: true
+    });
+    $( "#end_date" ).datepicker({
+      changeMonth: true,
+      changeYear: true
+    });
+    $('#start_time').timeEntry({show24Hours: true}).change(function() { 
+      var log = $('#log'); 
+      log.val(log.val() + ($('#defaultEntry').val() || 'blank') + '\n'); 
+    });
+    $('#end_time').timeEntry({show24Hours: true}).change(function() { 
+      var log = $('#log'); 
+      log.val(log.val() + ($('#defaultEntry').val() || 'blank') + '\n'); 
+    });
 });
 </script>
 {/literal}

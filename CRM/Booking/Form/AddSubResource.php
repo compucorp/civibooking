@@ -243,9 +243,6 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
       
-      //guanhuan datetimepicker
-      ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/jquery-ui-timepicker-addon.css', 93, 'html-header')
-      
       ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
@@ -259,11 +256,8 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/common/views.js', 151, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/utils.js', 151, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/entities.js', 160, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/view.js', 170, 'html-header')
-      
-      //guanhuan datetimepicker
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/jquery-ui-timepicker-addon.js', 171, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/jquery-ui-sliderAccess.js', 172, 'html-header');
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/view.js', 170, 'html-header');
+
 
     $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.booking') . '/templates/';
     $region = CRM_Core_Region::instance('page-header');

@@ -13,7 +13,7 @@
   {foreach from=$associatedBooking item=row}
   <tr id="rowid{$row.id}" class="{cycle values="odd-row,even-row"} crm-booking_{$row.id}">
     <td class="crm-booking-contact">
-      <a href="{crmURL p="civicrm/contact/view" q="reset=1&cid=`$row.primary_contact_id`"}" id="view_contact" title="{ts}View Booking Contactr Record{/ts}">{$row.primary_contact_name}</a>
+      <a href="{crmURL p="civicrm/contact/view" q="reset=1&cid=`$row.primary_contact_id`"}" id="view_contact" title="{ts}View Booking Contact Record{/ts}">{$row.primary_contact_name}</a>
     </td>
     <td class="crm-booking-title">
         {$row.title}

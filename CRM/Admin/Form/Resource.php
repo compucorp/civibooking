@@ -62,7 +62,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
 
     $types =  CRM_Booking_BAO_Resource::buildOptions('type_id', 'create');
-    $this->add('select', 'type_id', ts('Resoruce type'),
+    $this->add('select', 'type_id', ts('Resource type'),
       array('' => ts('- select -')) + $types,
       TRUE,
       array()
@@ -93,7 +93,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     $this->add('select', 'set_id', ts('Resource configuration set'), $configSets, TRUE);
 
     $locations =  CRM_Booking_BAO_Resource::buildOptions('location_id', 'create');
-    $this->add('select', 'location_id', ts('Resoruce Location'),
+    $this->add('select', 'location_id', ts('Resource Location'),
       array('' => ts('- select -')) + $locations,
       FALSE,
       array()

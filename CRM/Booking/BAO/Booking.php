@@ -316,7 +316,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
   /**
    * Function to delete Booking
    *
-   * @param  int  $id     Id of the Resoruce to be deleted.
+   * @param  int  $id     Id of the Resource to be deleted.
    *
    * @return boolean
    *

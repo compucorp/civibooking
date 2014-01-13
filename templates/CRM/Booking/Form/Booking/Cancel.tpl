@@ -38,7 +38,7 @@
     <div class="content">{$form.cancellations.html}</div>
   </div>
   <div class="crm-section">
-    <div class="label">{ts}Cencellation Charge{/ts}</div>
+    <div class="label">{ts}Cancellation Charge{/ts}</div>
     <div class="content"><span id="cancellation_charge_display">{ts}0{/ts}</span>{$form.cancellation_charge.html}</div>
   </div>
    <div class="crm-section">
