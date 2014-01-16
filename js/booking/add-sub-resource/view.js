@@ -3,6 +3,10 @@
  * View classes belong to the second wizard screen of create/edit booking
  */
 CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Backbone, Marionette, $, _) {
+  
+  var startDate;
+  var endDate;
+  var unlimitedTimeConfig;
 
 	CRM.BookingApp.vent.on("update:resources", function(model) {
 		$('#sub_resources').val(JSON.stringify(model.toJSON()));
@@ -78,6 +82,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       this.model.attributes.sub_total = subtotal;
       this.model.attributes.total_price = (subtotal + this.model.get("adhoc_charges").total) - this.model.get("discount_amount");
       this.model.attributes.discount_amount = this.model.get("discount_amount");
+      
+      unlimitedTimeConfig = timeConfig;
 
       this.$el.find("#sub-total-summary").text(this.model.get('sub_total'));
       this.$el.find("#ad-hoc-charge-summary").text(this.model.get('adhoc_charges').total);
@@ -97,10 +103,11 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     
     addSubResource: function(e){
      var ref = $(e.currentTarget).data('ref');
-     var startDate =  $(e.currentTarget).data('sdate');
+     endDate =  $(e.currentTarget).data('edate');
+     startDate =  $(e.currentTarget).data('sdate');
      var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref, time_required:startDate});
      var view = new AddSubResource.AddSubResourceModal({model: model, is_new: true});
-     view.title = ts('Add unlimited resource');
+     view.title = ts('Add Unlimited Resource');
      CRM.BookingApp.modal.show(view);
     },
     
@@ -207,6 +214,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       var thisView = this;  //set 'this' object for calling inside callback function 
       this.$el.find('#loading').show();
       
+      
+      
       var initsdate = moment(this.model.get('time_required'), "YYYY-MM-DD HH:mm:ss");
       var timeTxt = [initsdate.hours() < 10 ? '0' + initsdate.hours() : initsdate.hours(), ":", initsdate.minute() < 10 ? '0' + initsdate.minute() : initsdate.minute()].join("");
    
@@ -231,6 +240,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
        CRM.api('Resource', 'get', {'sequential': 1, 'is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
         {success: function(data) {
             thisView.template =  _.template($('#add-sub-resource-template').html());
+            //var configValue = CRM_Booking_BAO_BookingConfig::getConfig();
+
             thisView.$el.find("#required_date").datepicker({changeMonth: true, changeYear: true});
             thisView.$el.find('#required_time').timeEntry({show24Hours: true}).change(function() { 
               var log = $('#log'); 
@@ -276,16 +287,31 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
      * @param Object r the validation rules for the view
      */
     onValidateRulesCreate: function(view, r) {
-      _.extend(r.rules, {
+        $.validator.addMethod("withinValidTime", function(value, element) {
+        var dateVals = $("#required_date").val().split("/");
+        var timeVals = $("#required_time").val().split(":");
+        var requiredDate = new Date(dateVals[2],dateVals[0]-1,dateVals[1],timeVals[0],timeVals[1]);
+        var minDate = moment(startDate, "YYYY-MM-DD HH:mm:ss");
+        var maxDate = moment(endDate, "YYYY-MM-DD HH:mm:ss");
+        if (unlimitedTimeConfig==0){
+          return true;
+        }
+        else{
+          var val = requiredDate>=minDate && requiredDate<=maxDate;
+          return val;
+        }
+        }, ts("Please select the date and time during the valid booking time."));
+     _.extend(r.rules, {
         resource_select: {
           required: true
         },
         configuration_select: {
           required: true
         },
-        /*time_required: {
-          required: true
-        },*/
+        "required_date": {
+          required: true,
+            "withinValidTime": true
+        },
         quantity: {
           required: true,
           number: true

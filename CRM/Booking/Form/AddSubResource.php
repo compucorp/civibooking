@@ -36,6 +36,10 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       $currencySymbols = $config->defaultCurrencySymbol;
     }
     $this->assign('currencySymbols', $currencySymbols);
+    
+    //Control the flexibility of time configuration for unlimited resource
+    $bookingConfig = CRM_Booking_BAO_BookingConfig::getConfig();
+    $this->assign('timeconfig', CRM_Utils_Array::value('unlimited_resource_time_config', $bookingConfig));
 
     $selectResourcePage = $this->controller->exportValues('SelectResource');
 

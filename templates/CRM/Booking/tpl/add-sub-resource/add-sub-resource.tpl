@@ -22,7 +22,7 @@
             <td class="crm-booking-resource-price ">{$currencySymbols}<span data-ref="{$key}" id="resource-price-{$key}">{$resource.price}</span></td>
             <td class="crm-booking-resource-total-price ">{$currencySymbols}<span data-ref="{$key}" data-price="{$resource.price}" id="resource-total-price-{$key}">{$resource.price}<span></td>
             <td >
-              <span><a href="#" data-ref="{$key}" data-sdate="{$resource.start_date}" class="add-sub-resource action-item action-item-first" title="Add unlimited resource">{ts}Add unlimited resource{/ts}</a></span></td>
+              <span><a href="#" data-ref="{$key}" data-sdate="{$resource.start_date}" data-edate="{$resource.end_date}" class="add-sub-resource action-item action-item-first" title="Add unlimited resource">{ts}Add unlimited resource{/ts}</a></span></td>
           </tr>
           <tr class="hiddenElement" id="crm-booking-sub-resource-row-{$key}">
             <td ></td>
@@ -83,3 +83,8 @@
     </td>
   </tr>
 </script>
+ {literal}
+ <script type="text/javascript">
+var timeConfig = "{/literal}{$timeconfig}{literal}";
+</script>
+ {/literal}

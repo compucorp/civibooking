@@ -4,6 +4,8 @@
       <th scope="col">{ts}Booking Contact{/ts}</th>
       <th scope="col">{ts}Title{/ts}</th>
       <th scope="col">{ts}Date Booking Made{/ts}</th>
+      <th scope="col">{ts}Date Booking Start{/ts}</th>
+      <th scope="col">{ts}Date Booking End{/ts}</th>
       <th scope="col">{ts}Price{/ts}</th>
       <th scope="col">{ts}Booking Status{/ts}</th>
       <th scope="col">{ts}Payment Status{/ts}</th>
@@ -20,6 +22,12 @@
     </td>
     <td class="crm-booking-event_date">
         {$row.booking_date|crmDate}
+    </td>
+    <td class="crm-booking-start_date">
+        {$row.start_date|crmDate}
+    </td>
+    <td class="crm-booking-end_date">
+        {$row.end_date|crmDate}
     </td>
     <td class="crm-booking-total_amount">
         {$row.total_amount}
