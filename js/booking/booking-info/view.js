@@ -32,7 +32,7 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
       this.title = options.title;
       this.profile = options.profile;
       this.elementId = options.elementId;
-      this.targetElementId = options.targetElementId;
+      this.targetElementId = '#'+options.targetElementId;
     },
     onRender: function(){
       var self = this;

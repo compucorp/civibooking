@@ -45,7 +45,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   function buildQuickForm() {
     parent::buildQuickForm();
 
-    $this->addElement('hidden', "primary_contact_select_id");
+    $this->addElement('hidden', "primary_contact_select_id", TRUE);
     $this->add('text', "primary_contact_id", ts('Primary contact'), array(), TRUE );
 
     $this->addElement('hidden', "secondary_contact_select_id");
@@ -102,7 +102,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     //make sure primary contact is selected
     $contactId = CRM_Utils_Array::value('primary_contact_select_id', $params);
     if(!$contactId){
-      $errors['primary_contact_id'] = ts('This field is required.');
+      $errors['primary_contact_select_id'] = ts('This field is required.');
     }
     $selectResource = $context->controller->exportValues('SelectResource');
     $resources = json_decode($selectResource['resources'], true);
