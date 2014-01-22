@@ -39,7 +39,7 @@
       <label for="quantity">{ts}Quantity{/ts}</label>
     </div>
     <div class="content">
-      <input type="text" name="quantity" class="crm-booking-form-add-resource"/>
+      <input type="text" name="quantity" disabled="disabled" class="crm-booking-form-add-resource"/>
     </div>
     <div class="clear"></div>
 

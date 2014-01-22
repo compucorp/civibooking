@@ -15,23 +15,23 @@
   </div>
   <div class="crm-section">
     <div class="label">{ts}Resource Fees{/ts}</div>
-    <div class="content">{$booking.resource_fee}</div>
+    <div class="content">{$booking.resource_fee|number_format:2:".":","}</div>
   </div>
   <div class="crm-section">
     <div class="label">{ts}Unlimited Resource Fee{/ts}</div>
-    <div class="content">{$booking.sub_resource_fee}</div>
+    <div class="content">{$booking.sub_resource_fee|number_format:2:".":","}</div>
   </div>
   <div class="crm-section">
     <div class="label">{ts}Additional Charges{/ts}</div>
-    <div class="content">{$booking.adhoc_charges}</div>
+    <div class="content">{$booking.adhoc_charges|number_format:2:".":","}</div>
   </div>
    <div class="crm-section">
     <div class="label">{ts}Discount Amount{/ts}</div>
-    <div class="content">{$booking.discount_amount}</div>
+    <div class="content">{$booking.discount_amount|number_format:2:".":","}</div>
   </div>
   <div class="crm-section">
     <div class="label">{ts}Booking Amount{/ts}</div>
-    <div class="content">{$booking.booking_total}</div>
+    <div class="content">{$booking.booking_total|number_format:2:".":","}</div>
   </div>
    <div class="crm-section">
     <div class="label">{$form.cancellations.label}</div>

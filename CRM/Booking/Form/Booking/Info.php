@@ -45,7 +45,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   function buildQuickForm() {
     parent::buildQuickForm();
 
-    $this->addElement('hidden', "primary_contact_select_id", TRUE);
+    $this->addElement('hidden', "primary_contact_select_id");
     $this->add('text', "primary_contact_id", ts('Primary contact'), array(), TRUE );
 
     $this->addElement('hidden', "secondary_contact_select_id");

@@ -160,7 +160,7 @@ cj(function($) {
 							$("input[name='quantity']").val(ev.quantity);
 						}
 
-            //lock editing
+            //lock editing          
 						if((ev.readonly) && (ev.booking_id != bookingId)){ //check editable slots against with bookingId
               $(".crm-booking-form-add-resource").attr("disabled", true);
               $("#add-resource-btn").hide();
@@ -310,8 +310,9 @@ cj(function($) {
   });
 
   //Onchange "configSelect"
-  $('#configSelect').change(function(e) {
+  $(document).on("change", 'select[name="configuration"]', function(e) {
     var val = $(this).val();
+    console.log(val);
     if(val == ""){
       $('input[name="quantity"]').attr("disabled",true);
       $('#price-estimate').html(0);

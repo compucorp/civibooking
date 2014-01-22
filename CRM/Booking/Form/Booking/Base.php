@@ -210,7 +210,11 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
 
       $this->addDate('receive_date', ts('Received'), FALSE, array('formatType' => 'activityDate'));
 
-      $this->add('text', 'total_amount', ts('Amount'), array( 'disabled' => 'disabled' ));
+      if ($this->_action & CRM_Core_Action::CLOSE){
+        $this->add('text', 'total_amount', ts('Amount'));
+      }else{
+        $this->add('text', 'total_amount', ts('Amount'), array( 'disabled' => 'disabled' ));
+      }
 
       $this->add('select', 'financial_type_id',
         ts('Financial Type'),
@@ -340,7 +344,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $defaults['payment_instrument_id'] = $contribution['instrument_id'];
         $defaults['contribution_status_id'] = $contribution['contribution_status_id'];
       }else{
-        $defaults['total_amount'] =CRM_Utils_Array::value('total_amount', $this->_values);
+          $defaults['total_amount'] =CRM_Utils_Array::value('total_amount', $this->_values);
       }
       if ($this->_action & CRM_Core_Action::CLOSE){
         $defaults = $this->_values;

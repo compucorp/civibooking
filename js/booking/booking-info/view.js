@@ -32,7 +32,7 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
       this.title = options.title;
       this.profile = options.profile;
       this.elementId = options.elementId;
-      this.targetElementId = '#'+options.targetElementId;
+      this.targetElementId = options.targetElementId;
     },
     onRender: function(){
       var self = this;
@@ -74,7 +74,8 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
           if (response.newContactSuccess) {
             $('#crm-booking-profile-form').dialog('close');
             CRM.alert(ts('%1 has been created.', {1: response.displayName}), ts('Contact Saved'), 'success');
-            $(self.targetElementId).val(response.contactID);
+            console.log('test',self.targetElementId);
+            $('input[name="'+self.targetElementId+'"]').val(response.contactID);
             $(self.elementId).val(response.displayName);
           }
           else {

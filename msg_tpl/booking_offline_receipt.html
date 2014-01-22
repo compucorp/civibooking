@@ -383,7 +383,7 @@
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
         <td style="padding: 3px;">{ts}Booking Price{/ts}</td>
-        <td>{$cancellationCharges.booking_price}</td>
+        <td>{$cancellationCharges.booking_price|number_format:2:".":","}</td>
       </tr>
       <tr style="border-bottom: 1px solid #FFFFFF;">
         <td style="padding: 3px;">{ts}This booking was cancelled{/ts}</td>

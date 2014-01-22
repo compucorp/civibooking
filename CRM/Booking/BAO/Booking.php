@@ -11,6 +11,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
   static $_exportableFields = NULL;
 
     /**
+
    * takes an associative array and creates a booking object
    *
    * the function extract all the params it needs to initialize the create a

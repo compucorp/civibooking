@@ -113,6 +113,22 @@ function booking_civicrm_queryObjects(&$queryObjects, $type) {
   elseif ($type == 'Report') {}
 }
 
+/**
+ * Implementation of hook_civicrm_postProcess
+ */
+function booking_civicrm_post( $op, $objectName, $objectId, &$objectRef ) {
+  if($objectName == 'Contribution'){
+    if($op == 'delete'){
+      $contribeID = $objectId;
+      try{
+          $query = "DELETE FROM civicrm_booking_payment WHERE contribution_id = $contribeID";
+          CRM_Core_DAO::executeQuery($query);
+      }catch (Exception $e){
+      throw new Exception( 'Wrong SQL Query', 0, $e);
+      }
+    }
+  }
+}
 
 /**
  * Implementation of hook_civicrm_entityTypes
