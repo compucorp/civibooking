@@ -9,8 +9,10 @@ cj(function($) {
       var cancellationCharge = (totalAmount * canPercentage) / 100;
       $('input[name="cancellation_charge"]').val(cancellationCharge);
 
-      $('#cancellation_charge_display').text(cancellationCharge);
-      $('#charge_amount').text(cancellationCharge);
+      $('#cancellation_charge_display').text(cancellationCharge.toFixed(2));
+      $('#charge_amount').text(cancellationCharge.toFixed(2));
+      $('#total_amount').val(cancellationCharge.toFixed(2));
+
     }
   }
 

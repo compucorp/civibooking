@@ -4,6 +4,8 @@
       <th scope="col">{ts}Booking Contact{/ts}</th>
       <th scope="col">{ts}Title{/ts}</th>
       <th scope="col">{ts}Date Booking Made{/ts}</th>
+      <th scope="col">{ts}Date Booking Start{/ts}</th>
+      <th scope="col">{ts}Date Booking End{/ts}</th>
       <th scope="col">{ts}Price{/ts}</th>
       <th scope="col">{ts}Booking Status{/ts}</th>
       <th scope="col">{ts}Payment Status{/ts}</th>
@@ -13,13 +15,19 @@
   {foreach from=$associatedBooking item=row}
   <tr id="rowid{$row.id}" class="{cycle values="odd-row,even-row"} crm-booking_{$row.id}">
     <td class="crm-booking-contact">
-      <a href="{crmURL p="civicrm/contact/view" q="reset=1&cid=`$row.primary_contact_id`"}" id="view_contact" title="{ts}View Booking Contactr Record{/ts}">{$row.primary_contact_name}</a>
+      <a href="{crmURL p="civicrm/contact/view" q="reset=1&cid=`$row.primary_contact_id`"}" id="view_contact" title="{ts}View Booking Contact Record{/ts}">{$row.primary_contact_name}</a>
     </td>
     <td class="crm-booking-title">
         {$row.title}
     </td>
     <td class="crm-booking-event_date">
         {$row.booking_date|crmDate}
+    </td>
+    <td class="crm-booking-start_date">
+        {$row.start_date|crmDate}
+    </td>
+    <td class="crm-booking-end_date">
+        {$row.end_date|crmDate}
     </td>
     <td class="crm-booking-total_amount">
         {$row.total_amount}

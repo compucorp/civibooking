@@ -135,7 +135,7 @@
   {crmScript ext=uk.co.compucorp.civicrm.booking file=templates/CRM/Booking/Form/SelectResource.js}
 {else}
   {capture assign=ftUrl}{crmURL p='civicrm/admin/resource' q="reset=1&action=add"}{/capture}
-  {ts 1=$ftUrl}There are no resoruces to display. <a href='%1'>Click here</a> if you want to add new resources your site.{/ts}
+  {ts 1=$ftUrl}There are no resources to display. <a href='%1'>Click here</a> if you want to add new resources your site.{/ts}
 {/if}
 
 </div>

@@ -87,6 +87,7 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
     $this->add('text', 'cc_email_address', ts('CC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('text', 'bcc_email_address', ts('BCC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('checkbox', 'log_confirmation_email', ts('Log email?'));
+    $this->add('checkbox', 'unlimited_resource_time_config', ts('Yes?'));
     $this->add('text', 'slot_new_colour', ts('New Slot Colour'));
     $this->add('text', 'slot_being_edited_colour', ts('Slot Editing Colour'));
     $this->add('text', 'slot_booked_colour', ts('Booked Slot Colour'));
@@ -122,6 +123,7 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
     $defaults['cc_email_address'] = CRM_Utils_Array::value('cc_email_address', $this->_config);
 	  $defaults['bcc_email_address'] = CRM_Utils_Array::value('bcc_email_address', $this->_config);
     $defaults['log_confirmation_email'] = $this->_config['log_confirmation_email'];
+    $defaults['unlimited_resource_time_config'] = $this->_config['unlimited_resource_time_config'];
     $defaults['slot_booked_colour'] = $this->_config['slot_booked_colour'];
     $defaults['slot_provisional_colour'] = $this->_config['slot_provisional_colour'];
     $defaults['slot_being_edited_colour'] = $this->_config['slot_being_edited_colour'];
@@ -144,10 +146,13 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
 	  // get values from form
 	  $params = $this->exportValues();
 	  $params['id'] = $this->_config['id'];
-	  $params['day_start_at'] = date('His', strtotime($params['day_start_at']));
-	  $params['day_end_at'] = date('His', strtotime($params['day_end_at']));
+	  //$params['day_start_at'] = date('His', strtotime($params['day_start_at']));
+	  //$params['day_end_at'] = date('His', strtotime($params['day_end_at']));
 	  if(!isset($params['log_confirmation_email'])){
       $params['log_confirmation_email'] = 0;
+    }
+    if(!isset($params['unlimited_resource_time_config'])){
+      $params['unlimited_resource_time_config'] = 0;
     }
 
 	  // submit to BAO for updating

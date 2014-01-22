@@ -3,6 +3,10 @@
  * View classes belong to the second wizard screen of create/edit booking
  */
 CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Backbone, Marionette, $, _) {
+  
+  var startDate;
+  var endDate;
+  var unlimitedTimeConfig;
 
 	CRM.BookingApp.vent.on("update:resources", function(model) {
 		$('#sub_resources').val(JSON.stringify(model.toJSON()));
@@ -78,6 +82,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       this.model.attributes.sub_total = subtotal;
       this.model.attributes.total_price = (subtotal + this.model.get("adhoc_charges").total) - this.model.get("discount_amount");
       this.model.attributes.discount_amount = this.model.get("discount_amount");
+      
+      unlimitedTimeConfig = timeConfig;
 
       this.$el.find("#sub-total-summary").text(this.model.get('sub_total'));
       this.$el.find("#ad-hoc-charge-summary").text(this.model.get('adhoc_charges').total);
@@ -97,10 +103,11 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     
     addSubResource: function(e){
      var ref = $(e.currentTarget).data('ref');
-     var startDate =  $(e.currentTarget).data('sdate');
+     endDate =  $(e.currentTarget).data('edate');
+     startDate =  $(e.currentTarget).data('sdate');
      var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref, time_required:startDate});
      var view = new AddSubResource.AddSubResourceModal({model: model, is_new: true});
-     view.title = ts('Add unlimited resource');
+     view.title = ts('Add Unlimited Resource');
      CRM.BookingApp.modal.show(view);
     },
     
@@ -184,6 +191,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       view.title = ts('Edit unlimited resource');
       CRM.BookingApp.modal.show(view);
     }
+    
   });
 
   //Sub(Unlimited) resource dialog view
@@ -202,18 +210,44 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     },
     onRender: function(){
       BookingApp.Common.Views.BookingProcessModal.prototype.onRender.apply(this, arguments);
+      
       var thisView = this;  //set 'this' object for calling inside callback function 
       this.$el.find('#loading').show();
+      
+      
+      
       var initsdate = moment(this.model.get('time_required'), "YYYY-MM-DD HH:mm:ss");
-      var sTime = [initsdate.hours(), ":", initsdate.minute() < 10 ? '0' + initsdate.minute() : initsdate.minute()].join("");
-      this.$el.find("#required-time-select").val(sTime); 
-      this.$el.find("#required-day-select").val(initsdate.format("D"));
-      this.$el.find("#required-month-select").val(initsdate.months() + 1);
-      this.$el.find("#required-year-select").val(initsdate.years());
+      var timeTxt = [initsdate.hours() < 10 ? '0' + initsdate.hours() : initsdate.hours(), ":", initsdate.minute() < 10 ? '0' + initsdate.minute() : initsdate.minute()].join("");
+   
+      //set the formatted months
+      var month=new Array();
+      month[0]="01";
+      month[1]="02";
+      month[2]="03";
+      month[3]="04";
+      month[4]="05";
+      month[5]="06";
+      month[6]="07";
+      month[7]="08";
+      month[8]="09";
+      month[9]="10";
+      month[10]="11";
+      month[11]="12";
+      var dateTxt = [month[initsdate.months()],"/", initsdate.format("DD"),"/", initsdate.years()].join("");
+      this.$el.find("#required_date").val(dateTxt);
+      this.$el.find("#required_time").val(timeTxt);
 
        CRM.api('Resource', 'get', {'sequential': 1, 'is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
         {success: function(data) {
             thisView.template =  _.template($('#add-sub-resource-template').html());
+            //var configValue = CRM_Booking_BAO_BookingConfig::getConfig();
+
+            thisView.$el.find("#required_date").datepicker({changeMonth: true, changeYear: true});
+            thisView.$el.find('#required_time').timeEntry({show24Hours: true}).change(function() { 
+              var log = $('#log'); 
+              log.val(log.val() + ($('#defaultEntry').val() || 'blank') + '\n'); 
+            });
+
             //thisView.resources = data.values;
             var tpl = _.template($('#select-option-template').html());
             var params = {
@@ -243,6 +277,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         }
       );
     },
+    
+    beforeClose: function() {this.$('form').find("#required_date").datepicker("destroy");},
 
      /**
      * Define form validation rules
@@ -251,16 +287,31 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
      * @param Object r the validation rules for the view
      */
     onValidateRulesCreate: function(view, r) {
-      _.extend(r.rules, {
+        $.validator.addMethod("withinValidTime", function(value, element) {
+        var dateVals = $("#required_date").val().split("/");
+        var timeVals = $("#required_time").val().split(":");
+        var requiredDate = new Date(dateVals[2],dateVals[0]-1,dateVals[1],timeVals[0],timeVals[1]);
+        var minDate = moment(startDate, "YYYY-MM-DD HH:mm:ss");
+        var maxDate = moment(endDate, "YYYY-MM-DD HH:mm:ss");
+        if (unlimitedTimeConfig==0){
+          return true;
+        }
+        else{
+          var val = requiredDate>=minDate && requiredDate<=maxDate;
+          return val;
+        }
+        }, ts("Please select the date and time during the valid booking time."));
+     _.extend(r.rules, {
         resource_select: {
           required: true
         },
         configuration_select: {
           required: true
         },
-        /*time_required: {
-          required: true
-        },*/
+        "required_date": {
+          required: true,
+            "withinValidTime": true
+        },
         quantity: {
           required: true,
           number: true
@@ -359,15 +410,11 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         this.onRenderError(errors);
         return false;
       }
+      this.$('form').find("#required_date").datepicker("destroy");
       this.model.set('note', this.$el.find('#sub-resource-note').val());
-      var requiredTime = this.$el.find("#required-time-select").val().split(":");
-      var requiredDate = new Date(
-        this.$el.find("#required-year-select").val(),
-        this.$el.find("#required-month-select").val() - 1,
-        this.$el.find("#required-day-select").val(),
-        requiredTime[0],
-        requiredTime[1]
-      );
+      var dateVals = this.$el.find("#required_date").val().split("/");
+      var timeVals = this.$el.find("#required_time").val().split(":");
+      var requiredDate = new Date(dateVals[2],dateVals[0]-1,dateVals[1],timeVals[0],timeVals[1]);
 			var timeRequired = moment(requiredDate).format("YYYY-M-D HH:mm");
 			this.model.set('time_required', timeRequired); 
 

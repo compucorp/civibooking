@@ -93,7 +93,7 @@ _________________________________________________________
 {ts}CANCELLATION{/ts} 
 _________________________________________________________
 {ts}Date cancelled{/ts}: {$cancellationCharges.cancellation_date}
-{ts}Booking price{/ts}:  {$cancellationCharges.booking_price}
+{ts}Booking price{/ts}:  {$cancellationCharges.booking_price|number_format:2:".":","}
 {ts}This booking was cancelled{/ts} {$cancellationCharges.prior_days} {ts}days{/ts}
 {ts}Cancellation subtotal{/ts}:  {$cancellationCharges.cancellation_fee}
 {ts}Other cancellation charges{/ts}: {$cancellationCharges.additional_fee}

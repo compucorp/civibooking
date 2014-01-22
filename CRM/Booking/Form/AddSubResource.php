@@ -36,6 +36,10 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       $currencySymbols = $config->defaultCurrencySymbol;
     }
     $this->assign('currencySymbols', $currencySymbols);
+    
+    //Control the flexibility of time configuration for unlimited resource
+    $bookingConfig = CRM_Booking_BAO_BookingConfig::getConfig();
+    $this->assign('timeconfig', CRM_Utils_Array::value('unlimited_resource_time_config', $bookingConfig));
 
     $selectResourcePage = $this->controller->exportValues('SelectResource');
 
@@ -64,13 +68,10 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       $items[$bao->id]['name'] = preg_replace('/[^\p{L}\p{N}\s]/u', '_', $items[$bao->id]['name']);
     }
 
-    $days = CRM_Booking_Utils_DateTime::getDays();
-    $months = CRM_Utils_Date::getFullMonthNames();
-    $years = CRM_Booking_Utils_DateTime::getYears();
+    //$days = CRM_Booking_Utils_DateTime::getDays();
+    //$months = CRM_Utils_Date::getFullMonthNames();
+    //$years = CRM_Booking_Utils_DateTime::getYears();
 
-    $this->assign('days', $days);
-    $this->assign('months', $months);
-    $this->assign('years', $years);
 
     $this->assign('items', $items);
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
@@ -245,6 +246,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     CRM_Core_Resources::singleton()
 
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
+      
       ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
@@ -272,6 +274,4 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     $region->add(array('template' => 'CRM/Booking/tpl/select-option.tpl' ));
 
   }
-
-
 }

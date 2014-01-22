@@ -62,7 +62,7 @@ cj(function($) {
 
   //when edit lightbox
 	scheduler.attachEvent("onEventChanged", function(event_id, ev){
-    var resourceLabel = $("div[event_id="+event_id+"]").parent().parent().parent().find(".dhx_scell_name").html(); //get resoruce label from position of lightbox
+    var resourceLabel = $("div[event_id="+event_id+"]").parent().parent().parent().find(".dhx_scell_name").html(); //get resource label from position of lightbox
     var resourceId = ev.resource_id;
     var selectedItem = getItemInBasket(ev.id);  //get item in basket
     if(_.isUndefined(ev.booking_id)){ //new item?
@@ -81,23 +81,19 @@ cj(function($) {
 
   //custom validator for start time and end time
   $.validator.addMethod("greaterThan", function(value, element) {
-      //var sTime = parseInt(cj('select[name="startSelect"]').val());
-      //var eTime = parseInt(cj('select[name="endSelect"]').val());
 
     //get the digital values of the retrieved dates
-	  var startDateTimeVals = $("#start_datetimepicker").val().split(" ");
-	  var endDateTimeVals = $("#end_datetimepicker").val().split(" ");
-	  var startDateVals = startDateTimeVals[0].split("/");
-	  var endDateVals = endDateTimeVals[0].split("/");
-	  var startTimeVals = startDateTimeVals[1].split(":");
-	  var endTimeVals = endDateTimeVals[1].split(":");
+	  var startDateVals = $("#start_date").val().split("/");
+	  var endDateVals = $("#end_date").val().split("/");
+	  var startTimeVals = $("#start_time").val().split(":");
+    var endTimeVals = $("#end_time").val().split(":");
     
     //create the date format for the retrieved dates
-	  var startDate = new Date(startDateVals[2],startDateVals[1],startDateVals[0],startTimeVals[0],startTimeVals[1]);
-	  var endDate = new Date(endDateVals[2],endDateVals[1],endDateVals[0],endTimeVals[0],endTimeVals[1]);
+	  var startDate = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
+	  var endDate = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
 
-      var val = startDate < endDate || value == "";
-      return val;
+    var val = startDate < endDate || value == "";
+    return val;
   }, ts("End date time must be after start date time"));
 
   //click at lightbox
@@ -144,7 +140,7 @@ cj(function($) {
 									required : true,
 									number : true
 								},
-                "end-time-select" : {
+                "end_date" : {
                   "greaterThan" : true
                 },
 							}
@@ -164,7 +160,7 @@ cj(function($) {
 							$("input[name='quantity']").val(ev.quantity);
 						}
 
-            //lock editing
+            //lock editing          
 						if((ev.readonly) && (ev.booking_id != bookingId)){ //check editable slots against with bookingId
               $(".crm-booking-form-add-resource").attr("disabled", true);
               $("#add-resource-btn").hide();
@@ -172,8 +168,6 @@ cj(function($) {
 
 						var initStartDate = moment(new Date(ev.start_date));
 						var initEndDate = moment(new Date(ev.end_date));
-						var startTime = [initStartDate.hours(), ":", initStartDate.minute() < 10 ? '0' + initStartDate.minute() : initStartDate.minute()].join("");
-						var endTime = [initEndDate.hours(), ":", initEndDate.minute() < 10 ? '0' + initEndDate.minute() : initEndDate.minute()].join("");
             
             //set the formatted months
 						var month=new Array();
@@ -191,12 +185,17 @@ cj(function($) {
 						month[11]="12";
             
             //get and set the text for the datetimepicker text fields for the booking creating window
-						var startDateTxt = [initStartDate.format("DD"),"/",month[initStartDate.months()],"/",initStartDate.years()].join("");
-						var endDateTxt = [initStartDate.format("DD"),"/",month[initStartDate.months()],"/",initStartDate.years()].join("");
-						var startDatetimeTxt = [startDateTxt, " ", startTime].join("");
-						var endDatetimeTxt = [endDateTxt, " ", endTime].join("");
-						$("#start_datetimepicker").val(startDatetimeTxt);
-						$("#end_datetimepicker").val(endDatetimeTxt);
+						var startDateTxt = [month[initStartDate.months()],"/", initStartDate.format("DD"),"/", initStartDate.years()].join("");
+						var endDateTxt = [month[initStartDate.months()],"/", initStartDate.format("DD"),"/", initStartDate.years()].join("");
+						$("#start_date").val(startDateTxt);
+						$("#end_date").val(endDateTxt);
+            
+            var startTimeTxt = [initStartDate.hours() < 10 ? '0' + initStartDate.hours() : initStartDate.hours(),":",initStartDate.minute() < 10 ? '0' + 
+            initStartDate.minute() : initStartDate.minute()].join("");
+						var endTimeTxt = [initEndDate.hours() < 10 ? '0' + initEndDate.hours() : initEndDate.hours(), ":", initEndDate.minute() < 10 ? '0' +
+            initEndDate.minute() : initEndDate.minute()].join("");
+            $("#start_time").val(startTimeTxt);
+						$("#end_time").val(endTimeTxt);
 
 						var resource = data['values']['0'];
 						$("#resource-label").val(resource.label);
@@ -224,6 +223,8 @@ cj(function($) {
 				});
 			},
 			close : function() {
+        $( "#start_date" ).datepicker("destroy");
+        $( "#end_date" ).datepicker("destroy");
 				scheduler.endLightbox(false, null);
 				$(this).dialog('destroy');
 			},
@@ -236,19 +237,16 @@ cj(function($) {
     if (!$('#add-resource-form').valid()) {
         return false;
     }
+    $( "#start_date" ).datepicker("destroy");
+    $( "#end_date" ).datepicker("destroy");
+    
     var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
-    /*var startTime = $("#start-time-select").val().split(":");
-    var startDate = new Date($("#start-year-select").val(), $("#start-month-select").val() - 1, $("#start-day-select").val(), startTime[0], startTime[1]);
-    var endTime = $("#end-time-select").val().split(":");
-    var endDate = new Date($("#end-year-select").val(), $("#end-month-select").val() - 1, $("#end-day-select").val(), endTime[0], endTime[1]);*/
-	var startArray = $("#start_datetimepicker").val().split(" ");
-	var endArray = $("#end_datetimepicker").val().split(" ");
-	var startDateArray = startArray[0].split("/");
-	var endDateArray = endArray[0].split("/");
-	var startTimeArray = startArray[1].split(":");
-	var endTimeArray = endArray[1].split(":");
-	var startDate = new Date(startDateArray[2],startDateArray[1]-1,startDateArray[0],startTimeArray[0],startTimeArray[1]);
-	var endDate = new Date(endDateArray[2],endDateArray[1]-1,endDateArray[0],endTimeArray[0],endTimeArray[1]);
+    var startDateVals = $("#start_date").val().split("/");
+    var endDateVals = $("#end_date").val().split("/");
+    var startTimeVals = $("#start_time").val().split(":");
+    var endTimeVals = $("#end_time").val().split(":");
+    var startDate = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
+	  var endDate = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
 	
     var configOptionUnitId = $.trim(_.last($('#configSelect').find(':selected').html().split("/"))).toLowerCase();
     var configOptionPrice = $('#configSelect').find(':selected').data('price');
@@ -273,13 +271,16 @@ cj(function($) {
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
   });
+  
+  //click cancle "select-resource-cancel"
+  $(document).on("click", 'input[name="select-resource-cancel"]', function(e){
+    $( "#start_date" ).datepicker("destroy");
+    $( "#end_date" ).datepicker("destroy");});
 
   //click "Remove from basket"
   $(document).on("click", ".remove-from-basket-btn", function(e){
     e.preventDefault();
     var eid = $(this).data('eid');
-    var ev = scheduler.getEvent(eid);
-    //subTotal -=  ev.price;
     delete basket[eid];
     subTotal = calculateTotalPrice();
     $('tr[data-eid=' + eid + ']').remove();
@@ -309,8 +310,9 @@ cj(function($) {
   });
 
   //Onchange "configSelect"
-  $('#configSelect').change(function(e) {
+  $(document).on("change", 'select[name="configuration"]', function(e) {
     var val = $(this).val();
+    console.log(val);
     if(val == ""){
       $('input[name="quantity"]').attr("disabled",true);
       $('#price-estimate').html(0);

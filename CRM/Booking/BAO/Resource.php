@@ -47,9 +47,9 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
 
 
   /**
-   * Function to delete Resoruce
+   * Function to delete Resource
    *
-   * @param  int  $id     Id of the Resoruce to be deleted.
+   * @param  int  $id     Id of the Resource to be deleted.
    *
    * @return boolean
    *

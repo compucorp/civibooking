@@ -74,7 +74,8 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
           if (response.newContactSuccess) {
             $('#crm-booking-profile-form').dialog('close');
             CRM.alert(ts('%1 has been created.', {1: response.displayName}), ts('Contact Saved'), 'success');
-            $(self.targetElementId).val(response.contactID);
+            console.log('test',self.targetElementId);
+            $('input[name="'+self.targetElementId+'"]').val(response.contactID);
             $(self.elementId).val(response.displayName);
           }
           else {

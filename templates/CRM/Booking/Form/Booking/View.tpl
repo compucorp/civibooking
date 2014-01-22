@@ -164,12 +164,12 @@
       {/foreach}
     </table>
     {if $sub_slots}
-     <h3>{ts}Unlmited Resources{/ts}</h3>
+     <h3>{ts}Unlimited Resources{/ts}</h3>
      <table class="selector">
       <thead class="sticky">
         <tr>
           <th scope="col">{ts}Resource{/ts}</th>
-          <th scope="col">{ts}Parent Resoruce{/ts}</th>
+          <th scope="col">{ts}Parent Resource{/ts}</th>
           <th scope="col">{ts}Time Required{/ts}</th>
           <th scope="col">{ts}Configuration{/ts}</th>
           <th scope="col">{ts}Note{/ts}</th>
@@ -227,7 +227,7 @@
       </tr>
       <tr class="crm-bookingview-form-block-booking">
         <td class="label">{ts}Booking Price{/ts}</td><td>
-          {$cancellation.booking_price}
+          {$cancellation.booking_price|number_format:2:".":","}
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-associated-contact">
@@ -252,7 +252,7 @@
       </tr>
       <tr class="crm-bookingview-form-block-event-date">
         <td class="label">{ts}Cancellation Fee{/ts}</td><td>
-          {$cancellation.cancellation_total_fee}
+          {$cancellation.cancellation_total_fee|number_format:2:".":","}
         </td>
       </tr>
       {/foreach}

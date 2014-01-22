@@ -314,7 +314,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
                 }
             }
             $slotItem['resource_config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption', $slotItem['config_id'], 'label', 'id');;
-            //get resoruce config detail
+            //get resource config detail
             $slotItem['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource', $slotItem['resource_id'], 'label', 'id');;
             //get sub slot
             $subSlots = array();

@@ -11,6 +11,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
   static $_exportableFields = NULL;
 
     /**
+
    * takes an associative array and creates a booking object
    *
    * the function extract all the params it needs to initialize the create a
@@ -316,7 +317,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
   /**
    * Function to delete Booking
    *
-   * @param  int  $id     Id of the Resoruce to be deleted.
+   * @param  int  $id     Id of the Resource to be deleted.
    *
    * @return boolean
    *
@@ -393,6 +394,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
                      civicrm_booking.title as title,
                      civicrm_booking.created_date as created_date,
                      civicrm_booking.booking_date as booking_date,
+                     civicrm_booking.start_date as start_date,
+                     civicrm_booking.end_date as end_date,
                      civicrm_booking.total_amount as total_amount,
                      payment_status_value.label as payment_status,
                      booking_status_value.label as booking_status
@@ -419,6 +422,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
         'title' => $dao->title,
         'created_date' => $dao->created_date,
         'booking_date' => $dao->booking_date,
+        'start_date' => $dao->start_date,
+        'end_date' => $dao->end_date,
         'total_amount' => $dao->total_amount,
         'booking_payment_status' => $dao->payment_status,
         'booking_status' => $dao->booking_status
