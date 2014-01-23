@@ -74,7 +74,10 @@
   <fieldset><legend>{ts}Booking configuration setting{/ts}</legend>
   <table class="form-layout-compressed">
     <tr class="crm-booking-system-config-form-block-unlimited_resource_time_config">
-      <td class="label">{$form.unlimited_resource_time_config.label}</td>  <td>{$form.unlimited_resource_time_config.html} </td>
+      <td class="label">{$form.unlimited_resource_time_config.label}</td>  <td>{$form.unlimited_resource_time_config.html}
+      <br/>
+      <p class="description">{ts}Only allow unlimited resources to be booked during the time booking of the parent limited resource?{/ts}</p>
+      </td>
     </tr>
   </table>
   </fieldset>
