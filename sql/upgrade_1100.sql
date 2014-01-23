@@ -1,0 +1,1 @@
+ALTER TABLE  `civicrm_booking_config` ADD  `unlimited_resource_time_config` TINYINT( 4 ) NOT NULL DEFAULT  '0' COMMENT  'Only allow unlimited resources to be booked during the time booking of the parent limited resource' AFTER `log_confirmation_email`

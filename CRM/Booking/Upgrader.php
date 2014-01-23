@@ -19,7 +19,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
       'is_reserved' => 1
     );
     $result = civicrm_api('ActivityType', 'create', $params);
-    
+
     //create new activity type for sending email confirmation :CVB-95
     $params = array(
       'version' => 3,
@@ -104,6 +104,14 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
 
   // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
+
+  public function upgrade_1100() {
+    $this->ctx->log->info('Applying update 1100');
+    $this->executeSqlFile('sql/update_1100.sql');
+    return TRUE;
+  }
+
+
 
   /**
    * Example: Run a couple simple queries
