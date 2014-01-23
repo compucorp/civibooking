@@ -120,6 +120,12 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
    */
   public $log_confirmation_email;
   /**
+   * Only allow unlimited resources to be booked during the time booking of the parent limited resource
+   *
+   * @var boolean
+   */
+  public $unlimited_resource_time_config;
+  /**
    *
    * @var string
    */
@@ -208,6 +214,12 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
           'title' => ts('Log Confirmation Email') ,
           'required' => true,
         ) ,
+        'unlimited_resource_time_config' => array(
+          'name' => 'unlimited_resource_time_config',
+          'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => ts('Unlimited Resource Time Config') ,
+          'required' => true,
+        ) ,
         'cc_email_address' => array(
           'name' => 'cc_email_address',
           'type' => CRM_Utils_Type::T_STRING,
@@ -278,6 +290,7 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
         'day_end_at' => 'day_end_at',
         'time_period' => 'time_period',
         'log_confirmation_email' => 'log_confirmation_email',
+        'unlimited_resource_time_config' => 'unlimited_resource_time_config',
         'cc_email_address' => 'cc_email_address',
         'bcc_email_address' => 'bcc_email_address',
         'slot_new_colour' => 'slot_new_colour',
