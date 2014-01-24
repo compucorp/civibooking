@@ -119,13 +119,7 @@ function booking_civicrm_queryObjects(&$queryObjects, $type) {
 function booking_civicrm_post( $op, $objectName, $objectId, &$objectRef ) {
   if($objectName == 'Contribution'){
     if($op == 'delete'){
-      $contribeID = $objectId;
-      try{
-          $query = "DELETE FROM civicrm_booking_payment WHERE contribution_id = $contribeID";
-          CRM_Core_DAO::executeQuery($query);
-      }catch (Exception $e){
-      throw new Exception( 'Wrong SQL Query', 0, $e);
-      }
+      CRM_Core_DAO::executeQuery("DELETE FROM civicrm_booking_payment WHERE contribution_id = $objectId");
     }
   }
 }
