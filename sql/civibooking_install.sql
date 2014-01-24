@@ -73,15 +73,15 @@ CREATE TABLE `civicrm_booking` (
      `created_by` int unsigned NOT NULL   ,
      `created_date` datetime NOT NULL   ,
      `updated_by` int unsigned NOT NULL   ,
-     `updated_date` datetime NOT NULL    
+     `updated_date` datetime NOT NULL
 ,
     PRIMARY KEY ( `id` )
- 
+
     ,     INDEX `index_is_deleted`(
         is_deleted
   )
-  
-,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE  
+
+,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -98,6 +98,7 @@ CREATE TABLE `civicrm_booking_config` (
      `day_end_at` time NOT NULL   ,
      `time_period` int NOT NULL   ,
      `log_confirmation_email` tinyint NOT NULL  DEFAULT 0 COMMENT 'Create an activity record againt contact for conformation emails',
+     `unlimited_resource_time_config` tinyint NOT NULL  DEFAULT 0 COMMENT 'Only allow unlimited resources to be booked during the time booking of the parent limited resource',
      `cc_email_address` varchar(255)    ,
      `bcc_email_address` varchar(255)    ,
      `slot_new_colour` varchar(10)    ,
