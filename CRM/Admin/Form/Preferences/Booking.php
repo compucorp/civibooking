@@ -87,7 +87,7 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
     $this->add('text', 'cc_email_address', ts('CC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('text', 'bcc_email_address', ts('BCC'), array('size' => 50, 'maxlength' => 255), FALSE);
     $this->add('checkbox', 'log_confirmation_email', ts('Log email?'));
-    $this->add('checkbox', 'unlimited_resource_time_config', ts('Only allow unlimited resources to be booked during the time booking of the parent limited resource?'));
+    $this->add('checkbox', 'unlimited_resource_time_config', ts(''));
     $this->add('text', 'slot_new_colour', ts('New Slot Colour'));
     $this->add('text', 'slot_being_edited_colour', ts('Slot Editing Colour'));
     $this->add('text', 'slot_booked_colour', ts('Booked Slot Colour'));
