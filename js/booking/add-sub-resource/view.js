@@ -295,8 +295,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         var maxDate = moment(endDate, "YYYY-MM-DD HH:mm:ss");
         if (unlimitedTimeConfig==0){
           return true;
-        }
-        else{
+        }else{
           var val = requiredDate>=minDate && requiredDate<=maxDate;
           return val;
         }
@@ -517,7 +516,11 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       subResourceModel.set('adhoc_charges', this.model.attributes);
       var currentTotal = subResourceModel.get('sub_total');
       var discountAmount = subResourceModel.get('discount_amount');
-      var newTotal = (parseFloat(adhocChargesTotal) + parseFloat(currentTotal)) - parseFloat(discountAmount);
+      if(CRM.BookingApp.Utils.isPositiveInteger(discountAmount)){
+        var newTotal = (parseFloat(adhocChargesTotal) + parseFloat(currentTotal)) - parseFloat(discountAmount);
+      }else{
+        var newTotal = (parseFloat(adhocChargesTotal) + parseFloat(currentTotal)) - 0;
+      }
       subResourceModel.set("total_price", parseFloat(newTotal));
       CRM.BookingApp.vent.trigger('render:price', subResourceModel);
       CRM.BookingApp.vent.trigger('update:resources', subResourceModel);

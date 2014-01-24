@@ -49,6 +49,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     foreach ($selectedResources as $key => $resource) {
       $this->_subTotal += $resource['price'];
       $this->_resourcesPrice[$key] = $resource['price'];
+      $this->_discountAmount = 0;
     }
     $this->_total = $this->_subTotal;
 
@@ -164,16 +165,19 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
         );
         $addhocCharges['total'] +=  $totalPrice;
       }
-      $subResources['sub_total'] = $subTotal;
-      $subResources['adhoc_charges'] = $addhocCharges;
-      $total = ($subTotal - $this->_discountAmount) +  $addhocCharges['total'];
-      $subResources['total_price'] = $total;
-      // force JSON to encode empty array as object if there is empty array in $subResources
-      $defaults['sub_resources'] =  json_encode($subResources,JSON_FORCE_OBJECT);
+      
+      
       $defaults['sub_total'] = $subTotal;
       $defaults['adhoc_charge'] = $addhocCharges['total'];
       $defaults['discount_amount']= CRM_Utils_Array::value('discount_amount', $booking);
       $defaults['discount_amount_dummy']= CRM_Utils_Array::value('discount_amount', $booking);
+      
+      $subResources['sub_total'] = $subTotal;
+      $subResources['adhoc_charges'] = $addhocCharges;
+      $total = ($subTotal - $defaults['discount_amount']) +  $addhocCharges['total'];
+      $subResources['total_price'] = $total;
+      // force JSON to encode empty array as object if there is empty array in $subResources
+      $defaults['sub_resources'] =  json_encode($subResources,JSON_FORCE_OBJECT);
       $defaults['total_price'] = $total;
     }else{
       $defaults['sub_total'] = $this->_subTotal;
@@ -227,7 +231,25 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     );
 
     $this->addButtons($buttons);
+    
+    $this->addFormRule( array( 'CRM_Booking_Form_AddSubResource', 'formRule' ), $this );
 
+  }
+  
+  //set the validation rule for the discount field
+  static function formRule($params, $files, $context)
+  {
+    $values = $context->exportValues();
+    $numValidate = is_numeric($values['discount_amount']);
+    $emptyValidate = $values['discount_amount']=='';
+    $rangeValidate = $values['discount_amount']>=0 && $values['discount_amount']<=$values['sub_total'];
+    if(!$numValidate && !$emptyValidate){
+      return array('discount_amount' => 'Please enter a valid number.');
+    }elseif(!$rangeValidate){
+      return array('discount_amount' => 'Please enter a number in the valid range.');
+    }else{
+      return TRUE;
+    }
   }
 
   function postProcess() {

@@ -184,7 +184,7 @@ cj(function($) {
 						month[10]="11";
 						month[11]="12";
             
-            //get and set the text for the datetimepicker text fields for the booking creating window
+            //get and set the text for the datepicker text fields for the booking creating window
 						var startDateTxt = [month[initStartDate.months()],"/", initStartDate.format("DD"),"/", initStartDate.years()].join("");
 						var endDateTxt = [month[initStartDate.months()],"/", initStartDate.format("DD"),"/", initStartDate.years()].join("");
 						$("#start_date").val(startDateTxt);
@@ -345,8 +345,8 @@ cj(function($) {
 		var item = {
 			id : ev.id,
 			resource_id : ev.resource_id,
-			start_date : moment(ev.start_date).format("YYYY-M-D HH:mm"),
-			end_date : moment(ev.end_date).format("YYYY-M-D HH:mm"),
+			start_date : moment(ev.start_date).format("YYYY-MM-DD HH:mm"),
+			end_date : moment(ev.end_date).format("YYYY-MM-DD HH:mm"),
 			label : $("#resource-label").val(),
 			text : ev.text,
 			configuration_id : ev.configuration_id,

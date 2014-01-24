@@ -197,8 +197,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $booking['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo);
     $booking['po_number'] = CRM_Utils_Array::value('po_no', $bookingInfo);
     $booking['status_id'] = CRM_Utils_Array::value('booking_status', $bookingInfo);
-    $booking['title'] =CRM_Utils_Array::value('title', $bookingInfo);
-    $booking['description'] =CRM_Utils_Array::value('description', $bookingInfo);
+    $booking['title'] = CRM_Utils_Array::value('title', $bookingInfo);
+    $booking['description'] = CRM_Utils_Array::value('description', $bookingInfo);
     $booking['note'] = CRM_Utils_Array::value('note', $bookingInfo);
 
 
