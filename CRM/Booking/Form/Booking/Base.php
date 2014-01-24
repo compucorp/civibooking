@@ -81,6 +81,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     }
 
     $this->_values['payment_status'] =  CRM_Booking_BAO_Booking::getPaymentStatus($this->_id);
+    $paymentStatus = $this->_values['payment_status'];
     //ResoveDefault
     CRM_Booking_BAO_Booking::resolveDefaults($this->_values);
     $title = $this->_values['title'];
