@@ -26,8 +26,8 @@
 
 <h3>{ts}Booking System Configuration{/ts}</h3>
 <div class="crm-block crm-form-block crm-booking-system-config-form-block">
-  
-  {* CVB-101: Remove out for now 
+
+  {* CVB-101: Remove out for now
   <fieldset><legend>{ts}Time{/ts}</legend>
   <table class="form-layout-compressed">
     <tr class="crm-booking-system-config-form-block-day_start_at">
@@ -70,10 +70,9 @@
     </tr>
   </table>
   </fieldset>
-  
+
   <fieldset><legend>{ts}Booking configuration setting{/ts}</legend>
   <table class="form-layout-compressed">
-    <tr><td></td><td>Only allow unlimited resources to be booked during the time booking of the parent limited resource</td></tr>
     <tr class="crm-booking-system-config-form-block-unlimited_resource_time_config">
       <td class="label">{$form.unlimited_resource_time_config.label}</td>  <td>{$form.unlimited_resource_time_config.html} </td>
     </tr>
