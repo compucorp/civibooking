@@ -14,11 +14,15 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
       'sequential' => 1,
       'label' =>  'Booking',
       'name' => CRM_Booking_Utils_Constants::ACTIVITY_TYPE,
-      'weight' => 1,
-      'is_active' => 1,
-      'is_reserved' => 1
     );
-    $result = civicrm_api('ActivityType', 'create', $params);
+    //chcck if it exist in case of re-installation 
+    $optionValue = civicrm_api3('OptionValue', 'get',$params);
+    if($optionValue['count'] == 0){
+      $params['weight'] = 1;
+      $params['is_reserved'] = 1;
+      $params['is_active'] = 1;
+      $result = civicrm_api('ActivityType', 'create', $params);
+    }
 
     //create new activity type for sending email confirmation :CVB-95
     $params = array(
@@ -26,11 +30,15 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
       'sequential' => 1,
       'label' =>  'Send booking confirmation',
       'name' => CRM_Booking_Utils_Constants::ACTIVITY_TYPE_SEND_EMAIL,
-      'weight' => 1,
-      'is_active' => 1,
-      'is_reserved' => 1
     );
-    $result = civicrm_api('ActivityType', 'create', $params);
+    //chcck if it exist in case of re-installation 
+    $optionValue = civicrm_api3('OptionValue', 'get',$params);
+    if($optionValue['count'] == 0){
+      $params['weight'] = 1;
+      $params['is_reserved'] = 1;
+      $params['is_active'] = 1;
+      $result = civicrm_api('ActivityType', 'create', $params);
+    }
 
     $result = civicrm_api('OptionGroup', 'getsingle', array(
       'version' => 3,
