@@ -98,11 +98,11 @@
         {/literal}
           {foreach from=$resources key=key item=resourceType}
            {literal}
-              {key:"{/literal}{$key}{literal}",label:"{/literal}{$resourceType.label}{literal}", open: true, children: [
+              {key:"{/literal}{$key}{literal}",label:"{/literal}{$resourceType.label|escape:'html'}{literal}", open: true, children: [
                 {/literal}
                   {foreach from=$resourceType.child item=resource}
                    {literal}
-                    {key:"{/literal}{$resource.id}{literal}", label:"{/literal}{$resource.label}{literal}"},
+                    {key:"{/literal}{$resource.id}{literal}", label:"{/literal}{$resource.label|escape:'html'}{literal}"},
                    {/literal}
                   {/foreach}
                   {literal}
