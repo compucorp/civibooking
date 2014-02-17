@@ -20,7 +20,7 @@ var ModalRegion = Backbone.Marionette.Region.extend({
       close: function() {
         cj( this ).dialog( "destroy" );
       }
-    })
+    });
   },
 
   hideModal: function(){
