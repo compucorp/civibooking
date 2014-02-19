@@ -64,7 +64,6 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       CRM_Core_Error::statusBounce(ts('The requested booking record does not exist (possibly the record was deleted).'));
     }
 
-    $this->assign('booking', $this->_values);
     $params = array(
       'option_group_name' => CRM_Booking_Utils_Constants::OPTION_BOOKING_STATUS,
       'name' => CRM_Booking_Utils_Constants::OPTION_VALUE_CANCELLED,
@@ -82,6 +81,8 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
 
     $this->_values['payment_status'] =  CRM_Booking_BAO_Booking::getPaymentStatus($this->_id);
     $paymentStatus = $this->_values['payment_status'];
+	  $this->assign('booking', $this->_values);
+
     //ResoveDefault
     CRM_Booking_BAO_Booking::resolveDefaults($this->_values);
     $title = $this->_values['title'];
