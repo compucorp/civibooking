@@ -8,7 +8,7 @@ CRM.BookingApp.module('Entities', function(Entities, BookingApp, Backbone, Mario
       sub_total: 0,
       adhoc_charges: {total:0},
       discount_amount:0,
-      total_price:0,
+      total_price:0
 
     },
   });
