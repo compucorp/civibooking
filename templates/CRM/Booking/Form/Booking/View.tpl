@@ -232,7 +232,7 @@
       </tr>
       <tr class="crm-bookingview-form-block-associated-contact">
         <td class="label">{ts}This booking was cancelled{/ts}</td><td>
-          {$cancellation.prior_days}
+          {$cancellation.prior_days} day(s) before the event was intended to take place
         </td>
       </tr>
       <tr class="crm-bookingview-form-block-date-made">

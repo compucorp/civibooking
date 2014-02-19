@@ -278,8 +278,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 		  $params = array('booking_id' => $cancels['booking_id']);
 		  $bookingItem = civicrm_api3('Booking','get',$params);
 		  foreach (CRM_Utils_Array::value('values',$bookingItem) as $k => $v) {
-			  $cancels['booking_price'] = CRM_Utils_Array::value('total_amount',$v) - CRM_Utils_Array::value('discount_amount',$v);
-        $cancels['booking_date'] = CRM_Utils_Array::value('booking_date',$v);
+			  $cancels['booking_price'] = CRM_Utils_Array::value('total_amount',$v);
+        $cancels['event_date'] = CRM_Utils_Array::value('start_date',$v);
 		  }
 
       //calculate the total amount of cancellation charge
@@ -287,7 +287,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
       //calculate how many days before event date
       $cancellation_date = new DateTime($cancels['cancellation_date']);
-      $eventDate = new DateTime($cancels['booking_date']);
+      $eventDate = new DateTime($cancels['event_date']);
       $interval = $cancellation_date->diff($eventDate);
       $cancels['prior_days'] = $interval->days;
 
