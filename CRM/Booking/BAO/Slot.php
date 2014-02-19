@@ -105,6 +105,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
       SELECT civicrm_booking_slot.id
       FROM civicrm_booking_slot
       WHERE 1
+      AND civicrm_booking_slot.is_cancelled = 0
       AND civicrm_booking_slot.is_deleted = 0
       AND civicrm_booking_slot.resource_id = %3
       AND  (%1 BETWEEN civicrm_booking_slot.start AND civicrm_booking_slot.end
