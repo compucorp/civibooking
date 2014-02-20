@@ -27,7 +27,7 @@ cj(function($) {
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
 
   if(bookingSlotDate){
-    var momentDate = moment(bookingSlotDate, "YYYY-M-D HH:mm");
+    var momentDate = moment(bookingSlotDate, "YYYY-MM-DD HH:mm");
     var date = momentDate.toDate();
   }else{
     var date = new Date();  //today date
@@ -72,8 +72,8 @@ cj(function($) {
     }
     selectedItem.label = resourceLabel;
     selectedItem.resource_id = resourceId;
-    selectedItem.start_date = moment(ev.start_date).format("YYYY-M-D HH:mm:ss");
-    selectedItem.end_date = moment(ev.end_date).format("YYYY-M-D HH:mm:ss");
+    selectedItem.start_date = moment(ev.start_date).format("YYYY-MM-DD HH:mm:ss");
+    selectedItem.end_date = moment(ev.end_date).format("YYYY-MM-DD HH:mm:ss");
     selectedItem.is_updated = true;
     basket[ev.id] = selectedItem;   //update item in basket
     updateBasketTable(selectedItem);  //render ui
@@ -87,7 +87,7 @@ cj(function($) {
 	  var endDateVals = $("#end_date").val().split("/");
 	  var startTimeVals = $("#start_time").val().split(":");
     var endTimeVals = $("#end_time").val().split(":");
-    
+
     //create the date format for the retrieved dates
 	  var startDate = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
 	  var endDate = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
@@ -160,7 +160,7 @@ cj(function($) {
 							$("input[name='quantity']").val(ev.quantity);
 						}
 
-            //lock editing          
+            //lock editing
 						if((ev.readonly) && (ev.booking_id != bookingId)){ //check editable slots against with bookingId
               $(".crm-booking-form-add-resource").attr("disabled", true);
               $("#add-resource-btn").hide();
@@ -168,7 +168,7 @@ cj(function($) {
 
 						var initStartDate = moment(new Date(ev.start_date));
 						var initEndDate = moment(new Date(ev.end_date));
-            
+
             //set the formatted months
 						var month=new Array();
 						month[0]="01";
@@ -183,14 +183,14 @@ cj(function($) {
 						month[9]="10";
 						month[10]="11";
 						month[11]="12";
-            
+
             //get and set the text for the datepicker text fields for the booking creating window
 						var startDateTxt = [month[initStartDate.months()],"/", initStartDate.format("DD"),"/", initStartDate.years()].join("");
 						var endDateTxt = [month[initStartDate.months()],"/", initStartDate.format("DD"),"/", initStartDate.years()].join("");
 						$("#start_date").val(startDateTxt);
 						$("#end_date").val(endDateTxt);
-            
-            var startTimeTxt = [initStartDate.hours() < 10 ? '0' + initStartDate.hours() : initStartDate.hours(),":",initStartDate.minute() < 10 ? '0' + 
+
+            var startTimeTxt = [initStartDate.hours() < 10 ? '0' + initStartDate.hours() : initStartDate.hours(),":",initStartDate.minute() < 10 ? '0' +
             initStartDate.minute() : initStartDate.minute()].join("");
 						var endTimeTxt = [initEndDate.hours() < 10 ? '0' + initEndDate.hours() : initEndDate.hours(), ":", initEndDate.minute() < 10 ? '0' +
             initEndDate.minute() : initEndDate.minute()].join("");
@@ -239,7 +239,7 @@ cj(function($) {
     }
     $( "#start_date" ).datepicker("destroy");
     $( "#end_date" ).datepicker("destroy");
-    
+
     var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
     var startDateVals = $("#start_date").val().split("/");
     var endDateVals = $("#end_date").val().split("/");
@@ -247,7 +247,7 @@ cj(function($) {
     var endTimeVals = $("#end_time").val().split(":");
     var startDate = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
 	  var endDate = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
-	
+
     var configOptionUnitId = $.trim(_.last($('#configSelect').find(':selected').html().split("/"))).toLowerCase();
     var configOptionPrice = $('#configSelect').find(':selected').data('price');
 
@@ -271,7 +271,7 @@ cj(function($) {
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
   });
-  
+
   //click cancle "select-resource-cancel"
   $(document).on("click", 'input[name="select-resource-cancel"]', function(e){
     $( "#start_date" ).datepicker("destroy");
