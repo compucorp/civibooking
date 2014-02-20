@@ -259,12 +259,14 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
         )
       );
 
-      $this->add('submit', $this->_printButtonName, ts('Print'),
-        array(
-          'class' => 'form-submit',
-          'onclick' => "return checkPerformAction('mark_x', '" . $this->getName() . "', 1);",
-        )
-      );
+      //-- Remove print button as it causes an exception when pressed
+      //-- TODO : Bring back search results print button functionality (See: PCBK-182)
+      // $this->add('submit', $this->_printButtonName, ts('Print'),
+        // array(
+          // 'class' => 'form-submit',
+          // 'onclick' => "return checkPerformAction('mark_x', '" . $this->getName() . "', 1);",
+        // )
+      // );
 
       // need to perform tasks on all or selected items ? using radio_ts(task selection) for it
       $this->addElement('radio', 'radio_ts', NULL, '', 'ts_sel', array('checked' => 'checked'));
