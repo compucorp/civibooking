@@ -30,7 +30,7 @@
     </OptionGroup>
     <OptionGroup>
       <name>booking_size_unit</name>
-      <title>Resourch configuration size unit</title>
+      <title>Resource configuration size unit</title>
       <is_reserved>1</is_reserved>
       <is_active>1</is_active>
     </OptionGroup>
