@@ -70,6 +70,28 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
 
 
   /**
+   * Delete all slots (associated bookings) for a particular resource
+   */
+  static function delByResource($resourceId) {
+    $result = civicrm_api3('Slot','get', array('resource_id' => $resourceId, 'is_deleted' => 0));
+    $slots = $result['values'];
+
+    $transaction = new CRM_Core_Transaction();
+
+    try{
+      foreach ($slots as $slotId => $slot) {
+        self::del($slotId);
+      }
+
+    } catch (Exception $e) {
+          $transaction->rollback();
+          CRM_Core_Error::fatal($e->getMessage());
+    }
+
+  }
+
+
+  /**
    * Function to delete Slot
    *
    * @param  int  $id     Id of the Slot to be deleted.
@@ -180,6 +202,44 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
   }
 
   static function getBookingSlot($bookingID){
+    $params = array(1 => array( $bookingID, 'Integer'));
+
+    $query = "
+      SELECT civicrm_booking_slot.id,
+             civicrm_booking_slot.booking_id,
+             civicrm_booking_slot.resource_id,
+             civicrm_booking_slot.config_id,
+             civicrm_booking_slot.quantity,
+             civicrm_booking_slot.start,
+             civicrm_booking_slot.end,
+             civicrm_booking_slot.note
+      FROM civicrm_booking_slot
+      WHERE 1
+      AND civicrm_booking_slot.booking_id = %1
+      AND civicrm_booking_slot.is_deleted = 0";
+
+    $slots = array();
+    $dao = CRM_Core_DAO::executeQuery($query, $params);
+    while ($dao->fetch()) {
+      $slots[$dao->id] = array(
+        'id' => $dao->id,
+        'booking_id' => $dao->booking_id,
+        'resource_id' => $dao->resource_id,
+        'config_id' => $dao->config_id,
+        'quantity' => $dao->quantity,
+        'start' => $dao->start,
+        'end' => $dao->end,
+        'note' => $dao->note,
+      );
+    }
+    return $slots;
+  }
+
+
+  /**
+   * Return all the slots for a particular resource
+   */
+  static function getSlotsByResource($resourceID){
     $params = array(1 => array( $bookingID, 'Integer'));
 
     $query = "

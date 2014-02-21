@@ -160,8 +160,12 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     CRM_Utils_System::flushCache();
     $params = $this->exportValues();
     if ($this->_action & CRM_Core_Action::DELETE) {
+
+      CRM_Booking_BAO_Slot::delByResource($this->_id);
+
       CRM_Booking_BAO_Resource::del($this->_id);
       CRM_Core_Session::setStatus(ts('Selected resource has been deleted.'), ts('Record Deleted'), 'success');
+
     }
     else {
       $params = $this->exportValues();
