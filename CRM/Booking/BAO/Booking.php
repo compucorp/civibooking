@@ -283,7 +283,8 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 		  }
 
       //calculate the total amount of cancellation charge
-      $cancels['cancellation_total_fee'] = $cancels['cancellation_fee'] + $cancels['additional_fee'];
+      $cancels['cancellation_total_fee'] = $cancels['cancellation_fee'];
+	  $cancels['cancellation_fee'] = $cancels['cancellation_fee'] - $cancels['additional_fee'];
 
       //calculate how many days before event date
       $cancellation_date = new DateTime($cancels['cancellation_date']);
