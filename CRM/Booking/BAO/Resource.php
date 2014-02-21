@@ -74,6 +74,9 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
   static function getResourcesByType($type, $includeLimited = false) {
     $typeGroupId = self::getResourceTypeGroupId();
     $params = array(1 => array( $type, 'String'));
+
+    // Build query of resources that can be booked.
+    // Only return resources that are enabled (is_active = 1)  that are not deleted (is_deleted <> 1)
     $query = "
     SELECT civicrm_booking_resource.id,
            civicrm_booking_resource.set_id,
@@ -85,7 +88,8 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
            civicrm_booking_resource.is_unlimited
      FROM  civicrm_booking_resource
      WHERE civicrm_booking_resource.type_id = %1
-     AND civicrm_booking_resource.is_active = 1";
+     AND civicrm_booking_resource.is_active = 1
+     AND civicrm_booking_resource.is_deleted <> 1";
 
     $resources = array();
     $dao = CRM_Core_DAO::executeQuery($query, $params);
@@ -124,7 +128,8 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
                  civicrm_option_value.option_group_id
           FROM civicrm_option_value
           INNER JOIN civicrm_booking_resource ON civicrm_option_value.option_group_id = $typeGroupId
-          AND civicrm_booking_resource.type_id = civicrm_option_value.value";
+          AND civicrm_booking_resource.type_id = civicrm_option_value.value
+          AND civicrm_option_value.is_active = 1";
 
        $query .= "$whereClause";
 
