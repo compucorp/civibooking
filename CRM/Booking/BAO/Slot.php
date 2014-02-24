@@ -416,7 +416,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
                 if($resItem['label'] == $slotItem['resource_label']){
                     $orderResource[$key]['slot'][] = $slotItem;
                     if(!empty($slotItem['sub_resources'])){
-                        $orderResource[$key]['subslot']= $slotItem['sub_resources'];
+                        $orderResource[$key]['subslot'][]= $slotItem['sub_resources'];
                     }
                 }
             }
