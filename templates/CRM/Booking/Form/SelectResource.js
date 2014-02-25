@@ -1,5 +1,9 @@
 var basket = {};
 var subTotal = 0.00;
+var definedSlots = new Array();
+var currentSlot = null;
+var currentResource = null;
+var timeClash=true;
 
 function show_minical(){
   if (scheduler.isCalendarVisible()){
@@ -62,9 +66,10 @@ cj(function($) {
 
   //when edit lightbox
 	scheduler.attachEvent("onEventChanged", function(event_id, ev){
-    var resourceLabel = $("div[event_id="+event_id+"]").parent().parent().parent().find(".dhx_scell_name").html(); //get resource label from position of lightbox
+    var resourceLabel = $("div[event_id="+event_id+"]").parent(). parent().parent().find(".dhx_scell_name").html(); //get resource label from position of lightbox
     var resourceId = ev.resource_id;
-    var selectedItem = getItemInBasket(ev.id);  //get item in basket
+    selectedItem = getItemInBasket(ev.id);  //get item in basket
+    //console.log('first',selectedItem);
     if(_.isUndefined(ev.booking_id)){ //new item?
       var lightboxText = [resourceLabel, " - ", ts("New")].join("");
       selectedItem.text = lightboxText;
@@ -72,10 +77,10 @@ cj(function($) {
     }
     selectedItem.label = resourceLabel;
     selectedItem.resource_id = resourceId;
-    selectedItem.start_date = moment(ev.start_date).format("YYYY-MM-DD HH:mm:ss");
-    selectedItem.end_date = moment(ev.end_date).format("YYYY-MM-DD HH:mm:ss");
+    selectedItem.start_date = moment(ev.start_date).format("YYYY-MM-DD HH:mm");
+    selectedItem.end_date = moment(ev.end_date).format("YYYY-MM-DD HH:mm");
     selectedItem.is_updated = true;
-    basket[ev.id] = selectedItem;   //update item in basket
+    basket[ev.id] = selectedItem;   //update item in basket 
     updateBasketTable(selectedItem);  //render ui
   });
 
@@ -95,13 +100,25 @@ cj(function($) {
     var val = startDate < endDate || value == "";
     return val;
   }, ts("End date time must be after start date time"));
+  
+  //custom validator for checking time clash
+  $.validator.addMethod("timeClash", function(value, element) {
+    var slots=definedSlots;
+    slots.forEach(function(slot) {
+      if(slot!==null){
+        checkTimeClash(slot);
+      }
+    });
+    return timeClash;
+  }, ts("Time clashes with another slot item."));
 
   //click at lightbox
   scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
     scheduler.startLightbox(id,null);
     scheduler.hideCover();
-
+    //console.log('event', ev);
+    currentResource = ev.resource_id;
 		$("#crm-booking-new-slot").dialog({
 			title : ts('Add resource to basket'),
 			modal : true,
@@ -111,7 +128,7 @@ cj(function($) {
 				//CiviCRM api call to set up configuration options
 				CRM.api('Resource', 'get', {
 					id : ev.resource_id,
-					sequential : 1,
+					sequential : 1, 
 					'api.resource_config_set.get' : {
 						id : '$value.set_id',
 						'api.resource_config_option.get' : {
@@ -141,13 +158,15 @@ cj(function($) {
 									required : true,
 									number : true
 								},
-                "end_date" : {
-                  "greaterThan" : true
-                },
+                            "end_date" : {
+                                "greaterThan" : true,
+                                "timeClash" : true
+                                },
 							}
 						});
-						var item = getItemInBasket(id);
-						if (item == null && (ev.booking_id === "undefined")) { //new item?
+						currentSlot = getItemInBasket(id);
+						//console.log('booking:',currentSlot);
+						if (currentSlot == null && (ev.booking_id === "undefined")) { //new item?
 							$("#SelectResource :input").attr("disabled", false);
 							//clear form value
 							$("#price-estimate").html('0');
@@ -261,6 +280,7 @@ cj(function($) {
     ev.note = $("#resource-note").val();
 
     var item = getItemInBasket(ev.id);
+    console.log('second',item);
     if(item == null){ //new item?
       ev.text = [$("#resource-label").val(), " - ", ts("New")].join("");
       ev.color = newSlotcolour;   //mark color to new item
@@ -313,7 +333,6 @@ cj(function($) {
   //Onchange "configSelect"
   $(document).on("change", 'select[name="configuration"]', function(e) {
     var val = $(this).val();
-    console.log(val);
     if(val == ""){
       $('input[name="quantity"]').attr("disabled",true);
       $('#price-estimate').html(0);
@@ -381,14 +400,47 @@ cj(function($) {
     var idList = $.map(basket, function(val, key) {
       return { id: val.id};
     });
+    var slots = new Array();
+    var item;
     if(typeof idList[0] !== 'undefined'){
-      for(var i = 0; i<idList.length; ++i){
+      for(var i = 0; i<idList.length; i++){
+        var eachId =idList[i].id;
+        slots[i] = basket[eachId];
+        definedSlots = slots;
+        console.log('exist', basket[eachId]);
         if(id == idList[i].id){
-          return basket[id];
+          //console.log('new', basket[id]);
+          item = basket[id];
         }
       }
+      return item;
     }
+    //console.log('nothing');
     return null;
+  }
+  
+  //check if the time of different slots clashes
+  function checkTimeClash(slot){
+          if((slot!==currentSlot&&slot.resource_id==currentResource)){
+            var startDateVals = $("#start_date").val().split("/");
+            var endDateVals = $("#end_date").val().split("/");
+            var startTimeVals = $("#start_time").val().split(":");
+            var endTimeVals = $("#end_time").val().split(":");
+            var start1Date = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
+            var end1Date = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
+            var startDate = moment(start1Date).format("YYYY-MM-DD HH:mm");
+            var endDate = moment(end1Date).format("YYYY-MM-DD HH:mm");
+            var leftClash = (slot.start_date<=startDate&&startDate<slot.end_date);
+            //console.log(slot.start_date,'<=',startDate,'; ',startDate,'<',slot.end_date);
+            var rightClash = (slot.start_date<endDate&&endDate<=slot.end_date);
+            var coverClash=(slot.start_date>startDate&&slot.end_date<endDate);
+            if(leftClash||rightClash||coverClash){
+              console.log('leftClash',leftClash,'rightClash',rightClash,'coverClash',coverClash);
+              timeClash=timeClash&&false;
+            }else{
+              timeClash=timeClash||true;
+            }
+          }
   }
 
   //execute when page load

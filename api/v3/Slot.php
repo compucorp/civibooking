@@ -90,11 +90,21 @@ function civicrm_api3_slot_validate($params) {
   $resources = $params['resources'];
   $isValid = TRUE;
   $errorResources = array();
+  $slot = array();
   foreach ($resources as $key => $resource) {
     if(!CRM_Booking_BAO_Slot::isValid($resource)){
       $errorResources[] = $resource;
     }
+    //$slot[] = $resource;
   }
+  /*$num = sizeof($slot);
+  for($i=0; $i<=$num; $i++){
+    $currentSlot = $slot[$i];
+    for($j=$i; $j<=$num; $j++){
+      $testSlot = $slot[$j];
+      
+    }
+  }*/
   if(!empty($errorResources)){
     $isValid = FALSE;
   }

@@ -130,9 +130,14 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
       AND civicrm_booking_slot.is_cancelled = 0
       AND civicrm_booking_slot.is_deleted = 0
       AND civicrm_booking_slot.resource_id = %3
-      AND  (%1 BETWEEN civicrm_booking_slot.start AND civicrm_booking_slot.end
-            OR
-           %2 BETWEEN civicrm_booking_slot.start AND civicrm_booking_slot.end)";
+      AND 
+      (
+        (civicrm_booking_slot.start<=%1 AND %1<civicrm_booking_slot.end)
+        OR
+        (civicrm_booking_slot.start<%2&&%2<=civicrm_booking_slot.end)
+        OR
+        (civicrm_booking_slot.start>%1&&civicrm_booking_slot.end<%2)
+      )";
 
     if(isset($params['id'])){
       $qParams[4] = array($params['id'], 'Integer');
