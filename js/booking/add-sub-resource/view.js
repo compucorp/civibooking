@@ -242,7 +242,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       month[9]="10";
       month[10]="11";
       month[11]="12";
-      var dateTxt = [month[initsdate.months()],"/", initsdate.format("DD"),"/", initsdate.years()].join("");
+      var dateTxt = [ initsdate.format("DD"),"/", month[initsdate.months()],"/", initsdate.years()].join("");
       this.$el.find("#required_date").val(dateTxt);
       this.$el.find("#required_time").val(timeTxt);
 
@@ -251,7 +251,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
             thisView.template =  _.template($('#add-sub-resource-template').html());
             //var configValue = CRM_Booking_BAO_BookingConfig::getConfig();
 
-            thisView.$el.find("#required_date").datepicker({changeMonth: true, changeYear: true});
+            thisView.$el.find("#required_date").datepicker({changeMonth: true, changeYear: true, dateFormat: 'dd/mm/yy'});
             thisView.$el.find('#required_time').timeEntry({show24Hours: true}).change(function() {
               var log = $('#log');
               log.val(log.val() + ($('#defaultEntry').val() || 'blank') + '\n');
@@ -299,7 +299,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         $.validator.addMethod("withinValidTime", function(value, element) {
         var dateVals = $("#required_date").val().split("/");
         var timeVals = $("#required_time").val().split(":");
-        var requiredDate = new Date(dateVals[2],dateVals[0]-1,dateVals[1],timeVals[0],timeVals[1]);
+        var requiredDate = new Date(dateVals[2],dateVals[1]-1,dateVals[0],timeVals[0],timeVals[1]);
         var minDate = moment(startDate, "YYYY-MM-DD HH:mm:ss");
         var maxDate = moment(endDate, "YYYY-MM-DD HH:mm:ss");
         if (unlimitedTimeConfig==0){
@@ -422,7 +422,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       this.model.set('note', this.$el.find('#sub-resource-note').val());
       var dateVals = this.$el.find("#required_date").val().split("/");
       var timeVals = this.$el.find("#required_time").val().split(":");
-      var requiredDate = new Date(dateVals[2],dateVals[0]-1,dateVals[1],timeVals[0],timeVals[1]);
+      var requiredDate = new Date(dateVals[2],dateVals[1]-1,dateVals[0],timeVals[0],timeVals[1]);
 			var timeRequired = moment(requiredDate).format("YYYY-M-D HH:mm");
 			this.model.set('time_required', timeRequired);
 
