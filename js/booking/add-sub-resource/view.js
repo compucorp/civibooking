@@ -322,7 +322,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         },
         quantity: {
           required: true,
-          number: true
+          digits: true
         },
       });
     },

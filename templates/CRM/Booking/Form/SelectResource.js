@@ -156,7 +156,7 @@ cj(function($) {
 								},
 								quantity : {
 									required : true,
-									number : true
+									digits : true
 								},
                             "end_date" : {
                                 "greaterThan" : true,
