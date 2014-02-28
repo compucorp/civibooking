@@ -77,12 +77,16 @@
  cj(function($) {
     $( "#start_date" ).datepicker({
       changeMonth: true,
-      changeYear: true
+      changeYear: true,
+      dateFormat: "dd/mm/yy"
     });
+    //$( "#start_date" ).formatDate( "dd/mm/yy" );
     $( "#end_date" ).datepicker({
       changeMonth: true,
-      changeYear: true
+      changeYear: true,
+      dateFormat: "dd/mm/yy"
     });
+    //$( "#end_date" ).formatDate( "dd/mm/yy" );
     $('#start_time').timeEntry({show24Hours: true}).change(function() { 
       var log = $('#log'); 
       log.val(log.val() + ($('#defaultEntry').val() || 'blank') + '\n'); 

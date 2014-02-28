@@ -94,8 +94,8 @@ cj(function($) {
     var endTimeVals = $("#end_time").val().split(":");
 
     //create the date format for the retrieved dates
-	  var startDate = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
-	  var endDate = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
+	  var startDate = new Date(startDateVals[2],startDateVals[1]-1,startDateVals[0],startTimeVals[0],startTimeVals[1]);
+	  var endDate = new Date(endDateVals[2],endDateVals[1]-1,endDateVals[0],endTimeVals[0],endTimeVals[1]);
 
     var val = startDate < endDate || value == "";
     return val;
@@ -205,8 +205,8 @@ cj(function($) {
 						month[11]="12";
 
             //get and set the text for the datepicker text fields for the booking creating window
-						var startDateTxt = [month[initStartDate.months()],"/", initStartDate.format("DD"),"/", initStartDate.years()].join("");
-						var endDateTxt = [month[initStartDate.months()],"/", initStartDate.format("DD"),"/", initStartDate.years()].join("");
+						var startDateTxt = [initStartDate.format("DD"), "/", month[initStartDate.months()],"/", initStartDate.years()].join("");
+						var endDateTxt = [initStartDate.format("DD"),"/", month[initStartDate.months()],"/", initStartDate.years()].join("");
 						$("#start_date").val(startDateTxt);
 						$("#end_date").val(endDateTxt);
 
@@ -265,8 +265,8 @@ cj(function($) {
     var endDateVals = $("#end_date").val().split("/");
     var startTimeVals = $("#start_time").val().split(":");
     var endTimeVals = $("#end_time").val().split(":");
-    var startDate = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
-	  var endDate = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
+    var startDate = new Date(startDateVals[2],startDateVals[1]-1,startDateVals[0],startTimeVals[0],startTimeVals[1]);
+	  var endDate = new Date(endDateVals[2],endDateVals[1]-1,endDateVals[0],endTimeVals[0],endTimeVals[1]);
 
     var configOptionUnitId = $.trim(_.last($('#configSelect').find(':selected').html().split("/"))).toLowerCase();
     var configOptionPrice = $('#configSelect').find(':selected').data('price');
@@ -426,8 +426,8 @@ cj(function($) {
             var endDateVals = $("#end_date").val().split("/");
             var startTimeVals = $("#start_time").val().split(":");
             var endTimeVals = $("#end_time").val().split(":");
-            var start1Date = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
-            var end1Date = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
+            var start1Date = new Date(startDateVals[2],startDateVals[1]-1,startDateVals[0],startTimeVals[0],startTimeVals[1]);
+            var end1Date = new Date(endDateVals[2],endDateVals[1]-1,endDateVals[0],endTimeVals[0],endTimeVals[1]);
             var startDate = moment(start1Date).format("YYYY-MM-DD HH:mm");
             var endDate = moment(end1Date).format("YYYY-MM-DD HH:mm");
             var leftClash = (slot.start_date<=startDate&&startDate<slot.end_date);
