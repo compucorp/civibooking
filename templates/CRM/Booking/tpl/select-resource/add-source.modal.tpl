@@ -60,7 +60,7 @@
         <label >{ts}Price estimate{/ts}</label>
       </div>
       <div class="content">
-         {$currencySymbols}<span id="price-estimate">0</span>
+         {$currencySymbols}<span id="price-estimate">0.00</span>
       </div>
       <div class="clear"></div>
     </div>
