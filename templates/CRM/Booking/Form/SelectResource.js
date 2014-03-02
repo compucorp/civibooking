@@ -169,7 +169,7 @@ cj(function($) {
 						if (currentSlot == null && (ev.booking_id === "undefined")) { //new item?
 							$("#SelectResource :input").attr("disabled", false);
 							//clear form value
-							$("#price-estimate").html('0');
+							$("#price-estimate").html('0.00');
 							$("#resource-note").val('');
 							$("input[name='quantity']").val('');
 							$("#add-resource-btn").show();
@@ -305,7 +305,7 @@ cj(function($) {
     delete basket[eid];
     subTotal = calculateTotalPrice();
     $('tr[data-eid=' + eid + ']').remove();
-    $('#subTotal').html(subTotal);
+    $('#subTotal').html(subTotal.toFixed(2));
     $("#resources").val(JSON.stringify(basket));
     if(subTotal == 0 || isNaN(subTotal)){
       $('#basket-region').hide();
@@ -326,7 +326,7 @@ cj(function($) {
     var price = $("#configSelect").find(':selected').data('price');
     var priceEstimate = price * $(this).val();
     if(!isNaN(priceEstimate)){
-      $('#price-estimate').html(priceEstimate);
+      $('#price-estimate').html(priceEstimate.toFixed(2));
     }
   });
 
@@ -335,7 +335,7 @@ cj(function($) {
     var val = $(this).val();
     if(val == ""){
       $('input[name="quantity"]').attr("disabled",true);
-      $('#price-estimate').html(0);
+      $('#price-estimate').html(0.00);
     }else{
       $('input[name="quantity"]').attr("disabled",false);
     }
@@ -353,7 +353,7 @@ cj(function($) {
         $('#basket-table > tbody:last').append(template({data: item})); //add new item to table
       }
       $("#resources").val(JSON.stringify(basket)); //ADD JSON object to basket
-      $('#subTotal').html(subTotal);
+      $('#subTotal').html(subTotal.toFixed(2));
       $('#basket-region').show();
     }else{
       $('#basket-region').hide();
