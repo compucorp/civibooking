@@ -185,7 +185,6 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       $defaults['discount_amount']= 0;
       $defaults['total_price'] = $this->_total;
     }
-
     return $defaults;
   }
 
@@ -242,7 +241,8 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     $values = $context->exportValues();
     $numValidate = is_numeric($values['discount_amount']);
     $emptyValidate = $values['discount_amount']=='';
-    $rangeValidate = $values['discount_amount']>=0 && $values['discount_amount']<=$values['sub_total'];
+    $finalSubtotal = $values['sub_total'] + $values['adhoc_charge'];
+    $rangeValidate = $values['discount_amount']>=0 && $values['discount_amount']<=$finalSubtotal;
     if(!$numValidate && !$emptyValidate){
       return array('discount_amount' => 'Please enter a valid number.');
     }elseif(!$rangeValidate){
