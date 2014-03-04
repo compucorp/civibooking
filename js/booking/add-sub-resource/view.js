@@ -14,13 +14,23 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
 
 	CRM.BookingApp.vent.on("render:price", function(model) {
 		$("#total_price").val(model.attributes.total_price);
-        $("#total-price-summary").text(model.attributes.total_price);
+		var totalText = model.attributes.total_price;
+		try{
+		  if(model.attributes.total_price>=0){
+		    var totalText = model.attributes.total_price.toFixed(2);
+		  }
+		}catch(err){}
+        $("#total-price-summary").text(totalText);
 
 		$("#discount_amount").val(model.attributes.discount_amount);
         $('#discount_amount_dummy').val(model.attributes.discount_amount);
 
 		$("#sub_total").val(model.attributes.sub_total);
-		$("#sub-total-summary").text(model.attributes.sub_total.toFixed(2));
+		var subtotalText = model.attributes.sub_total;
+		try{
+        var subtotalText = model.attributes.sub_total.toFixed(2);
+    }catch(err){}
+		$("#sub-total-summary").text(subtotalText);
 
 		$('#adhoc_charge').val(model.attributes.adhoc_charges.total);
 		$('#ad-hoc-charge-summary').html(model.attributes.adhoc_charges.total);
@@ -93,7 +103,10 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       var discountText = this.model.get('discount_amount');
       var totalText = this.model.get('total_price');
       this.$el.find("#sub-total-summary").text(subTotalText.toFixed(2));
-      this.$el.find("#ad-hoc-charge-summary").text(adhocText.toFixed(2));
+      this.$el.find("#ad-hoc-charge-summary").text(adhocText);
+      try{
+        this.$el.find("#ad-hoc-charge-summary").text(adhocText,toFixed(2));
+      }catch(err){}
       this.$el.find("#discount_amount_dummy").text(discountText);
       this.$el.find("#total-price-summary").text(totalText.toFixed(2));
     },
