@@ -69,6 +69,7 @@ class CRM_Admin_Form_ResourceConfigOption extends CRM_Admin_Form {
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigOption', 'weight'), TRUE);
     $this->add('checkbox', 'is_active', ts('Enabled?'));
 
+    $this->addRule("price", ts('Please enter a valid amount.'), 'money');
 
     $units =  CRM_Booking_BAO_ResourceConfigOption::buildOptions('unit_id', 'create');
     $this->add('select', 'unit_id', ts('Unit'),

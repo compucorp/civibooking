@@ -218,6 +218,8 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $this->add('text', 'total_amount', ts('Amount'), array( 'disabled' => 'disabled' ));
       }
 
+      $this->addRule("total_amount", ts('Please enter a valid amount.'), 'money');
+      
       $this->add('select', 'financial_type_id',
         ts('Financial Type'),
         array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::financialType()
