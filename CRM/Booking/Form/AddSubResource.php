@@ -231,6 +231,8 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
     $this->addButtons($buttons);
     
+    $this->addRule("discount_amount_dummy", ts('Please enter a valid amount.'), 'money');
+    
     $this->addFormRule( array( 'CRM_Booking_Form_AddSubResource', 'formRule' ), $this );
 
   }
