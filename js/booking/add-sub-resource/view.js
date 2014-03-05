@@ -144,7 +144,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       }
 
       var newTotal = (currentSubTotal + currentAdhocCharges) - fDiscountAmount;
-
+      try{newTotal = newTotal.toFixed(2); }catch(err){}
       this.model.set("total_price", newTotal);
       this.model.set("discount_amount", sDiscountAmount);
       CRM.BookingApp.vent.trigger('render:price', this.model );

@@ -15,7 +15,7 @@ cj(function($) {
     var additionalCharges = $('#adjustment').val();
     var amountToPay = parseFloat(cancellationCharge) + parseFloat(additionalCharges);
     if(isNaN(amountToPay)){
-      amountToPay = cancellationCharge;
+      amountToPay = parseFloat(cancellationCharge);
     }
     $('#charge_amount').text(amountToPay.toFixed(2));
     $('#total_amount').val(amountToPay.toFixed(2));
