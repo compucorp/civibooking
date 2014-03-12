@@ -147,6 +147,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     }
     $addSubResourcePage = $this->controller->exportValues('AddSubResource');
     $defaults['total_amount'] = $addSubResourcePage['total_price']; //use the amount that passing from the form
+    $amountToFloat = floatval($defaults['total_amount']);
+    $defaults['total_amount'] = round( $amountToFloat, 2, PHP_ROUND_HALF_UP);
     return $defaults;
   }
 
@@ -210,7 +212,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
     $booking['discount_amount'] = CRM_Utils_Array::value('discount_amount', $addSubResource);
     $booking['total_amount'] = CRM_Utils_Array::value('total_price', $addSubResource);
-
+    $amountToFloat = floatval($booking['total_amount']);
+    $booking['total_amount'] = round( $amountToFloat, 2, PHP_ROUND_HALF_UP);
     //add adhoc charge
     $booking['adhoc_charges_note'] = CRM_Utils_Array::value('note', $adhocCharges);
 
