@@ -389,6 +389,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
             $subSlotValues = CRM_Utils_Array::value('values',$subSlotResult);
             foreach ($subSlotValues as $k1 => $subSlotItem) {
                 //set sub slot detail
+              if($subSlotItem['is_deleted']==0){
                 $subSlots[$k1]['sub_resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource', $subSlotItem['resource_id'], 'label', 'id');
                 $subSlots[$k1]['sub_resource_config_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_ResourceConfigOption', $subSlotItem['config_id'], 'label', 'id');
                 $subSlots[$k1]['time_required'] = $subSlotItem['time_required'];
@@ -397,6 +398,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
                 $subSlots[$k1]['primary_contact'] = $slotItem['primary_contact'];
                 $subSlots[$k1]['secondary_contact'] = isset($slotItem['secondary_contact'])?$slotItem['secondary_contact']:NULL;
                 $subSlots[$k1]['note'] = isset($subSlotItem['note'])?$subSlotItem['note']:NULL;
+              }
             }
             //final setting values
             $slotItem['sub_resources'] = !empty($subSlots)?$subSlots:NULL;
