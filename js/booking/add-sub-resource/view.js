@@ -7,6 +7,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
   var startDate;
   var endDate;
   var unlimitedTimeConfig;
+  var resourceTotal = new Array(); 
+  var priceCache = 0;
 
 	CRM.BookingApp.vent.on("update:resources", function(model) {
 		$('#sub_resources').val(JSON.stringify(model.toJSON()));
@@ -15,15 +17,16 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
 	CRM.BookingApp.vent.on("render:price", function(model) {
 		$("#total_price").val(model.attributes.total_price);
 		var totalText = model.attributes.total_price;
+		console.log(model.attributes, 'sub', model.attributes.resources);
 		try{
 		  if(model.attributes.total_price>=0){
 		    var totalText = model.attributes.total_price.toFixed(2);
 		  }
 		}catch(err){}
-        $("#total-price-summary").text(totalText);
+    $("#total-price-summary").text(totalText);
 
 		$("#discount_amount").val(model.attributes.discount_amount);
-        $('#discount_amount_dummy').val(model.attributes.discount_amount);
+    $('#discount_amount_dummy').val(model.attributes.discount_amount);
 
 		$("#sub_total").val(model.attributes.sub_total);
 		var subtotalText = model.attributes.sub_total;
@@ -84,10 +87,12 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
             if(parseInt(item.parent_ref_id) === parseInt(el.data('ref'))){
               resourceTotalPrice += parseFloat(item.price_estimate);
             }
+            
           });
           if(resourceTotalPrice != null){
             subtotal += resourceTotalPrice;
             el.text(resourceTotalPrice.toFixed(2));
+            resourceTotal[el.data('ref')] = resourceTotalPrice.toFixed(2);
             self.$el.find('#crm-booking-sub-resource-row-' + el.data('ref')).show();
           }
         });
@@ -123,6 +128,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
 
     addSubResource: function(e){
      var ref = $(e.currentTarget).data('ref');
+     resourceTotal[ref] = 0;
      endDate =  $(e.currentTarget).data('edate');
      startDate =  $(e.currentTarget).data('sdate');
      var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref, time_required:startDate});
@@ -178,6 +184,9 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       var newResourcePrice = parseFloat(this.model.get("resources")[parentRef]) - parseFloat(price);
 
       this.model.attributes.resources[parentRef] = newResourcePrice;
+      console.log(resourceTotal[parentRef]);
+      resourceTotal[parentRef] -= parseFloat(price);
+      $("#resource-total-price-" + parentRef).text(resourceTotal[parentRef]);
       var currentSubTotal = this.model.get('sub_total');
       var newSubTotal = parseFloat(this.model.get('sub_total') - parseFloat(price));
       var currentTotal = this.model.get('total_price');
@@ -477,8 +486,17 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       subResourceModel.set("total_price", newTotal);
 
       var currentResourceTotal = subResourceModel.get("resources")[resourceRefId];
-
-      var resourceTotalPrice = parseFloat(currentResourceTotal) + parseFloat(priceEstimate);
+      
+      if(this.isNew){
+        var resourceTotalPrice = parseFloat(currentResourceTotal) + parseFloat(priceEstimate);
+        priceCache = parseFloat(priceEstimate);
+      }else{
+        var resourceTotalPrice = parseFloat(currentResourceTotal) + parseFloat(priceEstimate) - priceCache;
+        subResourceModel.attributes.sub_total = subResourceModel.attributes.sub_total - priceCache;
+        subResourceModel.attributes.total_price = subResourceModel.attributes.total_price - priceCache;
+        priceCache = parseFloat(priceEstimate);
+      }
+      resourceTotal[resourceRefId] = resourceTotalPrice;
       subResourceModel.attributes.resources[resourceRefId] = resourceTotalPrice.toFixed(2);
       //set total price for resource row
       $("#resource-total-price-" + resourceRefId).text(subResourceModel.attributes.resources[resourceRefId]);
