@@ -166,7 +166,7 @@ cj(function($) {
 						});
 						currentSlot = getItemInBasket(id);
 						//console.log('booking:',currentSlot);
-						if (currentSlot == null && (ev.booking_id === "undefined")) { //new item?
+						if (currentSlot == null || (ev.booking_id === "undefined")) { //new item?
 							$("#SelectResource :input").attr("disabled", false);
 							//clear form value
 							$("#price-estimate").html('0.00');
@@ -175,6 +175,7 @@ cj(function($) {
 							$("#add-resource-btn").show();
 						} else {
 						  //set form value
+						  $('input[name="quantity"]').attr("disabled",false);
 							$("#price-estimate").html(ev.price);
 							$("#resource-note").val(ev.note);
 							$("input[name='quantity']").val(ev.quantity);
@@ -332,12 +333,16 @@ cj(function($) {
 
   //Onchange "configSelect"
   $(document).on("change", 'select[name="configuration"]', function(e) {
-    var val = $(this).val();
-    if(val == ""){
+    var price = $(this).find(':selected').data('price'); console.log('val', price);
+    if(price == undefined){
       $('input[name="quantity"]').attr("disabled",true);
       $('#price-estimate').html(0.00);
     }else{
       $('input[name="quantity"]').attr("disabled",false);
+      var priceEstimate = price * $('input[name="quantity"]').val();
+      if(!isNaN(priceEstimate)){
+        $('#price-estimate').html(priceEstimate.toFixed(2));
+      }
     }
   });
 
