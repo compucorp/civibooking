@@ -186,6 +186,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       this.model.attributes.resources[parentRef] = newResourcePrice;
       console.log(resourceTotal[parentRef]);
       resourceTotal[parentRef] -= parseFloat(price);
+      try{resourceTotal[parentRef] = resourceTotal[parentRef].toFixed(2);}catch(err){}
       $("#resource-total-price-" + parentRef).text(resourceTotal[parentRef]);
       var currentSubTotal = this.model.get('sub_total');
       var newSubTotal = parseFloat(this.model.get('sub_total') - parseFloat(price));
