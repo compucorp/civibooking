@@ -8,7 +8,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
   var endDate;
   var unlimitedTimeConfig;
   var resourceTotal = new Array(); 
-  var priceCache = 0;
+  var priceCache = new Array();
 
 	CRM.BookingApp.vent.on("update:resources", function(model) {
 		$('#sub_resources').val(JSON.stringify(model.toJSON()));
@@ -17,7 +17,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
 	CRM.BookingApp.vent.on("render:price", function(model) {
 		$("#total_price").val(model.attributes.total_price);
 		var totalText = model.attributes.total_price;
-		console.log(model.attributes, 'sub', model.attributes.resources);
 		try{
 		  if(model.attributes.total_price>=0){
 		    var totalText = model.attributes.total_price.toFixed(2);
@@ -76,6 +75,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       var template = _.template($('#sub-resource-row-template').html());
       _.each(this.model.get('sub_resources'), function (item, key){
         self.$el.find("#crm-booking-sub-resource-table-" + item.parent_ref_id).append(template(item));
+        priceCache[item.ref_id] = item.price_estimate;
         items.push(item);
       });
       //if($.trim($("#sub_resources").val())) {
@@ -184,7 +184,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       var newResourcePrice = parseFloat(this.model.get("resources")[parentRef]) - parseFloat(price);
 
       this.model.attributes.resources[parentRef] = newResourcePrice;
-      console.log(resourceTotal[parentRef]);
       resourceTotal[parentRef] -= parseFloat(price);
       try{resourceTotal[parentRef] = resourceTotal[parentRef].toFixed(2);}catch(err){}
       $("#resource-total-price-" + parentRef).text(resourceTotal[parentRef]);
@@ -474,6 +473,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       $('#crm-booking-sub-resource-row-' + parentRefId).show();
       var resourceRefId = this.model.get("parent_ref_id");
       var priceEstimate = this.model.get("price_estimate");
+      var subResourceRefId = this.model.get("ref_id");
 
       var subResourceModel = CRM.BookingApp.main.currentView.model;
       subResourceModel.attributes.sub_resources[refId] = this.model.toJSON();
@@ -486,16 +486,17 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       var newTotal = (parseFloat(currentTotal) - parseFloat(currentSubTotal)) + parseFloat(newSubTotal);
       subResourceModel.set("total_price", newTotal);
 
-      var currentResourceTotal = subResourceModel.get("resources")[resourceRefId];
+      var currentResourceTotal = resourceTotal[resourceRefId];
+      
       
       if(this.isNew){
         var resourceTotalPrice = parseFloat(currentResourceTotal) + parseFloat(priceEstimate);
-        priceCache = parseFloat(priceEstimate);
+        priceCache[subResourceRefId] = parseFloat(priceEstimate);
       }else{
-        var resourceTotalPrice = parseFloat(currentResourceTotal) + parseFloat(priceEstimate) - priceCache;
-        subResourceModel.attributes.sub_total = subResourceModel.attributes.sub_total - priceCache;
-        subResourceModel.attributes.total_price = subResourceModel.attributes.total_price - priceCache;
-        priceCache = parseFloat(priceEstimate);
+        var resourceTotalPrice = parseFloat(currentResourceTotal) + parseFloat(priceEstimate) - priceCache[subResourceRefId];
+        subResourceModel.attributes.sub_total = subResourceModel.attributes.sub_total - priceCache[subResourceRefId];
+        subResourceModel.attributes.total_price = subResourceModel.attributes.total_price - priceCache[subResourceRefId];
+        priceCache[subResourceRefId] = parseFloat(priceEstimate);
       }
       resourceTotal[resourceRefId] = resourceTotalPrice;
       subResourceModel.attributes.resources[resourceRefId] = resourceTotalPrice.toFixed(2);
