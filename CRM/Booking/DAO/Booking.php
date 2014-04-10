@@ -331,7 +331,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
           'headerPattern' => '',
           'dataPattern' => '',
         ) ,
-        'total_amount' => array(
+        'booking_total_amount' => array(
           'name' => 'total_amount',
           'type' => CRM_Utils_Type::T_MONEY,
           'title' => ts('Total amount') ,
