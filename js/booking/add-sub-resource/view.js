@@ -80,7 +80,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       });
       //if($.trim($("#sub_resources").val())) {
         this.$el.find("span[id^='resource-total-price-']").each(function(){
-          var el = $(this);
+          var el = $(this);///////////////////////////
           var resourceTotalPrice = parseFloat(el.data('price'));
           _.find(items, function (item) {
 
@@ -127,8 +127,8 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
     },
 
     addSubResource: function(e){
-     var ref = $(e.currentTarget).data('ref');
-     resourceTotal[ref] = 0;
+     var ref = $(e.currentTarget).data('ref');/////////////////
+     //resourceTotal[ref] = 0;
      endDate =  $(e.currentTarget).data('edate');
      startDate =  $(e.currentTarget).data('sdate');
      var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref, time_required:startDate});
