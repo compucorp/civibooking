@@ -392,6 +392,8 @@ function booking_civicrm_navigationMenu( &$params ) {
       );
    }
 
+   $maxKey = ( max( array_keys($params) ) );
+   
    $findBooking =  array(
         'attributes' => array(
           'label' => ts('Find Bookings'),
@@ -450,8 +452,8 @@ function booking_civicrm_navigationMenu( &$params ) {
       ),
     )
   );
-
-  array_unshift($params, $bookingMenu);
+  array_push($params, $bookingMenu);
+// array_unshift($params, $bookingMenu);
   /*
   $searchMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Search...', 'id', 'name');
   if ($searchMenuId) {
