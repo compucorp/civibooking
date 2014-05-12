@@ -118,21 +118,23 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
 
       $whereClause = " WHERE 1";
       if (!$includeLimited) {
-          $whereClause .= " AND civicrm_booking_resource.is_unlimited = 0";
+          $whereClause .= " AND r.is_unlimited = 0";
       }
 
       $query = "
-          SELECT civicrm_option_value.id,
-                 civicrm_option_value.label,
-                 civicrm_option_value.value,
-                 civicrm_option_value.option_group_id
-          FROM civicrm_option_value
-          INNER JOIN civicrm_booking_resource ON civicrm_option_value.option_group_id = $typeGroupId
-          AND civicrm_booking_resource.type_id = civicrm_option_value.value
-          AND civicrm_option_value.is_active = 1";
+          SELECT v.id,
+                 v.label,
+                 v.value,
+                 v.option_group_id,
+                 r.weight
+          FROM civicrm_option_value v
+          INNER JOIN civicrm_booking_resource r
+          ON v.option_group_id = $typeGroupId
+          AND r.type_id = v.value
+          AND v.is_active = 1";
 
-       $query .= "$whereClause";
-
+      $query .= "$whereClause";
+      $query .= " ORDER BY r.weight";
 
       $resourceTypes = array();
       $dao = CRM_Core_DAO::executeQuery($query);
@@ -152,7 +154,6 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
 
   }
 
-
   /**
    * update the is_active flag in the db
    *
@@ -166,7 +167,6 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
     return CRM_Core_DAO::setFieldValue('CRM_Booking_DAO_Resource', $id, 'is_active', $is_active);
   }
 
-
   /**
    * Sets the Resource's is_deleted flag in the database
    *
@@ -174,6 +174,5 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
     $this->is_deleted = 1;
     $this->save();
   }*/
-
 
 }

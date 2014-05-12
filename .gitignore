@@ -1,2 +1,3 @@
 bin/setup.conf
 *.project
+.DS_Store
