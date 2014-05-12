@@ -70,7 +70,13 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
     return $typeGroupId;
   }
 
-
+  /**
+   * Return an array of all resources of a given resource type
+   *
+   * @param $type
+   * @param bool $includeLimited
+   * @return array
+   */
   static function getResourcesByType($type, $includeLimited = false) {
     $typeGroupId = self::getResourceTypeGroupId();
     $params = array(1 => array( $type, 'String'));
@@ -78,18 +84,19 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
     // Build query of resources that can be booked.
     // Only return resources that are enabled (is_active = 1)  that are not deleted (is_deleted <> 1)
     $query = "
-    SELECT civicrm_booking_resource.id,
-           civicrm_booking_resource.set_id,
-           civicrm_booking_resource.label,
-           civicrm_booking_resource.description,
-           civicrm_booking_resource.weight,
-           civicrm_booking_resource.type_id,
-           civicrm_booking_resource.location_id,
-           civicrm_booking_resource.is_unlimited
-     FROM  civicrm_booking_resource
-     WHERE civicrm_booking_resource.type_id = %1
-     AND civicrm_booking_resource.is_active = 1
-     AND civicrm_booking_resource.is_deleted <> 1";
+    SELECT r.id,
+           r.set_id,
+           r.label,
+           r.description,
+           r.weight,
+           r.type_id,
+           r.location_id,
+           r.is_unlimited
+     FROM  civicrm_booking_resource r
+     WHERE r.type_id = %1
+     AND r.is_active = 1
+     AND r.is_deleted <> 1
+     ORDER BY r.weight";
 
     $resources = array();
     $dao = CRM_Core_DAO::executeQuery($query, $params);
@@ -108,10 +115,14 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
     return $resources;
   }
 
-
-
-
-  static function getResourceTypes($includeLimited = false){
+    /**
+     * Return an array of all resource types
+     *
+     * @param bool $includeLimited
+     * @return array
+     * @throws Exception
+     */
+    static function getResourceTypes($includeLimited = false){
 
     $typeGroupId = self::getResourceTypeGroupId();
     if($typeGroupId){
