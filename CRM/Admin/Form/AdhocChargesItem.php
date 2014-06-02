@@ -63,6 +63,8 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_AdhocChargesItem', 'weight'), TRUE);
     $this->add('checkbox', 'is_active', ts('Enabled?'));
 
+    $this->addRule("price", ts('Please enter a valid amount.'), 'money');
+
 	// add form rule
     $this->addFormRule(array('CRM_Admin_Form_AdhocChargesItem', 'formRule'), $this);
     $cancelURL = CRM_Utils_System::url('civicrm/admin/adhoc_charges_item', "&reset=1");

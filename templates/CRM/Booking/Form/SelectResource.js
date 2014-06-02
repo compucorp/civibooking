@@ -1,5 +1,9 @@
 var basket = {};
 var subTotal = 0.00;
+var definedSlots = new Array();
+var currentSlot = null;
+var currentResource = null;
+var timeClash=true;
 
 function show_minical(){
   if (scheduler.isCalendarVisible()){
@@ -27,7 +31,7 @@ cj(function($) {
   scheduler.config.xml_date="%Y-%m-%d %H:%i";
 
   if(bookingSlotDate){
-    var momentDate = moment(bookingSlotDate, "YYYY-M-D HH:mm");
+    var momentDate = moment(bookingSlotDate, "YYYY-MM-DD HH:mm");
     var date = momentDate.toDate();
   }else{
     var date = new Date();  //today date
@@ -62,9 +66,10 @@ cj(function($) {
 
   //when edit lightbox
 	scheduler.attachEvent("onEventChanged", function(event_id, ev){
-    var resourceLabel = $("div[event_id="+event_id+"]").parent().parent().parent().find(".dhx_scell_name").html(); //get resource label from position of lightbox
+    var resourceLabel = $("div[event_id="+event_id+"]").parent(). parent().parent().find(".dhx_scell_name").html(); //get resource label from position of lightbox
     var resourceId = ev.resource_id;
-    var selectedItem = getItemInBasket(ev.id);  //get item in basket
+    selectedItem = getItemInBasket(ev.id);  //get item in basket
+    //console.log('first',selectedItem);
     if(_.isUndefined(ev.booking_id)){ //new item?
       var lightboxText = [resourceLabel, " - ", ts("New")].join("");
       selectedItem.text = lightboxText;
@@ -72,10 +77,10 @@ cj(function($) {
     }
     selectedItem.label = resourceLabel;
     selectedItem.resource_id = resourceId;
-    selectedItem.start_date = moment(ev.start_date).format("YYYY-M-D HH:mm:ss");
-    selectedItem.end_date = moment(ev.end_date).format("YYYY-M-D HH:mm:ss");
+    selectedItem.start_date = moment(ev.start_date).format("YYYY-MM-DD HH:mm");
+    selectedItem.end_date = moment(ev.end_date).format("YYYY-MM-DD HH:mm");
     selectedItem.is_updated = true;
-    basket[ev.id] = selectedItem;   //update item in basket
+    basket[ev.id] = selectedItem;   //update item in basket 
     updateBasketTable(selectedItem);  //render ui
   });
 
@@ -87,21 +92,33 @@ cj(function($) {
 	  var endDateVals = $("#end_date").val().split("/");
 	  var startTimeVals = $("#start_time").val().split(":");
     var endTimeVals = $("#end_time").val().split(":");
-    
+
     //create the date format for the retrieved dates
-	  var startDate = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
-	  var endDate = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
+	  var startDate = new Date(startDateVals[2],startDateVals[1]-1,startDateVals[0],startTimeVals[0],startTimeVals[1]);
+	  var endDate = new Date(endDateVals[2],endDateVals[1]-1,endDateVals[0],endTimeVals[0],endTimeVals[1]);
 
     var val = startDate < endDate || value == "";
     return val;
   }, ts("End date time must be after start date time"));
+  
+  //custom validator for checking time clash
+  $.validator.addMethod("timeClash", function(value, element) {
+    var slots=definedSlots;
+    slots.forEach(function(slot) {
+      if(slot!==null){
+        checkTimeClash(slot);
+      }
+    });
+    return timeClash;
+  }, ts("Time clashes with another slot item."));
 
   //click at lightbox
   scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
     scheduler.startLightbox(id,null);
     scheduler.hideCover();
-
+    //console.log('event', ev);
+    currentResource = ev.resource_id;
 		$("#crm-booking-new-slot").dialog({
 			title : ts('Add resource to basket'),
 			modal : true,
@@ -111,11 +128,12 @@ cj(function($) {
 				//CiviCRM api call to set up configuration options
 				CRM.api('Resource', 'get', {
 					id : ev.resource_id,
-					sequential : 1,
+					sequential : 1, 
 					'api.resource_config_set.get' : {
 						id : '$value.set_id',
 						'api.resource_config_option.get' : {
 							set_id : '$value.id',
+							is_active: 1,
 							'api.option_group.get' : {
 								name : 'booking_size_unit',
 							},
@@ -138,29 +156,32 @@ cj(function($) {
 								},
 								quantity : {
 									required : true,
-									number : true
+									digits : true
 								},
-                "end_date" : {
-                  "greaterThan" : true
-                },
+                            "end_date" : {
+                                "greaterThan" : true,
+                                "timeClash" : true
+                                },
 							}
 						});
-						var item = getItemInBasket(id);
-						if (item == null && (ev.booking_id === "undefined")) { //new item?
+						currentSlot = getItemInBasket(id);
+						//console.log('booking:',currentSlot);
+						if (currentSlot == null || (ev.booking_id === "undefined")) { //new item?
 							$("#SelectResource :input").attr("disabled", false);
 							//clear form value
-							$("#price-estimate").html('0');
+							$("#price-estimate").html('0.00');
 							$("#resource-note").val('');
 							$("input[name='quantity']").val('');
 							$("#add-resource-btn").show();
 						} else {
 						  //set form value
+						  $('input[name="quantity"]').attr("disabled",false);
 							$("#price-estimate").html(ev.price);
 							$("#resource-note").val(ev.note);
 							$("input[name='quantity']").val(ev.quantity);
 						}
 
-            //lock editing          
+            //lock editing
 						if((ev.readonly) && (ev.booking_id != bookingId)){ //check editable slots against with bookingId
               $(".crm-booking-form-add-resource").attr("disabled", true);
               $("#add-resource-btn").hide();
@@ -168,7 +189,7 @@ cj(function($) {
 
 						var initStartDate = moment(new Date(ev.start_date));
 						var initEndDate = moment(new Date(ev.end_date));
-            
+
             //set the formatted months
 						var month=new Array();
 						month[0]="01";
@@ -183,14 +204,14 @@ cj(function($) {
 						month[9]="10";
 						month[10]="11";
 						month[11]="12";
-            
+
             //get and set the text for the datepicker text fields for the booking creating window
-						var startDateTxt = [month[initStartDate.months()],"/", initStartDate.format("DD"),"/", initStartDate.years()].join("");
-						var endDateTxt = [month[initStartDate.months()],"/", initStartDate.format("DD"),"/", initStartDate.years()].join("");
+						var startDateTxt = [initStartDate.format("DD"), "/", month[initStartDate.months()],"/", initStartDate.years()].join("");
+						var endDateTxt = [initStartDate.format("DD"),"/", month[initStartDate.months()],"/", initStartDate.years()].join("");
 						$("#start_date").val(startDateTxt);
 						$("#end_date").val(endDateTxt);
-            
-            var startTimeTxt = [initStartDate.hours() < 10 ? '0' + initStartDate.hours() : initStartDate.hours(),":",initStartDate.minute() < 10 ? '0' + 
+
+            var startTimeTxt = [initStartDate.hours() < 10 ? '0' + initStartDate.hours() : initStartDate.hours(),":",initStartDate.minute() < 10 ? '0' +
             initStartDate.minute() : initStartDate.minute()].join("");
 						var endTimeTxt = [initEndDate.hours() < 10 ? '0' + initEndDate.hours() : initEndDate.hours(), ":", initEndDate.minute() < 10 ? '0' +
             initEndDate.minute() : initEndDate.minute()].join("");
@@ -239,15 +260,15 @@ cj(function($) {
     }
     $( "#start_date" ).datepicker("destroy");
     $( "#end_date" ).datepicker("destroy");
-    
+
     var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
     var startDateVals = $("#start_date").val().split("/");
     var endDateVals = $("#end_date").val().split("/");
     var startTimeVals = $("#start_time").val().split(":");
     var endTimeVals = $("#end_time").val().split(":");
-    var startDate = new Date(startDateVals[2],startDateVals[0]-1,startDateVals[1],startTimeVals[0],startTimeVals[1]);
-	  var endDate = new Date(endDateVals[2],endDateVals[0]-1,endDateVals[1],endTimeVals[0],endTimeVals[1]);
-	
+    var startDate = new Date(startDateVals[2],startDateVals[1]-1,startDateVals[0],startTimeVals[0],startTimeVals[1]);
+	  var endDate = new Date(endDateVals[2],endDateVals[1]-1,endDateVals[0],endTimeVals[0],endTimeVals[1]);
+
     var configOptionUnitId = $.trim(_.last($('#configSelect').find(':selected').html().split("/"))).toLowerCase();
     var configOptionPrice = $('#configSelect').find(':selected').data('price');
 
@@ -260,6 +281,7 @@ cj(function($) {
     ev.note = $("#resource-note").val();
 
     var item = getItemInBasket(ev.id);
+    console.log('second',item);
     if(item == null){ //new item?
       ev.text = [$("#resource-label").val(), " - ", ts("New")].join("");
       ev.color = newSlotcolour;   //mark color to new item
@@ -271,7 +293,7 @@ cj(function($) {
     scheduler.endLightbox(true,null);
     $("#crm-booking-new-slot").dialog('close');
   });
-  
+
   //click cancle "select-resource-cancel"
   $(document).on("click", 'input[name="select-resource-cancel"]', function(e){
     $( "#start_date" ).datepicker("destroy");
@@ -284,7 +306,7 @@ cj(function($) {
     delete basket[eid];
     subTotal = calculateTotalPrice();
     $('tr[data-eid=' + eid + ']').remove();
-    $('#subTotal').html(subTotal);
+    $('#subTotal').html(subTotal.toFixed(2));
     $("#resources").val(JSON.stringify(basket));
     if(subTotal == 0 || isNaN(subTotal)){
       $('#basket-region').hide();
@@ -305,19 +327,22 @@ cj(function($) {
     var price = $("#configSelect").find(':selected').data('price');
     var priceEstimate = price * $(this).val();
     if(!isNaN(priceEstimate)){
-      $('#price-estimate').html(priceEstimate);
+      $('#price-estimate').html(priceEstimate.toFixed(2));
     }
   });
 
   //Onchange "configSelect"
   $(document).on("change", 'select[name="configuration"]', function(e) {
-    var val = $(this).val();
-    console.log(val);
-    if(val == ""){
+    var price = $(this).find(':selected').data('price'); console.log('val', price);
+    if(price == undefined){
       $('input[name="quantity"]').attr("disabled",true);
-      $('#price-estimate').html(0);
+      $('#price-estimate').html(0.00);
     }else{
       $('input[name="quantity"]').attr("disabled",false);
+      var priceEstimate = price * $('input[name="quantity"]').val();
+      if(!isNaN(priceEstimate)){
+        $('#price-estimate').html(priceEstimate.toFixed(2));
+      }
     }
   });
 
@@ -333,7 +358,7 @@ cj(function($) {
         $('#basket-table > tbody:last').append(template({data: item})); //add new item to table
       }
       $("#resources").val(JSON.stringify(basket)); //ADD JSON object to basket
-      $('#subTotal').html(subTotal);
+      $('#subTotal').html(subTotal.toFixed(2));
       $('#basket-region').show();
     }else{
       $('#basket-region').hide();
@@ -380,14 +405,47 @@ cj(function($) {
     var idList = $.map(basket, function(val, key) {
       return { id: val.id};
     });
+    var slots = new Array();
+    var item;
     if(typeof idList[0] !== 'undefined'){
-      for(var i = 0; i<idList.length; ++i){
+      for(var i = 0; i<idList.length; i++){
+        var eachId =idList[i].id;
+        slots[i] = basket[eachId];
+        definedSlots = slots;
+        console.log('exist', basket[eachId]);
         if(id == idList[i].id){
-          return basket[id];
+          //console.log('new', basket[id]);
+          item = basket[id];
         }
       }
+      return item;
     }
+    //console.log('nothing');
     return null;
+  }
+  
+  //check if the time of different slots clashes
+  function checkTimeClash(slot){
+          if((slot!==currentSlot&&slot.resource_id==currentResource)){
+            var startDateVals = $("#start_date").val().split("/");
+            var endDateVals = $("#end_date").val().split("/");
+            var startTimeVals = $("#start_time").val().split(":");
+            var endTimeVals = $("#end_time").val().split(":");
+            var start1Date = new Date(startDateVals[2],startDateVals[1]-1,startDateVals[0],startTimeVals[0],startTimeVals[1]);
+            var end1Date = new Date(endDateVals[2],endDateVals[1]-1,endDateVals[0],endTimeVals[0],endTimeVals[1]);
+            var startDate = moment(start1Date).format("YYYY-MM-DD HH:mm");
+            var endDate = moment(end1Date).format("YYYY-MM-DD HH:mm");
+            var leftClash = (slot.start_date<=startDate&&startDate<slot.end_date);
+            //console.log(slot.start_date,'<=',startDate,'; ',startDate,'<',slot.end_date);
+            var rightClash = (slot.start_date<endDate&&endDate<=slot.end_date);
+            var coverClash=(slot.start_date>startDate&&slot.end_date<endDate);
+            if(leftClash||rightClash||coverClash){
+              console.log('leftClash',leftClash,'rightClash',rightClash,'coverClash',coverClash);
+              timeClash=timeClash&&false;
+            }else{
+              timeClash=timeClash||true;
+            }
+          }
   }
 
   //execute when page load

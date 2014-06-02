@@ -160,18 +160,28 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     CRM_Utils_System::flushCache();
     $params = $this->exportValues();
     if ($this->_action & CRM_Core_Action::DELETE) {
+
+      CRM_Booking_BAO_Slot::delByResource($this->_id);
+
       CRM_Booking_BAO_Resource::del($this->_id);
       CRM_Core_Session::setStatus(ts('Selected resource has been deleted.'), ts('Record Deleted'), 'success');
+
     }
     else {
       $params = $this->exportValues();
 
+      // If the is_active (enabled) checkbox is NOT set, it is NOT sent down in the form
+      // The DAO definition for is_active has a default of '1'
+      // So if not set it is by default ENABLED when in fact it should be DISABLED
+      if(!isset($params['is_active'])){
+        $params['is_active'] = 0;
+      }
+
       if($this->_id){
         $params['id'] = $this->_id;
-        if(!isset($params['is_active'])){
-          $params['is_active'] = 0;
-        }
       }
+
+
       $resource = CRM_Booking_BAO_Resource::create($params);
       CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $resource->label)), ts('Saved'), 'success');
     }
