@@ -173,13 +173,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           'entity_id' => $slot['id'],
           'entity_table' => 'civicrm_booking_slot',
         );
-      $result = civicrm_api('LineItem', 'get', $params);
-      if(!empty($result['values'])){
-        $lineItem = CRM_Utils_Array::value($result['id'], $result['values']);
-        $slots[$key]['unit_price'] = CRM_Utils_Array::value('unit_price', $lineItem);
-        $slots[$key]['total_amount'] = CRM_Utils_Array::value('line_total', $lineItem);
-        $slots[$key]['quantity'] = CRM_Utils_Array::value('qty', $lineItem);
-      }else{ //calulate manuanlly
+      
         $slots[$key]['total_amount'] = CRM_Booking_BAO_Slot::calulatePrice($slot['config_id'], $slot['quantity']);
         $slots[$key]['unit_price'] = CRM_Core_DAO::getFieldValue(
             'CRM_Booking_DAO_ResourceConfigOption',
@@ -187,7 +181,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             'price',
             'id'
         );
-      }
+      
       $childSlots = CRM_Booking_BAO_SubSlot::getSubSlotSlot($key);
       foreach ($childSlots as $key => $subSlot) {
         $subSlot['resource_label'] = CRM_Core_DAO::getFieldValue('CRM_Booking_DAO_Resource',
@@ -205,13 +199,6 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           'entity_id' => $subSlot['id'],
           'entity_table' => 'civicrm_booking_sub_slot',
         );
-        $result = civicrm_api('LineItem', 'get', $params);
-        if(!empty($result['values'])){
-          $subSlotlineItem = CRM_Utils_Array::value($result['id'], $result['values']);
-          $subSlot['unit_price'] = CRM_Utils_Array::value('unit_price', $subSlotlineItem);
-          $subSlot['total_amount'] = CRM_Utils_Array::value('line_total', $subSlotlineItem);
-          $subSlot['quantity'] = CRM_Utils_Array::value('qty', $subSlotlineItem);
-        }else{ //calulate manuanlly
           $subSlot['total_amount'] = CRM_Booking_BAO_Slot::calulatePrice($subSlot['config_id'], $subSlot['quantity']);
           $subSlot['unit_price'] = CRM_Core_DAO::getFieldValue(
             'CRM_Booking_DAO_ResourceConfigOption',
@@ -219,7 +206,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
             'price',
             'id'
           );
-        }
+        
 
         $subSlot['parent_resource_label'] =  $label;
         $subSlots[$subSlot['id']] = $subSlot;
@@ -278,16 +265,17 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 		  $params = array('booking_id' => $cancels['booking_id']);
 		  $bookingItem = civicrm_api3('Booking','get',$params);
 		  foreach (CRM_Utils_Array::value('values',$bookingItem) as $k => $v) {
-			  $cancels['booking_price'] = CRM_Utils_Array::value('total_amount',$v) - CRM_Utils_Array::value('discount_amount',$v);
-        $cancels['booking_date'] = CRM_Utils_Array::value('booking_date',$v);
+			  $cancels['booking_price'] = CRM_Utils_Array::value('total_amount',$v);
+        $cancels['event_date'] = CRM_Utils_Array::value('start_date',$v);
 		  }
 
       //calculate the total amount of cancellation charge
-      $cancels['cancellation_total_fee'] = $cancels['cancellation_fee'] + $cancels['additional_fee'];
+      $cancels['cancellation_total_fee'] = $cancels['cancellation_fee'];
+	  $cancels['cancellation_fee'] = $cancels['cancellation_fee'] - $cancels['additional_fee'];
 
       //calculate how many days before event date
       $cancellation_date = new DateTime($cancels['cancellation_date']);
-      $eventDate = new DateTime($cancels['booking_date']);
+      $eventDate = new DateTime($cancels['event_date']);
       $interval = $cancellation_date->diff($eventDate);
       $cancels['prior_days'] = $interval->days;
 

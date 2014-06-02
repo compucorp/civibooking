@@ -45,16 +45,18 @@
       </tr>
     </thead>
     {foreach from=$resource.subslot item=ssItem}
+    {foreach from=$ssItem item=sssItem}
     <tr class="{cycle values="odd-row,even-row"}">
-      <td>{$ssItem.sub_resource_label}</td>
-      <td>{$ssItem.time_required|crmDate}</td>
-      <td>{$ssItem.sub_resource_config_label}</td>
-      <td>{$ssItem.quantity}</td>
-      <td>{$ssItem.booking_id}</td>
-      <td>{$ssItem.primary_contact}</td>
-      <td>{$ssItem.secondary_contact}</td>
-      <td>{$ssItem.note}</td>
+      <td>{$sssItem.sub_resource_label}</td>
+      <td>{$sssItem.time_required|crmDate}</td>
+      <td>{$sssItem.sub_resource_config_label}</td>
+      <td>{$sssItem.quantity}</td>
+      <td>{$sssItem.booking_id}</td>
+      <td>{$sssItem.primary_contact}</td>
+      <td>{$sssItem.secondary_contact}</td>
+      <td>{$sssItem.note}</td>
     </tr>
+    {/foreach}
     {/foreach}
   </table>
   {/if}

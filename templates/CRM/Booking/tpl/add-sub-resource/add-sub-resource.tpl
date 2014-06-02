@@ -32,7 +32,7 @@
                   <tr>
                     <th rowspan="1" colspan="1">{ts}Unlimited Resource Label{/ts}</th>
                     <th rowspan="1" colspan="1">{ts}Configuration{/ts}</th>
-                    <th rowspan="1" colspan="1">{ts}Quality{/ts}</th>
+                    <th rowspan="1" colspan="1">{ts}Quantity{/ts}</th>
                     <th rowspan="1" colspan="1">{ts}Time Required{/ts}</th>
                     <th rowspan="1" colspan="1">{ts}Price{/ts}</th>
                     <th rowspan="1" colspan="1"></th>
