@@ -266,7 +266,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'attributes' => array(
             'label' => ts('Manage Resources'),
             'name' => 'manage_resources',
-            'url' => 'civicrm/admin/resource&reset=1',
+            'url' => 'civicrm/admin/resource?reset=1',
             'permission' => null,
             'operator' => null,
             'separator' => 0,
@@ -280,7 +280,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'attributes' => array(
             'label' => ts('Resource Configuration Set'),
             'name' => 'resource_config_set',
-            'url' => 'civicrm/admin/resource/config_set&reset=1',
+            'url' => 'civicrm/admin/resource/config_set?reset=1',
             'permission' => null,
             'operator' => null,
             'separator' => 0,
@@ -294,7 +294,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'attributes' => array(
             'label' => ts('Additional Charges Item'),
             'name' => 'adhoc_charges_item',
-            'url' => 'civicrm/admin/adhoc_charges_item&reset=1',
+            'url' => 'civicrm/admin/adhoc_charges_item?reset=1',
             'permission' => null,
             'operator' => null,
             'separator' => 0,
@@ -398,7 +398,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => ts('Find Bookings'),
           'name' => 'find_booking',
-          'url' => 'civicrm/booking/search&reset=1',
+          'url' => 'civicrm/booking/search?reset=1',
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -426,7 +426,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => ts('New Booking'),
           'name' => 'new_booking',
-          'url' => 'civicrm/booking/add&reset=1',
+          'url' => 'civicrm/booking/add?reset=1',
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -441,7 +441,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => ts('Day View'),
           'name' => 'day_view',
-          'url' => 'civicrm/booking/day-view&reset=1',
+          'url' => 'civicrm/booking/day-view?reset=1',
           'permission' => null,
           'operator' => null,
           'separator' => 0,
