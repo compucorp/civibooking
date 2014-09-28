@@ -334,25 +334,26 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
         }
         // fixed bug of CVB-94
         // Ad-hoc charges - cannot save
-        $items = array_filter(CRM_Utils_Array::value('items', $adhocCharges));
-        $newAdhocChargesIds = array();
-         foreach ($items as $key => $item) {
-          $params = array(
-            'booking_id' =>  $bookingID,
-            'item_id' => CRM_Utils_Array::value('item_id', $item),
-            'quantity' => CRM_Utils_Array::value('quantity', $item),
-          );
-          if($this->_action == CRM_Core_Action::UPDATE){
-            list($isExist, $currentAdhocChargesId) =  CRM_Booking_BAO_AdhocCharges::findExistingAdhocCharges($params, $currentAdhocCharges);
-            if($isExist){
-              $params['id'] =  $currentAdhocChargesId;
+        if(!is_null(CRM_Utils_Array::value('items', $adhocCharges))){
+          $items = array_filter(CRM_Utils_Array::value('items', $adhocCharges));
+          $newAdhocChargesIds = array();
+           foreach ($items as $key => $item) {
+            $params = array(
+              'booking_id' =>  $bookingID,
+              'item_id' => CRM_Utils_Array::value('item_id', $item),
+              'quantity' => CRM_Utils_Array::value('quantity', $item),
+            );
+            if($this->_action == CRM_Core_Action::UPDATE){
+              list($isExist, $currentAdhocChargesId) =  CRM_Booking_BAO_AdhocCharges::findExistingAdhocCharges($params, $currentAdhocCharges);
+              if($isExist){
+                $params['id'] =  $currentAdhocChargesId;
+              }
             }
+            $result = civicrm_api3('AdhocCharges', 'create', $params);
+            $adhocChargesId =  CRM_Utils_Array::value('id', $result);
+            array_push($newAdhocChargesIds, $adhocChargesId);
           }
-          $result = civicrm_api3('AdhocCharges', 'create', $params);
-          $adhocChargesId =  CRM_Utils_Array::value('id', $result);
-          array_push($newAdhocChargesIds, $adhocChargesId);
         }
-
 
         if($this->_action == CRM_Core_Action::UPDATE){ //remove  adhoc charges that have been removed
           $adhocChargesToBeRemoved = array();

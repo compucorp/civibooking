@@ -265,20 +265,6 @@ function booking_civicrm_navigationMenu( &$params ) {
         'child' =>  array(
         $key++ => array(
           'attributes' => array(
-            'label' => ts('Manage Resources'),
-            'name' => 'manage_resources',
-            'url' => 'civicrm/admin/resource&reset=1',
-            'permission' => null,
-            'operator' => null,
-            'separator' => 0,
-            'parentID' => $nextAdminMenuKey,
-            'navID' => 2,
-            'active' => 1
-          ),
-         'child' => null
-        ),
-        $key++ => array(
-          'attributes' => array(
             'label' => ts('Resource Configuration Set'),
             'name' => 'resource_config_set',
             'url' => 'civicrm/admin/resource/config_set&reset=1',
@@ -286,6 +272,20 @@ function booking_civicrm_navigationMenu( &$params ) {
             'operator' => null,
             'separator' => 0,
             'parentID' =>  $nextAdminMenuKey,
+            'navID' => 2,
+            'active' => 1
+          ),
+         'child' => null
+        ),
+        $key++ => array(
+          'attributes' => array(
+            'label' => ts('Manage Resources'),
+            'name' => 'manage_resources',
+            'url' => 'civicrm/admin/resource&reset=1',
+            'permission' => null,
+            'operator' => null,
+            'separator' => 0,
+            'parentID' => $nextAdminMenuKey,
             'navID' => 2,
             'active' => 1
           ),
@@ -383,7 +383,7 @@ function booking_civicrm_navigationMenu( &$params ) {
               'permission' => null,
               'operator' => null,
               'separator' => 0,
-              'parentID' => $newbookingKey,
+              'parentID' => $nextAdminMenuKey,
               'navID' => 7,
               'active' => 1
             ),
@@ -454,28 +454,6 @@ function booking_civicrm_navigationMenu( &$params ) {
     )
   );
   array_push($params, $bookingMenu);
-// array_unshift($params, $bookingMenu);
-  /*
-  $searchMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Search...', 'id', 'name');
-  if ($searchMenuId) {
-    $maxSearchMenuKey = max( array_keys($params[$searchMenuId]['child']));
-    $nextSearchMenuKey = $maxSearchMenuKey + 1;
-    $beforeMaxSearchMenuKey = $maxSearchMenuKey - 1;
-    //remove lasted seperator for lasted Find
-    $params[$searchMenuId]['child'][$beforeMaxSearchMenuKey]['attributes']['separator'] = 0;
-
-    $lastSearchMenu = $params[$searchMenuId]['child'][$maxSearchMenuKey];
-    unset($params[$searchMenuId]['child'][$maxSearchMenuKey]);
-    $findBooking['attributes']['separator'] = 1;
-    $params[$searchMenuId]['child'][$maxSearchMenuKey] = $findBooking;
-    $params[$searchMenuId]['child'][$nextSearchMenuKey] = $lastSearchMenu;
-
-    //move search menu to be at the first of the array
-    $searchMenuTemp =  $params[$searchMenuId];
-    unset($params[$searchMenuId]);
-    array_unshift($params, $searchMenuTemp);
-  }
-  */
 
 }
 
