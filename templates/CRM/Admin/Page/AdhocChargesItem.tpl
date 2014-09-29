@@ -40,7 +40,7 @@
             <th ></th>
         </tr>
         {foreach from=$rows item=row}
-        <tr id="row_{$row.id}" class="crm-booking_adhocchargesitem {cycle values="odd-row,even-row"} {$row.class}{if NOT $row.is_active} disabled{/if}">
+        <tr id="adhoc_charges_item-{$row.id}" class="crm-booking_adhocchargesitem crm-entity {cycle values="odd-row,even-row"} {$row.class}{if NOT $row.is_active} disabled{/if}">
             <td class="crm-booking-adhocchargesitem-label">{$row.label}</td>
             <td class="crm-booking-adhocchargesitem-price">{$row.price}</td>
             <td class="crm-booking-adhocchargesitem-weight">{$row.weight}</td>

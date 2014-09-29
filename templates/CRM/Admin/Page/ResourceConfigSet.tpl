@@ -39,7 +39,7 @@
             <th ></th>
         </tr>
         {foreach from=$rows item=row}
-        <tr id="row_{$row.id}" class="crm-booking_resource {cycle values="odd-row,even-row"} {$row.class}{if NOT $row.is_active} disabled{/if}">
+        <tr id="resource_config_set-{$row.id}" class="crm-booking_resource crm-entity {cycle values="odd-row,even-row"} {$row.class}{if NOT $row.is_active} disabled{/if}">
             <td class="crm-booking-resource-name">{$row.title}</td>
             <td class="crm-booking-resource-weight">{$row.weight}</td>
             <td id="row_{$row.id}_status" class="crm-booking-resource-is_active">{if $row.is_active eq 1} {ts}Yes{/ts} {else} {ts}No{/ts} {/if}</td>
