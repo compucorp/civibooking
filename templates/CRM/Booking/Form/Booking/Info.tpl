@@ -28,13 +28,23 @@
 <div id="main-container" >
   <div id="booking-detail-container" class="crm-form-block">
       {$form.resources.html}
-      {$form.primary_contact_select_id.html}
-      {$form.secondary_contact_select_id.html}
       <div class="crm-section" id="contact-container">
-
+          <div class="label">
+            {$form.primary_contact_id.label}
+  
+          </div>
+          <div class="content">
+              {$form.primary_contact_id.html}
+          </div>
       </div>
       <div class="crm-section"  id="organisation-container">
-
+          <div class="label">
+            {$form.secondary_contact_id.label}
+  
+          </div>
+          <div class="content">
+              {$form.secondary_contact_id.html}
+          </div>
       </div>
       <div class="crm-section">
           <div class="label">

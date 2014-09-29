@@ -6,8 +6,8 @@
       <label>{ts}Start date time{/ts}</label>
     </div>
     <div class="content">
-      <input type="text"  name="start_date"   id="start_date" size="10px" />
-      <input type="text"  name="start_time"   id="start_time" size="4px" />
+      <input type="text"  name="start_date"   class="crm-form-text"  id="start_date" size="10px" />
+      <input type="text"  name="start_time"   class="crm-form-text"  id="start_time" size="4px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -17,8 +17,8 @@
       <label>{ts}End date time{/ts}</label>
     </div>
     <div class="content">
-     <input type="text"  name="end_date"    id="end_date" size="10px" />
-     <input type="text"  name="end_time"   id="end_time" size="4px" />
+     <input type="text"  name="end_date"   class="crm-form-text"  id="end_date" size="10px" />
+     <input type="text"  name="end_time"   class="crm-form-text"  id="end_time" size="4px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -28,7 +28,7 @@
       <label for="configuration">{ts}Configuration{/ts}</label>
     </div>
     <div class="content">
-    <select name="configuration" id="configSelect" class="crm-booking-form-add-resource">
+    <select name="configuration" id="configSelect" class="crm-booking-form-add-resource crm-form-select">
     </select>
     <span id="config-max-size"></span>
     </div>
@@ -39,7 +39,7 @@
       <label for="quantity">{ts}Quantity{/ts}</label>
     </div>
     <div class="content">
-      <input type="text" name="quantity" disabled="disabled" class="crm-booking-form-add-resource"/>
+      <input type="text" name="quantity" disabled="disabled" class="crm-booking-form-add-resource crm-form-text"/>
     </div>
     <div class="clear"></div>
 

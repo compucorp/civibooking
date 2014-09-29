@@ -33,10 +33,7 @@ CRM.BookingApp.on("initialize:after", function(){
 });
 
 CRM.BookingApp.addInitializer(function(){
-  var contactView = new CRM.BookingApp.BookingInfo.Contact();
-  CRM.BookingApp.contactRegion.show(contactView);
-  var orgView = new CRM.BookingApp.BookingInfo.Organisation();
-  CRM.BookingApp.orgRegion.show(orgView);
+
 });
 
 

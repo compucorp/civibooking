@@ -1,20 +1,6 @@
 CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone, Marionette, $, _) {
 
-  CRM.BookingApp.vent.on("init:autocomplete", function (element, targetElement, el){
-    var contactUrl = CRM.url('civicrm/ajax/rest', 'className=CRM_Booking_Page_AJAX&fnName=getContactList&json=1');
-    $(element, el).autocomplete(contactUrl, {
-      width: 200,
-      selectFirst: false,
-      minChars: 1,
-      matchContains: true,
-      delay: 400
-    }).result(function(event, data) {
-      var selectedCID = data[1];
-      console.log(selectedCID);
-      console.log($('input[name="' + targetElement + '"]'));
-      $('input[name="' + targetElement + '"]').val(selectedCID);
-    });
-  });
+  
 
   CRM.BookingApp.vent.on("render:dialog", function (profile, title, elementId, targetElementId){
       var view = new BookingInfo.Dialog({
@@ -87,50 +73,4 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
 
   });
 
-
-  BookingInfo.Organisation = Backbone.Marionette.ItemView.extend({
-    template: '#booking-info-organisation-template',
-    onRender: function(){
-      BookingApp.vent.trigger('init:autocomplete', '#secondary_contact_id', 'secondary_contact_select_id', this.$el);
-    },
-    events: {
-      'change .crm-booking-create-contact-select': 'createContactDialog',
-    },
-    createContactDialog: function(e) {
-     // var thisView = this;
-      var profile = $(e.target).val();
-      if(profile.length) {
-        BookingApp.vent.trigger('render:dialog',
-          profile,
-          $(e.target).find(':selected').text(),
-          '#secondary_contact_id',
-          'secondary_contact_select_id');
-        $(e.target).val('');
-      }
-    },
-
-  });
-
-  BookingInfo.Contact = Backbone.Marionette.ItemView.extend({
-    template: '#booking-info-contact-template',
-
-    onRender: function(){
-      BookingApp.vent.trigger('init:autocomplete', '#primary_contact_id', 'primary_contact_select_id', this.$el);
-    },
-    events: {
-      'change .crm-booking-create-contact-select': 'createContactDialog',
-    },
-    createContactDialog: function(e) {
-     // var thisView = this;
-      var profile = $(e.target).val();
-      if(profile.length) {
-        BookingApp.vent.trigger('render:dialog',
-          profile,
-          $(e.target).find(':selected').text(),
-          '#primary_contact_id',
-          'primary_contact_select_id');
-        $(e.target).val('');
-      }
-    },
-  });
 });
