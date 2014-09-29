@@ -30,7 +30,7 @@
 <div id="ltype">
         {strip}
         {* handle enable/disable actions*}
-        {include file="CRM/common/enableDisable.tpl"}
+        {include file="CRM/common/enableDisableApi.tpl"}
         <table class="selector">
         <tr class="columnheader">
             <th >{ts}Label{/ts}</th>
