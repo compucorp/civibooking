@@ -45,9 +45,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   function buildQuickForm() {
     parent::buildQuickForm();
 
-    $this->addEntityRef("primary_contact_id", ts('Primary contact'), array(), TRUE );
+    $this->addEntityRef("primary_contact_id", ts('Primary contact'), array('create' => TRUE), TRUE );
 
-    $this->addEntityRef("secondary_contact_id", ts('Secondary contact'), array());
+    $this->addEntityRef("secondary_contact_id", ts('Secondary contact'), array('create' => TRUE));
 
     $this->add('text', 'po_no', ts('Purchase order number'));
 
