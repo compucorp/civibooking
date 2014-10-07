@@ -247,7 +247,7 @@ function booking_civicrm_navigationMenu( &$params ) {
   // skip adding menu if there is no administer menu
   if ($administerMenuId) {
     // get the maximum key under administer menu
-    $maxAdminMenuKey = _getMenuKeyMax($params);
+    $maxAdminMenuKey = civibooking_getMenuKeyMax($params);
     $nextAdminMenuKey = $maxAdminMenuKey+1;
     $key = $nextAdminMenuKey;
     $params[$administerMenuId]['child'][$nextAdminMenuKey] =  array(
@@ -457,11 +457,11 @@ function booking_civicrm_navigationMenu( &$params ) {
 
 }
 
-function _getMenuKeyMax($menuArray) {
+function civibooking_getMenuKeyMax($menuArray) {
   $max = array(max(array_keys($menuArray)));
   foreach($menuArray as $v) { 
     if (!empty($v['child'])) {
-      $max[] = _getMenuKeyMax($v['child']); 
+      $max[] = civibooking_getMenuKeyMax($v['child']); 
     }
   }
   return max($max);
