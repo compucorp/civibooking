@@ -27,6 +27,10 @@ function booking_civicrm_tabs(&$tabs, $cid) {
  * Implementation of hook_civicrm_config
  */
 function booking_civicrm_config(&$config) {
+  // enable use of number_format php function in smarty templates when 
+  // security on(on by default for emails)
+  $smarty = CRM_Core_Smarty::singleton();
+  $smarty->security_settings['MODIFIER_FUNCS'][] = "number_format";
   _booking_civix_civicrm_config($config);
 }
 
