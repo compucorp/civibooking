@@ -324,6 +324,7 @@ cj(function($) {
 
   //adjusting "quantity"
   $(document).on('keypress keyup keydown', 'input[name="quantity"]',  function(e) {
+    checkQuantityRestrictions();
     var price = $("#configSelect").find(':selected').data('price');
     var priceEstimate = price * $(this).val();
     if(!isNaN(priceEstimate)){
@@ -333,6 +334,7 @@ cj(function($) {
 
   //Onchange "configSelect"
   $(document).on("change", 'select[name="configuration"]', function(e) {
+    checkQuantityRestrictions();
     var price = $(this).find(':selected').data('price'); console.log('val', price);
     if(price == undefined){
       $('input[name="quantity"]').attr("disabled",true);
@@ -345,6 +347,16 @@ cj(function($) {
       }
     }
   });
+  
+  function checkQuantityRestrictions(){
+      var maxSize = $("#configSelect").find(':selected').data('maxsize');
+      var quantity = $('input[name="quantity"]').val();
+      
+      if(quantity > maxSize){
+          CRM.alert(ts(''), ts('Entered Quantity exceeds Max Size. Set to maximal value.'), 'error');
+          $('input[name="quantity"]').val(maxSize);
+      }
+  }
 
   //Render basket table
   function updateBasketTable(item){
