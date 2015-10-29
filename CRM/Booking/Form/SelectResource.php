@@ -77,6 +77,9 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     $this->assign('xStart', $xStart);
     $this->assign('xSize', $xSize);
     $this->assign('xStep', $xStep);
+    
+    CRM_Core_Resources::singleton()->addVars('booking', 
+        array('edit_mode' => $this->_action & CRM_Core_Action::UPDATE ? 1 : 0));
 
     $this->assign('timeOptions', CRM_Booking_Utils_DateTime::getTimeRange());
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
