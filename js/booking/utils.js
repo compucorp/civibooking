@@ -9,6 +9,11 @@ CRM.BookingApp.module("Utils", function(Utils, BookingApp, Backbone, Marionette,
   Utils.isPositiveInteger = function (n){
    return 0 === n % (!isNaN(parseFloat(n)) && 0 <= ~~n);
   };
+  
+  //http://stackoverflow.com/questions/9716468/is-there-any-function-like-isnumeric-in-javascript-to-validate-numbers
+  Utils.isNumeric = function (n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  };
 
 });
 
