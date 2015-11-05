@@ -562,7 +562,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       subResourceModel.set('adhoc_charges', this.model.attributes);
       var currentTotal = subResourceModel.get('sub_total');
       var discountAmount = subResourceModel.get('discount_amount');
-      if(CRM.BookingApp.Utils.isNumeric(discountAmount)){
+      if(CRM.BookingApp.Utils.isPositiveNumber(discountAmount)){
         var newTotal = (parseFloat(adhocChargesTotal) + parseFloat(currentTotal)) - parseFloat(discountAmount);
       }else{
         var newTotal = (parseFloat(adhocChargesTotal) + parseFloat(currentTotal)) - 0;
