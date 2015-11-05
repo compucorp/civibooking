@@ -303,6 +303,12 @@ cj(function($) {
   $(document).on("click", ".remove-from-basket-btn", function(e){
     e.preventDefault();
     var eid = $(this).data('eid');
+    if(CRM.vars.booking.edit_mode){
+        CRM.api3('Slot', 'delete', {
+          "sequential": 1,
+          "id": eid
+        })
+    }
     delete basket[eid];
     subTotal = calculateTotalPrice();
     $('tr[data-eid=' + eid + ']').remove();
