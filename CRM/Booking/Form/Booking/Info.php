@@ -20,7 +20,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   }
 
 
-  function preProcess(){
+  function preProcess(){    
     $this->_id = $this->get('id');
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       parent::preProcess();
@@ -120,6 +120,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
 
   function setDefaultValues() {
+    // prevent quickforms from filling total_amount with value submitted by 
+    // Back action - default value, which is filled correctly will be used instead
+    unset($this->_submitValues['total_amount']);
     $defaults = parent::setDefaultValues();
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $defaults['primary_contact_id'] = CRM_Utils_Array::value('primary_contact_id', $this->_values);
