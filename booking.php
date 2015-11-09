@@ -393,6 +393,20 @@ function booking_civicrm_navigationMenu( &$params ) {
             ),
             'child' => null
           ),
+          $key++ => array(
+            'attributes' => array(
+              'label' => ts('Resource Location'),
+              'name' => 'resource_location',
+              'url' => 'civicrm/admin/options?gid=' . $resourceLocationGId .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $nextAdminMenuKey,
+              'navID' => 8,
+              'active' => 1
+            ),
+            'child' => null
+          ),
         ),
       );
    }
