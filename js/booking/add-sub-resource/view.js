@@ -388,8 +388,12 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
               sequential: 1,
               'api.resource_config_set.get': {
                 id: '$value.set_id',
+                is_active: 1,
+                is_deleted: 0,
                 'api.resource_config_option.get': {
                   set_id: '$value.id',
+                  is_active: 1,
+                  is_deleted: 0,
                   'api.option_group.get':{
                     name: 'booking_size_unit',
                   },
