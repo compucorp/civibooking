@@ -173,7 +173,7 @@
       </OptionValue>
       <OptionValue>
         <label>Location 2</label>
-        <value>location_1</value>
+        <value>location_2</value>
         <name>location_2</name>
         <filter>0</filter>
         <is_default>0</is_default>
