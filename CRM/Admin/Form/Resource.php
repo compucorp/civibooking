@@ -77,8 +77,8 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     );*/
 
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'weight'), TRUE);
-    $this->add('checkbox', 'is_active', ts('Enabled?'));
-    $this->add('checkbox', 'is_unlimited', ts('Is Unlimited?'));
+    $this->add('advcheckbox', 'is_active', ts('Enabled?'));
+    $this->add('advcheckbox', 'is_unlimited', ts('Is Unlimited?'));
 
 
     $configSets =  array('' => ts('- select -'));
@@ -168,15 +168,6 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
     }
     else {
-      $params = $this->exportValues();
-
-      // If the is_active (enabled) checkbox is NOT set, it is NOT sent down in the form
-      // The DAO definition for is_active has a default of '1'
-      // So if not set it is by default ENABLED when in fact it should be DISABLED
-      if(!isset($params['is_active'])){
-        $params['is_active'] = 0;
-      }
-
       if($this->_id){
         $params['id'] = $this->_id;
       }
