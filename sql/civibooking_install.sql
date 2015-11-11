@@ -98,7 +98,7 @@ CREATE TABLE `civicrm_booking_config` (
      `day_end_at` time NOT NULL   ,
      `time_period` int NOT NULL   ,
      `log_confirmation_email` tinyint NOT NULL  DEFAULT 0 COMMENT 'Create an activity record againt contact for conformation emails',
-     `unlimited_resource_time_config` tinyint NOT NULL  DEFAULT 0 COMMENT 'Only allow unlimited resources to be booked during the time booking of the parent limited resource',
+     `unlimited_resource_time_config` tinyint NOT NULL  DEFAULT 1 COMMENT 'Only allow unlimited resources to be booked within time span of the parent limited resource booking',
      `cc_email_address` varchar(255)    ,
      `bcc_email_address` varchar(255)    ,
      `slot_new_colour` varchar(10)    ,

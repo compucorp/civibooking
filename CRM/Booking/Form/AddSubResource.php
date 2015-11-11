@@ -75,6 +75,15 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
 
     $this->assign('items', $items);
+    
+    $baoUnlimResource = new CRM_Booking_BAO_Resource();
+    $baoUnlimResource->is_active = 1;
+    $baoUnlimResource->is_deleted = 0;
+    $baoUnlimResource->is_unlimited = 1;
+    $unlimitedResourceCount = $baoUnlimResource->count();
+    
+    $this->assign('unlimited_resource_count', $unlimitedResourceCount);
+    
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');
       CRM_Utils_System::setTitle(ts('Edit Booking') . " - $title");
