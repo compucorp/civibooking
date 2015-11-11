@@ -411,23 +411,45 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
           { context: self,
             success: function(data) {
             var resource =  data['values']['0'];
-            var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
-            self.model.set('resource', {id: resource.id, label: resource.label});
-            var params = {
-              context: self,
-              template: _.template($('#select-config-option-template').html()),
-              list: options,
-              element: "#configuration_select",
-              first_option: '- ' + ts('select configuration') + ' -'
+            var configSet = data['values']['0']['api.resource_config_set.get'];            
+            if(configSet.count !== 1){
+              var url = CRM.url('civicrm/admin/resource/config_set', {
+                reset: 1,
+                action: 'update',
+                id: resource.id
+              });
+              CRM.alert(ts(''), ts('Resource configuration set for given unlimited resource is disabled.') 
+                      + ' ' + ts('Click') + ' <a href="' + 
+                      url + '">' + ts('here') + '</a> ' + ts('to edit it.'), 'error');
             }
-            CRM.BookingApp.vent.trigger("render:options", params);
-            //set configuration options for edit mode of subresource view
-            var configSelectedId = this.$el.find('#configuration_select').data('selected-id');  //retrieve data from data-selected-id attribute
-            if(configSelectedId != 'undefined'){
-              this.$el.find('#configuration_select').val(configSelectedId);
+            else if(configSet['values']['0']['api.resource_config_option.get'].count < 1){
+              var url = CRM.url('civicrm/admin/resource/config_set/config_option', {
+                reset: 1,
+                sid: configSet['values']['0'].id
+              });
+              CRM.alert(ts(''), ts('Resource configuration options disabled or missing for given unlimited resource.') 
+                      + ' ' + ts('Click') + ' <a href="' + 
+                      url + '">' + ts('here') + '</a> ' + ts('to edit them.'), 'error');
             }
-            this.$el.find('#config-loading').hide();
-            this.$el.find('#configuration_select').show();
+            else{
+              var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
+              self.model.set('resource', {id: resource.id, label: resource.label});
+              var params = {
+                context: self,
+                template: _.template($('#select-config-option-template').html()),
+                list: options,
+                element: "#configuration_select",
+                first_option: '- ' + ts('select configuration') + ' -'
+              }
+              CRM.BookingApp.vent.trigger("render:options", params);
+              //set configuration options for edit mode of subresource view
+              var configSelectedId = this.$el.find('#configuration_select').data('selected-id');  //retrieve data from data-selected-id attribute
+              if(configSelectedId != 'undefined'){
+                this.$el.find('#configuration_select').val(configSelectedId);
+              }
+              this.$el.find('#config-loading').hide();
+              this.$el.find('#configuration_select').show();
+            }
           }
         });
       }else{
