@@ -229,9 +229,11 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
           ts('Paid By'),
           array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::paymentInstrument(),
           FALSE,
-          array()
+          array('onChange' => "return showHideByValue('payment_instrument_id','4','checkNumber','table-row','select',false);")
       );
 
+      $this->add('text', 'check_number', ts('Check Number'));
+      
       $this->add('text', 'trxn_id', ts('Transaction ID'));
 
       $this->add('select', 'contribution_status_id',
@@ -383,6 +385,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         $values['receive_date'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('receive_date', $bookingInfo));
         $values['financial_type_id'] = CRM_Utils_Array::value('financial_type_id', $bookingInfo);
         $values['payment_instrument_id'] = CRM_Utils_Array::value('payment_instrument_id', $bookingInfo);
+        $values['check_number'] = CRM_Utils_Array::value('check_number', $bookingInfo);
         $values['trxn_id'] = CRM_Utils_Array::value('trxn_id', $bookingInfo);
         //Payment status is a contribution status
         $values['contribution_status_id'] = CRM_Utils_Array::value('contribution_status_id', $bookingInfo);

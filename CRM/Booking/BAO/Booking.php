@@ -45,6 +45,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           'financial_type_id' => CRM_Utils_Array::value('financial_type_id', $values),
           'total_amount' =>  CRM_Utils_Array::value('total_amount', $values),
           'payment_instrument_id' =>  CRM_Utils_Array::value('payment_instrument_id', $values),
+          'check_number' =>  CRM_Utils_Array::value('check_number', $values),
           'receive_date' =>  CRM_Utils_Array::value('receive_date', $values),
           'contribution_status_id' =>  CRM_Utils_Array::value('contribution_status_id', $values),
           'source' => CRM_Utils_Array::value('booking_title', $values),
