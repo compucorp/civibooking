@@ -337,7 +337,7 @@ function booking_civicrm_navigationMenu( &$params ) {
               ),
             'child' => null
           ),
-          $key++ => array(
+          /*$key++ => array(
             'attributes' => array(
               'label' => ts('Resource Criteria'),
               'name' => 'resource_criteria',
@@ -350,7 +350,7 @@ function booking_civicrm_navigationMenu( &$params ) {
               'active' => 1
             ),
             'child' => null
-          ),
+          ),*/
           $key++ => array(
             'attributes' => array(
               'label' => ts('Size Unit'),
@@ -360,7 +360,7 @@ function booking_civicrm_navigationMenu( &$params ) {
               'operator' => null,
               'separator' => 0,
               'parentID' => $nextAdminMenuKey,
-              'navID' => 6,
+              'navID' => 5,
               'active' => 1
             ),
             'child' => null
