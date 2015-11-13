@@ -43,7 +43,7 @@
     </div>
     <div class="content">
       <input type="text"  name="required_date" id="required_date" size="10px" />
-      <input type="text"  name="required_time"   id="required_time" size="4px" />
+      <input type="text"  name="required_time"   id="required_time" size="6px" />
     </div>
     <div class="clear"></div>
   </div>
