@@ -259,7 +259,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => ts('CiviBooking'),
           'name' => 'admin_booking',
           'url' => '',
-          'permission' => 'access civibooking',
+          'permission' => 'access CiviBooking',
           'operator' => null,
           'separator' => 1,
           'parentID' => $administerMenuId,
@@ -433,7 +433,7 @@ function booking_civicrm_navigationMenu( &$params ) {
       'label' => ts('Booking'),
       'name' => 'booking',
       'url' => null,
-      'permission' => 'access civibooking',
+      'permission' => 'access CiviBooking',
       'operator' => null,
       'separator' => null,
       'parentID' => null,
@@ -486,6 +486,6 @@ function civibooking_getMenuKeyMax($menuArray) {
 }
 
 function booking_civicrm_permission(&$permissions){
-  $prefix = ts('CiviCRM Resource Booking') . ': ';
-  $permissions['access civibooking'] = $prefix . ts('access CiviBooking');
+  $prefix = ts('CiviBooking') . ': ';
+  $permissions['access CiviBooking'] = $prefix . ts('access CiviBooking');
 }
