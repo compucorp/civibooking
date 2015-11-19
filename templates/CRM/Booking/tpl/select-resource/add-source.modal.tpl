@@ -40,6 +40,7 @@
     </div>
     <div class="content">
       <input type="text" name="quantity" disabled="disabled" class="crm-booking-form-add-resource crm-form-text"/>
+      <span id="max-quantity"></span>
     </div>
     <div class="clear"></div>
 

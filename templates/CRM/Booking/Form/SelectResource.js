@@ -334,6 +334,13 @@ cj(function($) {
 
   //Onchange "configSelect"
   $(document).on("change", 'select[name="configuration"]', function(e) {
+    var maxSize = $("#configSelect").find(':selected').data('maxsize');
+    if(maxSize){
+      $('#max-quantity').text(ts('Max') + ': ' + maxSize);
+    }
+    else{
+      $('#max-quantity').text('');
+    }
     checkQuantityRestrictions();
     var price = $(this).find(':selected').data('price'); console.log('val', price);
     if(price == undefined){
@@ -352,8 +359,7 @@ cj(function($) {
       var maxSize = $("#configSelect").find(':selected').data('maxsize');
       var quantity = $('input[name="quantity"]').val();
       
-      if(quantity > maxSize){
-          CRM.alert(ts(''), ts('Entered Quantity exceeds Max Size. Set to maximal value.'), 'error');
+      if(quantity > maxSize){          
           $('input[name="quantity"]').val(maxSize);
       }
   }
