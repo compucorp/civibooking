@@ -259,7 +259,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => ts('CiviBooking'),
           'name' => 'admin_booking',
           'url' => '',
-          'permission' => 'access CiviBooking',
+          'permission' => 'administer CiviBooking',
           'operator' => null,
           'separator' => 1,
           'parentID' => $administerMenuId,
@@ -418,7 +418,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => ts('Find Bookings'),
           'name' => 'find_booking',
           'url' => 'civicrm/booking/search?reset=1',
-          'permission' => null,
+          'permission' => 'administer CiviBooking,create and update bookings,view all bookings',
           'operator' => null,
           'separator' => 0,
           'parentID' => null,
@@ -433,7 +433,7 @@ function booking_civicrm_navigationMenu( &$params ) {
       'label' => ts('Booking'),
       'name' => 'booking',
       'url' => null,
-      'permission' => 'access CiviBooking',
+      'permission' => 'administer CiviBooking,create and update bookings,view all bookings',
       'operator' => null,
       'separator' => null,
       'parentID' => null,
@@ -446,7 +446,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => ts('New Booking'),
           'name' => 'new_booking',
           'url' => 'civicrm/booking/add?reset=1',
-          'permission' => null,
+          'permission' => 'administer CiviBooking,create and update bookings',
           'operator' => null,
           'separator' => 0,
           'parentID' => null,
@@ -461,7 +461,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => ts('Day View'),
           'name' => 'day_view',
           'url' => 'civicrm/booking/day-view?reset=1',
-          'permission' => null,
+          'permission' => 'administer CiviBooking,create and update bookings,view all bookings',
           'operator' => null,
           'separator' => 0,
           'parentID' => null,
@@ -487,5 +487,7 @@ function civibooking_getMenuKeyMax($menuArray) {
 
 function booking_civicrm_permission(&$permissions){
   $prefix = ts('CiviBooking') . ': ';
-  $permissions['access CiviBooking'] = $prefix . ts('access CiviBooking');
+  $permissions['administer CiviBooking'] = $prefix . ts('administer CiviBooking');
+  $permissions['create and update bookings'] = $prefix . ts('create and update bookings');
+  $permissions['view all bookings'] = $prefix . ts('view all bookings');
 }
