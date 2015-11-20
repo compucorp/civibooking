@@ -491,3 +491,60 @@ function booking_civicrm_permission(&$permissions){
   $permissions['create and update bookings'] = $prefix . ts('create and update bookings');
   $permissions['view all bookings'] = $prefix . ts('view all bookings');
 }
+
+/*
+ * Implements hook_civicrm_alterAPIPermissions
+ * @see function _civicrm_api3_permissions for mentioned uppercase issue
+ */
+function booking_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
+  $commonBookingAPIPermissions = array(
+    'create' => array(
+      'administer CiviBooking',
+    ),
+    'delete' => array(
+      'administer CiviBooking',
+    ),
+    'get' => array(
+      array(
+        'administer CiviBooking',
+        'create and update bookings',
+        'view all bookings',
+      )
+    ),
+    'update' => array(
+      'administer CiviBooking',
+    ),
+  );
+  
+  $bookingEntities = array(      
+    'BookingPayment',
+    'Booking',
+    'Cancellation',      
+    'Slot',
+    'SubSlot'
+    );
+  
+  $configEntities = array(
+    'AdhocChargesItem',
+    'AdhocCharges',      
+    'ResourceConfigOption',
+    'ResourceConfigSet',
+    'Resource',
+    );
+  
+  // set common permissions
+  foreach (array_merge($bookingEntities, $configEntities) as $entityName) {
+    // permissions implementation needs lowercase entities
+    $permissions[_civicrm_api_get_entity_name_from_camel($entityName)] = $commonBookingAPIPermissions;
+  }
+  
+  //add custom permissions for create/update role
+  foreach ($bookingEntities as $entityName) {
+    $permissionArray = array(array('administer CiviBooking', 'create and update bookings'));
+    // permissions implementation needs lowercase entities
+    $entityName = _civicrm_api_get_entity_name_from_camel($entityName);
+    $permissions[$entityName]['create'] = $permissionArray;
+    $permissions[$entityName]['update'] = $permissionArray;
+  }
+  
+}
