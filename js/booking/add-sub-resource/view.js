@@ -418,18 +418,18 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
                 action: 'update',
                 id: resource.id
               });
-              CRM.alert(ts(''), ts('Resource configuration set for given unlimited resource is disabled.') 
-                      + ' ' + ts('Click') + ' <a href="' + 
-                      url + '">' + ts('here') + '</a> ' + ts('to edit it.'), 'error');
+              CRM.alert(ts(''), ts('Your resource configuration set is disabled.') 
+                      + ' ' + ' <a href="' + 
+                      url + '">' + ts('Click here to edit configuration set.') + '</a> ', 'error');
             }
             else if(configSet['values']['0']['api.resource_config_option.get'].count < 1){
               var url = CRM.url('civicrm/admin/resource/config_set/config_option', {
                 reset: 1,
                 sid: configSet['values']['0'].id
               });
-              CRM.alert(ts(''), ts('Resource configuration options disabled or missing for given unlimited resource.') 
-                      + ' ' + ts('Click') + ' <a href="' + 
-                      url + '">' + ts('here') + '</a> ' + ts('to edit them.'), 'error');
+              CRM.alert(ts(''), ts('Your resource configuration options are all disabled or none have been created.') 
+                      + ' ' + ' <a href="' + 
+                      url + '">' + ts('Click here to edit or create options.') + '</a> ', 'error');
             }
             else{
               var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
