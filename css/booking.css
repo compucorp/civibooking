@@ -12,3 +12,7 @@ td.text-right{
   width: 20% !important;
   padding-right: 10px
 }
+
+.crm-container .crm-section .content {
+  margin-left: 22%;
+}
