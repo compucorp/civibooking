@@ -62,7 +62,7 @@
   <div class="crm-section">
     <div class="label">{$form.total_amount.label}</div>
     <div class="content">
-      <div id='totalAmount'>{$form.currencySymbol.html|crmAddClass:two}&nbsp;{$form.total_amount.html|crmAddClass:eight}</div><br/>
+      {$form.currencySymbol.html|crmAddClass:two}&nbsp;{$form.total_amount.html|crmAddClass:eight}<br/>
       <span class="description"> {ts}Booking payment amount. A contribution record will be created for this amount.{/ts} </span>
     </div>
   </div>
