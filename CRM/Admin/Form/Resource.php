@@ -77,7 +77,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     );*/
 
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'weight'), TRUE);
-    $this->add('advcheckbox', 'is_active', ts('Enabled?'));
+    $statusCheckbox = $this->add('advcheckbox', 'is_active', ts('Enabled?'));
     $this->add('advcheckbox', 'is_unlimited', ts('Is Unlimited?'));
 
 
@@ -87,8 +87,18 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       foreach ($activeSets['values'] as $key => $set) {
         $configSets[$key] = $set['title'];
       }
+      
+      $resource = civicrm_api3('Resource', 'getsingle', array(
+        'sequential' => 1,
+        'id' => $this->_id,
+      ));
     }
-    catch (CiviCRM_API3_Exception $e) {}
+    catch (CiviCRM_API3_Exception $e) {}   
+    
+    //allow state changes only when there is enabled config set
+    if(!in_array($resource['set_id'], array_keys($activeSets['values']))){
+      $statusCheckbox->setAttribute('disabled', 'disabled');
+    }
 
     $this->add('select', 'set_id', ts('Resource configuration set'), $configSets, TRUE);
 
