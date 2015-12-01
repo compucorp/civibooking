@@ -260,7 +260,7 @@ function booking_civicrm_navigationMenu( &$params ) {
     $maxAdminMenuKey = _getMenuKeyMax($params);
     $nextAdminMenuKey = $maxAdminMenuKey+1;
     $key = $nextAdminMenuKey;
-    $params[$administerMenuId]['child'][$navId] =  array(
+    $params[$administerMenuId]['child'][$nextAdminMenuKey] =  array(
         'attributes' => array(
           'label' => ts('CiviBooking'),
           'name' => 'admin_booking',
@@ -271,9 +271,9 @@ function booking_civicrm_navigationMenu( &$params ) {
           'parentID' => $administerMenuId,
           'navID' => $nextAdminMenuKey,
           'active' => 1
-        ),
-        'child' =>  array(
-          $nextAdminMenuKey => array(
+          ),
+        'child' => array(
+          $key++ => array(
             'attributes' => array(
               'label' => ts('Resource Configuration Set'),
               'name' => 'resource_config_set',
@@ -316,7 +316,7 @@ function booking_civicrm_navigationMenu( &$params ) {
            'child' => null
           ),
           $key++ => array(
-             'attributes' => array(
+            'attributes' => array(
               'label' => ts('Booking Status'),
               'name' => 'booking_status',
               'url' => CRM_Utils_system::url('civicrm/admin/optionValue', array('gid' => $bookingStatusGid, 'reset' => 1), TRUE),
@@ -326,8 +326,8 @@ function booking_civicrm_navigationMenu( &$params ) {
               'parentID' => $nextAdminMenuKey,
               'navID' => 3,
               'active' => 1
-            ),
-           'child' => null
+              ),
+            'child' => null
           ),
           $key++ => array(
             'attributes' => array(
@@ -404,7 +404,7 @@ function booking_civicrm_navigationMenu( &$params ) {
    }
 
    $maxKey = ( max( array_keys($params) ) );
-   
+
    $findBooking =  array(
         'attributes' => array(
           'label' => ts('Find Bookings'),
@@ -469,9 +469,9 @@ function booking_civicrm_navigationMenu( &$params ) {
 
 function _getMenuKeyMax($menuArray) {
   $max = array(max(array_keys($menuArray)));
-  foreach($menuArray as $v) { 
+  foreach($menuArray as $v) {
     if (!empty($v['child'])) {
-      $max[] = _getMenuKeyMax($v['child']); 
+      $max[] = _getMenuKeyMax($v['child']);
     }
   }
   return max($max);
