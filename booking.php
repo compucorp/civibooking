@@ -243,7 +243,17 @@ function booking_civicrm_navigationMenu( &$params ) {
    }
 
   // get the id of Administer Menu
-  $administerMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Administer', 'id', 'name');
+  $domain_id = CRM_Core_Config::domainID();
+  // $administerMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Administer', 'id', 'name');
+  $administerMenuId = CRM_Core_DAO::singleValueQuery(
+    "SELECT id
+     FROM civicrm_navigation
+     WHERE name = 'Administer'
+     AND domain_id = $domain_id");
+  $navId = CRM_Core_DAO::singleValueQuery("SELECT max(id) FROM civicrm_navigation");
+  if (is_integer($navId)) {
+    $navId++;
+  }
   // skip adding menu if there is no administer menu
   if ($administerMenuId) {
     // get the maximum key under administer menu
@@ -254,76 +264,76 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => ts('CiviBooking'),
           'name' => 'admin_booking',
-          //'url' => '#',
+          'url' =>  '#',
           'permission' => null,
           'operator' => null,
           'separator' => 1,
           'parentID' => $administerMenuId,
           'navID' => $nextAdminMenuKey,
           'active' => 1
-        ),
-        'child' =>  array(
-        $key++ => array(
-          'attributes' => array(
-            'label' => ts('Resource Configuration Set'),
-            'name' => 'resource_config_set',
-            'url' => 'civicrm/admin/resource/config_set&reset=1',
-            'permission' => null,
-            'operator' => null,
-            'separator' => 0,
-            'parentID' =>  $nextAdminMenuKey,
-            'navID' => 2,
-            'active' => 1
           ),
-         'child' => null
-        ),
-        $key++ => array(
-          'attributes' => array(
-            'label' => ts('Manage Resources'),
-            'name' => 'manage_resources',
-            'url' => 'civicrm/admin/resource&reset=1',
-            'permission' => null,
-            'operator' => null,
-            'separator' => 0,
-            'parentID' => $nextAdminMenuKey,
-            'navID' => 2,
-            'active' => 1
-          ),
-         'child' => null
-        ),
-        $key++ => array(
-          'attributes' => array(
-            'label' => ts('Additional Charges Item'),
-            'name' => 'adhoc_charges_item',
-            'url' => 'civicrm/admin/adhoc_charges_item&reset=1',
-            'permission' => null,
-            'operator' => null,
-            'separator' => 0,
-            'parentID' =>  $nextAdminMenuKey,
-            'navID' => 2,
-            'active' => 1
-          ),
-         'child' => null
-        ),
-         $key++ => array(
+        'child' => array(
+          $key++ => array(
             'attributes' => array(
-              'label' => ts('Booking Status'),
-              'name' => 'booking_status',
-              'url' => 'civicrm/admin/optionValue?gid=' . $bookingStatusGid .'&reset=1',
+              'label' => ts('Resource Configuration Set'),
+              'name' => 'resource_config_set',
+              'url' => CRM_Utils_System::url('civicrm/admin/resource/config_set', "reset=1", TRUE),
               'permission' => null,
               'operator' => null,
               'separator' => 0,
-              'parentID' =>  $nextAdminMenuKey,
-              'navID' => 3,
+              'parentID' => $nextAdminMenuKey,
+              'navID' => 2,
               'active' => 1
             ),
            'child' => null
           ),
           $key++ => array(
             'attributes' => array(
+              'label' => ts('Manage Resources'),
+              'name' => 'manage_resources',
+              'url' => CRM_Utils_system::url('civicrm/admin/resource', "reset=1", TRUE),
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $nextAdminMenuKey,
+              'navID' => 2,
+              'active' => 1
+            ),
+           'child' => null
+          ),
+          $key++ => array(
+            'attributes' => array(
+              'label' => ts('Additional Charges Item'),
+              'name' => 'adhoc_charges_item',
+              'url' => CRM_Utils_system::url('civicrm/admin/adhoc_charges_item', "reset=1", TRUE),
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $nextAdminMenuKey,
+              'navID' => 2,
+              'active' => 1
+            ),
+           'child' => null
+          ),
+          $key++ => array(
+            'attributes' => array(
+              'label' => ts('Booking Status'),
+              'name' => 'booking_status',
+              'url' => CRM_Utils_system::url('civicrm/admin/optionValue', array('gid' => $bookingStatusGid, 'reset' => 1), TRUE),
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $nextAdminMenuKey,
+              'navID' => 3,
+              'active' => 1
+              ),
+            'child' => null
+          ),
+          $key++ => array(
+            'attributes' => array(
               'label' => ts('Resource Type'),
               'name' => 'resource_type',
-              'url' => 'civicrm/admin/optionValue?gid=' . $resourceTypeGid .'&reset=1',
+              'url' => CRM_Utils_system::url('civicrm/admin/optionValue', array('gid' => $resourceTypeGid, 'reset' => 1), TRUE),
               'permission' => null,
               'operator' => null,
               'separator' => 0,
@@ -337,7 +347,7 @@ function booking_civicrm_navigationMenu( &$params ) {
             'attributes' => array(
               'label' => ts('Resource Criteria'),
               'name' => 'resource_criteria',
-              'url' => 'civicrm/admin/optionValue?gid=' . $resourceCriteriaGId .'&reset=1',
+              'url' => CRM_Utils_system::url('civicrm/admin/optionValue', array('gid' => $resourceCriteriaGId, 'reset' => 1), TRUE),
               'permission' => null,
               'operator' => null,
               'separator' => 0,
@@ -351,7 +361,7 @@ function booking_civicrm_navigationMenu( &$params ) {
             'attributes' => array(
               'label' => ts('Size Unit'),
               'name' => 'size_unit',
-              'url' =>'civicrm/admin/optionValue?gid=' . $sizeUnitGid .'&reset=1',
+              'url' => CRM_Utils_system::url('civicrm/admin/optionValue', array('gid' => $sizeUnitGid, 'reset' => 1), TRUE),
               'permission' => null,
               'operator' => null,
               'separator' => 0,
@@ -365,7 +375,7 @@ function booking_civicrm_navigationMenu( &$params ) {
             'attributes' => array(
               'label' => ts('Cancellation Charges'),
               'name' => 'cancellation_charges',
-              'url' =>'civicrm/admin/optionValue?gid=' . $cancellationChargesGid .'&reset=1',
+              'url' => CRM_Utils_system::url('civicrm/admin/optionValue', array('gid' => $cancellationChargesGid,'reset' => 1), TRUE),
               'permission' => null,
               'operator' => null,
               'separator' => 0,
@@ -379,7 +389,7 @@ function booking_civicrm_navigationMenu( &$params ) {
             'attributes' => array(
               'label' => ts('Booking Component Settings'),
               'name' => 'booking_component_settings',
-              'url' =>'civicrm/admin/setting/preferences/booking?reset=1',
+              'url' => CRM_Utils_system::url('civicrm/admin/setting/preferences/booking', "reset=1", TRUE),
               'permission' => null,
               'operator' => null,
               'separator' => 0,
@@ -394,12 +404,12 @@ function booking_civicrm_navigationMenu( &$params ) {
    }
 
    $maxKey = ( max( array_keys($params) ) );
-   
+
    $findBooking =  array(
         'attributes' => array(
           'label' => ts('Find Bookings'),
           'name' => 'find_booking',
-          'url' => 'civicrm/booking/search&reset=1',
+          'url' => CRM_Utils_system::url('civicrm/booking/search', "reset=1", TRUE),
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -427,7 +437,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => ts('New Booking'),
           'name' => 'new_booking',
-          'url' => 'civicrm/booking/add&reset=1',
+          'url' => CRM_Utils_system::url('civicrm/booking/add', "reset=1", TRUE),
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -442,7 +452,7 @@ function booking_civicrm_navigationMenu( &$params ) {
         'attributes' => array(
           'label' => ts('Day View'),
           'name' => 'day_view',
-          'url' => 'civicrm/booking/day-view&reset=1',
+          'url' => CRM_Utils_system::url('civicrm/booking/day-view', "reset=1", TRUE),
           'permission' => null,
           'operator' => null,
           'separator' => 0,
@@ -459,9 +469,9 @@ function booking_civicrm_navigationMenu( &$params ) {
 
 function _getMenuKeyMax($menuArray) {
   $max = array(max(array_keys($menuArray)));
-  foreach($menuArray as $v) { 
+  foreach($menuArray as $v) {
     if (!empty($v['child'])) {
-      $max[] = _getMenuKeyMax($v['child']); 
+      $max[] = _getMenuKeyMax($v['child']);
     }
   }
   return max($max);
