@@ -52,8 +52,8 @@
     <name>unlimited_resource_time_config</name>
     <type>boolean</type>
     <required>true</required>
-    <default>0</default>
-    <comment>Only allow unlimited resources to be booked during the time booking of the parent limited resource</comment>
+    <default>1</default>
+    <comment>Only allow unlimited resources to be booked within time span of the parent limited resource booking</comment>
   </field>
 
   <field>

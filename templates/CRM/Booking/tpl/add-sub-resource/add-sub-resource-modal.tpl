@@ -1,4 +1,5 @@
 <script id="add-sub-resource-template" type="text/template">
+{if $unlimited_resource_count}
 <div id="loading" class="crm-loading-element">{ts}Loading ...{/ts}</div>
 <div id="content" class="hiddenElement">
 <form>
@@ -42,7 +43,7 @@
     </div>
     <div class="content">
       <input type="text"  name="required_date" id="required_date" size="10px" />
-      <input type="text"  name="required_time"   id="required_time" size="4px" />
+      <input type="text"  name="required_time"   id="required_time" size="6px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -74,6 +75,10 @@
   </div>
 </form>
 </div>
+{else}
+    {capture assign=ftUrl}{crmURL p='civicrm/admin/resource' q="reset=1&action=add"}{/capture}
+    {ts 1=$ftUrl}There are no unlimited resources defined. <a href='%1'>Click here</a> if you want to add new unlimited resource.{/ts}
+{/if}
 </script>
 
 

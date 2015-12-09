@@ -142,14 +142,26 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
       // form all action links
       $action = array_sum(array_keys($this->links()));
 
-      // update enable/disable links.
-      if ($dao->is_active) {
-        $action -= CRM_Core_Action::ENABLE;
+      //allow state changes only when there is enabled config set
+      $resourceSetDao = new CRM_Booking_DAO_ResourceConfigSet();
+      $resourceSetDao->id = $dao->set_id;
+      $resourceSetDao->is_deleted = FALSE;
+      $resourceSetDao->is_active = TRUE;
+      
+      if($resourceSetDao->count() == 1){
+        // update enable/disable links.
+        if ($dao->is_active) {
+          $action -= CRM_Core_Action::ENABLE;
+        }
+        else {
+          $action -= CRM_Core_Action::DISABLE;
+        }
       }
-      else {
+      else{
+        $action -= CRM_Core_Action::ENABLE;
         $action -= CRM_Core_Action::DISABLE;
       }
-
+      
       $resources[$dao->id]['action'] = CRM_Core_Action::formLink(self::links(), $action,
         array('id' => $dao->id)
       );

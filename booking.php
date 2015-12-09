@@ -27,6 +27,10 @@ function booking_civicrm_tabs(&$tabs, $cid) {
  * Implementation of hook_civicrm_config
  */
 function booking_civicrm_config(&$config) {
+  // enable use of number_format php function in smarty templates when 
+  // security on(on by default for emails)
+  $smarty = CRM_Core_Smarty::singleton();
+  $smarty->security_settings['MODIFIER_FUNCS'][] = "number_format";
   _booking_civix_civicrm_config($config);
 }
 
@@ -255,7 +259,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => ts('CiviBooking'),
           'name' => 'admin_booking',
           'url' => '',
-          'permission' => null,
+          'permission' => 'administer CiviBooking',
           'operator' => null,
           'separator' => 1,
           'parentID' => $administerMenuId,
@@ -333,7 +337,7 @@ function booking_civicrm_navigationMenu( &$params ) {
               ),
             'child' => null
           ),
-          $key++ => array(
+          /*$key++ => array(
             'attributes' => array(
               'label' => ts('Resource Criteria'),
               'name' => 'resource_criteria',
@@ -346,7 +350,7 @@ function booking_civicrm_navigationMenu( &$params ) {
               'active' => 1
             ),
             'child' => null
-          ),
+          ),*/
           $key++ => array(
             'attributes' => array(
               'label' => ts('Size Unit'),
@@ -356,7 +360,7 @@ function booking_civicrm_navigationMenu( &$params ) {
               'operator' => null,
               'separator' => 0,
               'parentID' => $nextAdminMenuKey,
-              'navID' => 6,
+              'navID' => 5,
               'active' => 1
             ),
             'child' => null
@@ -389,6 +393,20 @@ function booking_civicrm_navigationMenu( &$params ) {
             ),
             'child' => null
           ),
+          $key++ => array(
+            'attributes' => array(
+              'label' => ts('Resource Location'),
+              'name' => 'resource_location',
+              'url' => 'civicrm/admin/options?gid=' . $resourceLocationGId .'&reset=1',
+              'permission' => null,
+              'operator' => null,
+              'separator' => 0,
+              'parentID' => $nextAdminMenuKey,
+              'navID' => 8,
+              'active' => 1
+            ),
+            'child' => null
+          ),
         ),
       );
    }
@@ -400,7 +418,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => ts('Find Bookings'),
           'name' => 'find_booking',
           'url' => 'civicrm/booking/search?reset=1',
-          'permission' => null,
+          'permission' => 'administer CiviBooking,create and update bookings,view all bookings',
           'operator' => null,
           'separator' => 0,
           'parentID' => null,
@@ -415,7 +433,7 @@ function booking_civicrm_navigationMenu( &$params ) {
       'label' => ts('Booking'),
       'name' => 'booking',
       'url' => null,
-      'permission' => null,
+      'permission' => 'administer CiviBooking,create and update bookings,view all bookings',
       'operator' => null,
       'separator' => null,
       'parentID' => null,
@@ -428,7 +446,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => ts('New Booking'),
           'name' => 'new_booking',
           'url' => 'civicrm/booking/add?reset=1',
-          'permission' => null,
+          'permission' => 'administer CiviBooking,create and update bookings',
           'operator' => null,
           'separator' => 0,
           'parentID' => null,
@@ -443,7 +461,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => ts('Day View'),
           'name' => 'day_view',
           'url' => 'civicrm/booking/day-view?reset=1',
-          'permission' => null,
+          'permission' => 'administer CiviBooking,create and update bookings,view all bookings',
           'operator' => null,
           'separator' => 0,
           'parentID' => null,
@@ -465,4 +483,68 @@ function civibooking_getMenuKeyMax($menuArray) {
     }
   }
   return max($max);
+}
+
+function booking_civicrm_permission(&$permissions){
+  $prefix = ts('CiviBooking') . ': ';
+  $permissions['administer CiviBooking'] = $prefix . ts('administer CiviBooking');
+  $permissions['create and update bookings'] = $prefix . ts('create and update bookings');
+  $permissions['view all bookings'] = $prefix . ts('view all bookings');
+}
+
+/*
+ * Implements hook_civicrm_alterAPIPermissions
+ * @see function _civicrm_api3_permissions for mentioned uppercase issue
+ */
+function booking_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
+  $commonBookingAPIPermissions = array(
+    'create' => array(
+      'administer CiviBooking',
+    ),
+    'delete' => array(
+      'administer CiviBooking',
+    ),
+    'get' => array(
+      array(
+        'administer CiviBooking',
+        'create and update bookings',
+        'view all bookings',
+      )
+    ),
+    'update' => array(
+      'administer CiviBooking',
+    ),
+  );
+  
+  $bookingEntities = array(      
+    'BookingPayment',
+    'Booking',
+    'Cancellation',      
+    'Slot',
+    'SubSlot'
+    );
+  
+  $configEntities = array(
+    'AdhocChargesItem',
+    'AdhocCharges',      
+    'ResourceConfigOption',
+    'ResourceConfigSet',
+    'Resource',
+    );
+  
+  // set common permissions
+  foreach (array_merge($bookingEntities, $configEntities) as $entityName) {
+    // permissions implementation needs lowercase entities
+    $permissions[_civicrm_api_get_entity_name_from_camel($entityName)] = $commonBookingAPIPermissions;
+  }
+  
+  //add custom permissions for create/update role
+  foreach ($bookingEntities as $entityName) {
+    $permissionArray = array(array('administer CiviBooking', 'create and update bookings'));
+    // permissions implementation needs lowercase entities
+    $entityName = _civicrm_api_get_entity_name_from_camel($entityName);
+    $permissions[$entityName]['create'] = $permissionArray;
+    $permissions[$entityName]['update'] = $permissionArray;
+  }
+  
 }

@@ -1,86 +1,75 @@
 <?xml version="1.0"?>
 <menu>
+  <!-- by access_arguments -> joining with ',' = AND, ';' = OR -->
   <item>
     <path>civicrm/booking/add</path>
     <page_callback>CRM_Booking_Controller_Booking</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking;create and update bookings</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/edit</path>
     <page_callback>CRM_Booking_Controller_Booking</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking;create and update bookings</access_arguments>
   </item>
   <item>
     <path>civicrm/contact/view/booking</path>
     <page_callback>CRM_Booking_Page_Tab</page_callback>
     <title>Tab</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/booking/dashboard</path>
-    <page_callback>CRM_Booking_Page_Dashboard</page_callback>
-    <title>Booking Dashboard</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking;create and update bookings;view all bookings</access_arguments>
   </item>
   <item>
     <path>civicrm/admin/resource</path>
     <page_callback>CRM_Admin_Page_Resource</page_callback>
     <title>Resources</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking</access_arguments>
   </item>
     <item>
     <path>civicrm/admin/resource/config_set</path>
     <page_callback>CRM_Admin_Page_ResourceConfigSet</page_callback>
     <title>Configuration Sets</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking</access_arguments>
   </item>
     <item>
     <path>civicrm/admin/resource/config_set/config_option</path>
     <page_callback>CRM_Admin_Page_ResourceConfigOption</page_callback>
     <title>Configuration Options</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/booking/diary</path>
-    <page_callback>CRM_Booking_Page_Diary</page_callback>
-    <title>Diary</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/search</path>
     <title>Find Booking</title>
     <page_callback>CRM_Booking_Controller_Search</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking;create and update bookings;view all bookings</access_arguments>
     <page_type>1</page_type>
     <weight>510</weight>
   </item>
   <item>
     <path>civicrm/booking/ajax/slots</path>
     <page_callback>CRM_Booking_Page_AJAX::getSlots</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking;create and update bookings;view all bookings</access_arguments>
   </item>
   <item>
     <path>civicrm/admin/setting/preferences/booking</path>
     <page_callback>CRM_Admin_Form_Preferences_Booking</page_callback>
     <title>Booking Component Settings</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking</access_arguments>
   </item>
   <item>
     <path>civicrm/admin/adhoc_charges_item</path>
     <page_callback>CRM_Admin_Page_AdhocChargesItem</page_callback>
     <title>Ad-hoc Charge Item</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/day-view</path>
     <page_callback>CRM_Booking_Form_DayView</page_callback>
     <title>DayView</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking;create and update bookings;view all bookings</access_arguments>
   </item>
   <item>
     <path>civicrm/booking/day-view/print</path>
     <page_callback>CRM_Booking_Page_Print_DayView</page_callback>
     <title>DayViewPrint</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviBooking;create and update bookings;view all bookings</access_arguments>
   </item>
 </menu>
