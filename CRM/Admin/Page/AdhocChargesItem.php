@@ -72,14 +72,12 @@ class CRM_Admin_Page_AdhocChargesItem extends CRM_Core_Page_Basic {
         ),
         CRM_Core_Action::DISABLE => array(
           'name' => ts('Disable'),
-          'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_AdhocChargesItem' . '\',\'' . 'enable-disable' . '\' );"',
-          'ref' => 'disable-action',
+          'ref' => 'crm-enable-disable',
           'title' => ts('Disable Additional Charges Item'),
         ),
         CRM_Core_Action::ENABLE => array(
           'name' => ts('Enable'),
-          'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_AdhocChargesItem' . '\',\'' . 'disable-enable' . '\' );"',
-          'ref' => 'enable-action',
+          'ref' => 'crm-enable-disable',
           'title' => ts('Enable Additional Charges Item'),
         ),
                 

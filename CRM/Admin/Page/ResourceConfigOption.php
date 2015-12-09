@@ -74,14 +74,12 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
         ),
         CRM_Core_Action::DISABLE => array(
           'name' => ts('Disable'),
-          'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_ResourceConfigOption' . '\',\'' . 'enable-disable' . '\' );"',
-          'ref' => 'disable-action',
+          'ref' => 'crm-enable-disable',
           'title' => ts('Disable Resource Configuration Option'),
         ),
         CRM_Core_Action::ENABLE => array(
           'name' => ts('Enable'),
-          'extra' => 'onclick = "enableDisable( %%id%%,\'' . 'CRM_Booking_BAO_ResourceConfigOption' . '\',\'' . 'disable-enable' . '\' );"',
-          'ref' => 'enable-action',
+          'ref' => 'crm-enable-disable',
           'title' => ts('Enable Resource Configuration Option'),
         ),
         CRM_Core_Action::DELETE => array(

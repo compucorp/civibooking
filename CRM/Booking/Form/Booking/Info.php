@@ -45,11 +45,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   function buildQuickForm() {
     parent::buildQuickForm();
 
-    $this->addElement('hidden', "primary_contact_select_id");
-    $this->add('text', "primary_contact_id", ts('Primary contact'), array(), TRUE );
+    $this->addEntityRef("primary_contact_id", ts('Primary contact'), array('create' => TRUE), TRUE );
 
-    $this->addElement('hidden', "secondary_contact_select_id");
-    $this->add('text', "secondary_contact_id", ts('Secondary contact'));
+    $this->addEntityRef("secondary_contact_id", ts('Secondary contact'), array('create' => TRUE));
 
     $this->add('text', 'po_no', ts('Purchase order number'));
 
@@ -100,9 +98,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   static function formRule($params, $files, $context) {
     $errors = parent::rules($params, $files, $context);
     //make sure primary contact is selected
-    $contactId = CRM_Utils_Array::value('primary_contact_select_id', $params);
-    if(!$contactId){
-      $errors['primary_contact_select_id'] = ts('This field is required.');
+    $contactId = CRM_Utils_Array::value('primary_contact_id', $params);
+    if(!is_numeric($contactId)){
+      $errors['primary_contact_id'] = ts('This field is required.');
     }
     $selectResource = $context->controller->exportValues('SelectResource');
     $resources = json_decode($selectResource['resources'], true);
@@ -124,13 +122,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   function setDefaultValues() {
     $defaults = parent::setDefaultValues();
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
-      $defaults['primary_contact_select_id'] = CRM_Utils_Array::value('primary_contact_id', $this->_values);
-      $displayName = CRM_Contact_BAO_Contact::displayName(CRM_Utils_Array::value('primary_contact_id', $this->_values));
-      $defaults['primary_contact_id'] =  CRM_Utils_Array::value('primary_contact_id', $this->_values) . "::" . $displayName;
+      $defaults['primary_contact_id'] = CRM_Utils_Array::value('primary_contact_id', $this->_values);
 
-      $defaults['secondary_contact_select_id'] = CRM_Utils_Array::value('secondary_contact_id', $this->_values);
-      $displayName = CRM_Contact_BAO_Contact::displayName(CRM_Utils_Array::value('secondary_contact_id', $this->_values));
-      $defaults['secondary_contact_id'] =  CRM_Utils_Array::value('secondary_contact_id', $this->_values) . "::" . $displayName;
+      $defaults['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_id', $this->_values);
 
       $defaults['title'] = CRM_Utils_Array::value('title', $this->_values);
       $defaults['po_no'] = CRM_Utils_Array::value('po_no', $this->_values);
@@ -195,8 +189,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $booking['id'] = $this->_id;
     }
 
-    $booking['primary_contact_id'] = CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
-    $booking['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_select_id', $bookingInfo);
+    $booking['primary_contact_id'] = CRM_Utils_Array::value('primary_contact_id', $bookingInfo);
+    $booking['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_id', $bookingInfo);
     $booking['po_number'] = CRM_Utils_Array::value('po_no', $bookingInfo);
     $booking['status_id'] = CRM_Utils_Array::value('booking_status', $bookingInfo);
     $booking['title'] = CRM_Utils_Array::value('title', $bookingInfo);
@@ -373,7 +367,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       //End process
       parent::postProcess();
 
-      $cid = CRM_Utils_Array::value('primary_contact_select_id', $bookingInfo);
+      $cid = CRM_Utils_Array::value('primary_contact_id', $bookingInfo);
       // user context
       $url = CRM_Utils_System::url('civicrm/contact/view/booking',
          "reset=1&id=$bookingID&cid=$cid&action=view"
@@ -402,14 +396,13 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
       ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE)
-      ->addScriptFile('civicrm', 'packages/backbone/underscore.js', 110, 'html-header', FALSE)
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'packages/underscore.js', 110, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
 
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/app.js', 150, 'html-header')
-      //->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/entities.js', 160, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/view.js', 170, 'html-header');
 
     $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.booking') . '/templates/';

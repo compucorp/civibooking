@@ -30,7 +30,7 @@
 <div id="ltype">
         {strip}
         {* handle enable/disable actions*}
-        {include file="CRM/common/enableDisable.tpl"}
+        {include file="CRM/common/enableDisableApi.tpl"}
         <table class="selector">
         <tr class="columnheader">
             <th >{ts}Label{/ts}</th>
@@ -42,7 +42,7 @@
             <th ></th>
         </tr>
         {foreach from=$rows item=row}
-        <tr id="row_{$row.id}" class="crm-booking_resource {cycle values="odd-row,even-row"} {$row.class}{if NOT $row.is_active} disabled{/if}">
+        <tr id="resource_config_option-{$row.id}" class="crm-booking_resource crm-entity {cycle values="odd-row,even-row"} {$row.class}{if NOT $row.is_active} disabled{/if}">
             <td class="crm-booking-resource-name">{$row.label}</td>
             <td class="crm-booking-resource-description">{$row.price}</td>
             <td class="crm-booking-resource-type">{$row.max_size}</td>
