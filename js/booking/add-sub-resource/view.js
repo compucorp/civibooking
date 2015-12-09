@@ -98,7 +98,9 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         });
       //}
       this.model.attributes.sub_total = subtotal;
-      this.model.attributes.total_price = (subtotal + this.model.get("adhoc_charges").total) - this.model.get("discount_amount");
+      this.model.attributes.total_price = (subtotal 
+              + parseFloat(this.model.get("adhoc_charges").total)) 
+              - parseFloat(this.model.get("discount_amount"));
       this.model.attributes.discount_amount = this.model.get("discount_amount");
 
       unlimitedTimeConfig = timeConfig;
@@ -112,7 +114,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       try{
         this.$el.find("#ad-hoc-charge-summary").text(adhocText,toFixed(2));
       }catch(err){}
-      this.$el.find("#discount_amount_dummy").text(discountText);
+      this.$el.find("#discount_amount_dummy").val(discountText);
       this.$el.find("#total-price-summary").text(totalText.toFixed(2));
     },
     events: {
@@ -562,7 +564,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       subResourceModel.set('adhoc_charges', this.model.attributes);
       var currentTotal = subResourceModel.get('sub_total');
       var discountAmount = subResourceModel.get('discount_amount');
-      if(CRM.BookingApp.Utils.isPositiveInteger(discountAmount)){
+      if(CRM.BookingApp.Utils.isPositiveNumber(discountAmount)){
         var newTotal = (parseFloat(adhocChargesTotal) + parseFloat(currentTotal)) - parseFloat(discountAmount);
       }else{
         var newTotal = (parseFloat(adhocChargesTotal) + parseFloat(currentTotal)) - 0;
