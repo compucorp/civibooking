@@ -80,6 +80,36 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     $statusCheckbox = $this->add('advcheckbox', 'is_active', ts('Enabled?'));
     $this->add('advcheckbox', 'is_unlimited', ts('Is Unlimited?'));
 
+    /*
+      Civibooking 2.0
+    */
+    $statusPublic = $this->add('advcheckbox', 'is_public', ts('Public?'));
+    $statusApproval = $this->add('advcheckbox', 'approval_required', ts('Approval Required?'));
+
+    // Timeslots
+    $this->add('advcheckbox', 'monday', ts('Monday'));
+
+    $this->addDateTime('start_date', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('end_date', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+
+
+    $this->add('advcheckbox', 'tuesday', ts('Tuesday'));
+    $this->add('advcheckbox', 'wednesday', ts('Wednesday'));
+    $this->add('advcheckbox', 'thursday', ts('Thursday'));
+    $this->add('advcheckbox', 'friday', ts('Friday'));
+    $this->add('advcheckbox', 'saturday', ts('Saturday'));
+    $this->add('advcheckbox', 'sunday', ts('Sunday'));
+
+
+
+    $number = range(5,60,5);
+    $this->add('select', 'time_unit', ts('Minimum Time Units'),
+      array('' =>ts('- select -')) +$number,
+      True,
+      array()
+    );
+    $this->add('text', 'min_fee', ts('Minimum Fee'));
+
 
     $configSets =  array('' => ts('- select -'));
     try{
@@ -87,14 +117,14 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       foreach ($activeSets['values'] as $key => $set) {
         $configSets[$key] = $set['title'];
       }
-      
+
       $resource = civicrm_api3('Resource', 'getsingle', array(
         'sequential' => 1,
         'id' => $this->_id,
       ));
     }
-    catch (CiviCRM_API3_Exception $e) {}   
-    
+    catch (CiviCRM_API3_Exception $e) {}
+
     //allow state changes only when there is enabled config set
     if(!in_array($resource['set_id'], array_keys($activeSets['values']))){
       $statusCheckbox->setAttribute('disabled', 'disabled');

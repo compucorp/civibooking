@@ -69,6 +69,53 @@
     <tr class="crm-bookingResource-form-block-is_active">
         <td class="label">{$form.is_active.label}</td><td>{$form.is_active.html}</td>
     </tr>
+    <tr class="crm-bookingResource-form-block-is_public">
+        <td class="label">{$form.is_public.label}</td><td>{$form.is_public.html}</td>
+    </tr>
+    <tr class="crm-bookingResource-form-block-approval_required">
+        <td class="label">{$form.approval_required.label}</td><td>{$form.approval_required.html}</td>
+    </tr>
+  </table>
+    <div class="crm-tabset ui-tabs ui-widget ui-widget-content ui-corner-all">
+
+  <table class="form-layout-compressed">
+    <tr class="crm-bookingResource-form-block-monday">
+        <td class="label">{$form.monday.label}</td>
+        <td>
+          {$form.monday.html}
+          {$form.start_date.label}
+          {include file="CRM/common/jcalendar.tpl" elementName=start_date}
+        </td>
+    </tr>
+    <tr class="crm-bookingResource-form-block-tuesday">
+        <td class="label">{$form.tuesday.label}</td><td>{$form.tuesday.html}</td>
+    </tr>
+    <tr class="crm-bookingResource-form-block-wednesday">
+        <td class="label">{$form.wednesday.label}</td><td>{$form.wednesday.html}</td>
+    </tr>
+    <tr class="crm-bookingResource-form-block-thursday">
+        <td class="label">{$form.thursday.label}</td><td>{$form.thursday.html}</td>
+    </tr>
+    <tr class="crm-bookingResource-form-block-friday">
+        <td class="label">{$form.friday.label}</td><td>{$form.friday.html}</td>
+    </tr>
+    <tr class="crm-bookingResource-form-block-saturday">
+        <td class="label">{$form.saturday.label}</td><td>{$form.saturday.html}</td>
+    </tr>
+    <tr class="crm-bookingResource-form-block-sunday">
+        <td class="label">{$form.sunday.label}</td><td>{$form.sunday.html}</td>
+    </tr>
+
+</table>
+</div>
+  <table class="form-layout-compressed">
+    <tr class="crm-bookingResource-form-block-time_unit">
+        <td class="label">{$form.time_unit.label}</td><td>{$form.time_unit.html} minutes</td>
+    </tr>
+    <tr class="crm-bookingResource-form-block-min_fee">
+        <td class="label">{$form.min_fee.label}</td><td>$ {$form.min_fee.html}</td>
+    </tr>
+
   </table>
  <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 {/if}
