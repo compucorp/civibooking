@@ -1,4 +1,4 @@
-CiviBooking is an extensions defining a resource booking application that runs on top of the CiviCRM platform.
+CiviBooking is an extension defining a resource booking application that runs on top of the CiviCRM platform.
 
 See also:
 
