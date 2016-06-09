@@ -91,7 +91,8 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
            r.weight,
            r.type_id,
            r.location_id,
-           r.is_unlimited
+           r.is_unlimited,
+           r.is_public
      FROM  civicrm_booking_resource r
      WHERE r.type_id = %1
      AND r.is_active = 1
@@ -110,6 +111,7 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
         'type_id' => $dao->type_id,
         'location_id' => $dao->location_id,
         'is_unlimited' => $dao->is_unlimited,
+        'is_public' => $dao->is_public,
       );
     }
     return $resources;

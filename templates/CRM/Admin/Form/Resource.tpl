@@ -76,38 +76,45 @@
         <td class="label">{$form.approval_required.label}</td><td>{$form.approval_required.html}</td>
     </tr>
   </table>
+
+  <fieldset style="display:block; margin-left: 35px">
+
+    <legend> Select Availability by Day </legend>
+
     <div class="crm-tabset ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <table class="form-layout-compressed">
+      <tr class="crm-bookingResource-form-block-monday">
+          <td class="label">{$form.monday.label}</td>
+          <td>
+            {$form.monday.html}
+            {$form.start_date.label}
+            {include file="CRM/utils/jcalendar.tpl" elementName=start_date}
+            to
+            {include file="CRM/utils/jcalendar.tpl" elementName=end_date}
+          </td>
+      </tr>
+      <tr class="crm-bookingResource-form-block-tuesday">
+          <td class="label">{$form.tuesday.label}</td><td>{$form.tuesday.html}</td>
+      </tr>
+      <tr class="crm-bookingResource-form-block-wednesday">
+          <td class="label">{$form.wednesday.label}</td><td>{$form.wednesday.html}</td>
+      </tr>
+      <tr class="crm-bookingResource-form-block-thursday">
+          <td class="label">{$form.thursday.label}</td><td>{$form.thursday.html}</td>
+      </tr>
+      <tr class="crm-bookingResource-form-block-friday">
+          <td class="label">{$form.friday.label}</td><td>{$form.friday.html}</td>
+      </tr>
+      <tr class="crm-bookingResource-form-block-saturday">
+          <td class="label">{$form.saturday.label}</td><td>{$form.saturday.html}</td>
+      </tr>
+      <tr class="crm-bookingResource-form-block-sunday">
+          <td class="label">{$form.sunday.label}</td><td>{$form.sunday.html}</td>
+      </tr>
 
-  <table class="form-layout-compressed">
-    <tr class="crm-bookingResource-form-block-monday">
-        <td class="label">{$form.monday.label}</td>
-        <td>
-          {$form.monday.html}
-          {$form.start_date.label}
-          {include file="CRM/common/jcalendar.tpl" elementName=start_date}
-        </td>
-    </tr>
-    <tr class="crm-bookingResource-form-block-tuesday">
-        <td class="label">{$form.tuesday.label}</td><td>{$form.tuesday.html}</td>
-    </tr>
-    <tr class="crm-bookingResource-form-block-wednesday">
-        <td class="label">{$form.wednesday.label}</td><td>{$form.wednesday.html}</td>
-    </tr>
-    <tr class="crm-bookingResource-form-block-thursday">
-        <td class="label">{$form.thursday.label}</td><td>{$form.thursday.html}</td>
-    </tr>
-    <tr class="crm-bookingResource-form-block-friday">
-        <td class="label">{$form.friday.label}</td><td>{$form.friday.html}</td>
-    </tr>
-    <tr class="crm-bookingResource-form-block-saturday">
-        <td class="label">{$form.saturday.label}</td><td>{$form.saturday.html}</td>
-    </tr>
-    <tr class="crm-bookingResource-form-block-sunday">
-        <td class="label">{$form.sunday.label}</td><td>{$form.sunday.html}</td>
-    </tr>
-
-</table>
-</div>
+  </table>
+  </div>
+</fieldset>
   <table class="form-layout-compressed">
     <tr class="crm-bookingResource-form-block-time_unit">
         <td class="label">{$form.time_unit.label}</td><td>{$form.time_unit.html} minutes</td>

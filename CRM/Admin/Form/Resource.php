@@ -82,8 +82,9 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
     /*
       Civibooking 2.0
+      TODO create elements of a class that jquery can convert to timepicker
     */
-    $statusPublic = $this->add('advcheckbox', 'is_public', ts('Public?'));
+    $this->add('advcheckbox', 'is_public', ts('Public?'));
     $statusApproval = $this->add('advcheckbox', 'approval_required', ts('Approval Required?'));
 
     // Timeslots
@@ -105,7 +106,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     $number = range(5,60,5);
     $this->add('select', 'time_unit', ts('Minimum Time Units'),
       array('' =>ts('- select -')) +$number,
-      True,
+      //True,
       array()
     );
     $this->add('text', 'min_fee', ts('Minimum Fee'));
@@ -130,7 +131,8 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       $statusCheckbox->setAttribute('disabled', 'disabled');
     }
 
-    $this->add('select', 'set_id', ts('Resource configuration set'), $configSets, TRUE);
+    // Uncomment True
+  $this->add('select', 'set_id', ts('Resource configuration set'), $configSets /*TRUE*/);
 
     $locations =  CRM_Booking_BAO_Resource::buildOptions('location_id', 'create');
     $this->add('select', 'location_id', ts('Resource Location'),

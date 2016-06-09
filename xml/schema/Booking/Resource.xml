@@ -123,4 +123,18 @@
     <add>4.4</add>
   </index>
 
+  <field>
+    <name>is_public</name>
+    <type>boolean</type>
+    <default>0</default>
+    <import>true</import>
+    <add>4.4</add>
+  </field>
+  <index>
+    <name>index_is_public</name>
+    <fieldName>is_public</fieldName>
+    <add>4.4</add>
+  </index>
+
+
 </table>
