@@ -92,7 +92,10 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
            r.type_id,
            r.location_id,
            r.is_unlimited,
-           r.is_public
+           r.is_public,
+           r.is_approval_required,
+           r.time_unit,
+           r.min_fee
      FROM  civicrm_booking_resource r
      WHERE r.type_id = %1
      AND r.is_active = 1
@@ -112,6 +115,9 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
         'location_id' => $dao->location_id,
         'is_unlimited' => $dao->is_unlimited,
         'is_public' => $dao->is_public,
+        'is_approval_required' => $dao->is_approval_required,
+        'time_unit' => $dao->time_unit,
+        'min_fee' => $dao->min_fee
       );
     }
     return $resources;

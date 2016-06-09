@@ -85,12 +85,10 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       TODO create elements of a class that jquery can convert to timepicker
     */
     $this->add('advcheckbox', 'is_public', ts('Public?'));
-    $statusApproval = $this->add('advcheckbox', 'approval_required', ts('Approval Required?'));
+    $this->add('advcheckbox', 'is_approval_required', ts('Approval Required?'));
 
     // Timeslots
-    $this->add('advcheckbox', 'monday', ts('Monday'));
-
-    $this->addDateTime('start_date', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('start_date', ts('Monday'), FALSE, array('formatType' => 'activityDateTime'));
     $this->addDateTime('end_date', ts(''), FALSE, array('formatType' => 'activityDateTime'));
 
 

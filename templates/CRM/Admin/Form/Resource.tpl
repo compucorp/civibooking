@@ -73,7 +73,7 @@
         <td class="label">{$form.is_public.label}</td><td>{$form.is_public.html}</td>
     </tr>
     <tr class="crm-bookingResource-form-block-approval_required">
-        <td class="label">{$form.approval_required.label}</td><td>{$form.approval_required.html}</td>
+        <td class="label">{$form.is_approval_required.label}</td><td>{$form.is_approval_required.html}</td>
     </tr>
   </table>
 

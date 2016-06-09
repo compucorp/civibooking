@@ -206,7 +206,10 @@ CREATE TABLE `civicrm_booking_resource` (
      `is_unlimited` tinyint NOT NULL  DEFAULT 0 ,
      `is_active` tinyint   DEFAULT 1 ,
      `is_deleted` tinyint   DEFAULT 0 ,
-     `is_public` tinyint   DEFAULT 0
+     `is_public` tinyint   DEFAULT 0 ,
+     `is_approval_required` tinyint   DEFAULT 0 ,
+     `time_unit` int NOT NULL ,
+     `min_fee` int NOT NULL
 ,
     PRIMARY KEY ( `id` )
 

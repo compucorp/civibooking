@@ -125,12 +125,22 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
    *
    * @var int
    */
+  public $time_unit;
+  /**
+   *
+   * @var int
+   */
   public $weight;
   /**
    *
    * @var boolean
    */
   public $is_unlimited;
+  /**
+   *
+   * @var int
+   */
+  public $min_fee;
   /**
    *
    * @var boolean
@@ -245,6 +255,23 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
           'type' => CRM_Utils_Type::T_BOOLEAN,
           'required' => true,
         ) ,
+        'is_approval_required' => array(
+          'name' => 'is_approval_required',
+          'type' => CRM_Utils_Type::T_BOOLEAN,
+          'required' => true,
+        ) ,
+        'time_unit' => array(
+          'name' => 'time_unit',
+          'type' => CRM_Utils_Type::T_INT,
+          'title' => ts('Minimum Time Units') ,
+          'required' => true,
+        ) ,
+        'min_fee' => array(
+          'name' => 'min_fee',
+          'type' => CRM_Utils_Type::T_INT,
+          'title' => ts('Minimum Fee') ,
+          'required' => true,
+        ) ,
         'is_active' => array(
           'name' => 'is_active',
           'type' => CRM_Utils_Type::T_BOOLEAN,
@@ -290,6 +317,9 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'weight' => 'weight',
         'is_unlimited' => 'is_unlimited',
         'is_public' => 'is_public',
+        'is_approval_required' => 'is_approval_required',
+        'time_unit' => 'time_unit',
+        'min_fee' => 'min_fee',
         'is_active' => 'is_active',
         'is_deleted' => 'is_deleted',
       );

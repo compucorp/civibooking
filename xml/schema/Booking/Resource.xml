@@ -136,5 +136,29 @@
     <add>4.4</add>
   </index>
 
+  <field>
+    <name>is_approval_required</name>
+    <type>boolean</type>
+    <default>0</default>
+    <import>true</import>
+    <add>4.4</add>
+  </field>
+  <index>
+    <name>index_is_approval_required</name>
+    <fieldName>is_approval_required</fieldName>
+    <add>4.4</add>
+  </index>
+
+  <field>
+  <name>time_unit</name>
+    <type>int</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>weight</name>
+    <type>int</type>
+    <required>true</required>
+  </field>
 
 </table>
