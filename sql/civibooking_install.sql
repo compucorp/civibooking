@@ -209,7 +209,9 @@ CREATE TABLE `civicrm_booking_resource` (
      `is_public` tinyint   DEFAULT 0 ,
      `is_approval_required` tinyint   DEFAULT 0 ,
      `time_unit` int NOT NULL ,
-     `min_fee` int NOT NULL
+     `min_fee` int NOT NULL ,
+     `mon_start_time` varchar(512) ,
+     `mon_end_time` varchar(512) 
 ,
     PRIMARY KEY ( `id` )
 

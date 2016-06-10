@@ -84,13 +84,15 @@
     <div class="crm-tabset ui-tabs ui-widget ui-widget-content ui-corner-all">
     <table class="form-layout-compressed">
       <tr class="crm-bookingResource-form-block-monday">
-          <td class="label">{$form.monday.label}</td>
+          <td class="label">{$form.mon_start.label}</td>
           <td>
-            {$form.monday.html}
-            {$form.start_date.label}
-            {include file="CRM/utils/jcalendar.tpl" elementName=start_date}
+            {$form.mon_start.html}
+            {$form.mon_start.label}
+            {include file="CRM/utils/jcalendar.tpl" elementName=mon_start}
             to
-            {include file="CRM/utils/jcalendar.tpl" elementName=end_date}
+            {$form.mon_end.html}
+            {$form.mon_end.label}
+            {include file="CRM/utils/jcalendar.tpl" elementName=mon_end}
           </td>
       </tr>
       <tr class="crm-bookingResource-form-block-tuesday">

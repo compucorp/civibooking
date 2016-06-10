@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Booking</base>
+  <class>SubSlot</class>
+  <name>civicrm_booking_sub_slot</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment></comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>slot_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Slot ID</comment>
+  </field>
+  <foreignKey>
+    <name>slot_id</name>
+    <table>civicrm_booking_slot</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>resource_id</name>
+    <type>int unsigned</type>
+    <comment>FK to resource ID</comment>
+  </field>
+  <foreignKey>
+    <name>resource_id</name>
+    <table>civicrm_booking_resource</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>config_id</name>
+    <type>int unsigned</type>
+    <comment>FK to resource configuration option ID</comment>
+  </field>
+  <foreignKey>
+    <name>config_id</name>
+    <table>civicrm_booking_resource_config_option</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>time_required</name>
+    <type>datetime</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>quantity</name>
+    <type>int</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>note</name>
+    <type>text</type>
+  </field>
+
+   <field>
+       <name>is_cancelled</name>
+       <title>SubSlot is cancelled</title>
+       <type>boolean</type>
+       <default>0</default>
+       <import>true</import>
+       <add>4.4</add>
+  </field>
+  <index>
+       <name>index_is_cancelled</name>
+       <fieldName>is_cancelled</fieldName>
+       <add>4.4</add>
+  </index>
+
+  <field>
+       <name>is_deleted</name>
+       <title>SubSlot is in the Trash</title>
+       <type>boolean</type>
+       <default>0</default>
+       <import>true</import>
+       <add>4.4</add>
+  </field>
+  <index>
+       <name>index_is_deleted</name>
+       <fieldName>is_deleted</fieldName>
+       <add>4.4</add>
+  </index>
+
+
+</table>

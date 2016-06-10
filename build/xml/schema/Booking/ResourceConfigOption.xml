@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Booking</base>
+  <class>ResourceConfigOption</class>
+  <name>civicrm_booking_resource_config_option</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <title>ID</title>
+    <required>true</required>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+   <field>
+    <name>set_id</name>
+    <type>int unsigned</type>
+    <title>Set ID</title>
+    <required>true</required>
+    <comment>Foreign key to the resource set for this option.</comment>
+    <!-- <add>2.0</add> -->
+   </field>
+   <foreignKey>
+    <name>set_id</name>
+    <table>civicrm_booking_resource_config_set</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>label</name>
+    <type>varchar</type>
+    <length>255</length>
+    <comment></comment>
+    <title>Label</title>
+    <!-- <export>true</export>-->
+    <required>true</required>
+  </field>
+  <!--
+  <field>
+    <name>value</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+  -->
+   <field>
+    <name>price</name>
+    <type>decimal</type>
+    <required>true</required>
+  </field>
+
+	<field>
+    <name>max_size</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>unit_id</name>
+    <title>Unit ID</title>
+    <type>varchar</type>
+    <length>512</length>
+    <comment>The unit associated with this config option. Implicit FK to option_value row in booking_size_unit option_group.</comment>
+    <add>4.4</add>
+    <pseudoconstant>
+      <optionGroupName>booking_size_unit</optionGroupName>
+    </pseudoconstant>
+  </field>
+
+   <field>
+    <name>weight</name>
+    <type>int unsigned</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>is_active</name>
+    <title>Slot is cancelled</title>
+    <type>boolean</type>
+    <default>1</default>
+    <import>true</import>
+    <add>4.4</add>
+  </field>
+  <index>
+    <name>index_is_active</name>
+    <fieldName>is_active</fieldName>
+    <add>4.4</add>
+  </index>
+
+  <field>
+    <name>is_deleted</name>
+    <title>Slot is in the Trash</title>
+    <type>boolean</type>
+    <default>0</default>
+    <import>true</import>
+    <add>4.4</add>
+  </field>
+  <index>
+    <name>index_is_deleted</name>
+    <fieldName>is_deleted</fieldName>
+    <add>4.4</add>
+  </index>
+
+</table>

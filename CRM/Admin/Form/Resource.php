@@ -88,8 +88,9 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     $this->add('advcheckbox', 'is_approval_required', ts('Approval Required?'));
 
     // Timeslots
-    $this->addDateTime('start_date', ts('Monday'), FALSE, array('formatType' => 'activityDateTime'));
-    $this->addDateTime('end_date', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+    // monday->addDate
+    $this->addDateTime('mon_start', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('mon_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
 
 
     $this->add('advcheckbox', 'tuesday', ts('Tuesday'));
@@ -199,6 +200,8 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
   public function postProcess() {
     CRM_Utils_System::flushCache();
     $params = $this->exportValues();
+    // var_dump(«$params);
+    // die();»
     if ($this->_action & CRM_Core_Action::DELETE) {
 
       CRM_Booking_BAO_Slot::delByResource($this->_id);

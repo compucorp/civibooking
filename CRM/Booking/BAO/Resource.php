@@ -95,7 +95,9 @@ class CRM_Booking_BAO_Resource extends CRM_Booking_DAO_Resource {
            r.is_public,
            r.is_approval_required,
            r.time_unit,
-           r.min_fee
+           r.min_fee,
+           r.mon_start_time,
+           r.mon_end_time
      FROM  civicrm_booking_resource r
      WHERE r.type_id = %1
      AND r.is_active = 1

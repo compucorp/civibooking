@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Booking</base>
+  <class>Payment</class>
+  <name>civicrm_booking_payment</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <title>ID</title>
+    <required>true</required>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+   <field>
+    <name>booking_id</name>
+    <type>int unsigned</type>
+    <title>Booking ID</title>
+    <required>true</required>
+    <comment>Foreign key to the booking id for this payment.</comment>
+    <add>2.0</add>
+   </field>
+   <foreignKey>
+    <name>booking_id</name>
+    <table>civicrm_booking</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+   <field>
+    <name>contribution_id</name>
+    <title>Contribution ID</title>
+    <import>true</import>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Foreign key to the contribution for this payment.</comment>
+   </field>
+   <foreignKey>
+    <name>contribution_id</name>
+    <table>civicrm_contribution</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+</table>
