@@ -82,25 +82,31 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
     /*
       Civibooking 2.0
-      TODO create elements of a class that jquery can convert to timepicker
     */
     $this->add('advcheckbox', 'is_public', ts('Public?'));
     $this->add('advcheckbox', 'is_approval_required', ts('Approval Required?'));
 
     // Timeslots
-    // monday->addDate
-    $this->addDateTime('mon_start', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('mon_start', ts('Monday'), FALSE, array('formatType' => 'activityDateTime'));
     $this->addDateTime('mon_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
 
+    $this->addDateTime('tue_start', ts('Tuesday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('tue_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
 
-    $this->add('advcheckbox', 'tuesday', ts('Tuesday'));
-    $this->add('advcheckbox', 'wednesday', ts('Wednesday'));
-    $this->add('advcheckbox', 'thursday', ts('Thursday'));
-    $this->add('advcheckbox', 'friday', ts('Friday'));
-    $this->add('advcheckbox', 'saturday', ts('Saturday'));
-    $this->add('advcheckbox', 'sunday', ts('Sunday'));
+    $this->addDateTime('wed_start', ts('Wednesday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('wed_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
 
+    $this->addDateTime('thu_start', ts('Thursday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('thu_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
 
+    $this->addDateTime('fri_start', ts('Friday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('fri_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+
+    $this->addDateTime('sat_start', ts('Saturday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('sat_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+
+    $this->addDateTime('sun_start', ts('Sunday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('sun_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
 
     $number = range(5,60,5);
     $this->add('select', 'time_unit', ts('Minimum Time Units'),
@@ -199,9 +205,40 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
    */
   public function postProcess() {
     CRM_Utils_System::flushCache();
+
     $params = $this->exportValues();
-    // var_dump(«$params);
-    // die();»
+
+    // Filter out timeslots and put them in a single array
+    $times = array();
+    foreach($params as $x => $x_value) {
+        if ($x == "mon_start_time" or
+            $x == "mon_end_time" or
+            $x == "tue_start_time" or
+            $x == "tue_end_time" or
+            $x == "wed_start_time" or
+            $x == "wed_end_time" or
+            $x == "thu_start_time" or
+            $x == "thu_end_time" or
+            $x == "fri_start_time" or
+            $x == "fri_end_time" or
+            $x == "sat_start_time" or
+            $x == "sat_end_time" or
+            $x == "sun_start_time" or
+            $x == "sun_end_time"
+            ){
+              // echo "Key=" . $x . ", Value=" . $x_value;
+              // echo "<br>";
+              array_push($times, $x, $x_value);
+            }
+    }
+
+    // Serialize the array
+    $times_seralized = serialize($times);
+    $params['times_seralized']=$times_seralized;
+
+    // var_dump($params);
+    // die();
+
     if ($this->_action & CRM_Core_Action::DELETE) {
 
       CRM_Booking_BAO_Slot::delByResource($this->_id);

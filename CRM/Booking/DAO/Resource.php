@@ -164,6 +164,11 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
    */
   public $mon_end_time;
   /**
+   *
+   * @var string
+   */
+  public $times_seralized;
+  /**
    * class constructor
    *
    * @return civicrm_booking_resource
@@ -310,23 +315,10 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
           'maxlength' => 512,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
-        'test' => array(
-          'name' => 'test',
-          'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Test') ,
-          'required' => true,
-        ) ,
-        'mon_start_time' => array(
-          'name' => 'mon_start_time',
+        'times_seralized' => array(
+          'name' => 'times_seralized',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Mon Start Time') ,
-          'required' => true,
-          'maxlength' => 512,
-        ) ,
-        'mon_end_time' => array(
-          'name' => 'mon_end_time',
-          'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Mon Start Time') ,
+          'title' => ts('Times Serialized') ,
           'required' => true,
           'maxlength' => 512,
         ) ,
@@ -359,6 +351,7 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'time_unit' => 'time_unit',
         'time_slot' => 'time_slot',
         'test' => 'test',
+        'times_seralized' => 'times_seralized',
       );
     }
     return self::$_fieldKeys;

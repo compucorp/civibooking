@@ -162,8 +162,8 @@
   </field>
 
   <field>
-    <name>time_slot</name>
-    <title>Time Slot</title>
+    <name>times_seralized</name>
+    <title>Time Serialized</title>
     <type>varchar</type>
     <length>512</length>
   </field>

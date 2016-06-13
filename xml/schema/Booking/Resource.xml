@@ -162,21 +162,8 @@
   </field>
 
   <field>
-    <name>test</name>
-    <type>int</type>
-    <required>true</required>
-  </field>
-
-  <field>
-    <name>mon_start_time</name>
-    <title>Time Slot</title>
-    <type>varchar</type>
-    <length>512</length>
-  </field>
-
-  <field>
-    <name>mon_end_time</name>
-    <title>Time Slot</title>
+    <name>times_seralized</name>
+    <title>Times Serialized</title>
     <type>varchar</type>
     <length>512</length>
   </field>

@@ -87,7 +87,6 @@
           <td class="label">{$form.mon_start.label}</td>
           <td>
             {$form.mon_start.html}
-            {$form.mon_start.label}
             {include file="CRM/utils/jcalendar.tpl" elementName=mon_start}
             to
             {$form.mon_end.html}
@@ -95,25 +94,72 @@
             {include file="CRM/utils/jcalendar.tpl" elementName=mon_end}
           </td>
       </tr>
+
       <tr class="crm-bookingResource-form-block-tuesday">
-          <td class="label">{$form.tuesday.label}</td><td>{$form.tuesday.html}</td>
-      </tr>
-      <tr class="crm-bookingResource-form-block-wednesday">
-          <td class="label">{$form.wednesday.label}</td><td>{$form.wednesday.html}</td>
-      </tr>
-      <tr class="crm-bookingResource-form-block-thursday">
-          <td class="label">{$form.thursday.label}</td><td>{$form.thursday.html}</td>
-      </tr>
-      <tr class="crm-bookingResource-form-block-friday">
-          <td class="label">{$form.friday.label}</td><td>{$form.friday.html}</td>
-      </tr>
-      <tr class="crm-bookingResource-form-block-saturday">
-          <td class="label">{$form.saturday.label}</td><td>{$form.saturday.html}</td>
-      </tr>
-      <tr class="crm-bookingResource-form-block-sunday">
-          <td class="label">{$form.sunday.label}</td><td>{$form.sunday.html}</td>
+        <td class="label">{$form.tue_start.label}</td>
+        <td>
+          {$form.tue_start.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=tue_start}
+          to
+          {$form.tue_end.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=tue_end}
+        </td>
       </tr>
 
+      <tr class="crm-bookingResource-form-block-wednesday">
+        <td class="label">{$form.wed_start.label}</td>
+        <td>
+          {$form.wed_start.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=wed_start}
+          to
+          {$form.wed_end.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=wed_end}
+        </td>
+      </tr>
+
+      <tr class="crm-bookingResource-form-block-frirsday">
+        <td class="label">{$form.thu_start.label}</td>
+        <td>
+          {$form.thu_start.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=thu_start}
+          to
+          {$form.thu_end.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=thu_end}
+        </td>
+      </tr>
+
+      <tr class="crm-bookingResource-form-block-friday">
+        <td class="label">{$form.fri_start.label}</td>
+        <td>
+          {$form.fri_start.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=fri_start}
+          to
+          {$form.fri_end.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=fri_end}
+        </td>
+      </tr>
+
+      <tr class="crm-bookingResource-form-block-saturday">
+        <td class="label">{$form.sat_start.label}</td>
+        <td>
+          {$form.sat_start.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=sat_start}
+          to
+          {$form.sat_end.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=sat_end}
+        </td>
+      </tr>
+
+      <tr class="crm-bookingResource-form-block-sunday">
+        <td class="label">{$form.sun_start.label}</td>
+        <td>
+          {$form.sun_start.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=sun_start}
+          to
+          {$form.sun_end.html}
+          {include file="CRM/utils/jcalendar.tpl" elementName=sun_end}
+        </td>
+      </tr>
   </table>
   </div>
 </fieldset>
@@ -122,7 +168,7 @@
         <td class="label">{$form.time_unit.label}</td><td>{$form.time_unit.html} minutes</td>
     </tr>
     <tr class="crm-bookingResource-form-block-min_fee">
-        <td class="label">{$form.min_fee.label}</td><td>$ {$form.min_fee.html}</td>
+        <td class="label">{$form.min_fee.label}</td><td>{$form.min_fee.html}</td>
     </tr>
 
   </table>
