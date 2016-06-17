@@ -106,7 +106,7 @@ cj(function($) {
     var slots=definedSlots;
     slots.forEach(function(slot) {
       if(slot!==null){
-        checkTimeClash(slot);
+        timeClash=checkTimeClash(slot);
       }
     });
     return timeClash;
@@ -445,6 +445,7 @@ cj(function($) {
             }else{
               timeClash=timeClash||true;
             }
+            return timeClash;
           }
   }
 
