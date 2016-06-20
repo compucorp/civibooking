@@ -105,12 +105,20 @@ cj(function ($) {
 
     //custom validator for checking time clash
     $.validator.addMethod("timeClash", function (value, element) {
-        var slots = definedSlots;
-        slots.forEach(function (slot) {
-            if (slot !== null) {
-                timeClash = checkTimeClash(slot);
+        var bookedSlots = scheduler.getEvents();
+        var slots = new Array();
+        bookedSlots.forEach(function (bookedSlot) {
+            if(bookedSlot.booking_id) {
+                slots.push(createItem(bookedSlot));
             }
         });
+        slots.concat(definedSlots);
+        for (var i = 0; i < slots.length; i++) {
+               timeClash = checkTimeClash(slots[i]);
+               if(timeClash == false) {
+                   break;
+               }
+        }
         return timeClash;
     }, ts("Time clashes with another slot item."));
 
