@@ -101,8 +101,8 @@ cj(function ($) {
         return val;
     }, ts("End date time must be after start date time"));
 
-    //custom validator for checking time clash
-    $.validator.addMethod("timeClash", function (value, element) {
+    //custom validator for checking end time clash
+    $.validator.addMethod("endTimeClash", function (value, element) {
         var bookedSlots = scheduler.getEvents();
         var slots = new Array();
         bookedSlots.forEach(function (bookedSlot) {
@@ -112,13 +112,32 @@ cj(function ($) {
         });
         slots.concat(definedSlots);
         for (var i = 0; i < slots.length; i++) {
-               timeClash = checkTimeClash(slots[i]);
+               timeClash = checkTimeClash(slots[i], false, true);
                if(timeClash == false) {
                    break;
                }
         }
         return timeClash;
-    }, ts("Time clashes with another slot item."));
+    }, ts("End Time clashes with another slot item."));
+
+    //custom validator for checking start time clash
+    $.validator.addMethod("startTimeClash", function (value, element) {
+        var bookedSlots = scheduler.getEvents();
+        var slots = new Array();
+        bookedSlots.forEach(function (bookedSlot) {
+            if(bookedSlot.booking_id) {
+                slots.push(createItem(bookedSlot));
+            }
+        });
+        slots.concat(definedSlots);
+        for (var i = 0; i < slots.length; i++) {
+               timeClash = checkTimeClash(slots[i], true, false);
+               if(timeClash == false) {
+                   break;
+               }
+        }
+        return timeClash;
+    }, ts("Start time clashes with another slot item."));
 
     //click at lightbox
     scheduler.showLightbox = function (id) {
@@ -168,8 +187,11 @@ cj(function ($) {
                                 },
                                 "end_date": {
                                     "greaterThan": true,
-                                    "timeClash": true
+                                    "endTimeClash": true
                                 },
+                                "start_date": {
+                                    "startTimeClash": true,
+                                }
                             }
                         });
                         currentSlot = getItemInBasket(id);
@@ -459,7 +481,7 @@ cj(function ($) {
     }
 
     //check if the time of different slots clashes
-    function checkTimeClash(slot) {
+    function checkTimeClash(slot, startDateCheck, endDateCheck) {
         var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
         if ((slot.id !== ev.id && slot.resource_id == currentResource)) {
             var startDateVals = $("#start_date").val().split("/");
@@ -474,13 +496,22 @@ cj(function ($) {
             //console.log(slot.start_date,'<=',startDate,'; ',startDate,'<',slot.end_date);
             var rightClash = (slot.start_date < endDate && endDate <= slot.end_date);
             var coverClash = (slot.start_date > startDate && slot.end_date < endDate);
-            if (leftClash || rightClash || coverClash) {
-                console.log('leftClash', leftClash, 'rightClash', rightClash, 'coverClash', coverClash);
-                timeClash = timeClash && false;
-            } else {
-                timeClash = timeClash || true;
+
+            if(startDateCheck == true) {
+                if(leftClash || coverClash) {
+                    console.log('leftClash', leftClash, 'rightClash', rightClash, 'coverClash', coverClash);
+                    timeClash = timeClash && false;
+                    return timeClash;
+                }
             }
-            return timeClash;
+
+            if(endDateCheck == true) {
+                if(rightClash || coverClash) {
+                    console.log('leftClash', leftClash, 'rightClash', rightClash, 'coverClash', coverClash);
+                    timeClash = timeClash && false;
+                    return timeClash;
+                }
+            }
         }
         return true;
     }
