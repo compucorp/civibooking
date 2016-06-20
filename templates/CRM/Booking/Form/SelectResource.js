@@ -103,12 +103,20 @@ cj(function ($) {
 
     //custom validator for checking time clash
     $.validator.addMethod("timeClash", function (value, element) {
-        var slots = definedSlots;
-        slots.forEach(function (slot) {
-            if (slot !== null) {
-                checkTimeClash(slot);
+        var bookedSlots = scheduler.getEvents();
+        var slots = new Array();
+        bookedSlots.forEach(function (bookedSlot) {
+            if(bookedSlot.booking_id) {
+                slots.push(createItem(bookedSlot));
             }
         });
+        slots.concat(definedSlots);
+        for (var i = 0; i < slots.length; i++) {
+               timeClash = checkTimeClash(slots[i]);
+               if(timeClash == false) {
+                   break;
+               }
+        }
         return timeClash;
     }, ts("Time clashes with another slot item."));
 
@@ -452,7 +460,8 @@ cj(function ($) {
 
     //check if the time of different slots clashes
     function checkTimeClash(slot) {
-        if ((slot !== currentSlot && slot.resource_id == currentResource)) {
+        var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
+        if ((slot.id !== ev.id && slot.resource_id == currentResource)) {
             var startDateVals = $("#start_date").val().split("/");
             var endDateVals = $("#end_date").val().split("/");
             var startTimeVals = $("#start_time").val().split(":");
@@ -471,7 +480,9 @@ cj(function ($) {
             } else {
                 timeClash = timeClash || true;
             }
+            return timeClash;
         }
+        return true;
     }
 
     //execute when page load
