@@ -27,7 +27,7 @@ function booking_civicrm_tabs(&$tabs, $cid) {
  * Implementation of hook_civicrm_config
  */
 function booking_civicrm_config(&$config) {
-  // enable use of number_format php function in smarty templates when 
+  // enable use of number_format php function in smarty templates when
   // security on(on by default for emails)
   $smarty = CRM_Core_Smarty::singleton();
   $smarty->security_settings['MODIFIER_FUNCS'][] = "number_format";
@@ -412,7 +412,7 @@ function booking_civicrm_navigationMenu( &$params ) {
    }
 
    $maxKey = ( max( array_keys($params) ) );
-   
+
    $findBooking =  array(
         'attributes' => array(
           'label' => ts('Find Bookings'),
@@ -446,7 +446,7 @@ function booking_civicrm_navigationMenu( &$params ) {
           'label' => ts('New Booking'),
           'name' => 'new_booking',
           'url' => 'civicrm/booking/add?reset=1',
-          'permission' => 'administer CiviBooking,create and update bookings',
+          // 'permission' => 'administer CiviBooking,create and update bookings',
           'operator' => null,
           'separator' => 0,
           'parentID' => null,
@@ -477,9 +477,9 @@ function booking_civicrm_navigationMenu( &$params ) {
 
 function civibooking_getMenuKeyMax($menuArray) {
   $max = array(max(array_keys($menuArray)));
-  foreach($menuArray as $v) { 
+  foreach($menuArray as $v) {
     if (!empty($v['child'])) {
-      $max[] = civibooking_getMenuKeyMax($v['child']); 
+      $max[] = civibooking_getMenuKeyMax($v['child']);
     }
   }
   return max($max);
@@ -515,29 +515,29 @@ function booking_civicrm_alterAPIPermissions($entity, $action, &$params, &$permi
       'administer CiviBooking',
     ),
   );
-  
-  $bookingEntities = array(      
+
+  $bookingEntities = array(
     'BookingPayment',
     'Booking',
-    'Cancellation',      
+    'Cancellation',
     'Slot',
     'SubSlot'
     );
-  
+
   $configEntities = array(
     'AdhocChargesItem',
-    'AdhocCharges',      
+    'AdhocCharges',
     'ResourceConfigOption',
     'ResourceConfigSet',
     'Resource',
     );
-  
+
   // set common permissions
   foreach (array_merge($bookingEntities, $configEntities) as $entityName) {
     // permissions implementation needs lowercase entities
     $permissions[_civicrm_api_get_entity_name_from_camel($entityName)] = $commonBookingAPIPermissions;
   }
-  
+
   //add custom permissions for create/update role
   foreach ($bookingEntities as $entityName) {
     $permissionArray = array(array('administer CiviBooking', 'create and update bookings'));
@@ -546,5 +546,5 @@ function booking_civicrm_alterAPIPermissions($entity, $action, &$params, &$permi
     $permissions[$entityName]['create'] = $permissionArray;
     $permissions[$entityName]['update'] = $permissionArray;
   }
-  
+
 }
