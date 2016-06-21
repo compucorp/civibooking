@@ -24,3 +24,5 @@ times_serialzed, varchar(512)
 
 For ease of processing, the data for the avaliability of a particular resource is serialized in to a single string that can fit into one field in the table.
 
+Using the bash script bin/setup.sh one is able generate tha changes necessary to both the BAO and DAO from new configurations in the schema.xml file. 
+
