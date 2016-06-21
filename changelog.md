@@ -11,3 +11,16 @@ The changes were made to the civibooking/templates/CRM/Admin/Form/Resource.tpl f
 The code is fairly straightforward and is well commented.
 
 ### Change 2: Link booking form to the back-end
+
+The follwing fields were added to the civicrm_booking_resource table:
+
+```
+is_public, tinyint(4)
+is_approval_required, tinyint(4)
+time_unit, int(11)
+min_fee, int(11)
+times_serialzed, varchar(512)
+```
+
+For ease of processing, the data for the avaliability of a particular resource is serialized in to a single string that can fit into one field in the table.
+
