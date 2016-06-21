@@ -98,7 +98,9 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
         });
       //}
       this.model.attributes.sub_total = subtotal;
-      this.model.attributes.total_price = (subtotal + this.model.get("adhoc_charges").total) - this.model.get("discount_amount");
+      this.model.attributes.total_price = (subtotal 
+              + parseFloat(this.model.get("adhoc_charges").total)) 
+              - parseFloat(this.model.get("discount_amount"));
       this.model.attributes.discount_amount = this.model.get("discount_amount");
 
       unlimitedTimeConfig = timeConfig;
@@ -112,7 +114,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       try{
         this.$el.find("#ad-hoc-charge-summary").text(adhocText,toFixed(2));
       }catch(err){}
-      this.$el.find("#discount_amount_dummy").text(discountText);
+      this.$el.find("#discount_amount_dummy").val(discountText);
       this.$el.find("#total-price-summary").text(totalText.toFixed(2));
     },
     events: {
@@ -386,8 +388,12 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
               sequential: 1,
               'api.resource_config_set.get': {
                 id: '$value.set_id',
+                is_active: 1,
+                is_deleted: 0,
                 'api.resource_config_option.get': {
                   set_id: '$value.id',
+                  is_active: 1,
+                  is_deleted: 0,
                   'api.option_group.get':{
                     name: 'booking_size_unit',
                   },
@@ -405,23 +411,45 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
           { context: self,
             success: function(data) {
             var resource =  data['values']['0'];
-            var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
-            self.model.set('resource', {id: resource.id, label: resource.label});
-            var params = {
-              context: self,
-              template: _.template($('#select-config-option-template').html()),
-              list: options,
-              element: "#configuration_select",
-              first_option: '- ' + ts('select configuration') + ' -'
+            var configSet = data['values']['0']['api.resource_config_set.get'];            
+            if(configSet.count !== 1){
+              var url = CRM.url('civicrm/admin/resource/config_set', {
+                reset: 1,
+                action: 'update',
+                id: resource.id
+              });
+              CRM.alert(ts(''), ts('Your resource configuration set is disabled.') 
+                      + ' ' + ' <a href="' + 
+                      url + '">' + ts('Click here to edit configuration set.') + '</a> ', 'error');
             }
-            CRM.BookingApp.vent.trigger("render:options", params);
-            //set configuration options for edit mode of subresource view
-            var configSelectedId = this.$el.find('#configuration_select').data('selected-id');  //retrieve data from data-selected-id attribute
-            if(configSelectedId != 'undefined'){
-              this.$el.find('#configuration_select').val(configSelectedId);
+            else if(configSet['values']['0']['api.resource_config_option.get'].count < 1){
+              var url = CRM.url('civicrm/admin/resource/config_set/config_option', {
+                reset: 1,
+                sid: configSet['values']['0'].id
+              });
+              CRM.alert(ts(''), ts('Your resource configuration options are all disabled or none have been created.') 
+                      + ' ' + ' <a href="' + 
+                      url + '">' + ts('Click here to edit or create options.') + '</a> ', 'error');
             }
-            this.$el.find('#config-loading').hide();
-            this.$el.find('#configuration_select').show();
+            else{
+              var options = data['values']['0']['api.resource_config_set.get']['values']['0']['api.resource_config_option.get']['values'];
+              self.model.set('resource', {id: resource.id, label: resource.label});
+              var params = {
+                context: self,
+                template: _.template($('#select-config-option-template').html()),
+                list: options,
+                element: "#configuration_select",
+                first_option: '- ' + ts('select configuration') + ' -'
+              }
+              CRM.BookingApp.vent.trigger("render:options", params);
+              //set configuration options for edit mode of subresource view
+              var configSelectedId = this.$el.find('#configuration_select').data('selected-id');  //retrieve data from data-selected-id attribute
+              if(configSelectedId != 'undefined'){
+                this.$el.find('#configuration_select').val(configSelectedId);
+              }
+              this.$el.find('#config-loading').hide();
+              this.$el.find('#configuration_select').show();
+            }
           }
         });
       }else{
@@ -562,7 +590,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
       subResourceModel.set('adhoc_charges', this.model.attributes);
       var currentTotal = subResourceModel.get('sub_total');
       var discountAmount = subResourceModel.get('discount_amount');
-      if(CRM.BookingApp.Utils.isPositiveInteger(discountAmount)){
+      if(CRM.BookingApp.Utils.isPositiveNumber(discountAmount)){
         var newTotal = (parseFloat(adhocChargesTotal) + parseFloat(currentTotal)) - parseFloat(discountAmount);
       }else{
         var newTotal = (parseFloat(adhocChargesTotal) + parseFloat(currentTotal)) - 0;

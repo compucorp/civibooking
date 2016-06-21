@@ -20,19 +20,11 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   }
 
 
-  function preProcess(){
+  function preProcess(){    
     $this->_id = $this->get('id');
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       parent::preProcess();
     }
-    $config = CRM_Core_Config::singleton();
-    $currencySymbols = "";
-    if(!empty($config->currencySymbols)){
-      $currencySymbols = $config->currencySymbols;
-    }else{
-      $currencySymbols = $config->defaultCurrencySymbol;
-    }
-    $this->assign('currencySymbols', $currencySymbols);
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');
       CRM_Utils_System::setTitle(ts('Edit Booking') . " - $title");
@@ -68,7 +60,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       array()
     );
 
-    $this->add('text', 'title', ts('Title'), array('size' => 80, 'maxlength' => 255), TRUE);
+    $this->add('text', 'title', ts('Title'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->addDate('event_start_date', ts('Date booking made'), TRUE, array('formatType' => 'activityDateTime'));
     $this->add('textarea', 'description', ts('Description'));
     $this->add('textarea', 'note', ts('Note'));
@@ -92,7 +84,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
     $this->addFormRule( array( 'CRM_Booking_Form_Booking_Info', 'formRule' ), $this );
 
-
+    $this->add('text', 'currencySymbol', ts('Currency'), array( 'disabled' => 'disabled' ));
   }
 
   static function formRule($params, $files, $context) {
@@ -120,6 +112,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
 
   function setDefaultValues() {
+    // prevent quickforms from filling total_amount with value submitted by 
+    // Back action - default value, which is filled correctly will be used instead
+    unset($this->_submitValues['total_amount']);
     $defaults = parent::setDefaultValues();
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $defaults['primary_contact_id'] = CRM_Utils_Array::value('primary_contact_id', $this->_values);
@@ -143,6 +138,14 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $defaults['total_amount'] = $addSubResourcePage['total_price']; //use the amount that passing from the form
     $amountToFloat = floatval($defaults['total_amount']);
     $defaults['total_amount'] = round( $amountToFloat, 2, PHP_ROUND_HALF_UP);
+    $config = CRM_Core_Config::singleton();
+    $currencySymbol = "";
+    if(!empty($config->currencySymbols)){
+      $currencySymbol = $config->currencySymbols;
+    }else{
+      $currencySymbol = $config->defaultCurrencySymbol;
+    }
+    $defaults['currencySymbol'] = $currencySymbol;
     return $defaults;
   }
 

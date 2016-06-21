@@ -61,7 +61,8 @@
   </div>
   <div class="crm-section">
     <div class="label">{$form.total_amount.label}</div>
-    <div class="content">{$currencySymbols}{$form.total_amount.html} <br/>
+    <div class="content">
+      {$form.currencySymbol.html|crmAddClass:two}&nbsp;{$form.total_amount.html|crmAddClass:eight}<br/>
       <span class="description"> {ts}Booking payment amount. A contribution record will be created for this amount.{/ts} </span>
     </div>
   </div>
@@ -78,6 +79,10 @@
   <div class="crm-section">
     <div class="label">{$form.payment_instrument_id.label}</div>
     <div class="content">{$form.payment_instrument_id.html}</div>
+  </div>
+  <div id="checkNumber" class="crm-section">
+    <div class="label">{$form.check_number.label}</div>
+    <div class="content">{$form.check_number.html}</div>
   </div>
   <div class="crm-section">
     <div class="label">{$form.trxn_id.label}</div>
@@ -133,4 +138,12 @@ cj(function($) {
 });
 </script>
 {/literal}
+{include file="CRM/common/showHideByFieldValue.tpl"
+trigger_field_id    ="payment_instrument_id"
+trigger_value       = '4'
+target_element_id   ="checkNumber"
+target_element_type ="block"
+field_type          ="select"
+invert              = 0
+}
 

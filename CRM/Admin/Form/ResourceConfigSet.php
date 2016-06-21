@@ -59,7 +59,17 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
 
     $this->add('text', 'title', ts('Title'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigSet', 'weight'), TRUE);
-    $this->add('checkbox', 'is_active', ts('Enabled?'));
+    $statusCheckbox = $this->add('checkbox', 'is_active', ts('Enabled?'));
+    
+    //allow state changes and delete only when there are no enabled resources
+    $resourceDao = new CRM_Booking_DAO_Resource();
+    $resourceDao->set_id = $this->_id;
+    $resourceDao->is_deleted = FALSE;
+    $resourceDao->is_active = TRUE;
+    
+    if($resourceDao->count() > 0){
+      $statusCheckbox->setAttribute('disabled', 'disabled');
+    }
 
 
     $this->addFormRule(array('CRM_Admin_Form_Resource', 'formRule'), $this);

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<tables xmlns:xi="http://www.w3.org/2001/XInclude">
+<xi:include href="AdhocCharges.xml"            parse="xml" />
+<xi:include href="AdhocChargesItem.xml"        parse="xml" />
+<xi:include href="Booking.xml"                 parse="xml" />
+<xi:include href="Booking.xml"                 parse="xml" />
+<xi:include href="BookingConfig.xml"           parse="xml" />s
+<xi:include href="Resource.xml"         	     parse="xml" />
+<xi:include href="Cancellation.xml"            parse="xml" />
+<xi:include href="Payment.xml"         		     parse="xml" />
+<xi:include href="ResourceConfigOption.xml"    parse="xml" />
+<xi:include href="ResourceConfigSet.xml"       parse="xml" />
+<xi:include href="ResourceCriteria.xml"        parse="xml" />
+<xi:include href="Slot.xml"         		       parse="xml" />
+<xi:include href="SubSlot.xml"                 parse="xml" />
+</tables>

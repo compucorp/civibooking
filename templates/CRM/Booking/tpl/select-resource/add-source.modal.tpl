@@ -7,7 +7,7 @@
     </div>
     <div class="content">
       <input type="text"  name="start_date"   class="crm-form-text"  id="start_date" size="10px" />
-      <input type="text"  name="start_time"   class="crm-form-text"  id="start_time" size="4px" />
+      <input type="text"  name="start_time"   class="crm-form-text"  id="start_time" size="6px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -18,7 +18,7 @@
     </div>
     <div class="content">
      <input type="text"  name="end_date"   class="crm-form-text"  id="end_date" size="10px" />
-     <input type="text"  name="end_time"   class="crm-form-text"  id="end_time" size="4px" />
+     <input type="text"  name="end_time"   class="crm-form-text"  id="end_time" size="6px" />
     </div>
     <div class="clear"></div>
   </div>
@@ -40,6 +40,7 @@
     </div>
     <div class="content">
       <input type="text" name="quantity" disabled="disabled" class="crm-booking-form-add-resource crm-form-text"/>
+      <span id="max-quantity"></span>
     </div>
     <div class="clear"></div>
 
