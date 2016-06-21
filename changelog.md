@@ -4,6 +4,10 @@ The goal of this document is to account for the changes made to the original civ
 
 Under the Administer > Civibooking > Manage Resources the new UI looks like the following:
 
+![alt text](changelogimage.png "New Resource Creation UI")
 
+The changes were made to the civibooking/templates/CRM/Admin/Form/Resource.tpl file and to the civibooking/CRM/Admin/Form/Resource.php file.
+
+The code is fairly straightforward and is well commented.
 
 ### Change 2: Link booking form to the back-end
