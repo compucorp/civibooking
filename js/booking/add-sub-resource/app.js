@@ -18,7 +18,7 @@ var ModalRegion = Backbone.Marionette.Region.extend({
       title: view.title,
       minWidth: '700',
       close: function() {
-        cj( this ).dialog( "destroy" );
+        cj( this ).dialog( "close" );
       }
     });
   },
