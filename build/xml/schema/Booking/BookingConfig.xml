@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<table>
+  <base>CRM/Booking</base>
+  <class>BookingConfig</class>
+  <name>civicrm_booking_config</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment></comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>false</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>domain_id</name>
+    <type>int unsigned</type>
+  </field>
+
+  <field>
+    <name>day_start_at</name>
+    <type>time</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>day_end_at</name>
+    <type>time</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>time_period</name>
+    <type>int</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>log_confirmation_email</name>
+    <type>boolean</type>
+    <required>true</required>
+    <default>0</default>
+    <comment>Create an activity record againt contact for conformation emails</comment>
+  </field>
+  
+  <field>
+    <name>unlimited_resource_time_config</name>
+    <type>boolean</type>
+    <required>true</required>
+    <default>1</default>
+    <comment>Only allow unlimited resources to be booked within time span of the parent limited resource booking</comment>
+  </field>
+
+  <field>
+    <name>cc_email_address</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>bcc_email_address</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>slot_new_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+
+  <field>
+    <name>slot_being_edited_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+
+  <field>
+    <name>slot_booked_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+
+  <field>
+    <name>slot_provisional_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+
+  <field>
+    <name>slot_unavailable_colour</name>
+    <type>varchar</type>
+    <length>10</length>
+  </field>
+</table>

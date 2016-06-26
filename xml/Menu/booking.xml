@@ -4,7 +4,15 @@
   <item>
     <path>civicrm/booking/add</path>
     <page_callback>CRM_Booking_Controller_Booking</page_callback>
-    <access_arguments>administer CiviBooking;create and update bookings</access_arguments>
+    <!-- <access_arguments>administer CiviBooking;create and update bookings</access_arguments> -->
+    <access_callback>1</access_callback>
+  </item>
+  <item>
+    <path>civicrm/booking/public</path>
+    <page_callback>CRM_Booking_Controller_BookingPublic</page_callback>
+    <!-- <access_arguments>administer CiviBooking;create and update bookings</access_arguments> -->
+    <access_callback>1</access_callback>
+    <is_public>true</is_public>
   </item>
   <item>
     <path>civicrm/booking/edit</path>

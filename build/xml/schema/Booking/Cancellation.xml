@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Booking</base>
+  <class>Cancellation</class>
+  <name>civicrm_booking_cancellation</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment></comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>booking_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Booking</comment>
+  </field>
+  <foreignKey>
+    <name>booking_id</name>
+    <table>civicrm_booking</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>cancellation_date</name>
+    <type>datetime</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>cancellation_fee</name>
+    <title>Cancellation charge</title>
+    <type>decimal</type>
+    <required>true</required>
+  </field>
+  <field>
+    <name>additional_fee</name>
+    <title>Additional charge</title>
+    <type>decimal</type>
+  </field>
+
+   <field>
+    <name>comment</name>
+    <title>Comment</title>
+    <type>text</type>
+  </field>
+
+
+</table>

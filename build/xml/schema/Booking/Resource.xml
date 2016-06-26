@@ -156,15 +156,16 @@
   </field>
 
   <field>
-    <name>weight</name>
+    <name>min_fee</name>
     <type>int</type>
     <required>true</required>
   </field>
 
   <field>
     <name>times_seralized</name>
-    <title>Times Serialized</title>
+    <title>Time Serialized</title>
     <type>varchar</type>
     <length>512</length>
   </field>
+
 </table>

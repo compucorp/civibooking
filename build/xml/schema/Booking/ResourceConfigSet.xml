@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Booking</base>
+  <class>ResourceConfigSet</class>
+  <name>civicrm_booking_resource_config_set</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <title>ID</title>
+    <required>true</required>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>title</name>
+    <type>varchar</type>
+    <length>255</length>
+    <comment></comment>
+    <title>Title</title>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>weight</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <required>true</required>
+   </field>
+
+  <field>
+    <name>is_active</name>
+    <title>Slot is cancelled</title>
+    <type>boolean</type>
+    <default>1</default>
+    <import>true</import>
+    <add>4.4</add>
+  </field>
+  <index>
+    <name>index_is_active</name>
+    <fieldName>is_active</fieldName>
+    <add>4.4</add>
+  </index>
+
+  <field>
+    <name>is_deleted</name>
+    <title>Slot is in the Trash</title>
+    <type>boolean</type>
+    <default>0</default>
+    <import>true</import>
+    <add>4.4</add>
+  </field>
+  <index>
+    <name>index_is_deleted</name>
+    <fieldName>is_deleted</fieldName>
+    <add>4.4</add>
+  </index>
+
+</table>

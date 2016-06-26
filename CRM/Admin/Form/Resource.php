@@ -80,6 +80,42 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
     $statusCheckbox = $this->add('advcheckbox', 'is_active', ts('Enabled?'));
     $this->add('advcheckbox', 'is_unlimited', ts('Is Unlimited?'));
 
+    /*
+      Civibooking 2.0
+    */
+    $this->add('advcheckbox', 'is_public', ts('Public?'));
+    $this->add('advcheckbox', 'is_approval_required', ts('Approval Required?'));
+
+    // Timeslots
+    $this->addDateTime('mon_start', ts('Monday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('mon_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+
+    $this->addDateTime('tue_start', ts('Tuesday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('tue_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+
+    $this->addDateTime('wed_start', ts('Wednesday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('wed_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+
+    $this->addDateTime('thu_start', ts('Thursday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('thu_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+
+    $this->addDateTime('fri_start', ts('Friday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('fri_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+
+    $this->addDateTime('sat_start', ts('Saturday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('sat_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+
+    $this->addDateTime('sun_start', ts('Sunday'), FALSE, array('formatType' => 'activityDateTime'));
+    $this->addDateTime('sun_end', ts(''), FALSE, array('formatType' => 'activityDateTime'));
+
+    $number = range(5,60,5);
+    $this->add('select', 'time_unit', ts('Minimum Time Units'),
+      array('' =>ts('- select -')) +$number,
+      //True,
+      array()
+    );
+    $this->add('text', 'min_fee', ts('Minimum Fee'));
+
 
     $configSets =  array('' => ts('- select -'));
     try{
@@ -87,20 +123,21 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       foreach ($activeSets['values'] as $key => $set) {
         $configSets[$key] = $set['title'];
       }
-      
+
       $resource = civicrm_api3('Resource', 'getsingle', array(
         'sequential' => 1,
         'id' => $this->_id,
       ));
     }
-    catch (CiviCRM_API3_Exception $e) {}   
-    
+    catch (CiviCRM_API3_Exception $e) {}
+
     //allow state changes only when there is enabled config set
     if(!in_array($resource['set_id'], array_keys($activeSets['values']))){
       $statusCheckbox->setAttribute('disabled', 'disabled');
     }
 
-    $this->add('select', 'set_id', ts('Resource configuration set'), $configSets, TRUE);
+    // Uncomment True
+  $this->add('select', 'set_id', ts('Resource configuration set'), $configSets /*TRUE*/);
 
     $locations =  CRM_Booking_BAO_Resource::buildOptions('location_id', 'create');
     $this->add('select', 'location_id', ts('Resource Location'),
@@ -168,7 +205,40 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
    */
   public function postProcess() {
     CRM_Utils_System::flushCache();
+
     $params = $this->exportValues();
+
+    // Filter out timeslots and put them in a single array
+    $times = array();
+    foreach($params as $x => $x_value) {
+        if ($x == "mon_start_time" or
+            $x == "mon_end_time" or
+            $x == "tue_start_time" or
+            $x == "tue_end_time" or
+            $x == "wed_start_time" or
+            $x == "wed_end_time" or
+            $x == "thu_start_time" or
+            $x == "thu_end_time" or
+            $x == "fri_start_time" or
+            $x == "fri_end_time" or
+            $x == "sat_start_time" or
+            $x == "sat_end_time" or
+            $x == "sun_start_time" or
+            $x == "sun_end_time"
+            ){
+              // echo "Key=" . $x . ", Value=" . $x_value;
+              // echo "<br>";
+              array_push($times, $x, $x_value);
+            }
+    }
+
+    // Serialize the array
+    $times_seralized = serialize($times);
+    $params['times_seralized']=$times_seralized;
+
+    // var_dump($params);
+    // die();
+
     if ($this->_action & CRM_Core_Action::DELETE) {
 
       CRM_Booking_BAO_Slot::delByResource($this->_id);

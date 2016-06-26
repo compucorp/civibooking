@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Booking</base>
+  <class>AdhocCharges</class>
+  <name>civicrm_booking_adhoc_charges</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment></comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>booking_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>FK to Booking ID</comment>
+  </field>
+  <foreignKey>
+    <name>booking_id</name>
+    <table>civicrm_booking</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>item_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>FK to Item ID</comment>
+  </field>
+  <foreignKey>
+    <name>item_id</name>
+    <table>civicrm_booking_adhoc_charges_item</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>quantity</name>
+    <type>int</type>
+    <required>true</required>
+  </field>
+
+   <field>
+       <name>is_cancelled</name>
+       <title>Slot is cancelled</title>
+       <type>boolean</type>
+       <default>0</default>
+       <import>true</import>
+       <add>4.4</add>
+  </field>
+  <index>
+       <name>index_is_cancelled</name>
+       <fieldName>is_cancelled</fieldName>
+       <add>4.4</add>
+  </index>
+
+  <field>
+       <name>is_deleted</name>
+       <title>Slot is in the Trash</title>
+       <type>boolean</type>
+       <default>0</default>
+       <import>true</import>
+       <add>4.4</add>
+  </field>
+  <index>
+       <name>index_is_deleted</name>
+       <fieldName>is_deleted</fieldName>
+       <add>4.4</add>
+  </index>
+
+
+</table>

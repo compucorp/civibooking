@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Booking</base>
+  <class>ResourceCriteria</class>
+  <name>civicrm_booking_resource_criteria</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <title>ID</title>
+    <required>true</required>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+   <field>
+    <name>resource_id</name>
+    <type>int unsigned</type>
+    <title>Resource ID</title>
+    <required>true</required>
+    <comment>Foreign key to the resoure for this resource criteria.</comment>
+   </field>
+   <foreignKey>
+    <name>resource_id</name>
+    <table>civicrm_booking_resource</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>criteria_id</name>
+    <type>varchar</type>
+    <length>512</length>
+    <comment>Foreign key to the resource criteria option group.</comment>
+    <required>true</required>
+  </field>
+
+</table>

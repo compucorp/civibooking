@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Booking</base>
+  <class>Slot</class>
+  <name>civicrm_booking_slot</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment></comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>booking_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>FK to Booking ID</comment>
+  </field>
+  <foreignKey>
+    <name>booking_id</name>
+    <table>civicrm_booking</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>resource_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>FK to resource ID</comment>
+  </field>
+  <foreignKey>
+    <name>resource_id</name>
+    <table>civicrm_booking_resource</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>config_id</name>
+    <type>int unsigned</type>
+    <comment>FK to resource configuration option ID</comment>
+  </field>
+  <foreignKey>
+    <name>config_id</name>
+    <table>civicrm_booking_resource_config_option</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>start</name>
+    <type>datetime</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>end</name>
+    <type>datetime</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>quantity</name>
+    <type>int</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>note</name>
+    <type>text</type>
+  </field>
+
+ <field>
+       <name>is_cancelled</name>
+       <title>Slot is cancelled</title>
+       <type>boolean</type>
+       <default>0</default>
+       <import>true</import>
+       <add>4.4</add>
+  </field>
+  <index>
+       <name>index_is_cancelled</name>
+       <fieldName>is_cancelled</fieldName>
+       <add>4.4</add>
+  </index>
+
+  <field>
+       <name>is_deleted</name>
+       <title>Slot is in the Trash</title>
+       <type>boolean</type>
+       <default>0</default>
+       <import>true</import>
+       <add>4.4</add>
+  </field>
+  <index>
+       <name>index_is_deleted</name>
+       <fieldName>is_deleted</fieldName>
+       <add>4.4</add>
+  </index>
+
+
+</table>

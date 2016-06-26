@@ -205,7 +205,12 @@ CREATE TABLE `civicrm_booking_resource` (
      `weight` int NOT NULL   ,
      `is_unlimited` tinyint NOT NULL  DEFAULT 0 ,
      `is_active` tinyint   DEFAULT 1 ,
-     `is_deleted` tinyint   DEFAULT 0
+     `is_deleted` tinyint   DEFAULT 0 ,
+     `is_public` tinyint   DEFAULT 0 ,
+     `is_approval_required` tinyint   DEFAULT 0 ,
+     `time_unit` int NOT NULL ,
+     `min_fee` int NOT NULL ,
+     `times_seralized` varchar(512) 
 ,
     PRIMARY KEY ( `id` )
 
@@ -348,5 +353,3 @@ CREATE TABLE `civicrm_booking_payment` (
 
 ,          CONSTRAINT FK_civicrm_booking_payment_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_payment_contribution_id FOREIGN KEY (`contribution_id`) REFERENCES `civicrm_contribution`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
-
-

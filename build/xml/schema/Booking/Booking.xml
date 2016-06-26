@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Booking</base>
+  <class>Booking</class>
+  <name>civicrm_booking</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment></comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>primary_contact_id</name>
+    <uniqueName>primary_contact_id</uniqueName>
+    <title>Primary Contact ID</title>
+    <type>int unsigned</type>
+    <required>true</required>
+    <import>true</import>
+    <export>true</export>
+    <headerPattern>/contact(.?id)?/i</headerPattern>
+    <dataPattern>/^\d+$/</dataPattern>
+    <comment>FK to Contact ID</comment>
+    <add>4.4</add>
+  </field>
+  <foreignKey>
+    <name>primary_contact_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <add>4.4</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+
+  <field>
+    <name>secondary_contact_id</name>
+    <uniqueName>secondary_contact_id</uniqueName>
+    <title>Secondary Contact ID</title>
+    <type>int unsigned</type>
+    <required>false</required>
+    <import>true</import>
+    <export>true</export>
+    <headerPattern>/contact(.?id)?/i</headerPattern>
+    <dataPattern>/^\d+$/</dataPattern>
+    <comment>FK to Contact ID</comment>
+    <add>4.4</add>
+  </field>
+  <foreignKey>
+    <name>secondary_contact_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <add>4.4</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+
+  <field>
+    <name>title</name>
+    <type>varchar</type>
+    <length>255</length>
+    <comment></comment>
+    <title>Title</title>
+    <required>true</required>
+    <export>true</export>
+    <uniqueName>booking_title</uniqueName>
+  </field>
+
+
+  <field>
+    <name>status_id</name>
+    <title>Status ID</title>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>The status associated with this booking. Implicit FK to option_value row in booking status option_group.</comment>
+    <add>4.4</add>
+    <export>true</export>
+    <uniqueName>booking_status_id</uniqueName>
+    <pseudoconstant>
+      <optionGroupName>booking_status</optionGroupName>
+    </pseudoconstant>
+  </field>
+
+  <field>
+    <name>booking_date</name>
+    <type>datetime</type>
+    <required>true</required>
+    <title>Booking Date</title>
+    <export>true</export>
+    <uniqueName>booking_date</uniqueName>
+  </field>
+
+  <field>
+    <name>start_date</name>
+    <type>datetime</type>
+    <required>true</required>
+    <title>Start Date</title>
+    <export>true</export>
+    <uniqueName>booking_start_date</uniqueName>
+  </field>
+
+  <field>
+    <name>end_date</name>
+    <type>datetime</type>
+    <required>true</required>
+    <title>End Date</title>
+    <export>true</export>
+    <uniqueName>booking_end_date</uniqueName>
+  </field>
+
+  <field>
+    <name>po_number</name>
+    <type>varchar</type>
+    <length>255</length>
+    <comment></comment>
+    <title>PO Number</title>
+    <required>true</required>
+    <export>true</export>
+    <uniqueName>booking_po_number</uniqueName>
+  </field>
+
+   <field>
+    <name>total_amount</name>
+    <title>Total amount</title>
+    <type>decimal</type>
+    <required>true</required>
+    <import>true</import>
+    <export>true</export>
+    <comment>Total amount of this booking calculated from slots,sub slots, ad-hoc charges and discount amount</comment>
+  </field>
+
+
+  <field>
+    <name>description</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+
+  <field>
+    <name>note</name>
+    <type>text</type>
+  </field>
+
+  <field>
+    <name>adhoc_charges_note</name>
+    <type>text</type>
+  </field>
+
+  <field>
+    <name>participants_estimate</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>participants_actual</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+   <field>
+    <name>discount_amount</name>
+    <type>decimal</type>
+  </field>
+
+  <field>
+       <name>is_deleted</name>
+       <uniqueName>booking_is_deleted</uniqueName>
+       <title>Booking is in the Trash</title>
+       <type>boolean</type>
+       <default>0</default>
+       <import>true</import>
+       <add>4.4</add>
+  </field>
+  <index>
+       <name>index_is_deleted</name>
+       <fieldName>is_deleted</fieldName>
+       <add>4.4</add>
+  </index>
+
+  <field>
+    <name>created_by</name>
+    <type>int unsigned</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>created_date</name>
+    <type>datetime</type>
+    <required>true</required>
+  </field>
+
+
+   <field>
+    <name>updated_by</name>
+    <type>int unsigned</type>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>updated_date</name>
+    <type>datetime</type>
+    <required>true</required>
+  </field>
+
+
+</table>
