@@ -66,7 +66,7 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
    */
   function edit() {
     if (!CRM_Core_Permission::check(array('administer CiviBooking', 'create and update bookings'))
-        || !(CRM_Core_Permission::check('administer CiviBooking') 
+        || (!CRM_Core_Permission::check('administer CiviBooking')
           && $this->_action == CRM_Core_Action::DELETE)) {
       CRM_Utils_System::permissionDenied();
       CRM_Utils_System::civiExit();
