@@ -270,20 +270,20 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
     $from = NULL;
     switch ($name) {
       case 'civicrm_booking':
-        $from = " $side JOIN civicrm_booking ON civicrm_booking.primary_contact_id = contact_a.id AND civicrm_booking.is_deleted = 0";
+        $from = " $side JOIN civicrm_booking ON civicrm_booking.primary_contact_id = contact_a.id AND civicrm_booking.is_deleted = 0 ";
         break;
       case 'civicrm_booking_status':
-        $from = " $side JOIN civicrm_option_group option_group_booking_status ON (option_group_booking_status.name = 'booking_status')";
+        $from = " $side JOIN civicrm_option_group option_group_booking_status ON (option_group_booking_status.name = 'booking_status') ";
         $from .= " $side JOIN civicrm_option_value civicrm_booking_status ON (civicrm_booking.status_id = civicrm_booking_status.value AND option_group_booking_status.id = civicrm_booking_status.option_group_id ) ";
         break;
       case 'civicrm_booking_payment_status':
-        $from .= " $side JOIN civicrm_booking_payment on civicrm_booking_payment.booking_id = civicrm_booking.id";
-        $from .= " $side JOIN civicrm_contribution contribution on contribution.id = civicrm_booking_payment.contribution_id";
-        $from .= " $side JOIN civicrm_option_group option_group_booking_payment ON option_group_booking_payment.name = 'contribution_status'";
+        $from .= " $side JOIN civicrm_booking_payment on civicrm_booking_payment.booking_id = civicrm_booking.id ";
+        $from .= " $side JOIN civicrm_contribution contribution on contribution.id = civicrm_booking_payment.contribution_id ";
+        $from .= " $side JOIN civicrm_option_group option_group_booking_payment ON option_group_booking_payment.name = 'contribution_status' ";
         $from .= " $side JOIN civicrm_option_value civicrm_booking_payment_status ON (contribution.contribution_status_id = civicrm_booking_payment_status.value AND option_group_booking_payment.id = civicrm_booking_payment_status.option_group_id ) ";
         break;
       case 'civicrm_booking_associated_contact':
-        $from = " $side JOIN civicrm_contact civicrm_booking_associated_contact ON (civicrm_booking_associated_contact.id = civicrm_booking.secondary_contact_id)";
+        $from = " $side JOIN civicrm_contact civicrm_booking_associated_contact ON (civicrm_booking_associated_contact.id = civicrm_booking.secondary_contact_id) ";
         break;
     }
     return $from;
