@@ -16,3 +16,8 @@ td.text-right{
 .crm-container .crm-section .content {
   margin-left: 22%;
 }
+
+/*Enable border for dialog box input elements*/
+#crm-booking-dialog input.item {
+  border: 1px solid #aaa;
+}
