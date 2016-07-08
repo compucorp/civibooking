@@ -12,8 +12,9 @@ class CRM_Booking_Page_Print_DayView extends CRM_Core_Page {
         $date =  date('m/d/Y', round($date/1000));
 
         //get resources information by selected date
-        $from = CRM_Utils_Date::processDate($date);
-        $resources = CRM_Booking_BAO_Slot::getSlotDetailsOrderByResourceBetweenDate($from, $from);
+        $from = date('Y-m-d', strtotime($date));
+        $to = date('Y-m-d', strtotime($from . ' +1 day'));
+        $resources = CRM_Booking_BAO_Slot::getSlotDetailsOrderByResourceBetweenDate($from, $to);
 
         $values = array();
         //put resources result to values, being ready to display.

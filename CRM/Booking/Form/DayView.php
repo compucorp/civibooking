@@ -38,8 +38,11 @@ class CRM_Booking_Form_DayView extends CRM_Core_Form {
     $selectedDate = CRM_Utils_Array::value('dayview_select_date',$values);
     
     //get booking slots from selected date
-    $from = CRM_Utils_Date::processDate($selectedDate);
-    $resources = CRM_Booking_BAO_Slot::getSlotDetailsOrderByResourceBetweenDate($from, $from);
+    //$from = CRM_Utils_Date::processDate($selectedDate);
+    $from = date('Y-m-d', strtotime($selectedDate));
+    $to = date('Y-m-d', strtotime($from . ' +1 day'));
+
+    $resources = CRM_Booking_BAO_Slot::getSlotDetailsOrderByResourceBetweenDate($from, $to);
     //put resources result to values, being ready to display.
     $values['resources'] = $resources;
     
