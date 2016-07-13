@@ -94,9 +94,9 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       ));
     }
     catch (CiviCRM_API3_Exception $e) {}   
-    
+
     //allow state changes only when there is enabled config set
-    if(!in_array($resource['set_id'], array_keys($activeSets['values']))){
+    if(!empty($resource['set_id']) && !in_array($resource['set_id'], array_keys($activeSets['values']))){
       $statusCheckbox->setAttribute('disabled', 'disabled');
     }
 
