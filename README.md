@@ -26,7 +26,7 @@ To find out more about the extensions directory and how to configure it please s
 
   http://example.com/civicrm/admin/setting/path?reset=1
 
-  (You may need to create a folder for your extensions and set the permissions for that folder. See Here for full instructions and information on how to set and configure extensions.)
+  (You may need to create a folder for your extensions and set the permissions for that folder. See [Here](https://wiki.civicrm.org/confluence/display/CRMDOC43/Extensions) for full instructions and information on how to set and configure extensions.)
 
 3. Once configured, simply got to the "add new" tab in your extensions listing:
 http://example.com/civicrm/admin/extensions?reset=1
@@ -94,7 +94,7 @@ CiviBooking was developed by Compucorp Ltd with kind funding from the GMCVO, Bla
 
 
 ###Support
-If you have issues with the CiviBooking extension please comment on the github issues list Here. Please provide your exntension and environment detail in the ticket to help accelarate the investigations.
+If you have issues with the CiviBooking extension please comment on the github issues list Here. Please provide your extension and environment detail in the ticket to help accelarate the investigations.
 
 CiviCRM Extension Page: https://civicrm.org/extensions/civibooking
 
