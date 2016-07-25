@@ -90,7 +90,7 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
    */
   protected $_context = NULL;
 
-  protected $_defaults;
+  public $_defaults;
 
   /**
    * prefix for the controller

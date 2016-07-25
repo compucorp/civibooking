@@ -9,6 +9,10 @@ CRM.BookingApp.module("Utils", function(Utils, BookingApp, Backbone, Marionette,
   Utils.isPositiveInteger = function (n){
    return 0 === n % (!isNaN(parseFloat(n)) && 0 <= ~~n);
   };
+  
+  Utils.isPositiveNumber = function (n){
+   return !_.isNumber(n) && 0 <= n;
+  };
 
 });
 

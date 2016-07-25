@@ -66,6 +66,20 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
    */
   function edit() {
 
+    $hasUpdatePerm = CRM_Core_Permission::check('create and update bookings');
+    $hasAdministerPerm = CRM_Core_Permission::check('administer CiviBooking');
+
+    $canUpdate  = ($hasUpdatePerm || $hasAdministerPerm);
+    $canDelete = $hasAdministerPerm;
+
+    $actionAddOrUpdate = in_array($this->_action, array(CRM_Core_Action::UPDATE, CRM_Core_Action::ADD));
+    $isActionDelete = ($this->_action == CRM_Core_Action::DELETE);
+
+    if(($actionAddOrUpdate && !$canUpdate) || ($isActionDelete && !$canDelete)) {
+      CRM_Utils_System::permissionDenied();
+      CRM_Utils_System::civiExit();
+    }
+
     $controller = new CRM_Core_Controller_Simple(
       'CRM_Booking_Form_Booking_Update',
       ts('Booking'),
@@ -86,7 +100,11 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
    * @access public
    */
   function cancel() {
-
+    if (!CRM_Core_Permission::check('administer CiviBooking')) {
+      CRM_Utils_System::permissionDenied();
+      CRM_Utils_System::civiExit();
+    }
+    
     $controller = new CRM_Core_Controller_Simple(
       'CRM_Booking_Form_Booking_Cancel',
       ts('Booking'),

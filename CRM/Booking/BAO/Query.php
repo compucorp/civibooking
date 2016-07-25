@@ -171,11 +171,8 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
               $val[$k] = $k;
             }
           }
-          $status = implode(',', $val);
-          if (count($val) > 1) {
-            $op = 'IN';
-            $status = "({$status})";
-          }
+          $status = array_values($val);
+          $op = 'IN';
         }
         else {
           $op = '=';
