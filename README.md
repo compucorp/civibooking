@@ -87,11 +87,13 @@ The % charges for cancellation can be adjusted in the cancellation charges optio
 ####Step 4: Additional (Ad-hoc) charges items
 Other charges can be added to the booking through the additional charges items. This may be charges for consumables used during the booking that need to be added after the booking has completed. You can add items and a price for each item in the Additional Charges item menu link.
 
+###Addon
+We have also created a Drupal view integration module for CiviBooking. This module creates view handlers for booking entities which enables the display of booking data on the Drupal side. It also has a few built-in calendar view templates which can be used to create calendar views for bookings and resource availability.
+
+https://github.com/compucorp/civiBooking_calendar
 
 ###Credit
 CiviBooking was developed by Compucorp Ltd with kind funding from the GMCVO, Blackburn with Darwin CVS and Zing Foundation
-
-
 
 ###Support
 If you have issues with the CiviBooking extension please comment on the github issues list Here. Please provide your extension and environment detail in the ticket to help accelarate the investigations.
