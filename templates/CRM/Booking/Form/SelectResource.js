@@ -80,7 +80,7 @@ cj(function ($) {
         selectedItem.start_date = moment(ev.start_date).format("YYYY-MM-DD HH:mm");
         selectedItem.end_date = moment(ev.end_date).format("YYYY-MM-DD HH:mm");
         selectedItem.is_updated = true;
-        basket[ev.id] = selectedItem;   //update item in basket 
+        basket[ev.id] = selectedItem;   //update item in basket
         updateBasketTable(selectedItem);  //render ui
     });
 
@@ -150,6 +150,7 @@ cj(function ($) {
             title: ts('Add resource to basket'),
             modal: true,
             minWidth: 600,
+            minHeight: 400,
             open: function () {
                 $('#crm-booking-new-slot').html(['<div class="crm-loading-element">', ts('Loading ...'), '</div>'].join(""));
                 //CiviCRM api call to set up configuration options
