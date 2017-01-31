@@ -68,7 +68,7 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
     $resourceDao->is_active = TRUE;
     
     if($resourceDao->count() > 0){
-      $statusCheckbox->setAttribute('disabled', 'disabled');
+      $statusCheckbox->freeze(array('is_active'));
     }
 
 
