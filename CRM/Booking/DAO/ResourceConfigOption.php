@@ -243,6 +243,16 @@ class CRM_Booking_DAO_ResourceConfigOption extends CRM_Core_DAO
           'dataPattern' => '',
           'export' => true,
         ) ,
+        'owner_id' => array(
+           'name' => 'owner_id',
+           'type' => CRM_Utils_Type::T_INT,
+           'title' => ts('Owner Id') ,
+           'import' => true,
+           'where' => 'civicrm_booking_resource_config_option.owner_id',
+           'headerPattern' => '',
+           'dataPattern' => '',
+          'export' => true,
+        ) ,
       );
     }
     return self::$_fields;
