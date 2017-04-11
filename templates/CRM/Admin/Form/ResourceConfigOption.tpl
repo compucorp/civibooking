@@ -48,7 +48,10 @@
          {$form.unit_id.html}
       </td>
     </tr>
-     <tr class="crm-resource-configuration-option-form-block-weight">
+    <tr class="crm-resource-configuration-option-form-block-owner">
+        <td class="label">{$form.owner_id.label}</td><td>{$form.owner_id.html}</td>
+    </tr>
+    <tr class="crm-resource-configuration-option-form-block-weight">
         <td class="label">{$form.weight.label}</td><td>{$form.weight.html}</td>
     </tr>
     <tr class="crm-resource-configuration-option-form-block-weight">

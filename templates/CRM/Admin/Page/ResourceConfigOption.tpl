@@ -37,6 +37,7 @@
             <th >{ts}Price{/ts}</th>
             <th >{ts}Max Size{/ts}</th>
             <th >{ts}Unit{/ts}</th>
+            <th >{ts}Owner{/ts}</th>
             <th >{ts}Weight{/ts}</th>
             <th >{ts}Enabled?{/ts}</th>
             <th ></th>
@@ -47,6 +48,7 @@
             <td class="crm-booking-resource-description">{$row.price}</td>
             <td class="crm-booking-resource-type">{$row.max_size}</td>
             <td class="crm-booking-resource-location">{$row.unit}</td>
+            <td class="crm-booking-resource-location">{$row.owner}</td>
             <td class="crm-booking-resource-weight">{$row.weight}</td>
             <td id="row_{$row.id}_status" class="crm-booking-resource-is_active">{if $row.is_active eq 1} {ts}Yes{/ts} {else} {ts}No{/ts} {/if}</td>
             <td>{$row.action|replace:'xx':$row.id}</td>

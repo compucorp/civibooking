@@ -144,6 +144,17 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
       CRM_Core_DAO::storeValues($dao, $configOptions[$dao->id]);
       $configOptions[$dao->id]['unit'] =  CRM_Utils_Array::value(CRM_Utils_Array::value('unit_id', $configOptions[$dao->id]), $units);
 
+      if ($dao->owner_id > 0) {
+        $configOptions[$dao->id]['owner'] = civicrm_api3('Contact', 'getvalue', array(
+          'sequential' => 1,
+          'return' => "display_name",
+          'id' => $dao->owner_id,
+        ));
+      }
+      else {
+        $configOptions[$dao->id]['owner'] = '';
+      }
+
       // form all action links
       $action = array_sum(array_keys($this->links()));
 
