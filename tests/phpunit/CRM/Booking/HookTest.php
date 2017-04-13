@@ -26,7 +26,6 @@ class CRM_Booking_HookTest extends \PHPUnit_Framework_TestCase implements Headle
     // See: https://github.com/civicrm/org.civicrm.testapalooza/blob/master/civi-test.md
     return \Civi\Test::headless()
       ->installMe(__DIR__)
-      ->sqlFile(__DIR__ . '/../../../../sql/upgrade_1510.sql')
       ->apply();
   }
 
@@ -68,7 +67,7 @@ class CRM_Booking_HookTest extends \PHPUnit_Framework_TestCase implements Headle
 
     $pairs = array(array('dstID' => $mainOwner['id'], 'srcID' => $otherOwner['id']));
 
-    $merger->merge($pairs);
+    $merger::merge($pairs);
 
     // Check that ownership of the resource config option has move to the main owner.
     $this->assertEquals(1, civicrm_api3('ResourceConfigOption', 'getcount', array(

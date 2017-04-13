@@ -238,7 +238,8 @@ CREATE TABLE `civicrm_booking_resource_config_option` (
      `unit_id` varchar(512)    COMMENT 'The unit associated with this config option. Implicit FK to option_value row in booking_size_unit option_group.',
      `weight` int unsigned NOT NULL   ,
      `is_active` tinyint   DEFAULT 1 ,
-     `is_deleted` tinyint   DEFAULT 0
+     `is_deleted` tinyint   DEFAULT 0,
+     `owner_id` int(10) unsigned
 ,
     PRIMARY KEY ( `id` )
 
