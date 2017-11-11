@@ -28,7 +28,7 @@ To find out more about the extensions directory and how to configure it please s
 
   (You may need to create a folder for your extensions and set the permissions for that folder. See [Here](https://wiki.civicrm.org/confluence/display/CRMDOC43/Extensions) for full instructions and information on how to set and configure extensions.)
 
-3. Once configured, simply got to the "add new" tab in your extensions listing:
+3. Once configured, simply go to the "add new" tab in your extensions listing:
 http://example.com/civicrm/admin/extensions?reset=1
 
   Then locate the CiviBooking extension and click Download.
