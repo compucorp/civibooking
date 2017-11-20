@@ -41,6 +41,9 @@ function civicrm_api3_slot_create($params) {
  * @throws API_Exception
  */
 function civicrm_api3_slot_get($params) {
+  if(empty($params['options']['limit'])){
+    $params['options']['limit'] = 0;
+  }
   return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
 
@@ -102,7 +105,7 @@ function civicrm_api3_slot_validate($params) {
     $currentSlot = $slot[$i];
     for($j=$i; $j<=$num; $j++){
       $testSlot = $slot[$j];
-      
+
     }
   }*/
   if(!empty($errorResources)){
