@@ -558,3 +558,15 @@ function booking_civicrm_alterAPIPermissions($entity, $action, &$params, &$permi
   }
 
 }
+
+/**
+ * Implements hook _civicrm_apiWrappers()
+ *
+ * @param array $wrappers
+ * @param $apiRequest
+ */
+function booking_civicrm_apiWrappers(&$wrappers, $apiRequest) {
+  if ($apiRequest['entity'] == 'Resource' && $apiRequest['action'] == 'get') {
+    $wrappers[] = new CRM_Booking_APIWrapper();
+  }
+}
