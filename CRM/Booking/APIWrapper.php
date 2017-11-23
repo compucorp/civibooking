@@ -13,6 +13,7 @@ class CRM_Booking_APIWrapper implements API_Wrapper {
    */
   public function fromApiInput($apiRequest) {
     $this->fixParametersArray($apiRequest['params']);
+    
     return $apiRequest;
   }
 
@@ -39,11 +40,11 @@ class CRM_Booking_APIWrapper implements API_Wrapper {
 
     foreach ($params as $parameter => &$value) {
       if (stripos($parameter, 'api.') === 0 && is_array($value)) {
-        $allChainedValues = true;
+        $allChainedValues = TRUE;
 
         foreach ($value as $chainedParameter => $chainedValue) {
-          if (stripos($value, '$value.') !== 0) {
-            $allChainedValues = false;
+          if (stripos($chainedValue, '$value.') !== 0) {
+            $allChainedValues = FALSE;
           }
         }
 
