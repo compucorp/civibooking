@@ -560,10 +560,10 @@ function booking_civicrm_alterAPIPermissions($entity, $action, &$params, &$permi
 }
 
 /**
- * Implements hook _civicrm_apiWrappers()
+ * Implements hook_civicrm_apiWrappers()
  *
  * @param array $wrappers
- * @param $apiRequest
+ * @param array $apiRequest
  */
 function booking_civicrm_apiWrappers(&$wrappers, $apiRequest) {
   if ($apiRequest['entity'] == 'Resource' && $apiRequest['action'] == 'get') {

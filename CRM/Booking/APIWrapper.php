@@ -1,7 +1,7 @@
 <?php
 
 /**
- * API Wrapper that preprocesses and post processes API Calls.
+ * API Wrapper that pre processes and post processes API Calls.
  */
 class CRM_Booking_APIWrapper implements API_Wrapper {
   /**
@@ -39,6 +39,18 @@ class CRM_Booking_APIWrapper implements API_Wrapper {
 
     foreach ($params as $parameter => &$value) {
       if (stripos($parameter, 'api.') === 0 && is_array($value)) {
+        $allChainedValues = true;
+
+        foreach ($value as $chainedParameter => $chainedValue) {
+          if (stripos($value, '$value.') !== 0) {
+            $allChainedValues = false;
+          }
+        }
+
+        if ($allChainedValues) {
+          $value['sequential'] = 0;
+        }
+
         $this->fixParametersArray($value);
       }
       elseif (stripos($value, '$value.') === 0) {
