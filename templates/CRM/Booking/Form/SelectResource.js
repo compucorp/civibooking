@@ -160,13 +160,14 @@ cj(function ($) {
                     'api.resource_config_set.get': {
                         id: '$value.set_id',
                         'api.resource_config_option.get': {
-                            set_id: '$value.set_id',
+                            set_id: '$value.id',
                             is_active: 1,
                             'api.option_group.get': {
                                 name: 'booking_size_unit',
                             },
                             'api.option_value.get': {
                                 value: '$value.unit_id',
+                                sequential: 1,
                                 option_group_id: '$value.api.option_group.get.value'
                             }
                         }
