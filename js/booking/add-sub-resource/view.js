@@ -399,6 +399,7 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
                   },
                   'api.option_value.get':{
                     value: '$value.unit_id',
+                    sequential: 1,
                     option_group_id: '$value.api.option_group.get.id'
                   }
                 }
