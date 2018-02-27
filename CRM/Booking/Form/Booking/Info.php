@@ -75,7 +75,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
         'name' => ts('<< Back'),
       ),
       array(
-        'type' => 'submit',
+        'type' => 'next',
         'name' => ts('Complete and Save'),
       ),
     );
@@ -376,7 +376,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
          "reset=1&id=$bookingID&cid=$cid&action=view"
       );
       CRM_Core_Session::setStatus($booking['title'], ts('Saved'), 'success');
-      CRM_Utils_System::redirect( $url);
+      $session->pushUserContext($url);
+
     }
     catch (CiviCRM_API3_Exception $e) {
       $transaction->rollback();
