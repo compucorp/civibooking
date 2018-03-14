@@ -7,7 +7,7 @@ CiviBooking is a CiviCRM extension which allows you to:
 
  - Create a list of resources which are available to be booked (we call these limited resources as once their booked, they're gone!)
  - These are shown in a fancy calendar type screen so you can see what’s available super easily.
- - Contacts in the database can book one of more of these by using the booking wizard.
+ - Contacts in the database can book one or more of these by using the booking wizard.
  - Contacts can add unlimited resources to the bookings (tea's, coffee's, solar energy...)
  - Contacts can add additional charges, discounts and calculate a price based on what’s booked.
  - You can make provisional bookings and come back and edit them later.
@@ -23,13 +23,12 @@ To find out more about the extensions directory and how to configure it please s
 1. Set up and install CiviCRM as you would normally. More details [Here](https://wiki.civicrm.org/confluence/display/CRMDOC/Installation+and+Upgrades)
 
 2. Create and set your extensions directory in CiviCRM at:
-
-  http://example.com/civicrm/admin/setting/path?reset=1
+   http://example.com/civicrm/admin/setting/path?reset=1
 
   (You may need to create a folder for your extensions and set the permissions for that folder. See [Here](https://wiki.civicrm.org/confluence/display/CRMDOC43/Extensions) for full instructions and information on how to set and configure extensions.)
 
 3. Once configured, simply got to the "add new" tab in your extensions listing:
-http://example.com/civicrm/admin/extensions?reset=1
+   http://example.com/civicrm/admin/extensions?reset=1
 
   Then locate the CiviBooking extension and click Download.
 
@@ -104,7 +103,6 @@ Please contact the follow email if you have any question: <info@compucorp.co.uk>
 
 Paid support for this extension is available, please contact us either via github or at info@compucorp.co.uk
 
-<br \>
 
 [![Compucorp Ltd.][1]][2]
 [1]: https://www.compucorp.co.uk/sites/default/files/logo.png
