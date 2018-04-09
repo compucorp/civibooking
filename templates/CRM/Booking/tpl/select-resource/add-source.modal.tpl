@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 <script id="add-resource-template" type="text/template">
 <form id="add-resource-form">
    <input type="hidden" name="resource-label" id="resource-label" autofocus/>
@@ -104,3 +105,4 @@
 
 
 
+{/crmScope}

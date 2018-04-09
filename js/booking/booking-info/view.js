@@ -1,3 +1,4 @@
+(function ($, ts){ 
 CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone, Marionette, $, _) {
 
   
@@ -74,3 +75,4 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
   });
 
 });
+}(CRM.$, CRM.ts('uk.co.compucorp.civicrm.booking')));

@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 
 require_once 'CRM/Core/Form.php';
 
@@ -170,13 +171,13 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
   public function buildQuickForm() {
     $this->add('textarea',
               'resources',
-               ts('Resource(s)'),
+               E::ts('Resource(s)'),
                FALSE);
 
     $buttons = array(
       array(
         'type' => 'next',
-        'name' => ts('Next >>'),
+        'name' => E::ts('Next >>'),
         'spacing' => '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;',
         'isDefault' => TRUE,
       ),
@@ -196,7 +197,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    * @return string
    */
   public function getTitle() {
-    return ts('Select resources');
+    return E::ts('Select resources');
   }
 
   static function registerScripts() {

@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
 +--------------------------------------------------------------------+
 | CiviCRM version 4.4                                                |
@@ -146,20 +147,20 @@ class CRM_Booking_DAO_Payment extends CRM_Core_DAO
         'id' => array(
           'name' => 'id',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('ID') ,
+          'title' => E::ts('ID') ,
           'required' => true,
         ) ,
         'booking_id' => array(
           'name' => 'booking_id',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Booking ID') ,
+          'title' => E::ts('Booking ID') ,
           'required' => true,
           'FKClassName' => 'CRM_Booking_DAO_Booking',
         ) ,
         'contribution_id' => array(
           'name' => 'contribution_id',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Contribution ID') ,
+          'title' => E::ts('Contribution ID') ,
           'required' => true,
           'import' => true,
           'where' => 'civicrm_booking_payment.contribution_id',

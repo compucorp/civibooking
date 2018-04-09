@@ -1,3 +1,4 @@
+(function ($, ts){ 
 var basket = {};
 var subTotal = 0.00;
 var definedSlots = new Array();
@@ -535,3 +536,4 @@ cj(function ($) {
     $(document).ready(loadEvents);
 });
 
+}(CRM.$, CRM.ts('uk.co.compucorp.civicrm.booking')));

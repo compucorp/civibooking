@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 {*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -103,3 +104,4 @@
   *}
 </tr>
 </table>
+{/crmScope}

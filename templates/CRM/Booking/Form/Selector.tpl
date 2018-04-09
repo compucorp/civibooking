@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 {*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -107,3 +108,4 @@
 {if $context EQ 'Search'}
     {include file="CRM/common/pager.tpl" location="bottom"}
 {/if}
+{/crmScope}

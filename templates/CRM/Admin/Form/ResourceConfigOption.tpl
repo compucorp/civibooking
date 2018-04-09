@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 {*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -58,3 +59,4 @@
  <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 {/if}
 </div>
+{/crmScope}

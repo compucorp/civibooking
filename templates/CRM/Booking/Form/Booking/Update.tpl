@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 <h3>{if $action eq 2}{ts}Update Status/Record Contribution{/ts}{else}{ts}Delete Booking{/ts}{/if}</h3>
 <div class="crm-form-block crm-update-booking-form-block">
 <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="top"}</div>
@@ -23,3 +24,4 @@
  <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 {/if}
 </div>
+{/crmScope}

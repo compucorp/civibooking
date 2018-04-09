@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 {*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -40,3 +41,4 @@
         <li>{ts}make sure you have enough privileges in the access control system{/ts}</li>
         </ul>
 </div>
+{/crmScope}

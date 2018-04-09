@@ -1,3 +1,4 @@
+(function ($, ts){ 
 
 /*
  * View classes belong to the second wizard screen of create/edit booking
@@ -606,3 +607,4 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
   });
 
 });
+}(CRM.$, CRM.ts('uk.co.compucorp.civicrm.booking')));

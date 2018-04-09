@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 
 require_once 'CRM/Core/Form.php';
 
@@ -11,17 +12,17 @@ class CRM_Booking_Form_DayView extends CRM_Core_Form {
     
   function buildQuickForm() {
     // add form elements
-    $this->addDate('dayview_select_date', ts('Select Booking Date'), TRUE, array('formatType' => 'activityDate' ));
+    $this->addDate('dayview_select_date', E::ts('Select Booking Date'), TRUE, array('formatType' => 'activityDate' ));
 
     $this->addButtons(array(
       array(
         'type' => 'submit',
-        'name' => ts('Submit'),
+        'name' => E::ts('Submit'),
         'isDefault' => TRUE,
       ),
       array(
         'type' => 'reset',
-        'name' => ts('Reset'),
+        'name' => E::ts('Reset'),
       ),
     ));
     // export form elements

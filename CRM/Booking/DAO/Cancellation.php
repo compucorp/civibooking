@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
 +--------------------------------------------------------------------+
 | CiviCRM version 4.4                                                |
@@ -169,24 +170,24 @@ class CRM_Booking_DAO_Cancellation extends CRM_Core_DAO
         'cancellation_date' => array(
           'name' => 'cancellation_date',
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('Cancellation Date') ,
+          'title' => E::ts('Cancellation Date') ,
           'required' => true,
         ) ,
         'cancellation_fee' => array(
           'name' => 'cancellation_fee',
           'type' => CRM_Utils_Type::T_MONEY,
-          'title' => ts('Cancellation charge') ,
+          'title' => E::ts('Cancellation charge') ,
           'required' => true,
         ) ,
         'additional_fee' => array(
           'name' => 'additional_fee',
           'type' => CRM_Utils_Type::T_MONEY,
-          'title' => ts('Additional charge') ,
+          'title' => E::ts('Additional charge') ,
         ) ,
         'comment' => array(
           'name' => 'comment',
           'type' => CRM_Utils_Type::T_TEXT,
-          'title' => ts('Comment') ,
+          'title' => E::ts('Comment') ,
         ) ,
       );
     }

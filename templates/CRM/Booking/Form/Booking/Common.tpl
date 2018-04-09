@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 <div class="crm-section">
   <div class="label">{$form.send_confirmation.label}</div>
   <div class="content">{$form.send_confirmation.html}</div>
@@ -147,3 +148,4 @@ field_type          ="select"
 invert              = 0
 }
 
+{/crmScope}

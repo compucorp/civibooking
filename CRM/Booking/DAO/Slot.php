@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
 +--------------------------------------------------------------------+
 | CiviCRM version 4.4                                                |
@@ -205,30 +206,30 @@ class CRM_Booking_DAO_Slot extends CRM_Core_DAO
         'start' => array(
           'name' => 'start',
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('Start') ,
+          'title' => E::ts('Start') ,
           'required' => true,
         ) ,
         'end' => array(
           'name' => 'end',
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('End') ,
+          'title' => E::ts('End') ,
           'required' => true,
         ) ,
         'quantity' => array(
           'name' => 'quantity',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Quantity') ,
+          'title' => E::ts('Quantity') ,
           'required' => true,
         ) ,
         'note' => array(
           'name' => 'note',
           'type' => CRM_Utils_Type::T_TEXT,
-          'title' => ts('Note') ,
+          'title' => E::ts('Note') ,
         ) ,
         'is_cancelled' => array(
           'name' => 'is_cancelled',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => ts('Slot is cancelled') ,
+          'title' => E::ts('Slot is cancelled') ,
           'import' => true,
           'where' => 'civicrm_booking_slot.is_cancelled',
           'headerPattern' => '',
@@ -238,7 +239,7 @@ class CRM_Booking_DAO_Slot extends CRM_Core_DAO
         'is_deleted' => array(
           'name' => 'is_deleted',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => ts('Slot is in the Trash') ,
+          'title' => E::ts('Slot is in the Trash') ,
           'import' => true,
           'where' => 'civicrm_booking_slot.is_deleted',
           'headerPattern' => '',

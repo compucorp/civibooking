@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 
 /**
  * Collection of upgrade steps
@@ -59,7 +60,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
             case 'booking_offline_receipt':
               $html = file_get_contents($this->extensionDir . '/msg_tpl/booking_offline_receipt.html', FILE_USE_INCLUDE_PATH);
               $text = file_get_contents($this->extensionDir . '/msg_tpl/booking_offline_receipt.txt', FILE_USE_INCLUDE_PATH);
-              $title = ts("Booking - Confirmation and Receipt (off-line)");
+              $title = E::ts("Booking - Confirmation and Receipt (off-line)");
               break;
           }
           if(isset($title)){
@@ -67,7 +68,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
               'version' => 3,
               'sequential' => 1,
               'msg_title' => $title,
-              'msg_subject' => ts("Booking - Confirmation Receipt").' - '.ts("Booking Status:").'{$booking_status}',
+              'msg_subject' => E::ts("Booking - Confirmation Receipt").' - '.ts("Booking Status:").'{$booking_status}',
               'msg_text' => $text,
               'msg_html' => $html,
               'is_active' => 1,
@@ -180,7 +181,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
     $maxId = CRM_Core_DAO::singleValueQuery('SELECT coalesce(max(id),0) FROM civicrm_contribution');
     for ($startId = $minId; $startId <= $maxId; $startId += self::BATCH_SIZE) {
       $endId = $startId + self::BATCH_SIZE - 1;
-      $title = ts('Upgrade Batch (%1 => %2)', array(
+      $title = E::ts('Upgrade Batch (%1 => %2)', array(
         1 => $startId,
         2 => $endId,
       ));

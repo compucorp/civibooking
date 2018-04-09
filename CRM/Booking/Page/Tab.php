@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 
 require_once 'CRM/Core/Page.php';
 
@@ -17,7 +18,7 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
   function browse() {
     $controller = new CRM_Core_Controller_Simple(
       'CRM_Booking_Form_Search',
-      ts('Booking'),
+      E::ts('Booking'),
       $this->_action
     );
     $controller->setEmbedded(TRUE);
@@ -47,7 +48,7 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
 
     $controller = new CRM_Core_Controller_Simple(
       'CRM_Booking_Form_Booking_View',
-      ts('View Booking'),
+      E::ts('View Booking'),
       $this->_action
     );
     $controller->setEmbedded(TRUE);
@@ -82,7 +83,7 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
 
     $controller = new CRM_Core_Controller_Simple(
       'CRM_Booking_Form_Booking_Update',
-      ts('Booking'),
+      E::ts('Booking'),
       $this->_action
     );
     $controller->setEmbedded(TRUE);
@@ -107,7 +108,7 @@ class CRM_Booking_Page_Tab extends CRM_Core_Page {
     
     $controller = new CRM_Core_Controller_Simple(
       'CRM_Booking_Form_Booking_Cancel',
-      ts('Booking'),
+      E::ts('Booking'),
       $this->_action
     );
     $controller->setEmbedded(TRUE);

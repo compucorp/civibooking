@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
 +--------------------------------------------------------------------+
 | CiviCRM version 4.4                                                |
@@ -243,7 +244,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'primary_contact_id' => array(
           'name' => 'primary_contact_id',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Primary Contact ID') ,
+          'title' => E::ts('Primary Contact ID') ,
           'required' => true,
           'import' => true,
           'where' => 'civicrm_booking.primary_contact_id',
@@ -255,7 +256,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'secondary_contact_id' => array(
           'name' => 'secondary_contact_id',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Secondary Contact ID') ,
+          'title' => E::ts('Secondary Contact ID') ,
           'required' => false,
           'import' => true,
           'where' => 'civicrm_booking.secondary_contact_id',
@@ -267,7 +268,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'booking_title' => array(
           'name' => 'title',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Title') ,
+          'title' => E::ts('Title') ,
           'required' => true,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
@@ -279,7 +280,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'booking_status_id' => array(
           'name' => 'status_id',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Status ID') ,
+          'title' => E::ts('Status ID') ,
           'required' => true,
           'export' => true,
           'where' => 'civicrm_booking.status_id',
@@ -292,7 +293,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'booking_date' => array(
           'name' => 'booking_date',
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('Booking Date') ,
+          'title' => E::ts('Booking Date') ,
           'required' => true,
           'export' => true,
           'where' => 'civicrm_booking.booking_date',
@@ -302,7 +303,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'booking_start_date' => array(
           'name' => 'start_date',
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('Start Date') ,
+          'title' => E::ts('Start Date') ,
           'required' => true,
           'export' => true,
           'where' => 'civicrm_booking.start_date',
@@ -312,7 +313,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'booking_end_date' => array(
           'name' => 'end_date',
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('End Date') ,
+          'title' => E::ts('End Date') ,
           'required' => true,
           'export' => true,
           'where' => 'civicrm_booking.end_date',
@@ -322,7 +323,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'booking_po_number' => array(
           'name' => 'po_number',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('PO Number') ,
+          'title' => E::ts('PO Number') ,
           'required' => true,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
@@ -334,7 +335,7 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'booking_total_amount' => array(
           'name' => 'total_amount',
           'type' => CRM_Utils_Type::T_MONEY,
-          'title' => ts('Total amount') ,
+          'title' => E::ts('Total amount') ,
           'required' => true,
           'import' => true,
           'where' => 'civicrm_booking.total_amount',
@@ -345,43 +346,43 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'description' => array(
           'name' => 'description',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Description') ,
+          'title' => E::ts('Description') ,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
         'note' => array(
           'name' => 'note',
           'type' => CRM_Utils_Type::T_TEXT,
-          'title' => ts('Note') ,
+          'title' => E::ts('Note') ,
         ) ,
         'adhoc_charges_note' => array(
           'name' => 'adhoc_charges_note',
           'type' => CRM_Utils_Type::T_TEXT,
-          'title' => ts('Adhoc Charges Note') ,
+          'title' => E::ts('Adhoc Charges Note') ,
         ) ,
         'participants_estimate' => array(
           'name' => 'participants_estimate',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Participants Estimate') ,
+          'title' => E::ts('Participants Estimate') ,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
         'participants_actual' => array(
           'name' => 'participants_actual',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Participants Actual') ,
+          'title' => E::ts('Participants Actual') ,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
         'discount_amount' => array(
           'name' => 'discount_amount',
           'type' => CRM_Utils_Type::T_MONEY,
-          'title' => ts('Discount Amount') ,
+          'title' => E::ts('Discount Amount') ,
         ) ,
         'booking_is_deleted' => array(
           'name' => 'is_deleted',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => ts('Booking is in the Trash') ,
+          'title' => E::ts('Booking is in the Trash') ,
           'import' => true,
           'where' => 'civicrm_booking.is_deleted',
           'headerPattern' => '',
@@ -391,25 +392,25 @@ class CRM_Booking_DAO_Booking extends CRM_Core_DAO
         'created_by' => array(
           'name' => 'created_by',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Created By') ,
+          'title' => E::ts('Created By') ,
           'required' => true,
         ) ,
         'created_date' => array(
           'name' => 'created_date',
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('Created Date') ,
+          'title' => E::ts('Created Date') ,
           'required' => true,
         ) ,
         'updated_by' => array(
           'name' => 'updated_by',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Updated By') ,
+          'title' => E::ts('Updated By') ,
           'required' => true,
         ) ,
         'updated_date' => array(
           'name' => 'updated_date',
           'type' => CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME,
-          'title' => ts('Updated Date') ,
+          'title' => E::ts('Updated Date') ,
           'required' => true,
         ) ,
       );
