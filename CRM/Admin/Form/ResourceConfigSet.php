@@ -42,7 +42,7 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
 
   function preProcess() {
     parent::preProcess();
-    CRM_Utils_System::setTitle(ts('Settings - Resource Configuration Set'));
+    CRM_Utils_System::setTitle(E::ts('Settings - Resource Configuration Set'));
   }
 
   /**
@@ -126,7 +126,7 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
     $params = $this->exportValues();
     if ($this->_action & CRM_Core_Action::DELETE) {
       CRM_Booking_BAO_ResourceConfigSet::del($this->_id);
-      CRM_Core_Session::setStatus(ts('Selected resource configuration set has been deleted.'), E::ts('Record Deleted'), 'success');
+      CRM_Core_Session::setStatus(E::ts('Selected resource configuration set has been deleted.'), E::ts('Record Deleted'), 'success');
     }
     else {
       $params = $this->exportValues();
@@ -144,7 +144,7 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
       $set = CRM_Booking_BAO_ResourceConfigSet::create($params);
 
       if ($this->_action & CRM_Core_Action::UPDATE) {
-        CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $set->title)), E::ts('Saved'), 'success');
+        CRM_Core_Session::setStatus(E::ts('The Record \'%1\' has been saved.', array(1 => $set->title)), E::ts('Saved'), 'success');
       }
       else {
         $url = CRM_Utils_System::url('civicrm/admin/resource/config_set/config_option', 'reset=1&action=add&sid=' . $set->id);

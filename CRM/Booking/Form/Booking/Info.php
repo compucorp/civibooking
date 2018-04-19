@@ -28,9 +28,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     }
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');
-      CRM_Utils_System::setTitle(ts('Edit Booking') . " - $title");
+      CRM_Utils_System::setTitle(E::ts('Edit Booking') . " - $title");
     }else{
-      CRM_Utils_System::setTitle(ts('New Booking') );
+      CRM_Utils_System::setTitle(E::ts('New Booking') );
     }
     self::registerScripts();
   }

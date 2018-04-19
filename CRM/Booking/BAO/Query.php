@@ -242,7 +242,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
 
       default:
         if (!isset($fields[$name])) {
-          CRM_Core_Session::setStatus(ts(
+          CRM_Core_Session::setStatus(E::ts(
               'We did not recognize the search field: %1.',
               array(1 => $name)
             )

@@ -42,7 +42,7 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
 
   function preProcess() {
     parent::preProcess();
-    CRM_Utils_System::setTitle(ts('Settings - Booking Preferences Configuration'));
+    CRM_Utils_System::setTitle(E::ts('Settings - Booking Preferences Configuration'));
 
 	$configValue = CRM_Booking_BAO_BookingConfig::getConfig();
 	$this->_config = $configValue;
@@ -161,7 +161,7 @@ class CRM_Admin_Form_Preferences_Booking extends CRM_Core_Form {
 
 	  $url = CRM_Utils_System::url('civicrm/admin/setting/preferences/booking', 'reset=1');
 	  // show message
-	  CRM_Core_Session::setStatus(ts('The Booking configuration has been saved.'), E::ts('Saved'), 'success');
+	  CRM_Core_Session::setStatus(E::ts('The Booking configuration has been saved.'), E::ts('Saved'), 'success');
     $session = CRM_Core_Session::singleton();
     $session->replaceUserContext($url);
   }

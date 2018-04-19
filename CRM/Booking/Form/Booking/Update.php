@@ -97,7 +97,7 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
     CRM_Utils_System::flushCache();
     if ($this->_action & CRM_Core_Action::DELETE) {
       civicrm_api3('Booking', 'delete', array('id' => $this->_id));
-      CRM_Core_Session::setStatus(ts('Selected booking has been deleted.'), E::ts('Record Deleted'), 'success');
+      CRM_Core_Session::setStatus(E::ts('Selected booking has been deleted.'), E::ts('Record Deleted'), 'success');
     }
     else {
       $values = $this->exportValues();
@@ -105,7 +105,7 @@ class CRM_Booking_Form_Booking_Update extends CRM_Booking_Form_Booking_Base {
       $params['status_id'] = $values['booking_status'];
       $booking = civicrm_api3('Booking', 'create', $params);
       parent::postProcess();
-      CRM_Core_Session::setStatus(ts('The booking \'%1\' has been saved.', array(1 => $this->_values['title'])), E::ts('Saved'), 'success');
+      CRM_Core_Session::setStatus(E::ts('The booking \'%1\' has been saved.', array(1 => $this->_values['title'])), E::ts('Saved'), 'success');
     }
   }
 

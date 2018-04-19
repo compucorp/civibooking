@@ -110,7 +110,7 @@ class CRM_Admin_Page_ResourceConfigSet extends CRM_Core_Page_Basic {
    */
   function run() {
     // set title and breadcrumb
-    CRM_Utils_System::setTitle(ts('Settings - Resource Configuration Set'));
+    CRM_Utils_System::setTitle(E::ts('Settings - Resource Configuration Set'));
     /*$breadCrumb = array(array('title' => E::ts('Administration'),
         'url' => CRM_Utils_System::url('civicrm/admin',
         'reset=1'

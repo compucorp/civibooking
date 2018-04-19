@@ -120,7 +120,7 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     
     CRM_Booking_BAO_Cancellation::create($params);
     parent::postProcess();
-    CRM_Core_Session::setStatus(ts('The booking \'%1\' has been cancelled.', array(1 => $this->_values['title'])), E::ts('Saved'), 'success');
+    CRM_Core_Session::setStatus(E::ts('The booking \'%1\' has been cancelled.', array(1 => $this->_values['title'])), E::ts('Saved'), 'success');
   }
 
   static function registerScripts() {

@@ -42,7 +42,7 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
 
   function preProcess() {
     parent::preProcess();
-    CRM_Utils_System::setTitle(ts('Settings - Additional Charges Item'));
+    CRM_Utils_System::setTitle(E::ts('Settings - Additional Charges Item'));
   }
 
   /**
@@ -132,7 +132,7 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
     // TODO::Make sure we cannot delete if the entity is linked to bookings
     if ($this->_action & CRM_Core_Action::DELETE) {
       CRM_Booking_BAO_AdhocChargesItem::del($this->_id);
-      CRM_Core_Session::setStatus(ts('Selected additional charges item has been deleted.'), E::ts('Record Deleted'), 'success');
+      CRM_Core_Session::setStatus(E::ts('Selected additional charges item has been deleted.'), E::ts('Record Deleted'), 'success');
     }
     else {
       $params = $this->exportValues();
@@ -146,7 +146,7 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
 
 		// udpate action
       if ($this->_action & CRM_Core_Action::UPDATE) {
-        CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $set->label)), E::ts('Saved'), 'success');
+        CRM_Core_Session::setStatus(E::ts('The Record \'%1\' has been saved.', array(1 => $set->label)), E::ts('Saved'), 'success');
       }
       else {
         $url = CRM_Utils_System::url('civicrm/admin/adhoc_charges_item', 'reset=1&action=browse&sid=' . $set->id);

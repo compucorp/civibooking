@@ -107,7 +107,7 @@ class CRM_Admin_Page_AdhocChargesItem extends CRM_Core_Page_Basic {
    */
   function run() {
     // set title
-    CRM_Utils_System::setTitle(ts('Settings - Additional Charges Item '));
+    CRM_Utils_System::setTitle(E::ts('Settings - Additional Charges Item '));
    
     return parent::run();
   }

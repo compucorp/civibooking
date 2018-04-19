@@ -62,7 +62,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     CRM_Booking_BAO_Booking::retrieve($params, $this->_values );
 
     if (empty($this->_values)) {
-      CRM_Core_Error::statusBounce(ts('The requested booking record does not exist (possibly the record was deleted).'));
+      CRM_Core_Error::statusBounce(E::ts('The requested booking record does not exist (possibly the record was deleted).'));
     }
 
     $params = array(
@@ -76,7 +76,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     if ($this->_values['status_id'] == $cancelStatus & ($this->_action != CRM_Core_Action::DELETE & $this->_action != CRM_Core_Action::VIEW)) {
       $bookingPayment = civicrm_api3('BookingPayment', 'get', array('booking_id' => $this->_id));
       if($bookingPayment['count'] > 0){
-        CRM_Core_Error::statusBounce(ts('The requested booking record has already been cancelled'));
+        CRM_Core_Error::statusBounce(E::ts('The requested booking record has already been cancelled'));
       }
     }
 
@@ -87,7 +87,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     //ResoveDefault
     CRM_Booking_BAO_Booking::resolveDefaults($this->_values);
     $title = $this->_values['title'];
-    CRM_Utils_System::setTitle(ts('Update Booking') . " - $title");
+    CRM_Utils_System::setTitle(E::ts('Update Booking') . " - $title");
 
     //get contribution record
     $this->associatedContribution($this->_id);

@@ -157,9 +157,9 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
   public function upgrade_4202() {
     $this->ctx->log->info('Planning update 4202'); // PEAR Log interface
 
-    $this->addTask(ts('Process first step'), 'processPart1', $arg1, $arg2);
-    $this->addTask(ts('Process second step'), 'processPart2', $arg3, $arg4);
-    $this->addTask(ts('Process second step'), 'processPart3', $arg5);
+    $this->addTask(E::ts('Process first step'), 'processPart1', $arg1, $arg2);
+    $this->addTask(E::ts('Process second step'), 'processPart2', $arg3, $arg4);
+    $this->addTask(E::ts('Process second step'), 'processPart3', $arg5);
     return TRUE;
   }
   public function processPart1($arg1, $arg2) { sleep(10); return TRUE; }

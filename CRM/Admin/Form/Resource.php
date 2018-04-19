@@ -42,7 +42,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
   function preProcess() {
     parent::preProcess();
-    CRM_Utils_System::setTitle(ts('Settings - Resource'));
+    CRM_Utils_System::setTitle(E::ts('Settings - Resource'));
     $this->_id = CRM_Utils_Request::retrieve('id', 'Positive',
       $this, FALSE, 0
     );
@@ -175,7 +175,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       CRM_Booking_BAO_Slot::delByResource($this->_id);
 
       CRM_Booking_BAO_Resource::del($this->_id);
-      CRM_Core_Session::setStatus(ts('Selected resource has been deleted.'), E::ts('Record Deleted'), 'success');
+      CRM_Core_Session::setStatus(E::ts('Selected resource has been deleted.'), E::ts('Record Deleted'), 'success');
 
     }
     else {
@@ -185,7 +185,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
 
       $resource = CRM_Booking_BAO_Resource::create($params);
-      CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $resource->label)), E::ts('Saved'), 'success');
+      CRM_Core_Session::setStatus(E::ts('The Record \'%1\' has been saved.', array(1 => $resource->label)), E::ts('Saved'), 'success');
     }
   }
 
