@@ -77,7 +77,7 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
       $this->assign('is_cancelled', TRUE);
     }
     // omitting contactImage from title for now since the summary overlay css doesn't work outside of our crm-container
-    CRM_Utils_System::setTitle(ts('View Booking for') .  ' ' . $displayName);
+    CRM_Utils_System::setTitle(E::ts('View Booking for') .  ' ' . $displayName);
 
     self::registerScripts($this);
 

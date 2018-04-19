@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 
 require_once 'CRM/Core/Form.php';
 
@@ -84,9 +85,9 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     $this->assign('timeOptions', CRM_Booking_Utils_DateTime::getTimeRange());
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');
-      CRM_Utils_System::setTitle(ts('Edit Booking') . " - $title");
+      CRM_Utils_System::setTitle(E::ts('Edit Booking') . " - $title");
     }else{
-      CRM_Utils_System::setTitle(ts('New Booking') );
+      CRM_Utils_System::setTitle(E::ts('New Booking') );
     }
     self::registerScripts();
   }
@@ -170,13 +171,13 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
   public function buildQuickForm() {
     $this->add('textarea',
               'resources',
-               ts('Resource(s)'),
+               E::ts('Resource(s)'),
                FALSE);
 
     $buttons = array(
       array(
         'type' => 'next',
-        'name' => ts('Next >>'),
+        'name' => E::ts('Next >>'),
         'spacing' => '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;',
         'isDefault' => TRUE,
       ),
@@ -196,7 +197,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    * @return string
    */
   public function getTitle() {
-    return ts('Select resources');
+    return E::ts('Select resources');
   }
 
   static function registerScripts() {

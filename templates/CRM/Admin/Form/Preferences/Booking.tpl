@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 {*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -105,3 +106,4 @@
 
 {crmScript ext=uk.co.compucorp.civicrm.booking file=templates/CRM/Admin/Form/Preferences/Booking.js}
 
+{/crmScope}

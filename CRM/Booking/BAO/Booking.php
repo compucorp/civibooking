@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 
 class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
 
@@ -496,10 +497,10 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
       $exportableFields = CRM_Booking_DAO_Booking::export();
 
       $bookingFields = array(
-        'booking_title' => array('title' => ts('Title'), 'type' => CRM_Utils_Type::T_STRING),
-        'booking_po_no' => array('title' => ts('PO Number'), 'type' => CRM_Utils_Type::T_STRING),
-        'booking_status' => array('title' => ts('Booking Status'), 'type' => CRM_Utils_Type::T_STRING),
-        'booking_payment_status' => array('title' => ts('Booking Status'), 'type' => CRM_Utils_Type::T_STRING),
+        'booking_title' => array('title' => E::ts('Title'), 'type' => CRM_Utils_Type::T_STRING),
+        'booking_po_no' => array('title' => E::ts('PO Number'), 'type' => CRM_Utils_Type::T_STRING),
+        'booking_status' => array('title' => E::ts('Booking Status'), 'type' => CRM_Utils_Type::T_STRING),
+        'booking_payment_status' => array('title' => E::ts('Booking Status'), 'type' => CRM_Utils_Type::T_STRING),
       );
 
       $fields = array_merge($bookingFields, $exportableFields);
@@ -760,7 +761,7 @@ class CRM_Booking_BAO_Booking extends CRM_Booking_DAO_Booking {
           $params = array(
             'source_contact_id' => $userId,
             'activity_type_id' => $activityTypeId,
-            'subject' => ts('Send Booking Confirmation Email'),
+            'subject' => E::ts('Send Booking Confirmation Email'),
             'activity_date_time' => date('YmdHis'),
             'target_contact_id' => $contactID,
             'details' => $message,

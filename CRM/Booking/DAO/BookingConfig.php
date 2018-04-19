@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
 +--------------------------------------------------------------------+
 | CiviCRM version 4.4                                                |
@@ -193,79 +194,79 @@ class CRM_Booking_DAO_BookingConfig extends CRM_Core_DAO
         'day_start_at' => array(
           'name' => 'day_start_at',
           'type' => CRM_Utils_Type::T_TIME,
-          'title' => ts('Day Start At') ,
+          'title' => E::ts('Day Start At') ,
           'required' => true,
         ) ,
         'day_end_at' => array(
           'name' => 'day_end_at',
           'type' => CRM_Utils_Type::T_TIME,
-          'title' => ts('Day End At') ,
+          'title' => E::ts('Day End At') ,
           'required' => true,
         ) ,
         'time_period' => array(
           'name' => 'time_period',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Time Period') ,
+          'title' => E::ts('Time Period') ,
           'required' => true,
         ) ,
         'log_confirmation_email' => array(
           'name' => 'log_confirmation_email',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => ts('Log Confirmation Email') ,
+          'title' => E::ts('Log Confirmation Email') ,
           'required' => true,
         ) ,
         'unlimited_resource_time_config' => array(
           'name' => 'unlimited_resource_time_config',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => ts('Unlimited Resource Time Config') ,
+          'title' => E::ts('Unlimited Resource Time Config') ,
           'required' => true,
         ) ,
         'cc_email_address' => array(
           'name' => 'cc_email_address',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Cc Email Address') ,
+          'title' => E::ts('Cc Email Address') ,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
         'bcc_email_address' => array(
           'name' => 'bcc_email_address',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Bcc Email Address') ,
+          'title' => E::ts('Bcc Email Address') ,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
         'slot_new_colour' => array(
           'name' => 'slot_new_colour',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Slot New Colour') ,
+          'title' => E::ts('Slot New Colour') ,
           'maxlength' => 10,
           'size' => CRM_Utils_Type::TWELVE,
         ) ,
         'slot_being_edited_colour' => array(
           'name' => 'slot_being_edited_colour',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Slot Being Edited Colour') ,
+          'title' => E::ts('Slot Being Edited Colour') ,
           'maxlength' => 10,
           'size' => CRM_Utils_Type::TWELVE,
         ) ,
         'slot_booked_colour' => array(
           'name' => 'slot_booked_colour',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Slot Booked Colour') ,
+          'title' => E::ts('Slot Booked Colour') ,
           'maxlength' => 10,
           'size' => CRM_Utils_Type::TWELVE,
         ) ,
         'slot_provisional_colour' => array(
           'name' => 'slot_provisional_colour',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Slot Provisional Colour') ,
+          'title' => E::ts('Slot Provisional Colour') ,
           'maxlength' => 10,
           'size' => CRM_Utils_Type::TWELVE,
         ) ,
         'slot_unavailable_colour' => array(
           'name' => 'slot_unavailable_colour',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Slot Unavailable Colour') ,
+          'title' => E::ts('Slot Unavailable Colour') ,
           'maxlength' => 10,
           'size' => CRM_Utils_Type::TWELVE,
         ) ,

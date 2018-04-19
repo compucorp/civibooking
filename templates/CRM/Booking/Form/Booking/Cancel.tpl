@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 <h3>{ts}Cancel Booking?{/ts}</h3>
 <div class="crm-form-block crm-cancel-booking-form-block">
   <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="top"}</div>
@@ -65,3 +66,4 @@
   });
   </script>
 {/literal}
+{/crmScope}

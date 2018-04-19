@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 
 {* ----- Your company header message. ----- *}
 
@@ -105,3 +106,4 @@ _________________________________________________________
 
 {* ----- Your company footer message. ----- *}
 
+{/crmScope}

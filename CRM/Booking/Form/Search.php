@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 
 require_once 'CRM/Core/Form.php';
 
@@ -215,7 +216,7 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
     // text for sort_name
     $this->addElement('text',
       'sort_name',
-      ts('Contact Name or Email'),
+      E::ts('Contact Name or Email'),
       CRM_Core_DAO::getAttribute('CRM_Contact_DAO_Contact',
         'sort_name'
       )
@@ -249,9 +250,9 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
 
       $permission = CRM_Core_Permission::getPermission();
 
-      $tasks = array('' => ts('- actions -')) + CRM_Booking_Form_Task::permissionedTaskTitles($permission);
-      $this->add('select', 'task', ts('Actions:') . ' ', $tasks);
-      $this->add('submit', $this->_actionButtonName, ts('Go'),
+      $tasks = array('' => E::ts('- actions -')) + CRM_Booking_Form_Task::permissionedTaskTitles($permission);
+      $this->add('select', 'task', E::ts('Actions:') . ' ', $tasks);
+      $this->add('submit', $this->_actionButtonName, E::ts('Go'),
         array(
           'class' => 'form-submit',
           'id' => 'Go',
@@ -261,7 +262,7 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
 
       //-- Remove print button as it causes an exception when pressed
       //-- TODO : Bring back search results print button functionality (See: PCBK-182)
-      // $this->add('submit', $this->_printButtonName, ts('Print'),
+      // $this->add('submit', $this->_printButtonName, E::ts('Print'),
         // array(
           // 'class' => 'form-submit',
           // 'onclick' => "return checkPerformAction('mark_x', '" . $this->getName() . "', 1);",
@@ -278,7 +279,7 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
     $this->addButtons(array(
         array(
           'type' => 'refresh',
-          'name' => ts('Search'),
+          'name' => E::ts('Search'),
           'isDefault' => TRUE,
         ),
       )
@@ -418,7 +419,7 @@ class CRM_Booking_Form_Search extends CRM_Core_Form {
    * @access public
    */
   public function getTitle() {
-    return ts('Find Bookings');
+    return E::ts('Find Bookings');
   }
 
 }

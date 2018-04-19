@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 <script id="resource-table-template" type="text/template">
     <div id="resources-container">
       <table id="" class="display">
@@ -88,3 +89,4 @@
 var timeConfig = "{/literal}{$timeconfig}{literal}";
 </script>
  {/literal}
+{/crmScope}

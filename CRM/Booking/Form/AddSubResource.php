@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 
 require_once 'CRM/Core/Form.php';
 
@@ -21,7 +22,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
    * @access public
    */
   public function getTitle() {
-    return ts('Add unlimited resources');
+    return E::ts('Add unlimited resources');
   }
 
   function preProcess(){
@@ -86,9 +87,9 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
     
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');
-      CRM_Utils_System::setTitle(ts('Edit Booking') . " - $title");
+      CRM_Utils_System::setTitle(E::ts('Edit Booking') . " - $title");
     }else{
-      CRM_Utils_System::setTitle(ts('New Booking') );
+      CRM_Utils_System::setTitle(E::ts('New Booking') );
     }
 
     /**
@@ -202,37 +203,37 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
     $this->addElement('text',
                       'sub_total',
-                      ts('Sub total'));
+                      E::ts('Sub total'));
 
     $this->addElement('text',
                       'total_price',
-                      ts('Total'));
+                      E::ts('Total'));
 
     $this->addElement('text',
                       'discount_amount',
-                      ts('Discount amount'));
+                      E::ts('Discount amount'));
 
     //for discount amount calculation
     $this->addElement('text',
                       'discount_amount_dummy',
-                      ts('Discount amount'));
+                      E::ts('Discount amount'));
 
     $this->addElement('text',
                       'adhoc_charge',
-                      ts('Ad-hoc charges'));
+                      E::ts('Ad-hoc charges'));
 
     $this->add('textarea',
               'sub_resources',
-               ts('Unlimited Resource(s)'),
+               E::ts('Unlimited Resource(s)'),
                FALSE);
 
     $buttons = array(
       array('type' => 'back',
-        'name' => ts('<< Previous'),
+        'name' => E::ts('<< Previous'),
       ),
       array(
         'type' => 'next',
-        'name' => ts('Next >>'),
+        'name' => E::ts('Next >>'),
         'spacing' => '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;',
         'isDefault' => TRUE,
       ),
@@ -240,7 +241,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
     $this->addButtons($buttons);
     
-    $this->addRule("discount_amount_dummy", ts('Please enter a valid amount.'), 'money');
+    $this->addRule("discount_amount_dummy", E::ts('Please enter a valid amount.'), 'money');
     
     $this->addFormRule( array( 'CRM_Booking_Form_AddSubResource', 'formRule' ), $this );
 

@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -67,26 +68,26 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
     if (!(self::$_links)) {
       self::$_links = array(
         CRM_Core_Action::UPDATE => array(
-          'name' => ts('Edit'),
+          'name' => E::ts('Edit'),
           'url' => 'civicrm/admin/resource/config_set/config_option',
           'qs' => 'action=update&id=%%id%%&sid=%%sid%%&reset=1',
-          'title' => ts('Edit Resource Configuration Option'),
+          'title' => E::ts('Edit Resource Configuration Option'),
         ),
         CRM_Core_Action::DISABLE => array(
-          'name' => ts('Disable'),
+          'name' => E::ts('Disable'),
           'ref' => 'crm-enable-disable',
-          'title' => ts('Disable Resource Configuration Option'),
+          'title' => E::ts('Disable Resource Configuration Option'),
         ),
         CRM_Core_Action::ENABLE => array(
-          'name' => ts('Enable'),
+          'name' => E::ts('Enable'),
           'ref' => 'crm-enable-disable',
-          'title' => ts('Enable Resource Configuration Option'),
+          'title' => E::ts('Enable Resource Configuration Option'),
         ),
         CRM_Core_Action::DELETE => array(
-          'name' => ts('Delete'),
+          'name' => E::ts('Delete'),
           'url' => 'civicrm/admin/resource/config_set/config_option',
           'qs' => 'action=delete&id=%%id%%&sid=%%sid%%',
-          'title' => ts('Delete Resource Configuration Option'),
+          'title' => E::ts('Delete Resource Configuration Option'),
         ),
       );
     }
@@ -110,8 +111,8 @@ class CRM_Admin_Page_ResourceConfigOption extends CRM_Core_Page_Basic {
     );
     $this->assign('sid', $this->_sid);
     // set title and breadcrumb
-    CRM_Utils_System::setTitle(ts('Settings - Resource Configuration Option'));
-    /*$breadCrumb = array(array('title' => ts('Administration'),
+    CRM_Utils_System::setTitle(E::ts('Settings - Resource Configuration Option'));
+    /*$breadCrumb = array(array('title' => E::ts('Administration'),
         'url' => CRM_Utils_System::url('civicrm/admin',
         'reset=1'
         ),

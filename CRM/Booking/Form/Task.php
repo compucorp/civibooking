@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -69,11 +70,11 @@ class CRM_Booking_Form_Task {
     if (!(self::$_tasks)) {
       self::$_tasks = array(
         //implement in next version
-        // 1 => array('title' => ts('Delete Bookings'),
+        // 1 => array('title' => E::ts('Delete Bookings'),
           // 'class' => 'CRM_Contribute_Form_Task_Delete',
           // 'result' => FALSE,
         // ),
-        2 => array('title' => ts('Print Bookings'),
+        2 => array('title' => E::ts('Print Bookings'),
           'class' => 'CRM_Contribute_Form_Task_Print',
           'result' => FALSE,
         ),

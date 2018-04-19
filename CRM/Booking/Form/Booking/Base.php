@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -61,7 +62,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     CRM_Booking_BAO_Booking::retrieve($params, $this->_values );
 
     if (empty($this->_values)) {
-      CRM_Core_Error::statusBounce(ts('The requested booking record does not exist (possibly the record was deleted).'));
+      CRM_Core_Error::statusBounce(E::ts('The requested booking record does not exist (possibly the record was deleted).'));
     }
 
     $params = array(
@@ -75,7 +76,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     if ($this->_values['status_id'] == $cancelStatus & ($this->_action != CRM_Core_Action::DELETE & $this->_action != CRM_Core_Action::VIEW)) {
       $bookingPayment = civicrm_api3('BookingPayment', 'get', array('booking_id' => $this->_id));
       if($bookingPayment['count'] > 0){
-        CRM_Core_Error::statusBounce(ts('The requested booking record has already been cancelled'));
+        CRM_Core_Error::statusBounce(E::ts('The requested booking record has already been cancelled'));
       }
     }
 
@@ -86,7 +87,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     //ResoveDefault
     CRM_Booking_BAO_Booking::resolveDefaults($this->_values);
     $title = $this->_values['title'];
-    CRM_Utils_System::setTitle(ts('Update Booking') . " - $title");
+    CRM_Utils_System::setTitle(E::ts('Update Booking') . " - $title");
 
     //get contribution record
     $this->associatedContribution($this->_id);
@@ -103,12 +104,12 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       $this->addButtons(array(
           array(
             'type' => 'next',
-            'name' => ts('Delete'),
+            'name' => E::ts('Delete'),
             'isDefault' => TRUE,
           ),
           array(
             'type' => 'cancel',
-            'name' => ts('Cancel'),
+            'name' => E::ts('Cancel'),
           ),
         )
       );
@@ -117,7 +118,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       $this->addButtons(array(
           array(
             'type' => 'cancel',
-            'name' => ts('Done'),
+            'name' => E::ts('Done'),
             'spacing' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
             'isDefault' => TRUE,
           ),
@@ -128,12 +129,12 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       $this->addButtons(array(
           array(
             'type' => 'next',
-            'name' => ts('Save'),
+            'name' => E::ts('Save'),
             'isDefault' => TRUE,
           ),
           array(
             'type' => 'cancel',
-            'name' => ts('Cancel'),
+            'name' => E::ts('Cancel'),
           ),
         )
       );
@@ -143,14 +144,14 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     if (($this->_action & CRM_Core_Action::DELETE) || ($this->_action & CRM_Core_Action::VIEW)) {
       return;
     }else{
-      $this->addElement('checkbox', 'send_confirmation', ts('Send email?'));
+      $this->addElement('checkbox', 'send_confirmation', E::ts('Send email?'));
 
       $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address');
       if (empty($fromEmailAddress)) {
         //redirect user to enter from email address.
         $url = CRM_Utils_System::url('civicrm/admin/options/from_email_address', 'group=from_email_address&action=add&reset=1');
-        $status = ts("There is no valid from email address present. You can add here <a href='%1'>Add From Email Address.</a>", array(1 => $url));
-        $session->setStatus($status, ts('Notice'));
+        $status = E::ts("There is no valid from email address present. You can add here <a href='%1'>Add From Email Address.</a>", array(1 => $url));
+        $session->setStatus($status, E::ts('Notice'));
       }
       else {
         foreach ($fromEmailAddress as $key => $email) {
@@ -159,42 +160,42 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       }
 
       $this->add('select', 'from_email_address',
-        ts('From Email Address'), array(
-          '' => ts('- select -')) + $fromEmailAddress, FALSE
+        E::ts('From Email Address'), array(
+          '' => E::ts('- select -')) + $fromEmailAddress, FALSE
       );
       //header of email template
-      $this->add('textarea', 'receipt_header_message', ts('Header'));
+      $this->add('textarea', 'receipt_header_message', E::ts('Header'));
       //footer of email template
-      $this->add('textarea', 'receipt_footer_message', ts('Footer'));
+      $this->add('textarea', 'receipt_footer_message', E::ts('Footer'));
 
       if($this->_id){
-        $contactDropdown =  array('' => ts('- select -'),
+        $contactDropdown =  array('' => E::ts('- select -'),
                                 $this->_values['primary_contact_id'] => CRM_Contact_BAO_Contact::displayName($this->_values['primary_contact_id']));
         $paymentContacts = $contactDropdown;
         if(isset($this->_values['secondary_contact_id'])){
           $contactDropdown[$this->_values['secondary_contact_id']] =  CRM_Contact_BAO_Contact::displayName($this->_values['secondary_contact_id']);
           //add Both option for sending email to both contacts
-          $contactDropdown[CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS] =  ts('Both');
+          $contactDropdown[CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS] =  E::ts('Both');
           //$paymentContacts = array_slice($contactDropdown, 1, -1);
         }
       }else{
         $contactDropdown = array(
-          '' => ts('- select -'),
-          '1' => ts('Primary contact'),
-          '2' => ts('Secondary contact'),
-          CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS => ts('Both')
+          '' => E::ts('- select -'),
+          '1' => E::ts('Primary contact'),
+          '2' => E::ts('Secondary contact'),
+          CRM_Booking_Utils_Constants::OPTION_BOTH_CONTACTS => E::ts('Both')
         );
         //$paymentContacts = array_slice($contactDropdown, 1, -1);
       }
 
-      $this->add('select', 'email_to', ts('Email to'),
+      $this->add('select', 'email_to', E::ts('Email to'),
         $contactDropdown, FALSE,
         array(
           'id' => 'email_to',
         )
       );
 
-      $this->addElement('checkbox', 'record_contribution', ts('Record Payment?'));
+      $this->addElement('checkbox', 'record_contribution', E::ts('Record Payment?'));
 
 
 
@@ -202,7 +203,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         unset($contactDropdown['both_contacts']);
       }
       $paymentContacts = $contactDropdown;
-      $this->add('select', 'select_payment_contact', ts('Select contact'),
+      $this->add('select', 'select_payment_contact', E::ts('Select contact'),
           $paymentContacts, FALSE,
           array(
             'id' => 'select_payment_contact',
@@ -210,40 +211,40 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       );
 
 
-      $this->addDate('receive_date', ts('Received'), FALSE, array('formatType' => 'activityDate'));
+      $this->addDate('receive_date', E::ts('Received'), FALSE, array('formatType' => 'activityDate'));
 
       if ($this->_action & CRM_Core_Action::CLOSE){
-        $this->add('text', 'total_amount', ts('Amount'));
+        $this->add('text', 'total_amount', E::ts('Amount'));
       }else{
-        $this->add('text', 'total_amount', ts('Amount'), array( 'disabled' => 'disabled' ));
+        $this->add('text', 'total_amount', E::ts('Amount'), array( 'disabled' => 'disabled' ));
       }
 
-      $this->addRule("total_amount", ts('Please enter a valid amount.'), 'money');
+      $this->addRule("total_amount", E::ts('Please enter a valid amount.'), 'money');
       
       $this->add('select', 'financial_type_id',
-        ts('Financial Type'),
-        array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::financialType()
+        E::ts('Financial Type'),
+        array('' => E::ts('- select -')) + CRM_Contribute_PseudoConstant::financialType()
       );
 
       $this->add('select', 'payment_instrument_id',
-          ts('Paid By'),
-          array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::paymentInstrument(),
+          E::ts('Paid By'),
+          array('' => E::ts('- select -')) + CRM_Contribute_PseudoConstant::paymentInstrument(),
           FALSE,
           array('onChange' => "return showHideByValue('payment_instrument_id','4','checkNumber','table-row','select',false);")
       );
 
-      $this->add('text', 'check_number', ts('Check Number'));
+      $this->add('text', 'check_number', E::ts('Check Number'));
       
-      $this->add('text', 'trxn_id', ts('Transaction ID'));
+      $this->add('text', 'trxn_id', E::ts('Transaction ID'));
 
       $this->add('select', 'contribution_status_id',
-          ts('Payment Status'),
-          array('' => ts('- select -')) + CRM_Contribute_PseudoConstant::contributionStatus(),
+          E::ts('Payment Status'),
+          array('' => E::ts('- select -')) + CRM_Contribute_PseudoConstant::contributionStatus(),
           FALSE,
           array()
       );
 
-      $this->addElement('checkbox', 'include_payment_information', '', ts(' Include payment information on booking confirmation email?'));
+      $this->addElement('checkbox', 'include_payment_information', '', E::ts(' Include payment information on booking confirmation email?'));
 
     }
   }
@@ -256,16 +257,16 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
     if($sendConfirmation){
        $emailTo = CRM_Utils_Array::value('email_to', $params);
        if(!$emailTo){
-        $errors['email_to'] = ts('Please select a contact(s) to send email to.');
+        $errors['email_to'] = E::ts('Please select a contact(s) to send email to.');
        }
       if(!$self->_id){
         if($emailTo == 2 && !$secondaryContactId || $emailTo == 3 && !$secondaryContactId ){
-          $errors['email_to'] = ts('Please select a secondary contact.');
+          $errors['email_to'] = E::ts('Please select a secondary contact.');
         }
       }
       $fromEmailAddreess = CRM_Utils_Array::value('from_email_address', $params);
         if(!$fromEmailAddreess){
-          $errors['from_email_address'] = ts('Please select a from email address.');
+          $errors['from_email_address'] = E::ts('Please select a from email address.');
       }
      }
 
@@ -274,16 +275,16 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
      if($recordContribution){
         $selectPaymentContact = CRM_Utils_Array::value('select_payment_contact', $params);
         if(!$selectPaymentContact){
-          $errors['select_payment_contact'] = ts('Please select a contact for recording payment.');
+          $errors['select_payment_contact'] = E::ts('Please select a contact for recording payment.');
         }
         if(!$self->_id){
           if($selectPaymentContact == 2 && !$secondaryContactId){
-            $errors['select_payment_contact'] = ts('Please select a contact for recording payment');
+            $errors['select_payment_contact'] = E::ts('Please select a contact for recording payment');
           }
         }
         $financialTypeId = CRM_Utils_Array::value('financial_type_id', $params);
         if(!$financialTypeId){
-         $errors['financial_type_id'] = ts('Please select a financial type.');
+         $errors['financial_type_id'] = E::ts('Please select a financial type.');
         }
 
         $trxnId = CRM_Utils_Array::value('trxn_id', $params);
@@ -294,17 +295,17 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
         }
         $receivedDate = CRM_Utils_Array::value('receive_date', $params);
         if(!$receivedDate){
-         $errors['receive_date'] = ts('This field is required.');
+         $errors['receive_date'] = E::ts('This field is required.');
         }
 
         $paymentInstrumentId = CRM_Utils_Array::value('payment_instrument_id', $params);
         if(!$paymentInstrumentId){
-         $errors['payment_instrument_id'] = ts('Please select a payment instrument.');
+         $errors['payment_instrument_id'] = E::ts('Please select a payment instrument.');
         }
 
         $contributionStatusId = CRM_Utils_Array::value('contribution_status_id', $params);
         if(!$contributionStatusId){
-         $errors['contribution_status_id'] = ts('Please select a valid payment status.');
+         $errors['contribution_status_id'] = E::ts('Please select a valid payment status.');
         }
 
      }
@@ -331,7 +332,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       }
       catch (CiviCRM_API3_Exception $e) {
         //display error message?
-        CRM_Core_Session::setStatus( $e->getMessage(), ts('Error'), 'error');
+        CRM_Core_Session::setStatus( $e->getMessage(), E::ts('Error'), 'error');
       }
       if(!empty($payment) && isset($payment['contribution_id'])){ //payment exist
         $defaults['record_contribution'] = 1;
@@ -441,7 +442,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       $params = array(
           'id' => $this->_id,
           'target_contact_id' => CRM_Utils_Array::value('primary_contact_id', $bookingInfo),
-          'subject' => ts("Booking ID: $this->_id")
+          'subject' => E::ts("Booking ID: $this->_id")
       );
 
       //Finally add booking activity

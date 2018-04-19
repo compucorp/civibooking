@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -58,7 +59,7 @@ class CRM_Booking_Form_Task_Result extends CRM_Booking_Form_Task {
     $this->addButtons(array(
         array(
           'type' => 'done',
-          'name' => ts('Done'),
+          'name' => E::ts('Done'),
           'isDefault' => TRUE,
         ),
       )

@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -64,26 +65,26 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
     if (!(self::$_links)) {
       self::$_links = array(
         CRM_Core_Action::UPDATE => array(
-          'name' => ts('Edit'),
+          'name' => E::ts('Edit'),
           'url' => 'civicrm/admin/resource',
           'qs' => 'action=update&id=%%id%%&reset=1',
-          'title' => ts('Edit Resource'),
+          'title' => E::ts('Edit Resource'),
         ),
         CRM_Core_Action::DISABLE => array(
-          'name' => ts('Disable'),
+          'name' => E::ts('Disable'),
           'ref' => 'crm-enable-disable',
-          'title' => ts('Disable Resource'),
+          'title' => E::ts('Disable Resource'),
         ),
         CRM_Core_Action::ENABLE => array(
-          'name' => ts('Enable'),
+          'name' => E::ts('Enable'),
           'ref' => 'crm-enable-disable',
-          'title' => ts('Enable Resource'),
+          'title' => E::ts('Enable Resource'),
         ),
         CRM_Core_Action::DELETE => array(
-          'name' => ts('Delete'),
+          'name' => E::ts('Delete'),
           'url' => 'civicrm/admin/resource',
           'qs' => 'action=delete&id=%%id%%',
-          'title' => ts('Delete Resource'),
+          'title' => E::ts('Delete Resource'),
         ),
       );
     }
@@ -103,8 +104,8 @@ class CRM_Admin_Page_Resource extends CRM_Core_Page_Basic {
    */
   function run() {
     // set title and breadcrumb
-    CRM_Utils_System::setTitle(ts('Settings - Manage Resource'));
-    /*$breadCrumb = array(array('title' => ts('Administration'),
+    CRM_Utils_System::setTitle(E::ts('Settings - Manage Resource'));
+    /*$breadCrumb = array(array('title' => E::ts('Administration'),
         'url' => CRM_Utils_System::url('civicrm/admin',
         'reset=1'
         ),

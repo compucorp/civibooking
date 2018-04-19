@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -41,7 +42,7 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
 
   function preProcess() {
     parent::preProcess();
-    CRM_Utils_System::setTitle(ts('Settings - Resource Configuration Set'));
+    CRM_Utils_System::setTitle(E::ts('Settings - Resource Configuration Set'));
   }
 
   /**
@@ -57,9 +58,9 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
       return;
     }
 
-    $this->add('text', 'title', ts('Title'), array('size' => 50, 'maxlength' => 255), TRUE);
-    $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigSet', 'weight'), TRUE);
-    $statusCheckbox = $this->add('checkbox', 'is_active', ts('Enabled?'));
+    $this->add('text', 'title', E::ts('Title'), array('size' => 50, 'maxlength' => 255), TRUE);
+    $this->add('text', 'weight', E::ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigSet', 'weight'), TRUE);
+    $statusCheckbox = $this->add('checkbox', 'is_active', E::ts('Enabled?'));
     
     //allow state changes and delete only when there are no enabled resources
     $resourceDao = new CRM_Booking_DAO_Resource();
@@ -79,12 +80,12 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
       array(
         array(
           'type' => 'next',
-          'name' => ts('Save'),
+          'name' => E::ts('Save'),
           'isDefault' => TRUE,
         ),
         array(
           'type' => 'cancel',
-          'name' => ts('Cancel'),
+          'name' => E::ts('Cancel'),
           'js' => array('onclick' => "location.href='{$cancelURL}'; return false;"),
         ),
       )
@@ -125,7 +126,7 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
     $params = $this->exportValues();
     if ($this->_action & CRM_Core_Action::DELETE) {
       CRM_Booking_BAO_ResourceConfigSet::del($this->_id);
-      CRM_Core_Session::setStatus(ts('Selected resource configuration set has been deleted.'), ts('Record Deleted'), 'success');
+      CRM_Core_Session::setStatus(E::ts('Selected resource configuration set has been deleted.'), E::ts('Record Deleted'), 'success');
     }
     else {
       $params = $this->exportValues();
@@ -143,12 +144,12 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
       $set = CRM_Booking_BAO_ResourceConfigSet::create($params);
 
       if ($this->_action & CRM_Core_Action::UPDATE) {
-        CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $set->title)), ts('Saved'), 'success');
+        CRM_Core_Session::setStatus(E::ts('The Record \'%1\' has been saved.', array(1 => $set->title)), E::ts('Saved'), 'success');
       }
       else {
         $url = CRM_Utils_System::url('civicrm/admin/resource/config_set/config_option', 'reset=1&action=add&sid=' . $set->id);
         CRM_Core_Session::setStatus(
-          ts("Your resource configuration set '%1' has been added. You can add resource option now.", array(1 => $set->title)), ts('Saved'), 'success');
+          E::ts("Your resource configuration set '%1' has been added. You can add resource option now.", array(1 => $set->title)), E::ts('Saved'), 'success');
         $session = CRM_Core_Session::singleton();
         $session->replaceUserContext($url);
       }

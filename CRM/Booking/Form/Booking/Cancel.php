@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -67,9 +68,9 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
   public function buildQuickForm() {
     parent::buildQuickForm();
 
-    $this->addDate('cancellation_date', ts('Date of Cancellation'), TRUE, array('formatType' => 'activityDate'));
+    $this->addDate('cancellation_date', E::ts('Date of Cancellation'), TRUE, array('formatType' => 'activityDate'));
 
-    $this->add('hidden', 'booking_total', ts('Booking Amount'), array('disabled' => 'disabled'));
+    $this->add('hidden', 'booking_total', E::ts('Booking Amount'), array('disabled' => 'disabled'));
 
     $result = civicrm_api('OptionValue', 'get',  array(
       'version' => 3,
@@ -79,17 +80,17 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     foreach ($result['values'] as $key => $ov) {
       $cancellationCharges[$ov['value']] = $ov['label'];
     }
-    $this->add('select', 'cancellations', ts('Cancellation %'),
-      array('' => ts('- select -')) + $cancellationCharges,
+    $this->add('select', 'cancellations', E::ts('Cancellation %'),
+      array('' => E::ts('- select -')) + $cancellationCharges,
       TRUE,
       array()
     );
 
-    $this->add('hidden', 'cancellation_charge', ts('Cancellation Charge'), array('disabled' => 'disabled'));
-    $this->add('text', 'adjustment', ts('Additional Charges'));
-    $this->add('textarea', 'comment', ts('Charge Comment'));
+    $this->add('hidden', 'cancellation_charge', E::ts('Cancellation Charge'), array('disabled' => 'disabled'));
+    $this->add('text', 'adjustment', E::ts('Additional Charges'));
+    $this->add('textarea', 'comment', E::ts('Charge Comment'));
 
-    $this->add('text', 'charge_amount', ts('Amount to Pay'), array('disabled' => 'disabled'));
+    $this->add('text', 'charge_amount', E::ts('Amount to Pay'), array('disabled' => 'disabled'));
 
     $this->addFormRule( array( 'CRM_Booking_Form_Booking_Cancel', 'formRule' ), $this );
   }
@@ -119,7 +120,7 @@ class CRM_Booking_Form_Booking_Cancel extends CRM_Booking_Form_Booking_Base {
     
     CRM_Booking_BAO_Cancellation::create($params);
     parent::postProcess();
-    CRM_Core_Session::setStatus(ts('The booking \'%1\' has been cancelled.', array(1 => $this->_values['title'])), ts('Saved'), 'success');
+    CRM_Core_Session::setStatus(E::ts('The booking \'%1\' has been cancelled.', array(1 => $this->_values['title'])), E::ts('Saved'), 'success');
   }
 
   static function registerScripts() {

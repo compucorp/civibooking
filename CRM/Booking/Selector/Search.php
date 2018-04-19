@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -224,41 +225,41 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
     if (!(self::$_links)) {
       self::$_links = array(
         CRM_Core_Action::VIEW => array(
-          'name' => ts('View'),
+          'name' => E::ts('View'),
           'url' => 'civicrm/contact/view/booking',
           'qs' => 'reset=1&id=%%id%%&cid=%%cid%%&action=view&context=%%cxt%%&selectedChild=booking' . $extraParams,
-          'title' => ts('View Booking'),
+          'title' => E::ts('View Booking'),
         ),
         CRM_Core_Action::UPDATE => array(
-          'name' => ts('Edit'),
+          'name' => E::ts('Edit'),
           'url' => 'civicrm/booking/edit',
           'qs' => 'reset=1&action=update&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
-          'title' => ts('Edit Booking'),
+          'title' => E::ts('Edit Booking'),
         ),
         CRM_Core_Action::BASIC => array(
-          'name' => ts('Update Status'),
+          'name' => E::ts('Update Status'),
           'url' => 'civicrm/contact/view/booking',
           'qs' => 'reset=1&action=update&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
-          'title' => ts('Update Status'),
+          'title' => E::ts('Update Status'),
         ),
         CRM_Core_Action::ADVANCED => array(
-          'name' => ts('Record Payment'),
+          'name' => E::ts('Record Payment'),
           'url' => 'civicrm/contact/view/booking',
           'qs' => 'reset=1&action=update&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
-          'title' => ts('Edit Booking'),
+          'title' => E::ts('Edit Booking'),
         ),
 
         CRM_Core_Action::CLOSE => array(
-          'name' => ts('Cancel'),
+          'name' => E::ts('Cancel'),
           'url' => 'civicrm/contact/view/booking',
           'qs' => 'reset=1&action=close&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
-          'title' => ts('Edit Booking'),
+          'title' => E::ts('Edit Booking'),
         ),
         CRM_Core_Action::DELETE => array(
-          'name' => ts('Delete'),
+          'name' => E::ts('Delete'),
           'url' => 'civicrm/contact/view/booking',
           'qs' => 'reset=1&action=delete&id=%%id%%&cid=%%cid%%&context=%%cxt%%' . $extraParams,
-          'title' => ts('Delete Booking'),
+          'title' => E::ts('Delete Booking'),
         ),
       );
 
@@ -275,7 +276,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
    * @access public
    */
   function getPagerParams($action, &$params) {
-    $params['status'] = ts('Booking') . ' %%StatusMessage%%';
+    $params['status'] = E::ts('Booking') . ' %%StatusMessage%%';
     $params['csvString'] = NULL;
     if ($this->_limit) {
       $params['rowCount'] = $this->_limit;
@@ -418,60 +419,60 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
   public function &getColumnHeaders($action = NULL, $output = NULL) {
     if (!isset(self::$_columnHeaders)) {
       self::$_columnHeaders = array(
-        array('name' => ts('Title'),
+        array('name' => E::ts('Title'),
           'sort' => 'booking_title',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
         // array(
-          // 'name' => ts('Start Date'),
+          // 'name' => E::ts('Start Date'),
           // 'sort' => 'booking_start_date',
           // 'direction' => CRM_Utils_Sort::DONTCARE,
         // ),
         array(
-          'name' => ts('Associated Contact'),
+          'name' => E::ts('Associated Contact'),
           'sort' => 'booking_associated_contact',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
         array(
-          'name' => ts('Date Booking Made'),
+          'name' => E::ts('Date Booking Made'),
           'sort' => 'booking_event_date',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
 		array(
-          'name' => ts('Start Date'),
+          'name' => E::ts('Start Date'),
           'sort' => 'start_date',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
 		array(
-          'name' => ts('End Date'),
+          'name' => E::ts('End Date'),
           'sort' => 'end_date',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
         array(
-          'name' => ts('Price'),
+          'name' => E::ts('Price'),
           'sort' => 'booking_total_amount',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
 
         array(
-          'name' => ts('Booking Status'),
+          'name' => E::ts('Booking Status'),
           'sort' => 'booking_status',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
         array(
-          'name' => ts('Payment Status'),
+          'name' => E::ts('Payment Status'),
           'sort' => 'booking_payment_status',
           'direction' => CRM_Utils_Sort::DONTCARE,
         ),
 
-        array('desc' => ts('Actions')),
+        array('desc' => E::ts('Actions')),
       );
 
       if (!$this->_single) {
         $pre = array(
-          array('desc' => ts('Contact Type')),
+          array('desc' => E::ts('Contact Type')),
           array(
-            'name' => ts('Booking Contact'),
+            'name' => E::ts('Booking Contact'),
             'sort' => 'sort_name',
             'direction' => CRM_Utils_Sort::DONTCARE,
           ),
@@ -499,7 +500,7 @@ class CRM_Booking_Selector_Search extends CRM_Core_Selector_Base implements CRM_
    * @return string name of the file
    */
   function getExportFileName($output = 'csv') {
-    return ts('CiviCRM Booking Search');
+    return E::ts('CiviCRM Booking Search');
   }
 }
 //end of class
