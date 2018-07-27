@@ -119,7 +119,11 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
     return TRUE;
   }
 
-
+  public function upgrade_1510() {
+    $this->ctx->log->info('Applying update 1510');
+    $this->executeSqlFile('sql/upgrade_1510.sql');
+    return TRUE;
+  }
 
   /**
    * Example: Run a couple simple queries

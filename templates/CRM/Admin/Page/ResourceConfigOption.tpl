@@ -37,6 +37,7 @@
             <th >{ts}Price{/ts}</th>
             <th >{ts}Max Size{/ts}</th>
             <th >{ts}Unit{/ts}</th>
+            <th >{ts}Owner{/ts}</th>
             <th >{ts}Weight{/ts}</th>
             <th >{ts}Enabled?{/ts}</th>
             <th ></th>
@@ -47,6 +48,7 @@
             <td class="crm-booking-resource-description">{$row.price}</td>
             <td class="crm-booking-resource-type">{$row.max_size}</td>
             <td class="crm-booking-resource-location">{$row.unit}</td>
+            <td class="crm-booking-resource-location">{$row.owner}</td>
             <td class="crm-booking-resource-weight">{$row.weight}</td>
             <td id="row_{$row.id}_status" class="crm-booking-resource-is_active">{if $row.is_active eq 1} {ts}Yes{/ts} {else} {ts}No{/ts} {/if}</td>
             <td>{$row.action|replace:'xx':$row.id}</td>
@@ -67,7 +69,7 @@
         {ts}There are no resources configuration option.{/ts}
      </div>
      <div class="action-link">
-       <a href="{crmURL p='civicrm/admin/resource/config_set/config_option' q="action=add&sid=$sid&reset=1"}" id="newResourceConfigOption" class="button"><span><div class="icon add-icon"></div>{ts}Add Resource Configruation Option{/ts}</span></a>
+       <a href="{crmURL p='civicrm/admin/resource/config_set/config_option' q="action=add&sid=$sid&reset=1"}" id="newResourceConfigOption" class="button"><span><div class="icon add-icon"></div>{ts}Add Resource Configuration Option{/ts}</span></a>
      </div>
 {/if}
 {/if}

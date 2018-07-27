@@ -66,6 +66,7 @@ class CRM_Admin_Form_ResourceConfigOption extends CRM_Admin_Form {
     $this->add('text', 'label', ts('Label'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'price', ts('Price'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigOption', 'price '), TRUE);
     $this->add('text', 'max_size', ts('Max Size'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigOption', 'max_size '), TRUE);
+    $this->addEntityRef('owner_id', ts('Select Resource Owner'));
     $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigOption', 'weight'), TRUE);
     $this->add('checkbox', 'is_active', ts('Enabled?'));
 

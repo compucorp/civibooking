@@ -188,23 +188,33 @@ function booking_civicrm_entityTypes(&$entityTypes) {
  * Implementation of hook_civicrm_merge
  */
 function booking_civicrm_merge ( $type, &$data, $mainId = NULL, $otherId = NULL, $tables = NULL ){
-if (!empty($mainId) && !empty($otherId) && $type == 'sqls'){
+  if (!empty($mainId) && !empty($otherId)){
+    if ($type == 'sqls') {
+      $query1 = "
+        UPDATE civicrm_booking
+        SET primary_contact_id=$mainId
+        WHERE primary_contact_id=$otherId;
+        ";
+      $query2 = "
+        UPDATE civicrm_booking
+        SET secondary_contact_id=$mainId
+        WHERE secondary_contact_id=$otherId;
+        ";
 
-    $query1 = "
-      UPDATE civicrm_booking
-      SET primary_contact_id=$mainId
-      WHERE primary_contact_id=$otherId;
+      require_once('CRM/Core/DAO.php');
+      $dao = CRM_Core_DAO::executeQuery( $query1 );
+      $dao = CRM_Core_DAO::executeQuery( $query2 );
+    }
+
+    $updateResourceOwnerQuery = "
+      UPDATE civicrm_booking_resource_config_option
+      SET owner_id=$mainId
+      WHERE owner_id=$otherId;
       ";
-    $query2 = "
-      UPDATE civicrm_booking
-      SET secondary_contact_id=$mainId
-      WHERE secondary_contact_id=$otherId;
-      ";
 
-    require_once('CRM/Core/DAO.php');
-    $dao = CRM_Core_DAO::executeQuery( $query1 );
-	$dao = CRM_Core_DAO::executeQuery( $query2 );
+    $dao = CRM_Core_DAO::executeQuery( $updateResourceOwnerQuery );
 
+    echo "merge hook thrown\n";
   }
 }
 
