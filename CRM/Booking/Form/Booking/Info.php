@@ -123,7 +123,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $defaults['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_id', $this->_values);
 
       $defaults['title'] = CRM_Utils_Array::value('title', $this->_values);
-      $defaults['po_no'] = CRM_Utils_Array::value('po_no', $this->_values);
+      $defaults['po_no'] = CRM_Utils_Array::value('po_number', $this->_values);
       $defaults['booking_status'] =  CRM_Utils_Array::value('booking_status_id', $this->_values);
       $defaults['event_start_date'] = CRM_Utils_Array::value('booking_date', $this->_values);
       list($defaults['event_start_date'], $defaults['event_start_date_time']) = CRM_Utils_Date::setDateDefaults($defaults['event_start_date'], 'activityDateTime');
