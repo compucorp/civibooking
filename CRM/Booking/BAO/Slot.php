@@ -348,7 +348,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
      */
     static function getSlotDetailsOrderByResourceBetweenDate($from,$to) {
         $slots = array();
-        $slotsResult = CRM_Booking_BAO_Slot::getSlotsBetweenBookingDate($from, $to);
+        $slotsResult = CRM_Booking_BAO_Slot::getSlotBetweenDate($from, $to);
         foreach ($slotsResult as $key => $slotItem) {
             //get booking detail
             $params = array('booking_id' => $slotItem['booking_id'],);
@@ -430,51 +430,4 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
         }
         return $orderResource;
     }
-
-    /**
-     * Get Slot records between given booking_dates
-     *
-     * @return array
-     * @param $from fromDate    put mySql Date type, for example '2013-12-03'
-     * @param $to toDate        put mySql Date type, for example '2013-12-03'
-     */
-    static function getSlotsBetweenBookingDate($from, $to) {
-
-      $params = array(1 => array( $from, 'String'),
-                      2 => array( $to, 'String'));
-
-      $query = "
-        SELECT cbs.id,
-             cbs.booking_id,
-             cbs.resource_id,
-             cbs.config_id,
-             cbs.start,
-             cbs.end,
-             cbs.quantity,
-             cbs.note
-        FROM civicrm_booking_slot cbs, civicrm_booking cb
-        WHERE cbs.booking_id = cb.id
-        AND
-        (DATE(cb.booking_date) >= %1 AND DATE(cb.booking_date) < %2)
-        AND cbs.is_deleted = 0";
-
-      $slots = array();
-      $dao = CRM_Core_DAO::executeQuery($query, $params);
-
-      while ($dao->fetch()) {
-        $slots[$dao->id] = array(
-          'id' => $dao->id,
-          'booking_id' => $dao->booking_id,
-          'resource_id' => $dao->resource_id,
-          'config_id' => $dao->config_id,
-          'start' => $dao->start,
-          'end' => $dao->end,
-          'quantity' => $dao->quantity,
-          'note' => $dao->note,
-        );
-      }
-
-      return $slots;
-    }
-
 }
