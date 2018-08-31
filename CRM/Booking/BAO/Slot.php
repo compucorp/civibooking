@@ -348,7 +348,7 @@ class CRM_Booking_BAO_Slot extends CRM_Booking_DAO_Slot {
      */
     static function getSlotDetailsOrderByResourceBetweenDate($from,$to) {
         $slots = array();
-        $slotsResult = CRM_Booking_BAO_Slot::getSlotsBetweenBookingDate($from, $to);
+        $slotsResult = CRM_Booking_BAO_Slot::getSlotBetweenDate($from, $to);
         foreach ($slotsResult as $key => $slotItem) {
             //get booking detail
             $params = array('booking_id' => $slotItem['booking_id'],);
