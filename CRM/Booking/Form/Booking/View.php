@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E;
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
