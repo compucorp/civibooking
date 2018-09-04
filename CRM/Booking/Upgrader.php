@@ -186,6 +186,8 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
     }
 
     CRM_Core_BAO_Navigation::resetNavigation();
+    
+    return TRUE;
   }
 
   /**
