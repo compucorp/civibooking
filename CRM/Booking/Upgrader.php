@@ -137,7 +137,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
   private function toggleIsActiveMenuItems($isActive) {
     $sortedItems = array();
     $menuItems = $this->buildBookingSubMenusParameters();
-
+    $isActive = (int) $isActive;
     foreach ($menuItems as $item) {
       $parent = CRM_Utils_Array::value('parent_name', $item, '_noparent_');
       $sortedItems[$parent][] = $item['name'];
@@ -154,8 +154,16 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
       if ($parent === '_noparent_') {
         $params['parent_id'] = array('IS NULL' => 1);
       }
-
-      civicrm_api3('Navigation', 'get', $params);
+      
+      $versionNum = $this->versionSwitcher();
+      if ($versionNum >= 470){
+        civicrm_api3('Navigation', 'get', $params);
+      }
+      else {
+        $items = implode("','", $items);
+        $query = "UPDATE civicrm_navigation SET is_active = {$isActive} WHERE name IN ('{$items}')";
+        CRM_Core_DAO::executeQuery($query);
+      }
     }
 
     CRM_Core_BAO_Navigation::resetNavigation();
@@ -373,8 +381,6 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
    * @param array $menuItem
    */
   private function addNav($menuItem) {
-    $this->removeNav($menuItem['name']);
-
     if (isset($menuItem['parent_name'])) {
       $menuItem['parent_id'] = CRM_Core_DAO::getFieldValue('CRM_Core_DAO_Navigation', $menuItem['parent_name'], 'id', 'name');
       unset($menuItem['parent_name']);
@@ -391,11 +397,31 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
    * @param string $name
    */
   private function removeNav($name) {
-    civicrm_api3('Navigation', 'get', array(
-      'sequential' => 1,
-      'name' => $name,
-      'api.Navigation.delete' => array('id' => '$value.id'),
-    ));
+    $versionNum = $this->versionSwitcher();
+    if ($versionNum >= 470){
+      civicrm_api3('Navigation', 'get', array(
+        'sequential' => 1,
+        'name' => $name,
+        'api.Navigation.delete' => array('id' => '$value.id'),
+      ));
+    }
+    else {
+      $query = "DELETE FROM civicrm_navigation WHERE name = '{$name}'";
+      CRM_Core_DAO::executeQuery($query);
+    }
+  }
+  
+  /**
+   * Get civicrm version.
+   * 
+   * @return $versionNum
+   */
+  private function versionSwitcher() {
+    $version = CRM_Utils_System::version();
+    preg_match('/[0-9]\.[0-9]\.[0-9]/', $version, $matches);
+    $versionNum = str_replace(".","",array_pop($matches));
+    
+    return $versionNum;
   }
 
   /**
