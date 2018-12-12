@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
 +--------------------------------------------------------------------+
 | CiviCRM version 4.4                                                |
@@ -145,13 +146,13 @@ class CRM_Booking_DAO_ResourceCriteria extends CRM_Core_DAO
         'id' => array(
           'name' => 'id',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('ID') ,
+          'title' => E::ts('ID') ,
           'required' => true,
         ) ,
         'resource_id' => array(
           'name' => 'resource_id',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Resource ID') ,
+          'title' => E::ts('Resource ID') ,
           'required' => true,
           'FKClassName' => 'CRM_Booking_DAO_Resource',
         ) ,

@@ -26,7 +26,7 @@ class CRM_Booking_Page_Print_DayView extends CRM_Core_Page {
         $this -> assign($values);
 
         // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-        CRM_Utils_System::setTitle(ts('DayViewPrint'));
+        CRM_Utils_System::setTitle(E::ts('DayViewPrint'));
 
         parent::run();
     }

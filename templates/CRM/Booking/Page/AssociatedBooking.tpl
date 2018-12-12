@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 <table class="selector">
   <thead class="sticky">
     <tr>
@@ -46,3 +47,4 @@
   </tr>
   {/foreach}
 </table>
+{/crmScope}

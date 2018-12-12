@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -41,7 +42,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
   function preProcess() {
     parent::preProcess();
-    CRM_Utils_System::setTitle(ts('Settings - Resource'));
+    CRM_Utils_System::setTitle(E::ts('Settings - Resource'));
     $this->_id = CRM_Utils_Request::retrieve('id', 'Positive',
       $this, FALSE, 0
     );
@@ -62,26 +63,26 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
 
     $types =  CRM_Booking_BAO_Resource::buildOptions('type_id', 'create');
-    $this->add('select', 'type_id', ts('Resource type'),
-      array('' => ts('- select -')) + $types,
+    $this->add('select', 'type_id', E::ts('Resource type'),
+      array('' => E::ts('- select -')) + $types,
       TRUE,
       array()
     );
 
-    $this->add('text', 'label', ts('Label'), array('size' => 50, 'maxlength' => 255), TRUE);
-    $this->add('textarea', 'description', ts('Description'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'description'), FALSE);
+    $this->add('text', 'label', E::ts('Label'), array('size' => 50, 'maxlength' => 255), TRUE);
+    $this->add('textarea', 'description', E::ts('Description'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'description'), FALSE);
     /*
     $this->addWysiwyg('description',
-        ts('Description'),
+        E::ts('Description'),
         CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'description')
     );*/
 
-    $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'weight'), TRUE);
-    $statusCheckbox = $this->add('advcheckbox', 'is_active', ts('Enabled?'));
-    $this->add('advcheckbox', 'is_unlimited', ts('Is Unlimited?'));
+    $this->add('text', 'weight', E::ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_Resource', 'weight'), TRUE);
+    $statusCheckbox = $this->add('advcheckbox', 'is_active', E::ts('Enabled?'));
+    $this->add('advcheckbox', 'is_unlimited', E::ts('Is Unlimited?'));
 
 
-    $configSets =  array('' => ts('- select -'));
+    $configSets =  array('' => E::ts('- select -'));
     try{
       $activeSets = civicrm_api3('ResourceConfigSet', 'get', array('is_active' => 1, 'is_deleted' => 0));
       foreach ($activeSets['values'] as $key => $set) {
@@ -100,11 +101,11 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       $statusCheckbox->setAttribute('disabled', 'disabled');
     }
 
-    $this->add('select', 'set_id', ts('Resource configuration set'), $configSets, TRUE);
+    $this->add('select', 'set_id', E::ts('Resource configuration set'), $configSets, TRUE);
 
     $locations =  CRM_Booking_BAO_Resource::buildOptions('location_id', 'create');
-    $this->add('select', 'location_id', ts('Resource Location'),
-      array('' => ts('- select -')) + $locations,
+    $this->add('select', 'location_id', E::ts('Resource Location'),
+      array('' => E::ts('- select -')) + $locations,
       FALSE,
       array()
     );
@@ -116,12 +117,12 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       array(
         array(
           'type' => 'next',
-          'name' => ts('Save'),
+          'name' => E::ts('Save'),
           'isDefault' => TRUE,
         ),
         array(
           'type' => 'cancel',
-          'name' => ts('Cancel'),
+          'name' => E::ts('Cancel'),
           'js' => array('onclick' => "location.href='{$cancelURL}'; return false;"),
         ),
       )
@@ -136,7 +137,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
         $options = civicrm_api3('ResourceConfigOption', 'get', array('set_id' => $setId));
         $count = CRM_Utils_Array::value('count', $options);
         if($count == 0){
-          $errors['set_id'] = ts('The selected set does not contain any options, please select another');
+          $errors['set_id'] = E::ts('The selected set does not contain any options, please select another');
         }
       }
       catch (CiviCRM_API3_Exception $e) {}
@@ -174,7 +175,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       CRM_Booking_BAO_Slot::delByResource($this->_id);
 
       CRM_Booking_BAO_Resource::del($this->_id);
-      CRM_Core_Session::setStatus(ts('Selected resource has been deleted.'), ts('Record Deleted'), 'success');
+      CRM_Core_Session::setStatus(E::ts('Selected resource has been deleted.'), E::ts('Record Deleted'), 'success');
 
     }
     else {
@@ -184,7 +185,7 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
 
 
       $resource = CRM_Booking_BAO_Resource::create($params);
-      CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $resource->label)), ts('Saved'), 'success');
+      CRM_Core_Session::setStatus(E::ts('The Record \'%1\' has been saved.', array(1 => $resource->label)), E::ts('Saved'), 'success');
     }
   }
 

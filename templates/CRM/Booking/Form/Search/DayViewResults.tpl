@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 <h1>Day view for: {$dayview_select_date|crmDate}</h1>
   {foreach from=$resources item=resource}
   <h3>{$resource.label}</h3>
@@ -61,3 +62,4 @@
   </table>
   {/if}
   {/foreach}
+{/crmScope}

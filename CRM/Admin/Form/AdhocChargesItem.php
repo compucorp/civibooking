@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -41,7 +42,7 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
 
   function preProcess() {
     parent::preProcess();
-    CRM_Utils_System::setTitle(ts('Settings - Additional Charges Item'));
+    CRM_Utils_System::setTitle(E::ts('Settings - Additional Charges Item'));
   }
 
   /**
@@ -58,12 +59,12 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
     }
 
 	  // create form elements
-    $this->add('text', 'label', ts('Label'), array('size' => 50, 'maxlength' => 255), TRUE);
-    $this->add('text', 'price', ts('Price'), array('size' => 10, 'maxlength' => 255), TRUE);
-    $this->add('text', 'weight', ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_AdhocChargesItem', 'weight'), TRUE);
-    $this->add('checkbox', 'is_active', ts('Enabled?'));
+    $this->add('text', 'label', E::ts('Label'), array('size' => 50, 'maxlength' => 255), TRUE);
+    $this->add('text', 'price', E::ts('Price'), array('size' => 10, 'maxlength' => 255), TRUE);
+    $this->add('text', 'weight', E::ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_AdhocChargesItem', 'weight'), TRUE);
+    $this->add('checkbox', 'is_active', E::ts('Enabled?'));
 
-    $this->addRule("price", ts('Please enter a valid amount.'), 'money');
+    $this->addRule("price", E::ts('Please enter a valid amount.'), 'money');
 
 	// add form rule
     $this->addFormRule(array('CRM_Admin_Form_AdhocChargesItem', 'formRule'), $this);
@@ -75,12 +76,12 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
       array(
         array(
           'type' => 'next',
-          'name' => ts('Save'),
+          'name' => E::ts('Save'),
           'isDefault' => TRUE,
         ),
         array(
           'type' => 'cancel',
-          'name' => ts('Cancel'),
+          'name' => E::ts('Cancel'),
           'js' => array('onclick' => "location.href='{$cancelURL}'; return false;"),
         ),
       )
@@ -94,7 +95,7 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
 	  // put validation
 	  if(!is_numeric($price)){
 	   // set error msg
-		  $errors['price'] = ts('This field should be numeric.');
+		  $errors['price'] = E::ts('This field should be numeric.');
 	  }
     if (!empty($errors)) {
       return $errors;
@@ -131,7 +132,7 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
     // TODO::Make sure we cannot delete if the entity is linked to bookings
     if ($this->_action & CRM_Core_Action::DELETE) {
       CRM_Booking_BAO_AdhocChargesItem::del($this->_id);
-      CRM_Core_Session::setStatus(ts('Selected additional charges item has been deleted.'), ts('Record Deleted'), 'success');
+      CRM_Core_Session::setStatus(E::ts('Selected additional charges item has been deleted.'), E::ts('Record Deleted'), 'success');
     }
     else {
       $params = $this->exportValues();
@@ -145,12 +146,12 @@ class CRM_Admin_Form_AdhocChargesItem extends CRM_Admin_Form {
 
 		// udpate action
       if ($this->_action & CRM_Core_Action::UPDATE) {
-        CRM_Core_Session::setStatus(ts('The Record \'%1\' has been saved.', array(1 => $set->label)), ts('Saved'), 'success');
+        CRM_Core_Session::setStatus(E::ts('The Record \'%1\' has been saved.', array(1 => $set->label)), E::ts('Saved'), 'success');
       }
       else {
         $url = CRM_Utils_System::url('civicrm/admin/adhoc_charges_item', 'reset=1&action=browse&sid=' . $set->id);
         CRM_Core_Session::setStatus(
-          ts("Your additional charges item '%1' has been added.", array(1 => $set->label)), ts('Saved'), 'success');
+          E::ts("Your additional charges item '%1' has been added.", array(1 => $set->label)), E::ts('Saved'), 'success');
         $session = CRM_Core_Session::singleton();
         $session->replaceUserContext($url);
       }

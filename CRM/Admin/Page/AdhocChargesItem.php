@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -65,27 +66,27 @@ class CRM_Admin_Page_AdhocChargesItem extends CRM_Core_Page_Basic {
     if (!(self::$_links)) {
       self::$_links = array(
         CRM_Core_Action::UPDATE => array(
-          'name' => ts('Edit'),
+          'name' => E::ts('Edit'),
           'url' => 'civicrm/admin/adhoc_charges_item',
           'qs' => 'action=update&id=%%id%%&reset=1',
-          'title' => ts('Edit Additional Charges Item'),
+          'title' => E::ts('Edit Additional Charges Item'),
         ),
         CRM_Core_Action::DISABLE => array(
-          'name' => ts('Disable'),
+          'name' => E::ts('Disable'),
           'ref' => 'crm-enable-disable',
-          'title' => ts('Disable Additional Charges Item'),
+          'title' => E::ts('Disable Additional Charges Item'),
         ),
         CRM_Core_Action::ENABLE => array(
-          'name' => ts('Enable'),
+          'name' => E::ts('Enable'),
           'ref' => 'crm-enable-disable',
-          'title' => ts('Enable Additional Charges Item'),
+          'title' => E::ts('Enable Additional Charges Item'),
         ),
                 
         CRM_Core_Action::DELETE => array(
-          'name' => ts('Delete'),
+          'name' => E::ts('Delete'),
           'url' => 'civicrm/admin/adhoc_charges_item',
           'qs' => 'action=delete&id=%%id%%',
-          'title' => ts('Delete Additional Charges Item'),
+          'title' => E::ts('Delete Additional Charges Item'),
         ),
         
       );
@@ -106,7 +107,7 @@ class CRM_Admin_Page_AdhocChargesItem extends CRM_Core_Page_Basic {
    */
   function run() {
     // set title
-    CRM_Utils_System::setTitle(ts('Settings - Additional Charges Item '));
+    CRM_Utils_System::setTitle(E::ts('Settings - Additional Charges Item '));
    
     return parent::run();
   }

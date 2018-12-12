@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
 +--------------------------------------------------------------------+
 | CiviCRM version 4.4                                                |
@@ -191,7 +192,7 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'booking_resource_label' => array(
           'name' => 'label',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Label') ,
+          'title' => E::ts('Label') ,
           'required' => true,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
@@ -199,14 +200,14 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'booking_resource_description' => array(
           'name' => 'description',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Label') ,
+          'title' => E::ts('Label') ,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ) ,
         'type_id' => array(
           'name' => 'type_id',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Type ID') ,
+          'title' => E::ts('Type ID') ,
           'required' => true,
           'maxlength' => 512,
           'size' => CRM_Utils_Type::HUGE,
@@ -217,7 +218,7 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'location_id' => array(
           'name' => 'location_id',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Location ID') ,
+          'title' => E::ts('Location ID') ,
           'maxlength' => 512,
           'size' => CRM_Utils_Type::HUGE,
           'pseudoconstant' => array(
@@ -227,7 +228,7 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'weight' => array(
           'name' => 'weight',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Weight') ,
+          'title' => E::ts('Weight') ,
           'required' => true,
         ) ,
         'is_unlimited' => array(
@@ -238,7 +239,7 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'is_active' => array(
           'name' => 'is_active',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => ts('Slot is cancelled') ,
+          'title' => E::ts('Slot is cancelled') ,
           'import' => true,
           'where' => 'civicrm_booking_resource.is_active',
           'headerPattern' => '',
@@ -249,7 +250,7 @@ class CRM_Booking_DAO_Resource extends CRM_Core_DAO
         'is_deleted' => array(
           'name' => 'is_deleted',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => ts('Slot is in the Trash') ,
+          'title' => E::ts('Slot is in the Trash') ,
           'import' => true,
           'where' => 'civicrm_booking_resource.is_deleted',
           'headerPattern' => '',

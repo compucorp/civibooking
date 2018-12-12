@@ -1,3 +1,4 @@
+(function ($, ts){ 
 var basket = {};
 var subTotal = 0.00;
 var definedSlots = new Array();
@@ -532,6 +533,10 @@ cj(function ($) {
             scheduler.parse(JSON.stringify(slots), "json");
         }
     }
-    $(document).ready(loadEvents);
+    $(document).ready(function(){
+      loadEvents();
+      $('#dhx_minical_icon').click(show_minical);
+    });
 });
 
+}(CRM.$, CRM.ts('uk.co.compucorp.civicrm.booking')));

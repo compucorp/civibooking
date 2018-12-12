@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 {*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -40,7 +41,7 @@
             <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
             <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
             <div class="dhx_cal_tab" name="timeline_tab" style="right:204;"></div> *}
-            <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="show_minical()">&nbsp;</div>
+            <div class="dhx_minical_icon" id="dhx_minical_icon">&nbsp;</div>
           </div>
           <div class="dhx_cal_header">
           </div>
@@ -140,3 +141,4 @@
 
 </div>
 
+{/crmScope}

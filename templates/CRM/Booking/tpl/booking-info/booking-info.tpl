@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 <script id="booking-info-contact-template" type="text/template">
     <div class="label">
         {$form.primary_contact_id.label}
@@ -26,3 +27,4 @@
 
 
 
+{/crmScope}

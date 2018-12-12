@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
 +--------------------------------------------------------------------+
 | CiviCRM version 4.4                                                |
@@ -178,13 +179,13 @@ class CRM_Booking_DAO_AdhocCharges extends CRM_Core_DAO
         'quantity' => array(
           'name' => 'quantity',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => ts('Quantity') ,
+          'title' => E::ts('Quantity') ,
           'required' => true,
         ) ,
         'is_cancelled' => array(
           'name' => 'is_cancelled',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => ts('Slot is cancelled') ,
+          'title' => E::ts('Slot is cancelled') ,
           'import' => true,
           'where' => 'civicrm_booking_adhoc_charges.is_cancelled',
           'headerPattern' => '',
@@ -194,7 +195,7 @@ class CRM_Booking_DAO_AdhocCharges extends CRM_Core_DAO
         'is_deleted' => array(
           'name' => 'is_deleted',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => ts('Slot is in the Trash') ,
+          'title' => E::ts('Slot is in the Trash') ,
           'import' => true,
           'where' => 'civicrm_booking_adhoc_charges.is_deleted',
           'headerPattern' => '',

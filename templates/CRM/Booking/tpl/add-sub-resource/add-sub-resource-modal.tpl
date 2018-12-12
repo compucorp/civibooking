@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 <script id="add-sub-resource-template" type="text/template">
 {if $unlimited_resource_count}
 <div id="loading" class="crm-loading-element">{ts}Loading ...{/ts}</div>
@@ -82,3 +83,4 @@
 </script>
 
 
+{/crmScope}

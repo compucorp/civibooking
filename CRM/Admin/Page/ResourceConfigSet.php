@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -64,32 +65,32 @@ class CRM_Admin_Page_ResourceConfigSet extends CRM_Core_Page_Basic {
     if (!(self::$_links)) {
       self::$_links = array(
         CRM_Core_Action::UPDATE => array(
-          'name' => ts('Edit'),
+          'name' => E::ts('Edit'),
           'url' => 'civicrm/admin/resource/config_set',
           'qs' => 'action=update&id=%%id%%&reset=1',
-          'title' => ts('Edit Resource Configuration Set'),
+          'title' => E::ts('Edit Resource Configuration Set'),
         ),
         CRM_Core_Action::BROWSE => array(
-          'name' => ts('Edit Options'),
+          'name' => E::ts('Edit Options'),
           'url' => 'civicrm/admin/resource/config_set/config_option',
           'qs' => 'sid=%%id%%&reset=1',
-          'title' => ts('Edit Resource Configurtation Options'),
+          'title' => E::ts('Edit Resource Configurtation Options'),
         ),
         CRM_Core_Action::DISABLE => array(
-          'name' => ts('Disable'),
+          'name' => E::ts('Disable'),
           'ref' => 'crm-enable-disable',
-          'title' => ts('Disable Resource Configuration Set'),
+          'title' => E::ts('Disable Resource Configuration Set'),
         ),
         CRM_Core_Action::ENABLE => array(
-          'name' => ts('Enable'),
+          'name' => E::ts('Enable'),
           'ref' => 'crm-enable-disable',
-          'title' => ts('Enable Resource Configuration Set'),
+          'title' => E::ts('Enable Resource Configuration Set'),
         ),
         CRM_Core_Action::DELETE => array(
-          'name' => ts('Delete'),
+          'name' => E::ts('Delete'),
           'url' => 'civicrm/admin/resource/config_set',
           'qs' => 'action=delete&id=%%id%%',
-          'title' => ts('Delete Resource Configuration Set'),
+          'title' => E::ts('Delete Resource Configuration Set'),
         ),
       );
     }
@@ -109,8 +110,8 @@ class CRM_Admin_Page_ResourceConfigSet extends CRM_Core_Page_Basic {
    */
   function run() {
     // set title and breadcrumb
-    CRM_Utils_System::setTitle(ts('Settings - Resource Configuration Set'));
-    /*$breadCrumb = array(array('title' => ts('Administration'),
+    CRM_Utils_System::setTitle(E::ts('Settings - Resource Configuration Set'));
+    /*$breadCrumb = array(array('title' => E::ts('Administration'),
         'url' => CRM_Utils_System::url('civicrm/admin',
         'reset=1'
         ),

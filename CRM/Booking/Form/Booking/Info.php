@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 
 require_once 'CRM/Core/Form.php';
 
@@ -16,7 +17,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
    * @access public
    */
   public function getTitle() {
-    return ts('Booking Information');
+    return E::ts('Booking Information');
   }
 
 
@@ -27,9 +28,9 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     }
     if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
       $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');
-      CRM_Utils_System::setTitle(ts('Edit Booking') . " - $title");
+      CRM_Utils_System::setTitle(E::ts('Edit Booking') . " - $title");
     }else{
-      CRM_Utils_System::setTitle(ts('New Booking') );
+      CRM_Utils_System::setTitle(E::ts('New Booking') );
     }
     self::registerScripts();
   }
@@ -37,11 +38,11 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   function buildQuickForm() {
     parent::buildQuickForm();
 
-    $this->addEntityRef("primary_contact_id", ts('Primary contact'), array('create' => TRUE), TRUE );
+    $this->addEntityRef("primary_contact_id", E::ts('Primary contact'), array('create' => TRUE), TRUE );
 
-    $this->addEntityRef("secondary_contact_id", ts('Secondary contact'), array('create' => TRUE));
+    $this->addEntityRef("secondary_contact_id", E::ts('Secondary contact'), array('create' => TRUE));
 
-    $this->add('text', 'po_no', ts('Purchase order number'));
+    $this->add('text', 'po_no', E::ts('Purchase order number'));
 
     $bookingStatus =  CRM_Booking_BAO_Booking::buildOptions('status_id', 'create');
     $result = civicrm_api3(
@@ -54,29 +55,29 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     );
     $this->_cancelStatusId = CRM_Utils_Array::value('value', CRM_Utils_Array::value($result['id'], $result['values']));
     unset($bookingStatus[$this->_cancelStatusId]);
-    $this->add('select', 'booking_status', ts('Booking status'),
-      array('' => ts('- select -')) + $bookingStatus,
+    $this->add('select', 'booking_status', E::ts('Booking status'),
+      array('' => E::ts('- select -')) + $bookingStatus,
       TRUE,
       array()
     );
 
-    $this->add('text', 'title', ts('Title'), array('size' => 50, 'maxlength' => 255), TRUE);
-    $this->addDate('event_start_date', ts('Date booking made'), TRUE, array('formatType' => 'activityDateTime'));
-    $this->add('textarea', 'description', ts('Description'));
-    $this->add('textarea', 'note', ts('Note'));
+    $this->add('text', 'title', E::ts('Title'), array('size' => 50, 'maxlength' => 255), TRUE);
+    $this->addDate('event_start_date', E::ts('Date booking made'), TRUE, array('formatType' => 'activityDateTime'));
+    $this->add('textarea', 'description', E::ts('Description'));
+    $this->add('textarea', 'note', E::ts('Note'));
 
-    $this->add('text', 'enp', ts('Estimate number of participants'));
-    $this->add('text', 'fnp', ts('Final number of participants'));
+    $this->add('text', 'enp', E::ts('Estimate number of participants'));
+    $this->add('text', 'fnp', E::ts('Final number of participants'));
 
     $this->addElement('hidden', "resources");
 
     $buttons = array(
       array('type' => 'back',
-        'name' => ts('<< Back'),
+        'name' => E::ts('<< Back'),
       ),
       array(
         'type' => 'submit',
-        'name' => ts('Complete and Save'),
+        'name' => E::ts('Complete and Save'),
       ),
     );
 
@@ -84,7 +85,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
     $this->addFormRule( array( 'CRM_Booking_Form_Booking_Info', 'formRule' ), $this );
 
-    $this->add('text', 'currencySymbol', ts('Currency'), array( 'disabled' => 'disabled' ));
+    $this->add('text', 'currencySymbol', E::ts('Currency'), array( 'disabled' => 'disabled' ));
   }
 
   static function formRule($params, $files, $context) {
@@ -92,7 +93,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     //make sure primary contact is selected
     $contactId = CRM_Utils_Array::value('primary_contact_id', $params);
     if(!is_numeric($contactId)){
-      $errors['primary_contact_id'] = ts('This field is required.');
+      $errors['primary_contact_id'] = E::ts('This field is required.');
     }
     $selectResource = $context->controller->exportValues('SelectResource');
     $resources = json_decode($selectResource['resources'], true);
@@ -105,7 +106,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $result = civicrm_api3('Slot', 'validate', $resourcesToValidate);
     $values = $result['values'];
     if(!$values['is_valid']){
-      $errors['resources'] = ts('Unfortunately one or more of your booking slots are clashing with another booking. You will need to edit your booking times to resolve this before you can save your booking. Please go back to the first page to edit your booking slots.');
+      $errors['resources'] = E::ts('Unfortunately one or more of your booking slots are clashing with another booking. You will need to edit your booking times to resolve this before you can save your booking. Please go back to the first page to edit your booking slots.');
     }
     return empty($errors) ? TRUE : $errors;
   }
@@ -122,7 +123,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $defaults['secondary_contact_id'] = CRM_Utils_Array::value('secondary_contact_id', $this->_values);
 
       $defaults['title'] = CRM_Utils_Array::value('title', $this->_values);
-      $defaults['po_no'] = CRM_Utils_Array::value('po_no', $this->_values);
+      $defaults['po_no'] = CRM_Utils_Array::value('po_number', $this->_values);
       $defaults['booking_status'] =  CRM_Utils_Array::value('booking_status_id', $this->_values);
       $defaults['event_start_date'] = CRM_Utils_Array::value('booking_date', $this->_values);
       list($defaults['event_start_date'], $defaults['event_start_date_time']) = CRM_Utils_Date::setDateDefaults($defaults['event_start_date'], 'activityDateTime');
@@ -375,7 +376,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $url = CRM_Utils_System::url('civicrm/contact/view/booking',
          "reset=1&id=$bookingID&cid=$cid&action=view"
       );
-      CRM_Core_Session::setStatus($booking['title'], ts('Saved'), 'success');
+      CRM_Core_Session::setStatus($booking['title'], E::ts('Saved'), 'success');
       CRM_Utils_System::redirect( $url);
     }
     catch (CiviCRM_API3_Exception $e) {

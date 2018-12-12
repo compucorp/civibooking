@@ -1,4 +1,5 @@
 <?php
+use CRM_Booking_ExtensionUtil as E; 
 
 // AUTO-GENERATED FILE -- Civix may overwrite any changes made to this file
 
@@ -162,7 +163,7 @@ class CRM_Booking_Upgrader_Base {
     $currentRevision = $this->getCurrentRevision();
     foreach ($this->getRevisions() as $revision) {
       if ($revision > $currentRevision) {
-        $title = ts('Upgrade %1 to revision %2', array(
+        $title = E::ts('Upgrade %1 to revision %2', array(
           1 => $this->extensionName,
           2 => $revision,
         ));

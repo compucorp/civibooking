@@ -1,3 +1,4 @@
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
 {* Search form and results for DayView *}
 
 {* Search form *}
@@ -49,3 +50,4 @@ cj(function() {
 });
 </script>
 {/literal}
+{/crmScope}
