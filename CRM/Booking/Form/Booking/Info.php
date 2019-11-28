@@ -82,7 +82,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     );
 
     $this->add('text', 'title', E::ts('Title'), ['size' => 50, 'maxlength' => 255], TRUE);
-    $this->addDate('event_start_date', E::ts('Date booking made'), TRUE, ['formatType' => 'activityDateTime']);
+    $this->add('datepicker', 'event_start_date', E::ts('Date booking made'), ['formatType' => 'activityDateTime'], TRUE);
     $this->add('textarea', 'description', E::ts('Description'));
     $this->add('textarea', 'note', E::ts('Note'));
 
@@ -240,11 +240,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       array_push($dates, CRM_Utils_Array::value('end_date', $slot));
     }
     sort($dates);
-    $bookingStartDate = $dates[0];
-    $bookingEndDate = $dates[count($dates)-1];
-
-    $booking['booking_start_date'] = CRM_Utils_Date::processDate($bookingStartDate);
-    $booking['booking_end_date'] = CRM_Utils_Date::processDate($bookingEndDate);
+    $booking['booking_start_date'] = $dates[0];
+    $booking['booking_end_date'] = $dates[count($dates)-1];
 
     //make sure we create everything in one transaction, not too nice but it does the job
     $transaction = new CRM_Core_Transaction();
