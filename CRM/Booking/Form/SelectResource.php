@@ -1,29 +1,15 @@
 <?php
-use CRM_Booking_ExtensionUtil as E; 
-
-require_once 'CRM/Core/Form.php';
+use CRM_Booking_ExtensionUtil as E;
 
 /**
  * Form controller class
- *
- * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
- /**
-   * the booking ID of the booking if we are editing a booking
-   *
-   * @var integer
-   */
-  //protected $_id;
 
-  
   private $configOptions;
-  
+
   /**
    * Function to set variables up before form is built
-   *
-   * @return void
-   * @access public
    */
   public function preProcess() {
 
@@ -32,7 +18,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     );
 
     $this->assign('bookingId', $this->_id);
-    
+
     $config = CRM_Core_Config::singleton();
     /**
      * [dateformatDatetime] => %B %E%f, %Y %l:%M %P
@@ -53,10 +39,10 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     $this->assign('years', $years);
 
     $config = CRM_Core_Config::singleton();
-    $currencySymbols = "";
-    if(!empty($config->currencySymbols)){
+    if (!empty($config->currencySymbols)) {
       $currencySymbols = $config->currencySymbols;
-    }else{
+    }
+    else {
       $currencySymbols = $config->defaultCurrencySymbol;
     }
 
@@ -69,8 +55,9 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
       $resources[$rTypekey]['child'] = $result;
     }
 
-    $this->assign('resources', $resources);;
+    $this->assign('resources', $resources);
     $this->assign('currencySymbols', $currencySymbols);
+    $this->assign('currency', \Civi::settings()->get('defaultCurrency'));
     $config = CRM_Booking_BAO_BookingConfig::getConfig();
     $this->assign('colour', CRM_Utils_Array::value('slot_new_colour', $config));
 
@@ -78,16 +65,17 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
     $this->assign('xStart', $xStart);
     $this->assign('xSize', $xSize);
     $this->assign('xStep', $xStep);
-    
-    CRM_Core_Resources::singleton()->addVars('booking', 
+
+    CRM_Core_Resources::singleton()->addVars('booking',
         array('edit_mode' => $this->_action & CRM_Core_Action::UPDATE ? 1 : 0));
 
     $this->assign('timeOptions', CRM_Booking_Utils_DateTime::getTimeRange());
-    if($this->_id && $this->_action == CRM_Core_Action::UPDATE){
+    if ($this->_id && $this->_action == CRM_Core_Action::UPDATE) {
       $title = CRM_Core_DAO::getFieldValue('CRM_Booking_BAO_Booking', $this->_id, 'title', 'id');
       CRM_Utils_System::setTitle(E::ts('Edit Booking') . " - $title");
-    }else{
-      CRM_Utils_System::setTitle(E::ts('New Booking') );
+    }
+    else {
+      CRM_Utils_System::setTitle(E::ts('New Booking'));
     }
     self::registerScripts();
   }
@@ -96,18 +84,15 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    * This function sets the default values for the form.
    * the default values are retrieved from the database
    *
-   * @access public
-   *
-   * @return None
+   * @return array
    */
-  function setDefaultValues() {
-
+  public function setDefaultValues() {
     $defaults = array();
-    if($this->_id){
-      $params =   array(
+    if ($this->_id) {
+      $params = array(
         'id' => $this->_id,
       );
-      
+
       CRM_Booking_BAO_Booking::retrieve($params, $booking);
       $result = civicrm_api3('Slot', 'get', array('booking_id' => $this->_id, 'is_deleted' => 0));
       $config = CRM_Booking_BAO_BookingConfig::getConfig();
@@ -119,14 +104,14 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
         $displayQuantity = CRM_Utils_Array::value('quantity', $value)
           .' x '.CRM_Utils_Array::value('unit_id',$configOptItem)
           .' ('.CRM_Utils_Array::value('price',$configOptItem).')';
-        
+
         $slots[$key] = array(
           'id' => CRM_Utils_Array::value('id', $value),
           'resource_id' => CRM_Utils_Array::value('resource_id', $value),
-          
+
           'start_date' => CRM_Utils_Array::value('start', $value) ,
           'end_date' => CRM_Utils_Array::value('end', $value) ,
-          
+
           'label' => CRM_Core_DAO::getFieldValue(
             'CRM_Booking_BAO_Resource',
             CRM_Utils_Array::value('resource_id', $value),
@@ -151,12 +136,12 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
         );
       }
       $firstSlot = reset($slots);
-      if($firstSlot){
+      if ($firstSlot) {
         $slotStartDate = $firstSlot['start_date'];
         $this->assign('bookingSlotDate', $slotStartDate);
       }
       $this->assign('bookingId', $this->_id);
-      
+
       $defaults['resources'] = json_encode($slots);
     }
     return $defaults;
