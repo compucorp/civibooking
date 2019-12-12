@@ -1,4 +1,5 @@
 {crmScope extensionKey=uk.co.compucorp.civicrm.booking}
+{include file="CRM/common/formButtons.tpl" location="top"}
 {* WizardHeader.tpl provides visual display of steps thru the wizard as well as title for current step *}
 {include file="CRM/common/WizardHeader.tpl"}
 <div id="main-container" >

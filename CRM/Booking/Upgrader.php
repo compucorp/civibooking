@@ -128,7 +128,7 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
   }
 
   public function upgrade_1102() {
-    $this->ctx->log->info('Enabling Booking custom data');
+    Civi::log()->info('Enabling Booking custom data');
     self::enableBookingCustomData();
     return TRUE;
   }
