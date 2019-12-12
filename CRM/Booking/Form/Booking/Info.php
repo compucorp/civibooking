@@ -6,6 +6,31 @@ use CRM_Booking_ExtensionUtil as E;
  */
 class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
+  use CRM_Core_Form_EntityFormTrait;
+
+  /**
+   * Fields for the entity to be assigned to the template.
+   *
+   * Fields may have keys
+   *  - name (required to show in tpl from the array)
+   *  - description (optional, will appear below the field)
+   *  - not-auto-addable - this class will not attempt to add the field using addField.
+   *    (this will be automatically set if the field does not have html in it's metadata
+   *    or is not a core field on the form's entity).
+   *  - help (optional) add help to the field - e.g ['id' => 'id-source', 'file' => 'CRM/Contact/Form/Contact']]
+   *  - template - use a field specific template to render this field
+   *  - required
+   * @var array
+   */
+  protected $entityFields = [];
+
+  /**
+   * Explicitly declare the entity api name.
+   */
+  public function getDefaultEntity() {
+    return 'Booking';
+  }
+
   /**
    * Return a descriptive name for the page, used in wizard header
    *
@@ -32,6 +57,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
   }
 
   public function buildQuickForm() {
+    self::buildQuickEntityForm();
     parent::buildQuickForm();
 
     $this->addEntityRef("primary_contact_id", E::ts('Primary contact'), ['create' => TRUE], TRUE );
@@ -201,6 +227,11 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
 
     $booking['created_by'] = $booking['updated_by'] = CRM_Core_Session::getLoggedInContactID();
     $booking['created_date'] = $booking['updated_date'] = date('YmdHis');
+    foreach ($bookingInfo as $key => $value) {
+      if (substr($key, 0, 7) === 'custom_') {
+        $booking[$key] = $value;
+      }
+    }
 
     //retrieve booking_start_date, booking_end_date from all slots
     $dates = [];

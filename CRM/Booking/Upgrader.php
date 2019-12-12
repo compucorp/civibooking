@@ -82,7 +82,8 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
       }
     }
     $this->executeSqlFile('sql/civibooking_default.sql');
-    $this->upgrade_1101();
+    // Enable booking custom data
+    $this->upgrade_1102();
   }
 
   /**
@@ -125,6 +126,34 @@ class CRM_Booking_Upgrader extends CRM_Booking_Upgrader_Base {
   public function upgrade_1101() {
     return TRUE;
   }
+
+  public function upgrade_1102() {
+    $this->ctx->log->info('Enabling Booking custom data');
+    self::enableBookingCustomData();
+    return TRUE;
+  }
+
+  public static function enableBookingCustomData() {
+    // Enable Booking custom data
+    $optionValue = [
+      'name' => 'civicrm_booking',
+      'label' => 'Booking',
+      'value' => 'Booking',
+    ];
+    $optionValues = civicrm_api3('OptionValue', 'get', [
+      'option_group_id' => 'cg_extend_objects',
+      'name' => $optionValue['name'],
+    ]);
+    if (!$optionValues['count']) {
+      civicrm_api3('OptionValue', 'create', [
+        'option_group_id' => 'cg_extend_objects',
+        'name' => $optionValue['name'],
+        'label' => $optionValue['label'],
+        'value' => $optionValue['value'],
+      ]);
+    }
+  }
+
 
   /**
    * Builds array with parameters to create menu items for the extension.

@@ -27,9 +27,7 @@ function _civicrm_api3_booking_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_booking_create($params) {
-  $bookingBAO = CRM_Booking_BAO_Booking::create($params);
-   _civicrm_api3_object_to_array($bookingBAO, $bookingArray[$bookingBAO->id]);
-  return civicrm_api3_create_success($bookingArray, $params, 'Booking', 'create');
+  return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params, 'Booking');
 }
 
 

@@ -97,6 +97,7 @@
         </div>
       </fieldset>
       {include file="CRM/Booking/Form/Booking/Common.tpl"}
+      {include file="CRM/common/customDataBlock.tpl"}
   <div id="crm-booking-dialog" class="crm-container"></div>
 </div>
 <div class="clear"></div>

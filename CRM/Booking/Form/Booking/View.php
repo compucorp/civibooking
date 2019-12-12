@@ -29,7 +29,7 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
    * Explicitly declare the entity api name.
    */
   public function getDefaultEntity() {
-    return 'Activity';
+    return 'Booking';
   }
 
   /**
@@ -73,7 +73,6 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
   }
 
   public function buildQuickForm() {
-    $this->setEntitySubTypeId(CRM_Core_PseudoConstant::getKey('CRM_Activity_BAO_Activity', 'activity_type_id', 'booking_activity_booking'));
     self::buildQuickEntityForm();
     return parent::buildQuickForm();
   }
