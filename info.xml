@@ -5,24 +5,20 @@
   <description>A CMS independent extension to allow organisations to manage a group of resources (i.e. rooms) offering these to constituents for a fee.</description>
   <license>the GNU Affero General Public License 3 (GNU AGPL 3) and the CiviCRM Licensing Exception.</license>
   <maintainer>
-    <author>Erawat Chamanont, Jamie Novick, Guanhuan Chen</author>
-    <email>jamie@compucorpc.o.uk, guanhuan@compucorp.co.uk</email>
+    <author>Matthew Wire, Erawat Chamanont, Jamie Novick, Guanhuan Chen</author>
+    <email>mjw@mjwconsult.co.uk, jamie@compucorp.co.uk, guanhuan@compucorp.co.uk</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">http://civicrm.org/extensions/civibooking</url>
-    <url desc="Documentation">https://github.com/compucorp/civibooking</url>
-    <url desc="Support">support@compucorp.co.uk</url>
-    <url desc="Licensing">http://civicrm.org/licensing</url>
+    <url desc="Main Extension Page">https://github.com/mjwconsult/civibooking</url>
+    <url desc="Support">mjw@mjwconsult.co.uk</url>
+    <url desc="Licensing">https://civicrm.org/licensing</url>
   </urls>
-  <documentation></documentation>
-  <releaseDate>2018-12-12</releaseDate>
-  <version>1.5.3</version>
+  <releaseDate>2019-12-29</releaseDate>
+  <version>1.6</version>
   <develStage>stable</develStage>
   <compatibility>
-    <ver>4.6</ver>
-    <ver>4.7</ver>
+    <ver>5.19</ver>
   </compatibility>
-  <comments></comments>
   <civix>
     <namespace>CRM/Booking</namespace>
   </civix>

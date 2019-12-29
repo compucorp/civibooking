@@ -1,0 +1,19 @@
+site_name: CiivBooking
+repo_url: https://github.com/mjwconsult/civibooking
+theme: material
+markdown_extensions:
+  - attr_list
+  - admonition
+  - def_list
+  - codehilite
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tilde
+  - pymdownx.betterem
+  - pymdownx.mark
+
+pages:
+- About: index.md
+- Release Notes: release/release_notes.md
