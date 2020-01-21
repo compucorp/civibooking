@@ -5,7 +5,7 @@ Are you a non-profit with Rooms or Resources that you think you could raise mone
 
 CiviBooking is a CiviCRM extension which allows you to:
 
- - Create a list of resources which are available to be booked (we call these limited resources as once their booked, they're gone!)
+ - Create a list of resources which are available to be booked (we call these limited resources as once they're booked, they're gone!)
  - These are shown in a fancy calendar type screen so you can see what’s available super easily.
  - Contacts in the database can book one of more of these by using the booking wizard.
  - Contacts can add unlimited resources to the bookings (tea's, coffee's, solar energy...)
@@ -32,6 +32,8 @@ To find out more about the extensions directory and how to configure it please s
 http://example.com/civicrm/admin/extensions?reset=1
 
   Then locate the CiviBooking extension and click Download.
+  
+4. Set the permissions in your CMS to enable access appropriate roles to access the three CiviBooking permissions: CiviBooking: administer CiviBooking, CiviBooking: create and update bookings, and CiviBooking: view all bookings.
 
 ### Overview
 Like with all systems, before you configure CiviBooking you will need to do some planning.
@@ -52,10 +54,13 @@ Configuration option price x Quantity
 
 So if someone books for 2 days, you can simply set the price when booking to be 2 x Full day price.
 
+You can configure various lists associated with resources at Administer > System Settings > Option Groups. For example, beside Resource type, you can edit the options available. Similarly for Resource configuration size unit, Resource criteria and Resouce location.
 
 ### Configuration
 
 #### Step 1: Define your configuration sets and options
+You can configure various lists associated with resources at Administer > System Settings > Option Groups. For example, beside Resource type, you can edit the options available. Similarly for Resource configuration size unit, Resource criteria and Resouce location. The cancellation charges that apply based on the amount of notice provided can be configured in the Cancellation charges option group. There should be no need to change the Booking status options.
+
 For each resource you will need to decide on your configuration options. We suggest you start at this step, as without it you will not be able to add resources.
 
 Each configuration option also has a unit. You could choose to make the units whatever you wish, so if you wish to charge by hour, day, person or any other label, the system will allow you to do so.
