@@ -115,7 +115,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       $errors['primary_contact_id'] = E::ts('This field is required.');
     }
     $selectResource = $context->controller->exportValues('SelectResource');
-    $resources = json_decode($selectResource['resources'], true);
+    $resources = json_decode($selectResource['resources'], true) ?? [];
     $resourcesToValidate['resources'] = [];
     foreach ($resources as $key => $resource) {
       $resource['start'] = CRM_Utils_Date::processDate(CRM_Utils_Array::value('start_date', $resource));

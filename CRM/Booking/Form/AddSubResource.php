@@ -40,7 +40,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
     $selectResourcePage = $this->controller->exportValues('SelectResource');
 
-    $selectedResources = json_decode($selectResourcePage['resources'], true);
+    $selectedResources = json_decode($selectResourcePage['resources'], true) ?? [];
     $this->assign('resources', $selectedResources);
 
     foreach ($selectedResources as $key => $resource) {
