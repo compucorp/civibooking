@@ -238,11 +238,11 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
   //set the validation rule for the discount field
   public static function formRule($params, $files, $context) {
     $values = $context->exportValues();
+    empty($values['discount_amount']) ? $values['discount_amount'] = 0 : NULL;
     $numValidate = is_numeric($values['discount_amount']);
-    $emptyValidate = $values['discount_amount']=='';
     $finalSubtotal = $values['sub_total'] + $values['adhoc_charge'];
-    $rangeValidate = $values['discount_amount']>=0 && $values['discount_amount']<=$finalSubtotal;
-    if (!$numValidate && !$emptyValidate) {
+    $rangeValidate = ($values['discount_amount'] >= 0) && ($values['discount_amount'] <= $finalSubtotal);
+    if (!$numValidate) {
       return ['discount_amount' => 'Please enter a valid number.'];
     }
     elseif (!$rangeValidate) {

@@ -99,9 +99,10 @@
         });
         //}
         this.model.attributes.sub_total = subtotal;
-        this.model.attributes.total_price = (subtotal
-          + parseFloat(this.model.get("adhoc_charges").total))
-          - parseFloat(this.model.get("discount_amount"));
+        var discountAmount = parseFloat(this.model.get("discount_amount"));
+        if (isNaN(discountAmount)) { discountAmount = 0; }
+        this.model.attributes.total_price =
+          (subtotal + parseFloat(this.model.get("adhoc_charges").total) - discountAmount);
         this.model.attributes.discount_amount = this.model.get("discount_amount");
 
         unlimitedTimeConfig = timeConfig;
