@@ -200,6 +200,12 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       array_push($resources,  $resource);
     }
 
+    if (empty($resources)) {
+      $qfKey = CRM_Utils_Request::retrieveValue('qfKey', 'String');
+      $redirectUrl = CRM_Utils_System::url('civicrm/booking/add', ['qfKey' => $qfKey]);
+      CRM_Core_Error::statusBounce(E::ts('You must select a time for at least one resource to make a booking.'), $redirectUrl, E::ts('No resources selected!'));
+    }
+
     $adhocCharges =  CRM_Utils_Array::value('adhoc_charges', $subResourcesValue);
 
     $booking = [];
