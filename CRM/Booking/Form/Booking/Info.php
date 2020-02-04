@@ -170,7 +170,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
     $bookingInfo = $this->exportValues();
     $selectResource = $this->controller->exportValues('SelectResource');
     $addSubResource = $this->controller->exportValues('AddSubResource');
-    $resourcesValue = json_decode($selectResource['resources'], true);
+    $resourcesValue = json_decode($selectResource['resources'], true) ?? [];
     $subResourcesValue = json_decode($addSubResource['sub_resources'], true);
     $subResources = $subResourcesValue['sub_resources'];
 
@@ -240,8 +240,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       array_push($dates, CRM_Utils_Array::value('end_date', $slot));
     }
     sort($dates);
-    $booking['booking_start_date'] = $dates[0];
-    $booking['booking_end_date'] = $dates[count($dates)-1];
+    $booking['booking_start_date'] = reset($dates);
+    $booking['booking_end_date'] = end($dates);
 
     //make sure we create everything in one transaction, not too nice but it does the job
     $transaction = new CRM_Core_Transaction();

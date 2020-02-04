@@ -239,6 +239,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
   public static function formRule($params, $files, $context) {
     $values = $context->exportValues();
     empty($values['discount_amount']) ? $values['discount_amount'] = 0 : NULL;
+    empty($values['sub_total']) ? $values['sub_total'] = 0 : NULL;
     $numValidate = is_numeric($values['discount_amount']);
     $finalSubtotal = $values['sub_total'] + $values['adhoc_charge'];
     $rangeValidate = ($values['discount_amount'] >= 0) && ($values['discount_amount'] <= $finalSubtotal);
