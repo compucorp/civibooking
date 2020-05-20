@@ -68,11 +68,11 @@
     </div>
 
     <div id="add-resource-btn" class="crm-submit-buttons"  >
-    <span class="crm-button crm-button-type-next">
-      <input class="validate form-submit default" name="select-resource-save" value="{ts}Save{/ts}" type="submit"  >
-      <input class="validate form-submit default" name="select-resource-cancel" value="{ts}Cancel{/ts}" type="submit" >
-    </span>
-  </div>
+      <span class="crm-button crm-button-type-next">
+        <input class="validate crm-form-submit default" name="select-resource-save" value="{ts}Save{/ts}" type="submit"  >
+        <input class="validate crm-form-submit default" name="select-resource-cancel" value="{ts}Cancel{/ts}" type="submit" >
+      </span>
+    </div>
   {literal}
 
   <script>

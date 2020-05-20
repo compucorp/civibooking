@@ -33,7 +33,7 @@
   </div>
   <div class="crm-submit-buttons">
     <span class="crm-button crm-button-type-next">
-      <input class="validate form-submit default form-save" value="{ts}Update ad-hoc charges{/ts}" type="submit" id="update-adhoc-charges">
+      <input class="validate crm-form-submit default form-save" value="{ts}Update ad-hoc charges{/ts}" type="submit" id="update-adhoc-charges">
     </span>
   </div>
 </form>

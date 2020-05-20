@@ -71,7 +71,7 @@
 
   <div class="crm-submit-buttons">
     <span class="crm-button crm-button-type-next">
-      <input class="validate form-submit default form-save" name="" value="{ts}Submit{/ts}" type="submit" id="add-to-basket">
+      <input class="validate crm-form-submit default form-save" name="" value="{ts}Submit{/ts}" type="submit" id="add-to-basket">
     </span>
   </div>
 </form>

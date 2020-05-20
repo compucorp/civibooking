@@ -21,3 +21,8 @@ td.text-right{
 #crm-booking-dialog input.item {
   border: 1px solid #aaa;
 }
+
+/*Make sure crm-submit-buttons are showing in shoreditch*/
+.crm-submit-buttons{
+  display: block !important;
+}
