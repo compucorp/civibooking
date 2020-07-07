@@ -1,5 +1,5 @@
 <?php
-use CRM_Booking_ExtensionUtil as E; 
+use CRM_Booking_ExtensionUtil as E;
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -38,7 +38,7 @@ use CRM_Booking_ExtensionUtil as E;
  *
  */
 class CRM_Admin_Form_ResourceConfigOption extends CRM_Admin_Form {
-  protected $_id = NULL;
+  public $_id = NULL;
   protected $_sid = NULL;
 
   function preProcess() {

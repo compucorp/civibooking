@@ -1,5 +1,5 @@
 <?php
-use CRM_Booking_ExtensionUtil as E; 
+use CRM_Booking_ExtensionUtil as E;
 
 /*
  +--------------------------------------------------------------------+
