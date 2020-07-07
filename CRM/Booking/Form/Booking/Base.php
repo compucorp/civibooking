@@ -1,38 +1,5 @@
 <?php
-use CRM_Booking_ExtensionUtil as E; 
-/*
- +--------------------------------------------------------------------+
- | CiviCRM version 4.4                                                |
- +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2013                                |
- +--------------------------------------------------------------------+
- | This file is a part of CiviCRM.                                    |
- |                                                                    |
- | CiviCRM is free software; you can copy, modify, and distribute it  |
- | under the terms of the GNU Affero General Public License           |
- | Version 3, 19 November 2007 and the CiviCRM Licensing Exception.   |
- |                                                                    |
- | CiviCRM is distributed in the hope that it will be useful, but     |
- | WITHOUT ANY WARRANTY; without even the implied warranty of         |
- | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               |
- | See the GNU Affero General Public License for more details.        |
- |                                                                    |
- | You should have received a copy of the GNU Affero General Public   |
- | License and the CiviCRM Licensing Exception along                  |
- | with this program; if not, contact CiviCRM LLC                     |
- | at info[AT]civicrm[DOT]org. If you have questions about the        |
- | GNU Affero General Public License or the licensing of CiviCRM,     |
- | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
- +--------------------------------------------------------------------+
-*/
-
-/**
- *
- * @package CRM
- * @copyright CiviCRM LLC (c) 2004-2013
- * $Id$
- *
- */
+use CRM_Booking_ExtensionUtil as E;
 
 /**
  * This base class for Update/Cancel/Delete Booking
@@ -220,7 +187,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       }
 
       $this->addRule("total_amount", E::ts('Please enter a valid amount.'), 'money');
-      
+
       $this->add('select', 'financial_type_id',
         E::ts('Financial Type'),
         array('' => E::ts('- select -')) + CRM_Contribute_PseudoConstant::financialType()
@@ -234,7 +201,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       );
 
       $this->add('text', 'check_number', E::ts('Check Number'));
-      
+
       $this->add('text', 'trxn_id', E::ts('Transaction ID'));
 
       $this->add('select', 'contribution_status_id',
@@ -395,7 +362,7 @@ abstract class CRM_Booking_Form_Booking_Base extends CRM_Core_Form {
       }
 
       $sendConfirmation = CRM_Utils_Array::value('send_confirmation', $bookingInfo);
-      if($sendConfirmation){ //check sending email parameter
+      if ($sendConfirmation) { //check sending email parameter
         $values = array();
         $fromEmailAddress = CRM_Core_OptionGroup::values('from_email_address');
         $values['from_email_address'] = CRM_Utils_Array::value(CRM_Utils_Array::value('from_email_address', $bookingInfo), $fromEmailAddress);

@@ -1,5 +1,5 @@
 <?php
-use CRM_Booking_ExtensionUtil as E; 
+use CRM_Booking_ExtensionUtil as E;
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -38,7 +38,7 @@ use CRM_Booking_ExtensionUtil as E;
  *
  */
 class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
-  protected $_id = NULL;
+  public $_id = NULL;
 
   function preProcess() {
     parent::preProcess();
@@ -61,13 +61,13 @@ class CRM_Admin_Form_ResourceConfigSet extends CRM_Admin_Form {
     $this->add('text', 'title', E::ts('Title'), array('size' => 50, 'maxlength' => 255), TRUE);
     $this->add('text', 'weight', E::ts('Weight'), CRM_Core_DAO::getAttribute('CRM_Booking_DAO_ResourceConfigSet', 'weight'), TRUE);
     $statusCheckbox = $this->add('checkbox', 'is_active', E::ts('Enabled?'));
-    
+
     //allow state changes and delete only when there are no enabled resources
     $resourceDao = new CRM_Booking_DAO_Resource();
     $resourceDao->set_id = $this->_id;
     $resourceDao->is_deleted = FALSE;
     $resourceDao->is_active = TRUE;
-    
+
     if($resourceDao->count() > 0){
       $statusCheckbox->setAttribute('disabled', 'disabled');
     }

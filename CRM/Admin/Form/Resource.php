@@ -1,5 +1,5 @@
 <?php
-use CRM_Booking_ExtensionUtil as E; 
+use CRM_Booking_ExtensionUtil as E;
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -38,7 +38,7 @@ use CRM_Booking_ExtensionUtil as E;
  *
  */
 class CRM_Admin_Form_Resource extends CRM_Admin_Form {
-  protected $_id = NULL;
+  public $_id = NULL;
 
   function preProcess() {
     parent::preProcess();
@@ -88,13 +88,13 @@ class CRM_Admin_Form_Resource extends CRM_Admin_Form {
       foreach ($activeSets['values'] as $key => $set) {
         $configSets[$key] = $set['title'];
       }
-      
+
       $resource = civicrm_api3('Resource', 'getsingle', array(
         'sequential' => 1,
         'id' => $this->_id,
       ));
     }
-    catch (CiviCRM_API3_Exception $e) {}   
+    catch (CiviCRM_API3_Exception $e) {}
 
     //allow state changes only when there is enabled config set
     if(!empty($resource['set_id']) && !in_array($resource['set_id'], array_keys($activeSets['values']))){

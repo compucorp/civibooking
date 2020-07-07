@@ -1,38 +1,5 @@
 <?php
 use CRM_Booking_ExtensionUtil as E;
-/*
- +--------------------------------------------------------------------+
- | CiviCRM version 4.4                                                |
- +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2013                                |
- +--------------------------------------------------------------------+
- | This file is a part of CiviCRM.                                    |
- |                                                                    |
- | CiviCRM is free software; you can copy, modify, and distribute it  |
- | under the terms of the GNU Affero General Public License           |
- | Version 3, 19 November 2007 and the CiviCRM Licensing Exception.   |
- |                                                                    |
- | CiviCRM is distributed in the hope that it will be useful, but     |
- | WITHOUT ANY WARRANTY; without even the implied warranty of         |
- | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               |
- | See the GNU Affero General Public License for more details.        |
- |                                                                    |
- | You should have received a copy of the GNU Affero General Public   |
- | License and the CiviCRM Licensing Exception along                  |
- | with this program; if not, contact CiviCRM LLC                     |
- | at info[AT]civicrm[DOT]org. If you have questions about the        |
- | GNU Affero General Public License or the licensing of CiviCRM,     |
- | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
- +--------------------------------------------------------------------+
-*/
-
-/**
- *
- * @package CRM
- * @copyright CiviCRM LLC (c) 2004-2013
- * $Id$
- *
- */
 
 /**
  * This class generates form components for Booking
@@ -40,11 +7,33 @@ use CRM_Booking_ExtensionUtil as E;
  */
 class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
 
+  use CRM_Core_Form_EntityFormTrait;
+
+  /**
+   * Fields for the entity to be assigned to the template.
+   *
+   * Fields may have keys
+   *  - name (required to show in tpl from the array)
+   *  - description (optional, will appear below the field)
+   *  - not-auto-addable - this class will not attempt to add the field using addField.
+   *    (this will be automatically set if the field does not have html in it's metadata
+   *    or is not a core field on the form's entity).
+   *  - help (optional) add help to the field - e.g ['id' => 'id-source', 'file' => 'CRM/Contact/Form/Contact']]
+   *  - template - use a field specific template to render this field
+   *  - required
+   * @var array
+   */
+  protected $entityFields = [];
+
+  /**
+   * Explicitly declare the entity api name.
+   */
+  public function getDefaultEntity() {
+    return 'Booking';
+  }
+
   /**
    * Function to set variables up before form is built
-   *
-   * @return void
-   * @access public
    */
   public function preProcess() {
     parent::preProcess();
@@ -81,7 +70,11 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
     CRM_Utils_System::setTitle(E::ts('View Booking for') .  ' ' . $displayName);
 
     self::registerScripts($this);
+  }
 
+  public function buildQuickForm() {
+    self::buildQuickEntityForm();
+    return parent::buildQuickForm();
   }
 
   static function registerScripts($ctx) {
@@ -94,9 +87,9 @@ class CRM_Booking_Form_Booking_View extends CRM_Booking_Form_Booking_Base {
     $snippet = CRM_Utils_Request::retrieve('snippet', 'Positive',
       $ctx, FALSE, 0
     );
-    if($snippet == 2){
+    if ($snippet == 2) {
       CRM_Core_Resources::singleton()
-        ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.print.css', 10, 'page-header');
+        ->addStyleFile(E::LONG_NAME, 'css/booking.print.css', 10, 'page-header');
     }
 
   }

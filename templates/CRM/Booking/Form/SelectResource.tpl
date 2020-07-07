@@ -1,4 +1,4 @@
-{crmScope extensionKey=uk.co.compucorp.civicrm.booking} 
+{crmScope extensionKey=uk.co.compucorp.civicrm.booking}
 {*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.4                                                |
@@ -25,7 +25,7 @@
  +--------------------------------------------------------------------+
 *}
  <div class="crm-container">
-
+   <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="top"}</div>
 {* WizardHeader.tpl provides visual display of steps thru the wizard as well as title for current step *}
 {include file="CRM/common/WizardHeader.tpl"}
 {if $resources}
@@ -70,17 +70,17 @@
             </tbody>
 
             <tfoot>
-              <tr >
+              <tr>
                 <td colspan="5"></td>
               </tr>
-              <tr >
+              <tr>
                 <td colspan="3" style="text-align:right">Sub total</td>
-                <td >{$currencySymbols}<span id="subTotal"><span></td>
+                <td>{$currencySymbols}<span id="subTotal"><span></td>
               </tr>
             </tfoot>
         </table>
       </div>
-      <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl"}</div>
+      <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
     </div>
   </div>
   <div id="crm-booking-new-slot" class="crm-container hiddenElement">
@@ -89,7 +89,7 @@
   {literal}
   <script type="text/javascript">
   var crmDateFormat = "{/literal}{$dateFormat}{literal}";   //retrieve crmDateFormat
-  
+
   var bookingId = "{/literal}{$bookingId}{literal}";
   var bookingSlotDate  = "{/literal}{$bookingSlotDate}{literal}";
   var newSlotcolour = "{/literal}{$colour}{literal}";
