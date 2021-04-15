@@ -6,21 +6,24 @@ require_once 'booking.civix.php';
 
 
 /**
- * Implementation of hook_civicrm_tabs()
+ * Implements hook_civicrm_tabset().
  *
  * Display a booking tab listing booking belong to that contact.
  */
-function booking_civicrm_tabs(&$tabs, $cid) {
+function booking_civicrm_tabset($tabsetName, &$tabs, $context) {
+  if ($tabsetName === 'civicrm/contact/view' && !empty($context['contact_id'])) {
+    $cid = $context['contact_id'];
     $count = CRM_Booking_BAO_Booking::getBookingContactCount($cid); //TODO Count number of booking and show on the tab
-    $tab = array(
+    $tab = [
       'id' => 'booking',
       'count' => $count,
       'title' => 'Bookings',
+      'icon' => 'crm-i fa-book',
       'weight' => 0, //we are at first tab
-    );
+    ];
     $tab['url'] = CRM_Utils_System::url('civicrm/contact/view/booking', "reset=1&cid={$cid}&snippet=1&force=1", false, null, false);
     $tabs[] = $tab;
-
+  }
 }
 
 
