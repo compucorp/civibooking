@@ -294,7 +294,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
 
     $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.booking') . '/templates/';
-    $region = CRM_Core_Region::instance('page-header');
+    $region = CRM_Core_Region::instance('html-header');
     foreach (glob($templateDir . 'CRM/Booking/tpl/add-sub-resource/*.tpl') as $file) {
       $fileName = substr($file, strlen($templateDir));
       $region->add(array(
