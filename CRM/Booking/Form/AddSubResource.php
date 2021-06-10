@@ -284,7 +284,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE)
       ->addScriptFile(E::LONG_NAME, 'packages/underscore-umd.js', 110, 'html-header', FALSE)
       ->addScriptFile(E::LONG_NAME, 'packages/backbone.js', 120, 'html-header')
-      ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
+      ->addScriptFile(E::LONG_NAME, 'packages/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)

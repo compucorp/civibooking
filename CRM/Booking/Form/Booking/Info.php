@@ -402,7 +402,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE)
       ->addScriptFile(E::LONG_NAME, 'packages/underscore-umd.js', 110, 'html-header', FALSE)
       ->addScriptFile(E::LONG_NAME, 'packages/backbone.js', 120, 'html-header')
-      ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
+      ->addScriptFile(E::LONG_NAME, 'packages/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
 
