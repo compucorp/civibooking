@@ -9,13 +9,6 @@ require_once 'CRM/Core/Form.php';
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
- /**
-   * the booking ID of the booking if we are editing a booking
-   *
-   * @var integer
-   */
-  //protected $_id;
-
   
   private $configOptions;
   
