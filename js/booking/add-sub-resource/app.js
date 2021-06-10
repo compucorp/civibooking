@@ -88,16 +88,16 @@ var ModalRegion = Marionette.Region.extend({
 });
 //Resource table view
 var ResourceTableView = Marionette.View.extend({
-  template: '#resource-table-template',
+  template: CRM._.template(CRM.$('#resource-table-template').html()),
 
   initialize: function(){
-    if ($.trim($("#sub_resources").val())) {
-      this.model.attributes = JSON.parse($.trim($("#sub_resources").val()));
+    if (CRM.$.trim(CRM.$("#sub_resources").val())) {
+      this.model.attributes = JSON.parse(CRM.$.trim($("#sub_resources").val()));
     }
-    this.model.attributes.total_price = $("#total_price").val();
-    this.model.attributes.sub_total = $("#sub_total").val();
+    this.model.attributes.total_price = CRM.$("#total_price").val();
+    this.model.attributes.sub_total = CRM.$("#sub_total").val();
     //this.model.attributes.adhoc_charges = $("#adhoc_charge").val();
-    this.model.attributes.discount_amount = $("#discount_amount").val();
+    this.model.attributes.discount_amount = CRM.$("#discount_amount").val();
   },
 
   onRender: function(){
@@ -105,18 +105,18 @@ var ResourceTableView = Marionette.View.extend({
     var self = this;
     //init the current price for each resource
     this.$el.find("span[id^='resource-price-']").each(function(){
-      var el = $(this);
+      var el = CRM.$(this);
       self.model.attributes.resources[el.data('ref')] = el.text();
     });
     var items = [];
-    var template = _.template($('#sub-resource-row-template').html());
-    _.each(this.model.get('sub_resources'), function (item, key){
+    var template = CRM._.template(CRM.$('#sub-resource-row-template').html());
+    CRM._.each(this.model.get('sub_resources'), function (item, key){
       self.$el.find("#crm-booking-sub-resource-table-" + item.parent_ref_id).append(template(item));
       priceCache[item.ref_id] = item.price_estimate;
       items.push(item);
     });
     this.$el.find("span[id^='resource-total-price-']").each(function(){
-      var el = $(this);///////////////////////////
+      var el = CRM.$(this);///////////////////////////
       var resourceTotalPrice = parseFloat(el.data('price'));
       _.find(items, function (item) {
         if(parseInt(item.parent_ref_id) === parseInt(el.data('ref'))){
@@ -162,10 +162,10 @@ var ResourceTableView = Marionette.View.extend({
   },
 
   addSubResource: function(e){
-    var ref = $(e.currentTarget).data('ref');/////////////////
+    var ref = CRM.$(e.currentTarget).data('ref');/////////////////
     //resourceTotal[ref] = 0;
-    endDate =  $(e.currentTarget).data('edate');
-    startDate =  $(e.currentTarget).data('sdate');
+    endDate = CRM.$(e.currentTarget).data('edate');
+    startDate = CRM.$(e.currentTarget).data('sdate');
     var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref, time_required:startDate});
     var view = new AddSubResource.AddSubResourceModal({model: model, is_new: true});
     view.title = ts('Add Unlimited Resource');
