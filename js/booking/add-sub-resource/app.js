@@ -31,7 +31,20 @@ var ModalRegion = Marionette.Region.extend({
 // solution for passing the necessary parameters to the application.
 var MyApp = Marionette.Application.extend({
   main: "#resource-main",
-  modal: ModalRegion
+  modal: ModalRegion,
+  Utils: {
+    //http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
+    getCurrentUnixTimstamp:  function () {
+      return unix = Math.round(+new Date()/1000);
+    },
+    //http://stackoverflow.com/questions/10834796/validate-that-a-string-is-a-positive-integer
+    isPositiveInteger: function (n){
+      return 0 === n % (!isNaN(parseFloat(n)) && 0 <= ~~n);
+    },
+    isPositiveNumber: function (n){
+      return !_.isNumber(n) && 0 <= n;
+    },
+  },
 });
 CRM.BookingApp = new MyApp();
 

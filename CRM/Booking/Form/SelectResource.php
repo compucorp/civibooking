@@ -213,7 +213,6 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
       ->addScriptFile(E::LONG_NAME, 'js/vendor/crm.backbone.js', 130, 'html-header', FALSE)
 
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/app.js', 140, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/utils.js', 141, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/civicrm-moment-strftime.js', 142, 'html-header', FALSE)
 
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/dhtmlxScheduler/sources/dhtmlxscheduler.js', 132, 'html-header')
