@@ -1,5 +1,4 @@
 
-CRM.BookingApp = new Marionette.Application();
 // see http://lostechies.com/derickbailey/2012/04/17/managing-a-modal-dialog-with-backbone-and-marionette/
 var ModalRegion = Marionette.Region.extend({
   el: "#crm-booking-dialog",
@@ -27,12 +26,14 @@ var ModalRegion = Marionette.Region.extend({
     cj('#crm-booking-dialog').dialog().dialog("close");
   }
 });
-
-CRM.BookingApp.addRegions({
+// The addRegions method has been removed and not present in the
+// current Marionette version. The Application.extend could be the
+// solution for passing the necessary parameters to the application.
+var MyApp = Marionette.Application.extend({
   main: "#resource-main",
   modal: ModalRegion
-
 });
+CRM.BookingApp = new MyApp();
 
 CRM.BookingApp.on("initialize:after", function(){
   if( ! Backbone.History.started) Backbone.history.start();
