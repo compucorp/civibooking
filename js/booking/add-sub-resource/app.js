@@ -30,6 +30,35 @@ var Entities = {
     },
   }),
 };
+var Views = {
+  /**
+   * A form that use in a Modal that required the validate in the form
+   *
+   */
+  BookingProcessModal: Marionette.View.extend({
+    onRender: function() {
+      var rules = this.createValidationRules();
+      this.$('form').validate(rules);
+    },
+    /**
+     *
+     * @return {*} jQuery.validate rules
+     */
+    createValidationRules: function() {
+      var rules = _.extend({}, CRM.validate.params);
+      rules.rules || (rules.rules = {});
+      this.triggerMethod("validateRules:create", this, rules);
+      return rules;
+    },
+    onRenderError: function(errors){
+      var view = this;
+      _.each(errors, function(error) {
+        console.log($(error).attr('for'));
+         view.$('[name=' + $(error).attr('for') + ']').crmError($(error).text());
+      });
+    },
+  }),
+};
 // see http://lostechies.com/derickbailey/2012/04/17/managing-a-modal-dialog-with-backbone-and-marionette/
 var ModalRegion = Marionette.Region.extend({
   el: "#crm-booking-dialog",
