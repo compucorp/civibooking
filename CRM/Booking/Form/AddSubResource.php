@@ -282,7 +282,7 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
       
       ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE)
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'packages/underscore.js', 110, 'html-header', FALSE)
+      ->addScriptFile(E::LONG_NAME, 'packages/underscore-umd.js', 110, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
       ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
