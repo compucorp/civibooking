@@ -1,7 +1,7 @@
 
-CRM.BookingApp = new Backbone.Marionette.Application();
+CRM.BookingApp = new Marionette.Application();
 // see http://lostechies.com/derickbailey/2012/04/17/managing-a-modal-dialog-with-backbone-and-marionette/
-var ModalRegion = Backbone.Marionette.Region.extend({
+var ModalRegion = Marionette.Region.extend({
   el: "#crm-booking-dialog",
 
   constructor: function(){
