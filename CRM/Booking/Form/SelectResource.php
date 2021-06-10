@@ -206,7 +206,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
 
       ->addScriptFile(E::LONG_NAME, 'packages/underscore-umd.js', 110, 'html-header', FALSE)
-      ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
+      ->addScriptFile(E::LONG_NAME, 'packages/backbone.js', 120, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
