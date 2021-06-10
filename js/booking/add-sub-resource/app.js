@@ -88,11 +88,12 @@ var ModalRegion = Marionette.Region.extend({
 });
 //Resource table view
 var ResourceTableView = Marionette.View.extend({
+  resourceTotal: new Array(),
   template: CRM._.template(CRM.$('#resource-table-template').html()),
 
   initialize: function(){
     if (CRM.$.trim(CRM.$("#sub_resources").val())) {
-      this.model.attributes = JSON.parse(CRM.$.trim($("#sub_resources").val()));
+      this.model.attributes = JSON.parse(CRM.$.trim(CRM.$("#sub_resources").val()));
     }
     this.model.attributes.total_price = CRM.$("#total_price").val();
     this.model.attributes.sub_total = CRM.$("#sub_total").val();
@@ -126,7 +127,7 @@ var ResourceTableView = Marionette.View.extend({
       if(resourceTotalPrice != null){
         subtotal += resourceTotalPrice;
         el.text(resourceTotalPrice.toFixed(2));
-        resourceTotal[el.data('ref')] = resourceTotalPrice.toFixed(2);
+        self.resourceTotal[el.data('ref')] = resourceTotalPrice.toFixed(2);
         self.$el.find('#crm-booking-sub-resource-row-' + el.data('ref')).show();
       }
     });
@@ -207,6 +208,7 @@ var ResourceTableView = Marionette.View.extend({
     $('#crm-booking-sub-resource-row-' + row).toggle();
   },
   removeSubResource: function(e){
+    var self = this;
     var ref = $(e.currentTarget).data('ref');
     var parentRef = $(e.currentTarget).data('parent-ref');
     var price = $(e.currentTarget).data('price');
@@ -216,9 +218,9 @@ var ResourceTableView = Marionette.View.extend({
     var newResourcePrice = parseFloat(this.model.get("resources")[parentRef]) - parseFloat(price);
 
     this.model.attributes.resources[parentRef] = newResourcePrice;
-    resourceTotal[parentRef] -= parseFloat(price);
-    try{resourceTotal[parentRef] = resourceTotal[parentRef].toFixed(2);}catch(err){}
-    $("#resource-total-price-" + parentRef).text(resourceTotal[parentRef]);
+    self.resourceTotal[parentRef] -= parseFloat(price);
+    try{self.resourceTotal[parentRef] = self.resourceTotal[parentRef].toFixed(2);}catch(err){}
+    $("#resource-total-price-" + parentRef).text(self.resourceTotal[parentRef]);
     var currentSubTotal = this.model.get('sub_total');
     var newSubTotal = parseFloat(this.model.get('sub_total') - parseFloat(price));
     var currentTotal = this.model.get('total_price');
@@ -283,6 +285,7 @@ var MyApp = Marionette.Application.extend({
   onStart: function(app, options) {
     this.getRegion().show(new ResourceTableView({model: new this.Entities.SubResource()}));
   },
+  Views: Views,
 });
 CRM.BookingApp = new MyApp();
 
