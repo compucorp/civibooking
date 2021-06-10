@@ -169,6 +169,16 @@ var ResourceTableView = Marionette.View.extend({
     startDate = CRM.$(e.currentTarget).data('sdate');
     var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref, time_required:startDate});
     var view = new CRM.BookingApp.AddSubResource.AddSubResourceModal({model: model, is_new: true});
+    view.on("render:options", function(options) {
+      var select = options.context.$el.find(options.element);
+      if (select.is('[disabled]')) {
+        select.prop('disabled', false);
+      }
+      select.html(options.template({
+        options : options.list,
+        first_option : options.first_option
+      }));
+    });
     view.title = ts('Add Unlimited Resource');
     CRM.BookingApp.modal.show(view);
   },
@@ -265,7 +275,7 @@ var ResourceTableView = Marionette.View.extend({
 var AddSubResource = {
   //Sub(Unlimited) resource dialog view
   AddSubResourceModal: Views.BookingProcessModal.extend({
-    template: "#add-sub-resource-template",
+    template: CRM._.template(CRM.$('#add-sub-resource-template').html()),
     initialize: function(options){
       this.isNew = options.is_new;
     },
@@ -278,7 +288,7 @@ var AddSubResource = {
       'keydown #quantity': 'updatePriceEstmate',
     },
     onRender: function(){
-      BookingApp.Common.Views.BookingProcessModal.prototype.onRender.apply(this, arguments);
+      Views.BookingProcessModal.prototype.onRender.apply(this, arguments);
 
       var thisView = this;  //set 'this' object for calling inside callback function
       this.$el.find('#loading').show();
@@ -306,7 +316,7 @@ var AddSubResource = {
 
        CRM.api('Resource', 'get', {'sequential': 1, 'is_unlimited': 1, 'is_deleted': 0, 'is_active': 1},
         {success: function(data) {
-            thisView.template =  _.template($('#add-sub-resource-template').html());
+            thisView.template =  CRM._.template(CRM.$('#add-sub-resource-template').html());
             //var configValue = CRM_Booking_BAO_BookingConfig::getConfig();
 
             thisView.$el.find("#required_date").datepicker({changeMonth: true, changeYear: true, dateFormat: 'dd/mm/yy'});
@@ -316,7 +326,7 @@ var AddSubResource = {
             });
 
             //thisView.resources = data.values;
-            var tpl = _.template($('#select-option-template').html());
+            var tpl = CRM._.template(CRM.$('#select-option-template').html());
             var params = {
                 context: thisView,
                 template: tpl,
@@ -324,7 +334,7 @@ var AddSubResource = {
                 element: "#resource_select",
                 first_option: ['- ', ts('select resource'), ' -'].join("")
             }
-            CRM.BookingApp.vent.trigger("render:options", params);
+            thisView.triggerMethod("render:options", params);
 
             if(thisView.isNew == false){
               //set values
@@ -354,7 +364,7 @@ var AddSubResource = {
      * @param Object r the validation rules for the view
      */
     onValidateRulesCreate: function(view, r) {
-        $.validator.addMethod("withinValidTime", function(value, element) {
+        CRM.$.validator.addMethod("withinValidTime", function(value, element) {
         var dateVals = $("#required_date").val().split("/");
         var timeVals = $("#required_time").val().split(":");
         var requiredDate = new Date(dateVals[2],dateVals[1]-1,dateVals[0],timeVals[0],timeVals[1]);
@@ -367,7 +377,7 @@ var AddSubResource = {
           return val;
         }
         }, ts("Please select the date and time during the valid booking time."));
-     _.extend(r.rules, {
+     CRM._.extend(r.rules, {
         resource_select: {
           required: true
         },
@@ -402,7 +412,7 @@ var AddSubResource = {
       var configPrice = this.model.get('configuration').price
       var quantity = quantitySelector.val();
       if(CRM.BookingApp.Utils.isPositiveInteger(quantity)){
-         var priceEstimate = quantity * configPrice;
+        var priceEstimate = quantity * configPrice;
         this.model.set('quantity', quantity);
         this.model.set('price_estimate', priceEstimate.toFixed(2));
         this.$el.find('#price-estimate').html(priceEstimate.toFixed(2));
@@ -411,30 +421,30 @@ var AddSubResource = {
 
     //render configuration options
     getConfigurations: function(e){
-      selectedVal = $('#resource_select').val();
+      selectedVal = CRM.$('#resource_select').val();
       if(selectedVal !== ""){
         var params = {
-              id: selectedVal,
-              sequential: 1,
-              'api.resource_config_set.get': {
-                id: '$value.set_id',
-                is_active: 1,
-                is_deleted: 0,
-                'api.resource_config_option.get': {
-                  set_id: '$value.id',
-                  is_active: 1,
-                  is_deleted: 0,
-                  'api.option_group.get':{
-                    name: 'booking_size_unit',
-                  },
-                  'api.option_value.get':{
-                    value: '$value.unit_id',
-                    sequential: 1,
-                    option_group_id: '$value.api.option_group.get.id'
-                  }
-                }
+          id: selectedVal,
+          sequential: 1,
+          'api.resource_config_set.get': {
+            id: '$value.set_id',
+            is_active: 1,
+            is_deleted: 0,
+            'api.resource_config_option.get': {
+              set_id: '$value.id',
+              is_active: 1,
+              is_deleted: 0,
+              'api.option_group.get':{
+                name: 'booking_size_unit',
+              },
+              'api.option_value.get':{
+                value: '$value.unit_id',
+                sequential: 1,
+                option_group_id: '$value.api.option_group.get.id'
               }
-            };
+            }
+          }
+        };
         this.$el.find('#config-loading').show();
         this.$el.find('#configuration_select').hide();
         var self = this;
@@ -467,12 +477,12 @@ var AddSubResource = {
               self.model.set('resource', {id: resource.id, label: resource.label});
               var params = {
                 context: self,
-                template: _.template($('#select-config-option-template').html()),
+                template: _.template(CRM.$('#select-config-option-template').html()),
                 list: options,
                 element: "#configuration_select",
                 first_option: '- ' + ts('select configuration') + ' -'
               }
-              CRM.BookingApp.vent.trigger("render:options", params);
+              self.triggerMethod("render:options", params);
               //set configuration options for edit mode of subresource view
               var configSelectedId = this.$el.find('#configuration_select').data('selected-id');  //retrieve data from data-selected-id attribute
               if(configSelectedId != 'undefined'){
@@ -490,7 +500,7 @@ var AddSubResource = {
           list: new Array(),
           element: "#configuration_select",
           first_option: '- ' + ts('select configuration') + ' -'}
-        CRM.BookingApp.vent.trigger("render:options", params);
+        self.triggerMethod("render:options", params);
         this.$el.find('#configuration_select').prop('disabled', true);
       }
     },
