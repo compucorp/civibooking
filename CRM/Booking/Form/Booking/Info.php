@@ -404,7 +404,7 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       ->addScriptFile(E::LONG_NAME, 'packages/backbone.js', 120, 'html-header')
       ->addScriptFile(E::LONG_NAME, 'packages/backbone.marionette.js', 125, 'html-header', FALSE)
       ->addScriptFile(E::LONG_NAME, 'packages/backbone.modelbinder.js', 125, 'html-header', FALSE)
-      ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
+      ->addScriptFile(E::LONG_NAME, 'js/vendor/crm.backbone.js', 130, 'html-header', FALSE)
 
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/app.js', 150, 'html-header')
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/view.js', 170, 'html-header');
