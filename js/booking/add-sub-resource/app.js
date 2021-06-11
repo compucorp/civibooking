@@ -86,9 +86,10 @@ var ModalRegion = Marionette.Region.extend({
     cj('#crm-booking-dialog').dialog().dialog("close");
   }
 });
+var ResourceTotal = new Array();
+var PriceCache = new Array();
 //Resource table view
 var ResourceTableView = Marionette.View.extend({
-  resourceTotal: new Array(),
   template: CRM._.template(CRM.$('#resource-table-template').html()),
 
   initialize: function(){
@@ -113,7 +114,7 @@ var ResourceTableView = Marionette.View.extend({
     var template = CRM._.template(CRM.$('#sub-resource-row-template').html());
     CRM._.each(this.model.get('sub_resources'), function (item, key){
       self.$el.find("#crm-booking-sub-resource-table-" + item.parent_ref_id).append(template(item));
-      priceCache[item.ref_id] = item.price_estimate;
+      PriceCache[item.ref_id] = item.price_estimate;
       items.push(item);
     });
     this.$el.find("span[id^='resource-total-price-']").each(function(){
@@ -127,7 +128,7 @@ var ResourceTableView = Marionette.View.extend({
       if(resourceTotalPrice != null){
         subtotal += resourceTotalPrice;
         el.text(resourceTotalPrice.toFixed(2));
-        self.resourceTotal[el.data('ref')] = resourceTotalPrice.toFixed(2);
+        ResourceTotal[el.data('ref')] = resourceTotalPrice.toFixed(2);
         self.$el.find('#crm-booking-sub-resource-row-' + el.data('ref')).show();
       }
     });
@@ -164,7 +165,6 @@ var ResourceTableView = Marionette.View.extend({
 
   addSubResource: function(e){
     var ref = CRM.$(e.currentTarget).data('ref');/////////////////
-    //resourceTotal[ref] = 0;
     endDate = CRM.$(e.currentTarget).data('edate');
     startDate = CRM.$(e.currentTarget).data('sdate');
     var model = new CRM.BookingApp.Entities.AddSubResource({parent_ref_id:ref, time_required:startDate});
@@ -228,9 +228,9 @@ var ResourceTableView = Marionette.View.extend({
     var newResourcePrice = parseFloat(this.model.get("resources")[parentRef]) - parseFloat(price);
 
     this.model.attributes.resources[parentRef] = newResourcePrice;
-    self.resourceTotal[parentRef] -= parseFloat(price);
-    try{self.resourceTotal[parentRef] = self.resourceTotal[parentRef].toFixed(2);}catch(err){}
-    $("#resource-total-price-" + parentRef).text(self.resourceTotal[parentRef]);
+    ResourceTotal[parentRef] -= parseFloat(price);
+    try{ResourceTotal[parentRef] = ResourceTotal[parentRef].toFixed(2);}catch(err){}
+    $("#resource-total-price-" + parentRef).text(ResourceTotal[parentRef]);
     var currentSubTotal = this.model.get('sub_total');
     var newSubTotal = parseFloat(this.model.get('sub_total') - parseFloat(price));
     var currentTotal = this.model.get('total_price');
@@ -559,18 +559,18 @@ var AddSubResource = {
       var newTotal = (parseFloat(currentTotal) - parseFloat(currentSubTotal)) + parseFloat(newSubTotal);
       subResourceModel.set("total_price", newTotal);
 
-      var currentResourceTotal = resourceTotal[resourceRefId];
+      var currentResourceTotal = ResourceTotal[resourceRefId];
 
       if(this.isNew){
         var resourceTotalPrice = parseFloat(currentResourceTotal) + parseFloat(priceEstimate);
-        priceCache[subResourceRefId] = parseFloat(priceEstimate);
+        PriceCache[subResourceRefId] = parseFloat(priceEstimate);
       }else{
-        var resourceTotalPrice = parseFloat(currentResourceTotal) + parseFloat(priceEstimate) - priceCache[subResourceRefId];
-        subResourceModel.attributes.sub_total = subResourceModel.attributes.sub_total - priceCache[subResourceRefId];
-        subResourceModel.attributes.total_price = subResourceModel.attributes.total_price - priceCache[subResourceRefId];
-        priceCache[subResourceRefId] = parseFloat(priceEstimate);
+        var resourceTotalPrice = parseFloat(currentResourceTotal) + parseFloat(priceEstimate) - PriceCache[subResourceRefId];
+        subResourceModel.attributes.sub_total = subResourceModel.attributes.sub_total - PriceCache[subResourceRefId];
+        subResourceModel.attributes.total_price = subResourceModel.attributes.total_price - PriceCache[subResourceRefId];
+        PriceCache[subResourceRefId] = parseFloat(priceEstimate);
       }
-      resourceTotal[resourceRefId] = resourceTotalPrice;
+      ResourceTotal[resourceRefId] = resourceTotalPrice;
       subResourceModel.attributes.resources[resourceRefId] = resourceTotalPrice.toFixed(2);
       //set total price for resource row
       CRM.$("#resource-total-price-" + resourceRefId).text(subResourceModel.attributes.resources[resourceRefId]);
