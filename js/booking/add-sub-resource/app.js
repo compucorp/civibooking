@@ -600,7 +600,7 @@ var AddSubResource = {
       CRM.$("#resource-total-price-" + resourceRefId).text(subResourceModel.attributes.resources[resourceRefId]);
       self.triggerMethod('render:price', subResourceModel, resourceRefId );
       self.triggerMethod('update:resources', subResourceModel);
-      CRM.BookingApp.modal.close(this);
+      CRM.BookingApp.modal.triggerMethod('close');
     },
 
   }),
