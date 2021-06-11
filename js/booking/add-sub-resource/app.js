@@ -365,8 +365,8 @@ var AddSubResource = {
      */
     onValidateRulesCreate: function(view, r) {
         CRM.$.validator.addMethod("withinValidTime", function(value, element) {
-        var dateVals = $("#required_date").val().split("/");
-        var timeVals = $("#required_time").val().split(":");
+        var dateVals = CRM.$("#required_date").val().split("/");
+        var timeVals = CRM.$("#required_time").val().split(":");
         var requiredDate = new Date(dateVals[2],dateVals[1]-1,dateVals[0],timeVals[0],timeVals[1]);
         var minDate = moment(startDate, "YYYY-MM-DD HH:mm:ss");
         var maxDate = moment(endDate, "YYYY-MM-DD HH:mm:ss");
@@ -508,12 +508,16 @@ var AddSubResource = {
     //save sub-resource
     addSubResource: function(e){
       e.preventDefault();
-      if (!this.$('form').valid()) {
-        var errors = this.$('form').validate().errors();
+      var targetForm = e.currentTarget;
+      while(targetForm.tagName != 'FORM') {
+        targetForm = targetForm.parentNode;
+      }
+      if (!CRM.$(targetForm).valid()) {
+        var errors = CRM.$(targetForm).validate().errors();
         this.onRenderError(errors);
         return false;
       }
-      this.$('form').find("#required_date").datepicker("destroy");
+      CRM.$(targetForm).find("#required_date").datepicker("destroy");
       this.model.set('note', this.$el.find('#sub-resource-note').val());
       var dateVals = this.$el.find("#required_date").val().split("/");
       var timeVals = this.$el.find("#required_time").val().split(":");
@@ -531,15 +535,15 @@ var AddSubResource = {
         refId = this.model.get('ref_id');
       }
 
-      var template = _.template($('#sub-resource-row-template').html());
+      var template = _.template(CRM.$('#sub-resource-row-template').html());
 
       //ui update
       if(this.isNew){
-        $('#crm-booking-sub-resource-table-' + parentRefId).find('tbody').append(template(this.model.toJSON()));
+        CRM.$('#crm-booking-sub-resource-table-' + parentRefId).find('tbody').append(template(this.model.toJSON()));
       }else{
-        $('#crm-booking-sub-resource-individual-row-'+refId).replaceWith(template(this.model.toJSON()));
+        CRM.$('#crm-booking-sub-resource-individual-row-'+refId).replaceWith(template(this.model.toJSON()));
       }
-      $('#crm-booking-sub-resource-row-' + parentRefId).show();
+      CRM.$('#crm-booking-sub-resource-row-' + parentRefId).show();
       var resourceRefId = this.model.get("parent_ref_id");
       var priceEstimate = this.model.get("price_estimate");
       var subResourceRefId = this.model.get("ref_id");
@@ -569,7 +573,7 @@ var AddSubResource = {
       resourceTotal[resourceRefId] = resourceTotalPrice;
       subResourceModel.attributes.resources[resourceRefId] = resourceTotalPrice.toFixed(2);
       //set total price for resource row
-      $("#resource-total-price-" + resourceRefId).text(subResourceModel.attributes.resources[resourceRefId]);
+      CRM.$("#resource-total-price-" + resourceRefId).text(subResourceModel.attributes.resources[resourceRefId]);
       CRM.BookingApp.vent.trigger('render:price', subResourceModel, resourceRefId );
       CRM.BookingApp.vent.trigger('update:resources', subResourceModel);
       CRM.BookingApp.modal.close(this);
