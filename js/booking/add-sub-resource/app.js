@@ -548,7 +548,7 @@ var AddSubResource = {
       var priceEstimate = this.model.get("price_estimate");
       var subResourceRefId = this.model.get("ref_id");
 
-      var subResourceModel = CRM.BookingApp.main.currentView.model;
+      var subResourceModel = CRM.BookingApp.getRegion().currentView.model;
       subResourceModel.attributes.sub_resources[refId] = this.model.toJSON();
 
       var currentSubTotal = subResourceModel.get('sub_total');
