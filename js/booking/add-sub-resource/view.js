@@ -11,45 +11,6 @@ CRM.BookingApp.module('AddSubResource', function(AddSubResource, BookingApp, Bac
   var resourceTotal = new Array(); 
   var priceCache = new Array();
 
-	CRM.BookingApp.vent.on("update:resources", function(model) {
-		$('#sub_resources').val(JSON.stringify(model.toJSON()));
-	});
-
-	CRM.BookingApp.vent.on("render:price", function(model) {
-		$("#total_price").val(model.attributes.total_price);
-		var totalText = model.attributes.total_price;
-		try{
-		  if(model.attributes.total_price>=0){
-		    var totalText = model.attributes.total_price.toFixed(2);
-		  }
-		}catch(err){}
-    $("#total-price-summary").text(totalText);
-
-		$("#discount_amount").val(model.attributes.discount_amount);
-    $('#discount_amount_dummy').val(model.attributes.discount_amount);
-
-		$("#sub_total").val(model.attributes.sub_total);
-		var subtotalText = model.attributes.sub_total;
-		try{
-        var subtotalText = model.attributes.sub_total.toFixed(2);
-    }catch(err){}
-		$("#sub-total-summary").text(subtotalText);
-
-		$('#adhoc_charge').val(model.attributes.adhoc_charges.total);
-		$('#ad-hoc-charge-summary').html(model.attributes.adhoc_charges.total);
-	});
-
-	CRM.BookingApp.vent.on("render:options", function(options) {
-		var select = options.context.$el.find(options.element);
-		if (select.is('[disabled]')) {
-			select.prop('disabled', false);
-		}
-		select.html(options.template({
-			options : options.list,
-			first_option : options.first_option
-		}));
-	});
-
   //Additaional charges dialog view
   AddSubResource.EditAdhocChargesModal = BookingApp.Common.Views.BookingProcessModal.extend({
     template: "#edit-adhoc-charges-template",

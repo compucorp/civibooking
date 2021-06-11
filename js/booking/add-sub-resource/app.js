@@ -179,6 +179,29 @@ var ResourceTableView = Marionette.View.extend({
         first_option : options.first_option
       }));
     });
+    view.on("update:resources", function(model) {
+      CRM.$('#sub_resources').val(JSON.stringify(model.toJSON()));
+    });
+    view.on("render:price", function(model) {
+      CRM.$("#total_price").val(model.attributes.total_price);
+      var totalText = model.attributes.total_price;
+      try{
+        if(model.attributes.total_price>=0){
+          var totalText = model.attributes.total_price.toFixed(2);
+        }
+      }catch(err){}
+      CRM.$("#total-price-summary").text(totalText);
+      CRM.$("#discount_amount").val(model.attributes.discount_amount);
+      CRM.$('#discount_amount_dummy').val(model.attributes.discount_amount);
+      CRM.$("#sub_total").val(model.attributes.sub_total);
+      var subtotalText = model.attributes.sub_total;
+      try{
+        var subtotalText = model.attributes.sub_total.toFixed(2);
+      }catch(err){}
+      CRM.$("#sub-total-summary").text(subtotalText);
+      CRM.$('#adhoc_charge').val(model.attributes.adhoc_charges.total);
+      CRM.$('#ad-hoc-charge-summary').html(model.attributes.adhoc_charges.total);
+    });
     view.title = ts('Add Unlimited Resource');
     CRM.BookingApp.modal.show(view);
   },
@@ -508,6 +531,7 @@ var AddSubResource = {
     //save sub-resource
     addSubResource: function(e){
       e.preventDefault();
+      var self = this;
       var targetForm = e.currentTarget;
       while(targetForm.tagName != 'FORM') {
         targetForm = targetForm.parentNode;
@@ -574,8 +598,8 @@ var AddSubResource = {
       subResourceModel.attributes.resources[resourceRefId] = resourceTotalPrice.toFixed(2);
       //set total price for resource row
       CRM.$("#resource-total-price-" + resourceRefId).text(subResourceModel.attributes.resources[resourceRefId]);
-      CRM.BookingApp.vent.trigger('render:price', subResourceModel, resourceRefId );
-      CRM.BookingApp.vent.trigger('update:resources', subResourceModel);
+      self.triggerMethod('render:price', subResourceModel, resourceRefId );
+      self.triggerMethod('update:resources', subResourceModel);
       CRM.BookingApp.modal.close(this);
     },
 
