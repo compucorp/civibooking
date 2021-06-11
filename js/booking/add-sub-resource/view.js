@@ -69,7 +69,7 @@ var Views = {
       }
       this.model.attributes.total_price = CRM.$("#total_price").val();
       this.model.attributes.sub_total = CRM.$("#sub_total").val();
-      this.model.attributes.adhoc_charges = CRM.$("#adhoc_charge").val();
+      //this.model.attributes.adhoc_charges = CRM.$("#adhoc_charge").val();
       this.model.attributes.discount_amount = CRM.$("#discount_amount").val();
     },
     onRender: function(){
@@ -147,7 +147,7 @@ var Views = {
       var currentSubTotal     = parseFloat(this.model.get('sub_total'));
       var currentAdhocCharges = parseFloat(this.model.get('adhoc_charges').total);
       // Get the discount amount stripping out non-numeric characters
-      var sDiscountAmount      = $(e.currentTarget).val().replace(/[^\d.-]/g, '');
+      var sDiscountAmount      = CRM.$(e.currentTarget).val().replace(/[^\d.-]/g, '');
       var fDiscountAmount      = parseFloat(sDiscountAmount);
       if (!_.isNumber(fDiscountAmount) || _.isNaN(fDiscountAmount)) {
         fDiscountAmount = 0;
@@ -157,7 +157,7 @@ var Views = {
       try{newTotal = newTotal.toFixed(2); }catch(err){}
       this.model.set("total_price", newTotal);
       this.model.set("discount_amount", sDiscountAmount);
-      CRM.BookingApp.vent.trigger('render:price', this.model );
+      this.triggerMethod('render:price', this.model);
     },
 
     editAdhocCharge: function(e) {
@@ -212,7 +212,7 @@ var Views = {
       selectedItem = this.model.attributes.sub_resources[refId];
 
       //create backbone model form json object
-      var model = new CRM.BookingApp.Entities.AddSubResource({
+      var model = new Entities.AddSubResource({
           parent_ref_id : parentRef,
           ref_id : refId,
           resource: {id : selectedItem.resource.id, label :selectedItem.resource.label},
@@ -229,6 +229,26 @@ var Views = {
       });
       view.title = ts('Edit unlimited resource');
       CRM.BookingApp.modal.show(view);
+    },
+    onRenderPrice: function(model) {
+      CRM.$("#total_price").val(model.attributes.total_price);
+      var totalText = model.attributes.total_price;
+      try{
+        if(model.attributes.total_price>=0){
+          var totalText = model.attributes.total_price.toFixed(2);
+        }
+      }catch(err){}
+      CRM.$("#total-price-summary").text(totalText);
+      CRM.$("#discount_amount").val(model.attributes.discount_amount);
+      CRM.$('#discount_amount_dummy').val(model.attributes.discount_amount);
+      CRM.$("#sub_total").val(model.attributes.sub_total);
+      var subtotalText = model.attributes.sub_total;
+      try{
+        var subtotalText = model.attributes.sub_total.toFixed(2);
+      }catch(err){}
+      CRM.$("#sub-total-summary").text(subtotalText);
+      CRM.$('#adhoc_charge').val(model.attributes.adhoc_charges.total);
+      CRM.$('#ad-hoc-charge-summary').html(model.attributes.adhoc_charges.total);
     },
   }),
 };
