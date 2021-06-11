@@ -269,9 +269,9 @@ var ResourceTableView = Marionette.View.extend({
 
   //when edit sub resource
   editSubResource: function(e) {
-    var refId = $(e.currentTarget).data('ref');   //retrieve id from attribute data-ref
-    var parentRef = $(e.currentTarget).data('parent-ref');   //retrieve id from attribute data-parent-ref
-    var timeRequired = $(e.currentTarget).data('time-required');  //retrieve datetime from attribute data-time-required
+    var refId = CRM.$(e.currentTarget).data('ref');   //retrieve id from attribute data-ref
+    var parentRef = CRM.$(e.currentTarget).data('parent-ref');   //retrieve id from attribute data-parent-ref
+    var timeRequired = CRM.$(e.currentTarget).data('time-required');  //retrieve datetime from attribute data-time-required
     selectedItem = this.model.attributes.sub_resources[refId];
 
     //create backbone model form json object
@@ -291,6 +291,39 @@ var ResourceTableView = Marionette.View.extend({
         is_new: false
     });
     view.title = ts('Edit unlimited resource');
+    view.on("render:options", function(options) {
+      var select = options.context.$el.find(options.element);
+      if (select.is('[disabled]')) {
+        select.prop('disabled', false);
+      }
+      select.html(options.template({
+        options : options.list,
+        first_option : options.first_option
+      }));
+    });
+    view.on("update:resources", function(model) {
+      CRM.$('#sub_resources').val(JSON.stringify(model.toJSON()));
+    });
+    view.on("render:price", function(model) {
+      CRM.$("#total_price").val(model.attributes.total_price);
+      var totalText = model.attributes.total_price;
+      try{
+        if(model.attributes.total_price>=0){
+          var totalText = model.attributes.total_price.toFixed(2);
+        }
+      }catch(err){}
+      CRM.$("#total-price-summary").text(totalText);
+      CRM.$("#discount_amount").val(model.attributes.discount_amount);
+      CRM.$('#discount_amount_dummy').val(model.attributes.discount_amount);
+      CRM.$("#sub_total").val(model.attributes.sub_total);
+      var subtotalText = model.attributes.sub_total;
+      try{
+        var subtotalText = model.attributes.sub_total.toFixed(2);
+      }catch(err){}
+      CRM.$("#sub-total-summary").text(subtotalText);
+      CRM.$('#adhoc_charge').val(model.attributes.adhoc_charges.total);
+      CRM.$('#ad-hoc-charge-summary').html(model.attributes.adhoc_charges.total);
+    });
     CRM.BookingApp.modal.show(view);
   }
 
