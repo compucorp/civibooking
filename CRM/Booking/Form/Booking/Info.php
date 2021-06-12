@@ -406,8 +406,8 @@ class CRM_Booking_Form_Booking_Info extends CRM_Booking_Form_Booking_Base {
       ->addScriptFile(E::LONG_NAME, 'packages/backbone.modelbinder.js', 125, 'html-header', FALSE)
       ->addScriptFile(E::LONG_NAME, 'js/vendor/crm.backbone.js', 130, 'html-header', FALSE)
 
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/app.js', 150, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/view.js', 170, 'html-header');
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/view.js', 150, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/booking-info/app.js', 170, 'html-header');
 
     $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.booking') . '/templates/';
     $region = CRM_Core_Region::instance('page-header');
