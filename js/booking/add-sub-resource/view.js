@@ -365,8 +365,8 @@ Views['AddSubResourceModal'] = Views.BookingProcessModal.extend({
 
           thisView.$el.find("#required_date").datepicker({changeMonth: true, changeYear: true, dateFormat: 'dd/mm/yy'});
           thisView.$el.find('#required_time').timeEntry({show24Hours: true}).change(function() {
-            var log = $('#log');
-            log.val(log.val() + ($('#defaultEntry').val() || 'blank') + '\n');
+            var log = CRM.$('#log');
+            log.val(log.val() + (CRM.$('#defaultEntry').val() || 'blank') + '\n');
           });
 
           //thisView.resources = data.values;
