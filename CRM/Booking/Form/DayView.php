@@ -47,6 +47,7 @@ class CRM_Booking_Form_DayView extends CRM_Core_Form {
     $resources = CRM_Booking_BAO_Slot::getSlotDetailsOrderByResourceBetweenDate($from, $to);
     //put resources result to values, being ready to display.
     $values['resources'] = $resources;
+    $values['resultDisplay'] = true;
     
     if(empty($resources)){  //check empty result
         //Convert date to show on no match found view
