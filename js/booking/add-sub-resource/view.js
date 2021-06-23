@@ -174,8 +174,8 @@ var Views = {
     },
 
     toggleHiddenElement: function(e){
-      var row = $(e.currentTarget).data('ref');
-      $('#crm-booking-sub-resource-row-' + row).toggle();
+      var row = CRM.$(e.currentTarget).data('ref');
+      CRM.$('#crm-booking-sub-resource-row-' + row).toggle();
     },
     removeSubResource: function(e){
       var self = this;
