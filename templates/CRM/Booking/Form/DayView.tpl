@@ -43,11 +43,4 @@
 {/if}
 <div class="crm-submit-buttons">
 </div>
-{literal}
-<script type="text/javascript">
-cj(function() {
-   cj().crmAccordions();
-});
-</script>
-{/literal}
 {/crmScope}
