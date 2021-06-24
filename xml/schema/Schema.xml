@@ -32,6 +32,6 @@
 <xi:include href="Price/files.xml"             parse="xml" />
 <xi:include href="PCP/files.xml"             parse="xml" />
 
-<xi:include href="Booking/files.xml"         parse="xml" />
+<xi:include href="CRM/Booking/files.xml"         parse="xml" />
 
 </database>
