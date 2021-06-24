@@ -51,34 +51,6 @@ SET FOREIGN_KEY_CHECKS=1;
 
 -- /*******************************************************
 -- *
--- * civicrm_booking_adhoc_charges_item
--- *
--- *******************************************************/
-CREATE TABLE `civicrm_booking_adhoc_charges_item` (
-
-
-     `id` int unsigned NOT NULL AUTO_INCREMENT  ,
-     `name` varchar(255) NOT NULL   ,
-     `label` varchar(255) NOT NULL   ,
-     `price` decimal(20,2) NOT NULL   ,
-     `weight` int unsigned NOT NULL   ,
-     `is_active` tinyint   DEFAULT 1 ,
-     `is_deleted` tinyint   DEFAULT 0  
-,
-        PRIMARY KEY (`id`)
- 
-    ,     INDEX `index_is_active`(
-        is_active
-  )
-  ,     INDEX `index_is_deleted`(
-        is_deleted
-  )
-  
- 
-)    ;
-
--- /*******************************************************
--- *
 -- * civicrm_booking
 -- *
 -- *******************************************************/
@@ -114,6 +86,61 @@ CREATE TABLE `civicrm_booking` (
   )
   
 ,          CONSTRAINT FK_civicrm_booking_primary_contact_id FOREIGN KEY (`primary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_secondary_contact_id FOREIGN KEY (`secondary_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE  
+)    ;
+
+-- /*******************************************************
+-- *
+-- * civicrm_booking_adhoc_charges_item
+-- *
+-- *******************************************************/
+CREATE TABLE `civicrm_booking_adhoc_charges_item` (
+
+
+     `id` int unsigned NOT NULL AUTO_INCREMENT  ,
+     `name` varchar(255) NOT NULL   ,
+     `label` varchar(255) NOT NULL   ,
+     `price` decimal(20,2) NOT NULL   ,
+     `weight` int unsigned NOT NULL   ,
+     `is_active` tinyint   DEFAULT 1 ,
+     `is_deleted` tinyint   DEFAULT 0  
+,
+        PRIMARY KEY (`id`)
+ 
+    ,     INDEX `index_is_active`(
+        is_active
+  )
+  ,     INDEX `index_is_deleted`(
+        is_deleted
+  )
+  
+ 
+)    ;
+
+-- /*******************************************************
+-- *
+-- * civicrm_booking_adhoc_charges
+-- *
+-- *******************************************************/
+CREATE TABLE `civicrm_booking_adhoc_charges` (
+
+
+     `id` int unsigned NOT NULL AUTO_INCREMENT  ,
+     `booking_id` int unsigned NOT NULL   COMMENT 'FK to Booking ID',
+     `item_id` int unsigned NOT NULL   COMMENT 'FK to Item ID',
+     `quantity` int NOT NULL   ,
+     `is_cancelled` tinyint   DEFAULT 0 ,
+     `is_deleted` tinyint   DEFAULT 0  
+,
+        PRIMARY KEY (`id`)
+ 
+    ,     INDEX `index_is_cancelled`(
+        is_cancelled
+  )
+  ,     INDEX `index_is_deleted`(
+        is_deleted
+  )
+  
+,          CONSTRAINT FK_civicrm_booking_adhoc_charges_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_adhoc_charges_item_id FOREIGN KEY (`item_id`) REFERENCES `civicrm_booking_adhoc_charges_item`(`id`) ON DELETE CASCADE  
 )    ;
 
 -- /*******************************************************
@@ -212,94 +239,6 @@ CREATE TABLE `civicrm_booking_resource_config_set` (
 
 -- /*******************************************************
 -- *
--- * civicrm_booking_slot
--- *
--- *******************************************************/
-CREATE TABLE `civicrm_booking_slot` (
-
-
-     `id` int unsigned NOT NULL AUTO_INCREMENT  ,
-     `booking_id` int unsigned NOT NULL   COMMENT 'FK to Booking ID',
-     `resource_id` int unsigned NOT NULL   COMMENT 'FK to resource ID',
-     `config_id` int unsigned    COMMENT 'FK to resource configuration option ID',
-     `start` datetime NOT NULL   ,
-     `end` datetime NOT NULL   ,
-     `quantity` int NOT NULL   ,
-     `note` text    ,
-     `is_cancelled` tinyint   DEFAULT 0 ,
-     `is_deleted` tinyint   DEFAULT 0  
-,
-        PRIMARY KEY (`id`)
- 
-    ,     INDEX `index_is_cancelled`(
-        is_cancelled
-  )
-  ,     INDEX `index_is_deleted`(
-        is_deleted
-  )
-  
-,          CONSTRAINT FK_civicrm_booking_slot_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_slot_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_slot_config_id FOREIGN KEY (`config_id`) REFERENCES `civicrm_booking_resource_config_option`(`id`) ON DELETE CASCADE  
-)    ;
-
--- /*******************************************************
--- *
--- * civicrm_booking_sub_slot
--- *
--- *******************************************************/
-CREATE TABLE `civicrm_booking_sub_slot` (
-
-
-     `id` int unsigned NOT NULL AUTO_INCREMENT  ,
-     `slot_id` int unsigned    COMMENT 'FK to Slot ID',
-     `resource_id` int unsigned    COMMENT 'FK to resource ID',
-     `config_id` int unsigned    COMMENT 'FK to resource configuration option ID',
-     `time_required` datetime NOT NULL   ,
-     `quantity` int NOT NULL   ,
-     `note` text    ,
-     `is_cancelled` tinyint   DEFAULT 0 ,
-     `is_deleted` tinyint   DEFAULT 0  
-,
-        PRIMARY KEY (`id`)
- 
-    ,     INDEX `index_is_cancelled`(
-        is_cancelled
-  )
-  ,     INDEX `index_is_deleted`(
-        is_deleted
-  )
-  
-,          CONSTRAINT FK_civicrm_booking_sub_slot_slot_id FOREIGN KEY (`slot_id`) REFERENCES `civicrm_booking_slot`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_sub_slot_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_sub_slot_config_id FOREIGN KEY (`config_id`) REFERENCES `civicrm_booking_resource_config_option`(`id`) ON DELETE CASCADE  
-)    ;
-
--- /*******************************************************
--- *
--- * civicrm_booking_adhoc_charges
--- *
--- *******************************************************/
-CREATE TABLE `civicrm_booking_adhoc_charges` (
-
-
-     `id` int unsigned NOT NULL AUTO_INCREMENT  ,
-     `booking_id` int unsigned NOT NULL   COMMENT 'FK to Booking ID',
-     `item_id` int unsigned NOT NULL   COMMENT 'FK to Item ID',
-     `quantity` int NOT NULL   ,
-     `is_cancelled` tinyint   DEFAULT 0 ,
-     `is_deleted` tinyint   DEFAULT 0  
-,
-        PRIMARY KEY (`id`)
- 
-    ,     INDEX `index_is_cancelled`(
-        is_cancelled
-  )
-  ,     INDEX `index_is_deleted`(
-        is_deleted
-  )
-  
-,          CONSTRAINT FK_civicrm_booking_adhoc_charges_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_adhoc_charges_item_id FOREIGN KEY (`item_id`) REFERENCES `civicrm_booking_adhoc_charges_item`(`id`) ON DELETE CASCADE  
-)    ;
-
--- /*******************************************************
--- *
 -- * civicrm_booking_resource
 -- *
 -- *******************************************************/
@@ -380,4 +319,63 @@ CREATE TABLE `civicrm_booking_resource_criteria` (
 ,          CONSTRAINT FK_civicrm_booking_resource_criteria_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE  
 )    ;
 
+-- /*******************************************************
+-- *
+-- * civicrm_booking_slot
+-- *
+-- *******************************************************/
+CREATE TABLE `civicrm_booking_slot` (
+
+
+     `id` int unsigned NOT NULL AUTO_INCREMENT  ,
+     `booking_id` int unsigned NOT NULL   COMMENT 'FK to Booking ID',
+     `resource_id` int unsigned NOT NULL   COMMENT 'FK to resource ID',
+     `config_id` int unsigned    COMMENT 'FK to resource configuration option ID',
+     `start` datetime NOT NULL   ,
+     `end` datetime NOT NULL   ,
+     `quantity` int NOT NULL   ,
+     `note` text    ,
+     `is_cancelled` tinyint   DEFAULT 0 ,
+     `is_deleted` tinyint   DEFAULT 0  
+,
+        PRIMARY KEY (`id`)
  
+    ,     INDEX `index_is_cancelled`(
+        is_cancelled
+  )
+  ,     INDEX `index_is_deleted`(
+        is_deleted
+  )
+  
+,          CONSTRAINT FK_civicrm_booking_slot_booking_id FOREIGN KEY (`booking_id`) REFERENCES `civicrm_booking`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_slot_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_slot_config_id FOREIGN KEY (`config_id`) REFERENCES `civicrm_booking_resource_config_option`(`id`) ON DELETE CASCADE  
+)    ;
+
+-- /*******************************************************
+-- *
+-- * civicrm_booking_sub_slot
+-- *
+-- *******************************************************/
+CREATE TABLE `civicrm_booking_sub_slot` (
+
+
+     `id` int unsigned NOT NULL AUTO_INCREMENT  ,
+     `slot_id` int unsigned    COMMENT 'FK to Slot ID',
+     `resource_id` int unsigned    COMMENT 'FK to resource ID',
+     `config_id` int unsigned    COMMENT 'FK to resource configuration option ID',
+     `time_required` datetime NOT NULL   ,
+     `quantity` int NOT NULL   ,
+     `note` text    ,
+     `is_cancelled` tinyint   DEFAULT 0 ,
+     `is_deleted` tinyint   DEFAULT 0  
+,
+        PRIMARY KEY (`id`)
+ 
+    ,     INDEX `index_is_cancelled`(
+        is_cancelled
+  )
+  ,     INDEX `index_is_deleted`(
+        is_deleted
+  )
+  
+,          CONSTRAINT FK_civicrm_booking_sub_slot_slot_id FOREIGN KEY (`slot_id`) REFERENCES `civicrm_booking_slot`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_sub_slot_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_booking_resource`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_booking_sub_slot_config_id FOREIGN KEY (`config_id`) REFERENCES `civicrm_booking_resource_config_option`(`id`) ON DELETE CASCADE  
+)    ;
