@@ -43,19 +43,4 @@ DELETE FROM civicrm_option_group WHERE name = 'booking_cancellation_charges';
 DELETE FROM civicrm_option_group WHERE name = 'booking_size_unit';
 DELETE FROM civicrm_option_group WHERE name = 'msg_tpl_workflow_booking';
 
-
-DROP TABLE IF EXISTS `civicrm_booking_payment`;
-DROP TABLE IF EXISTS `civicrm_booking_sub_slot`;
-DROP TABLE IF EXISTS `civicrm_booking_slot`;
-DROP TABLE IF EXISTS `civicrm_booking_resource_criteria`;
-DROP TABLE IF EXISTS `civicrm_booking_resource_config_option`;
-DROP TABLE IF EXISTS `civicrm_booking_resource`;
-DROP TABLE IF EXISTS `civicrm_booking_adhoc_charges`;
-DROP TABLE IF EXISTS `civicrm_booking_resource_config_set`;
-DROP TABLE IF EXISTS `civicrm_booking_cancellation`;
-DROP TABLE IF EXISTS `civicrm_booking_config`;
-DROP TABLE IF EXISTS `civicrm_booking`;
-DROP TABLE IF EXISTS `civicrm_booking_adhoc_charges_item`;
-
-
 SET FOREIGN_KEY_CHECKS=1;
