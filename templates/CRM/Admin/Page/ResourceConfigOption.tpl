@@ -68,7 +68,7 @@
         {ts}There are no resources configuration option.{/ts}
      </div>
      <div class="action-link">
-       <a href="{crmURL p='civicrm/admin/resource/config_set/config_option' q="action=add&sid=$sid&reset=1"}" id="newResourceConfigOption" class="button"><span><div class="icon add-icon"></div>{ts}Add Resource Configruation Option{/ts}</span></a>
+       <a href="{crmURL p='civicrm/admin/resource/config_set/config_option' q="action=add&sid=$sid&reset=1"}" id="newResourceConfigOption" class="button"><span><div class="icon add-icon"></div>{ts}Add Resource Configuration Option{/ts}</span></a>
      </div>
 {/if}
 {/if}
