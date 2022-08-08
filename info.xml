@@ -19,8 +19,7 @@
   <version>1.5.3</version>
   <develStage>stable</develStage>
   <compatibility>
-    <ver>4.6</ver>
-    <ver>4.7</ver>
+    <ver>5.47</ver>
   </compatibility>
   <comments></comments>
   <civix>
