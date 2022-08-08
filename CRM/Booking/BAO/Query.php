@@ -59,9 +59,9 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
    * @return void
    * @access public
    */
-  function select(&$query) {
-    if(  CRM_Contact_BAO_Query::componentPresent($query->_returnProperties, 'booking_')) {
-        $fields = $this->getFields();
+  static function select(&$query) {
+    if (CRM_Contact_BAO_Query::componentPresent($query->_returnProperties, 'booking_')) {
+       $fields = self::getFields();
        foreach ($fields as $fldName => $params) {
           if (CRM_Utils_Array::value($fldName, $query->_returnProperties)) {
             $query->_select[$fldName]  = "{$params['where']} as $fldName";
@@ -134,7 +134,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
     }
   }
 
-  function where(&$query) {
+  static function where(&$query) {
     $grouping = NULL;
     foreach (array_keys($query->_params) as $id) {
       if (!CRM_Utils_Array::value(0, $query->_params[$id])) {
@@ -149,7 +149,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
     }
   }
 
-  function whereClauseSingle(&$values, &$query) {
+  static function whereClauseSingle(&$values, &$query) {
     $fields = $this->getFields();
     list($name, $op, $value, $grouping, $wildcard) = $values;
     $strtolower = function_exists('mb_strtolower') ? 'mb_strtolower' : 'strtolower';
@@ -267,7 +267,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
     }
   }
 
-  function from($name, $mode, $side) {
+  static function from($name, $mode, $side) {
     $from = NULL;
     switch ($name) {
       case 'civicrm_booking':
@@ -300,7 +300,7 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
     return (isset($this->_qill)) ? $this->_qill : "";
   }
 
-  static function defaultReturnProperties() {
+  static function defaultReturnProperties($mode = NULL) {
     $properties = array(
         'contact_type' => 1,
         'contact_sub_type' => 1,
@@ -320,8 +320,6 @@ class CRM_Booking_BAO_Query extends CRM_Contact_BAO_Query_Interface{
   }
 
   static function buildSearchForm(&$form) {
-
-
     $form->add('text', 'booking_po_no', E::ts('Purchase Order Number'));
 
     $resourceTypes =  CRM_Booking_BAO_Resource::getResourceTypes();
