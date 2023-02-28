@@ -38,7 +38,6 @@ use CRM_Booking_ExtensionUtil as E;
  *
  */
 class CRM_Admin_Form_Resource extends CRM_Admin_Form {
-  protected $_id = NULL;
 
   function preProcess() {
     parent::preProcess();

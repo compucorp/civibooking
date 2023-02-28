@@ -14,9 +14,7 @@ class CRM_Booking_Form_SelectResource extends CRM_Core_Form {
    *
    * @var integer
    */
-  //protected $_id;
-
-  
+ 
   private $configOptions;
   
   /**
