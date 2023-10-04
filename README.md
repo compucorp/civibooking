@@ -1,3 +1,5 @@
+## The maintenance of this project has been moved to GitLab. You can find the new repository at [http://gitlab.com/test](https://lab.civicrm.org/extensions/booking).
+
 ## CiviBooking
 
 ### What is CiviBooking?
