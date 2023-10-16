@@ -281,24 +281,22 @@ class CRM_Booking_Form_AddSubResource extends CRM_Core_Form {
 
       ->addStyleFile('uk.co.compucorp.civicrm.booking', 'css/booking.css', 92, 'page-header')
       
-      ->addScriptFile('civicrm', 'packages/backbone/json2.js', 100, 'html-header', FALSE)
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'packages/underscore.js', 110, 'html-header', FALSE)
-      ->addScriptFile('civicrm', 'packages/backbone/backbone.js', 120, 'html-header')
-      ->addScriptFile('civicrm', 'packages/backbone/backbone.marionette.js', 125, 'html-header', FALSE)
-      ->addScriptFile('civicrm', 'packages/backbone/backbone.modelbinder.js', 125, 'html-header', FALSE)
-      ->addScriptFile('civicrm', 'js/crm.backbone.js', 130, 'html-header', FALSE)
+      ->addScriptFile(E::LONG_NAME, 'packages/json2.js', 100, 'html-header', FALSE)
+      ->addScriptFile(E::LONG_NAME, 'packages/underscore-umd.js', 110, 'html-header', FALSE)
+      ->addScriptFile(E::LONG_NAME, 'packages/backbone.js', 120, 'html-header')
+      ->addScriptFile(E::LONG_NAME, 'packages/backbone.marionette.js', 125, 'html-header', FALSE)
+      ->addScriptFile(E::LONG_NAME, 'packages/backbone.modelbinder.js', 125, 'html-header', FALSE)
+      ->addScriptFile(E::LONG_NAME, 'js/vendor/crm.backbone.js', 130, 'html-header', FALSE)
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/vendor/moment.min.js', 120, 'html-header', FALSE)
 
       ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/civicrm-moment-strftime.js', 140, 'html-header', FALSE)
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/app.js', 150, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/common/views.js', 151, 'html-header', FALSE)
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/utils.js', 151, 'html-header', FALSE)
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/entities.js', 160, 'html-header')
-      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/view.js', 170, 'html-header');
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/entities.js', 145, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/view.js', 145, 'html-header')
+      ->addScriptFile('uk.co.compucorp.civicrm.booking', 'js/booking/add-sub-resource/app.js', 150, 'html-header');
 
 
     $templateDir = CRM_Extension_System::singleton()->getMapper()->keyToBasePath('uk.co.compucorp.civicrm.booking') . '/templates/';
-    $region = CRM_Core_Region::instance('page-header');
+    $region = CRM_Core_Region::instance('html-header');
     foreach (glob($templateDir . 'CRM/Booking/tpl/add-sub-resource/*.tpl') as $file) {
       $fileName = substr($file, strlen($templateDir));
       $region->add(array(

@@ -1,7 +1,5 @@
-
-CRM.BookingApp.module('Entities', function(Entities, BookingApp, Backbone, Marionette, $, _){
-
-  Entities.SubResource = Backbone.Model.extend({
+var Entities = {
+  SubResource: Backbone.Model.extend({
     defaults: {
       sub_resources: {},
       resources: {},
@@ -11,9 +9,8 @@ CRM.BookingApp.module('Entities', function(Entities, BookingApp, Backbone, Mario
       total_price:0
 
     },
-  });
-
-  Entities.AddSubResource = Backbone.Model.extend({
+  }),
+  AddSubResource: Backbone.Model.extend({
     defaults: {
       parent_ref_id: null,
       ref_id: null,
@@ -24,14 +21,12 @@ CRM.BookingApp.module('Entities', function(Entities, BookingApp, Backbone, Mario
       note: null,
       price_estimate: 0,
     },
-  });
-
-  Entities.AdhocCharges = Backbone.Model.extend({
+  }),
+  AdhocCharges: Backbone.Model.extend({
     defaults: {
       items: {},
       note: null,
       total: 0,
     },
-  });
-
-});
+  }),
+};

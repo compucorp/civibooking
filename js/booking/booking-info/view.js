@@ -1,20 +1,6 @@
-(function ($, ts){ 
-CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone, Marionette, $, _) {
-
-  
-
-  CRM.BookingApp.vent.on("render:dialog", function (profile, title, elementId, targetElementId){
-      var view = new BookingInfo.Dialog({
-       profile: profile,
-       title: title,
-       elementId: elementId,
-       targetElementId: targetElementId});
-      CRM.BookingApp.modal.show(view);
-  });
-
-
-  BookingInfo.Dialog = Backbone.Marionette.ItemView.extend({
-    template: '#booking-info-profile-template',
+var BookingInfoViews = {
+  Dialog: Marionette.View.extend({
+    template: CRM._.template(CRM.$('#booking-info-profile-template').html()),
     initialize: function(options){
       this.title = options.title;
       this.profile = options.profile;
@@ -33,25 +19,24 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
         modal: true,
         minWidth: 600,
           open: function() {
-            $.getJSON(self.profileUrl, function(data) {
+            CRM.$.getJSON(self.profileUrl, function(data) {
               self.displayNewContactProfile(data);
             });
           },
           close: function() {
-            $(this).dialog('destroy');
+            CRM.$(this).dialog('destroy');
           }
       });
     },
-
     displayNewContactProfile: function(data) {
       var self = this;
-      $('#crm-booking-profile-form').html(data.content);
-      $("#crm-booking-profile-form .cancel.form-submit").click(function() {
-      $("#crm-booking-profile-form").dialog('close');
-          return false;
-        });
-      $('#email-Primary').addClass('email');
-      $("#crm-booking-profile-form form").ajaxForm({
+      CRM.$('#crm-booking-profile-form').html(data.content);
+      CRM.$("#crm-booking-profile-form .cancel.form-submit").click(function() {
+        CRM.$("#crm-booking-profile-form").dialog('close');
+        return false;
+      });
+      CRM.$('#email-Primary').addClass('email');
+      CRM.$("#crm-booking-profile-form form").ajaxForm({
         // context=dialog triggers civi's profile to respond with json instead of an html redirect
         // but it also results in lots of unwanted scripts being added to the form snippet, so we
         // add it here during submission and not during form retrieval.
@@ -59,11 +44,11 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
         dataType: 'json',
         success: function(response) {
           if (response.newContactSuccess) {
-            $('#crm-booking-profile-form').dialog('close');
+            CRM.$('#crm-booking-profile-form').dialog('close');
             CRM.alert(ts('%1 has been created.', {1: response.displayName}), ts('Contact Saved'), 'success');
             console.log('test',self.targetElementId);
-            $('input[name="'+self.targetElementId+'"]').val(response.contactID);
-            $(self.elementId).val(response.displayName);
+            CRM.$('input[name="'+self.targetElementId+'"]').val(response.contactID);
+            CRM.$(self.elementId).val(response.displayName);
           }
           else {
             self.displayNewContactProfile(response);
@@ -72,7 +57,5 @@ CRM.BookingApp.module('BookingInfo', function(BookingInfo, BookingApp, Backbone,
       }).validate(CRM.validate.params);
     }
 
-  });
-
-});
-}(CRM.$, CRM.ts('uk.co.compucorp.civicrm.booking')));
+  }),
+};

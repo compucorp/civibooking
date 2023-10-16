@@ -23,7 +23,7 @@
 </div><!-- /.crm-accordion-wrapper -->
 </div><!-- /.crm-form-block -->
 {* Search DayView results *}
-{if $resources}
+{if $resultDisplay}
 {if empty($resources)}
 {* No matches for submitted search request or viewing an empty result. *}
 <div class="messages status no-popup">
@@ -43,11 +43,4 @@
 {/if}
 <div class="crm-submit-buttons">
 </div>
-{literal}
-<script type="text/javascript">
-cj(function() {
-   cj().crmAccordions();
-});
-</script>
-{/literal}
 {/crmScope}

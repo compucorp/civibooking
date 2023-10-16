@@ -1,39 +1,37 @@
-CRM.BookingApp = new Backbone.Marionette.Application();
-
-var ModalRegion = Backbone.Marionette.Region.extend({
+var ModalRegion = Marionette.Region.extend({
   el: "#crm-booking-profile-form",
 
   constructor: function(){
-    Backbone.Marionette.Region.prototype.constructor.apply(this, arguments);
+    Marionette.Region.prototype.constructor.apply(this, arguments);
     this.on("show", this.showModal, this);
     this.on("close", this.hideModal, this);
 
   },
 
   showModal: function(view){
-   // view.on("close", this.hideModal, this);
-
-
   },
 
   hideModal: function(){
     cj('#crm-booking-dialog').dialog().dialog( "destroy" );
   }
 });
-
-CRM.BookingApp.addRegions({
+var MyApp = Marionette.Application.extend({
   contactRegion: "#contact-container",
   orgRegion: "#organisation-container",
-  modal: ModalRegion
-
+  modal: new ModalRegion(),
+  onRenderDialog: function(profile, title, elementId, targetElementId){
+    var view = new BookingInfoViews.Dialog({
+     profile: profile,
+     title: title,
+     elementId: elementId,
+     targetElementId: targetElementId,
+    });
+    CRM.BookingApp.modal.show(view);
+  },
 });
+
+CRM.BookingApp = new MyApp();
 
 CRM.BookingApp.on("initialize:after", function(){
   if( ! Backbone.History.started) Backbone.history.start();
 });
-
-CRM.BookingApp.addInitializer(function(){
-
-});
-
-

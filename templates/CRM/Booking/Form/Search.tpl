@@ -74,12 +74,5 @@
 
   </div>
 {/if}
-{literal}
-<script type="text/javascript">
-cj(function() {
-   cj().crmAccordions();
-});
-</script>
-{/literal}
 
 {/crmScope}
